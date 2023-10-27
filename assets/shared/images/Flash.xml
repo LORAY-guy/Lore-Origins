@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Flash.png">
+	<!-- Created with Adobe Animate version 21.0.1.37179 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Flash10000" x="10" y="10" width="1280" height="720"/>
+	<SubTexture name="Flash10001" x="1320" y="10" width="1280" height="720"/>
+	<SubTexture name="Flash10002" x="2630" y="10" width="1280" height="720"/>
+	<SubTexture name="Flash10003" x="10" y="760" width="1280" height="720"/>
+	<SubTexture name="Flash10004" x="1320" y="760" width="1280" height="720"/>
+	<SubTexture name="Flash10005" x="2630" y="760" width="1280" height="720"/>
+	<SubTexture name="Flash10006" x="10" y="1510" width="1280" height="720"/>
+	<SubTexture name="Flash20000" x="10" y="10" width="1280" height="720"/>
+	<SubTexture name="Flash20001" x="10" y="760" width="1280" height="720"/>
+	<SubTexture name="Flash20002" x="1320" y="760" width="1280" height="720"/>
+	<SubTexture name="Flash20003" x="2630" y="10" width="1280" height="720"/>
+	<SubTexture name="Flash20004" x="1320" y="10" width="1280" height="720"/>
+	<SubTexture name="Flash20005" x="1320" y="1510" width="1280" height="720"/>
+	<SubTexture name="Flash20006" x="2630" y="760" width="1280" height="720"/>
+	<SubTexture name="Flash30000" x="10" y="10" width="1280" height="720"/>
+	<SubTexture name="Flash30001" x="1320" y="760" width="1280" height="720"/>
+	<SubTexture name="Flash30002" x="10" y="760" width="1280" height="720"/>
+	<SubTexture name="Flash30003" x="2630" y="10" width="1280" height="720"/>
+	<SubTexture name="Flash30004" x="1320" y="10" width="1280" height="720"/>
+	<SubTexture name="Flash30005" x="2630" y="760" width="1280" height="720"/>
+	<SubTexture name="Flash30006" x="1320" y="1510" width="1280" height="720"/>
+</TextureAtlas>

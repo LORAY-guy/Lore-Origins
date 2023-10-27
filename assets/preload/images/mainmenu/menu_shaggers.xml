@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="menu_shaggers.png">
+	<!-- Created with Adobe Animate version 21.0.1.37179 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="shaggers basic0000" x="0" y="0" width="672" height="142"/>
+	<SubTexture name="shaggers basic0001" x="0" y="147" width="672" height="142"/>
+	<SubTexture name="shaggers basic0002" x="0" y="294" width="672" height="142"/>
+	<SubTexture name="shaggers white0000" x="0" y="441" width="712" height="145"/>
+	<SubTexture name="shaggers white0001" x="0" y="591" width="712" height="145"/>
+	<SubTexture name="shaggers white0002" x="0" y="741" width="712" height="145"/>
+</TextureAtlas>
