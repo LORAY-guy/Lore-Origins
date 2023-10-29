@@ -6,6 +6,7 @@ local lore = {
     {name = 'lore-apology', step = 64, skip = true},
     {name = 'fever', step = 0, skip = false},
     {name = 'lore-style', step = 0, skip = false},
+    {name = 'live', step = 0, skip = false},
 }
 
 function onCreate()
@@ -39,6 +40,7 @@ function onCreate()
         addAnimationByIndices('star'..i, 'static', 'star', '35', 35, false)
         setObjectCamera('star'..i, 'camHUD')
         setProperty('star'..i..'.antialiasing', false)
+        setObjectOrder('star'..i, getObjectOrder('healthBarBG') + 1)
         addLuaSprite('star'..i, false)
         startStar = startStar + 87
     end
@@ -64,8 +66,8 @@ function onCreatePost()
     setObjectOrder("healthBarBG", getObjectOrder("healthBar") + 1)
     setObjectOrder("iconP1", getObjectOrder("healthBarBG") + 1)
     doTweenColor("timeBarBG", "timeBarBG", "FFFFFF", 0.01, "linear")
-    setTextSize("scoreTxt", 46)
-    setProperty("scoreTxt.y", downscroll and 570 or 55)
+    setTextSize("scoreTxt", 42)
+    setProperty("scoreTxt.y", downscroll and 570 or 57)
     setTextFont('scoreTxt', 'DIGILF__.TTF')
     setProperty('healthBar.y', downscroll and 87 or 610)
     setProperty("showComboNum", false)
@@ -106,6 +108,7 @@ function onSongStart()
     if stepCredits == 0 then
         showCredits()
     end
+    doTweenColor('timebar', 'timeBar', '3fe780', 0.01, 'linear')
 end
 
 function onStepHit()

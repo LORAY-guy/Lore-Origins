@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="taunt.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Taunt0000" x="25" y="25" width="150" height="150"/>
+	<SubTexture name="Taunt0001" x="187" y="25" width="150" height="150"/>
+	<SubTexture name="Taunt0002" x="25" y="187" width="150" height="150"/>
+	<SubTexture name="Taunt0003" x="187" y="187" width="150" height="150"/>
+	<SubTexture name="Taunt0004" x="187" y="187" width="150" height="150"/>
+	<SubTexture name="Taunt0005" x="187" y="187" width="150" height="150"/>
+	<SubTexture name="Taunt0006" x="187" y="187" width="150" height="150"/>
+	<SubTexture name="Taunt0007" x="187" y="187" width="150" height="150"/>
+	<SubTexture name="Taunt0008" x="187" y="187" width="150" height="150"/>
+</TextureAtlas>

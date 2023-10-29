@@ -1,7 +1,5 @@
 package options;
 
-import flixel.util.FlxStringUtil;
-import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.text.FlxText;
@@ -39,7 +37,11 @@ class NoteOffsetState extends MusicBeatState
 	var beatText:Alphabet;
 	var beatTween:FlxTween;
 
+	var originY:Float = 0;
+
 	var changeModeText:FlxText;
+
+	public var luaArray:Array<FunkinLua> = [];
 
 	override public function create()
 	{
@@ -60,7 +62,8 @@ class NoteOffsetState extends MusicBeatState
 
 		persistentUpdate = true;
 		FlxG.sound.pause();
-		// Stage
+
+		// STAGE SHIT
 		var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 		add(bg);
 
@@ -70,28 +73,18 @@ class NoteOffsetState extends MusicBeatState
 		add(stageFront);
 
 		if(!ClientPrefs.lowQuality) {
-			var stageLight:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
-			stageLight.setGraphicSize(Std.int(stageLight.width * 1.1));
-			stageLight.updateHitbox();
-			add(stageLight);
-			var stageLight:BGSprite = new BGSprite('stage_light', 1225, -100, 0.9, 0.9);
-			stageLight.setGraphicSize(Std.int(stageLight.width * 1.1));
-			stageLight.updateHitbox();
-			stageLight.flipX = true;
-			add(stageLight);
-
-			var stageCurtains:BGSprite = new BGSprite('stagecurtains', -500, -300, 1.3, 1.3);
-			stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-			stageCurtains.updateHitbox();
-			add(stageCurtains);
+			var curtains:BGSprite = new BGSprite('lore/curtain', -500, -300, 1.3, 1.3);
+			curtains.setGraphicSize(Std.int(curtains.width * 0.9));
+			curtains.updateHitbox();
+			add(curtains);
 		}
 
 		// Characters
-		gf = new Character(400, 130, 'gf');
+		gf = new Character(400, 130, 'phone');
 		gf.x += gf.positionArray[0];
 		gf.y += gf.positionArray[1];
 		gf.scrollFactor.set(0.95, 0.95);
-		boyfriend = new Character(770, 100, 'bf', true);
+		boyfriend = new Character(770, 100, 'playguy', true);
 		boyfriend.x += boyfriend.positionArray[0];
 		boyfriend.y += boyfriend.positionArray[1];
 		add(gf);
@@ -152,7 +145,7 @@ class NoteOffsetState extends MusicBeatState
 		add(beatText);
 		
 		timeTxt = new FlxText(0, 600, FlxG.width, "", 32);
-		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeTxt.setFormat(Paths.font("ourple.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		timeTxt.scrollFactor.set();
 		timeTxt.borderSize = 2;
 		timeTxt.visible = false;
@@ -189,7 +182,7 @@ class NoteOffsetState extends MusicBeatState
 		add(blackBox);
 
 		changeModeText = new FlxText(0, 4, FlxG.width, "", 32);
-		changeModeText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
+		changeModeText.setFormat(Paths.font("ourple.ttf"), 32, FlxColor.WHITE, CENTER);
 		changeModeText.scrollFactor.set();
 		changeModeText.cameras = [camHUD];
 		add(changeModeText);
@@ -199,8 +192,9 @@ class NoteOffsetState extends MusicBeatState
 		FlxG.sound.playMusic(Paths.music('offsetSong'), 1, true);
 
 		super.create();
-	}
 
+		originY = boyfriend.y;
+	}
 	var holdTime:Float = 0;
 	var onComboMenu:Bool = true;
 	var holdingObjectType:Null<Bool> = null;
@@ -366,6 +360,7 @@ class NoteOffsetState extends MusicBeatState
 
 	var zoomTween:FlxTween;
 	var lastBeatHit:Int = -1;
+	var flippedIdle:Bool = false;
 	override public function beatHit()
 	{
 		super.beatHit();
@@ -374,11 +369,15 @@ class NoteOffsetState extends MusicBeatState
 		{
 			return;
 		}
-
+		
 		if(curBeat % 2 == 0)
 		{
 			boyfriend.dance();
 			gf.dance();
+			boyfriend.flipX = flippedIdle;
+			flippedIdle = !flippedIdle;
+			boyfriend.y = (boyfriend.y + 20);
+			FlxTween.tween(boyfriend, {y: originY}, 0.15, {ease: FlxEase.cubeOut});
 		}
 		
 		if(curBeat % 4 == 2)
@@ -423,7 +422,7 @@ class NoteOffsetState extends MusicBeatState
 		for (i in 0...4)
 		{
 			var text:FlxText = new FlxText(10, 48 + (i * 30), 0, '', 24);
-			text.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			text.setFormat(Paths.font("ourple.ttf"), 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			text.scrollFactor.set();
 			text.borderSize = 2;
 			dumbTexts.add(text);

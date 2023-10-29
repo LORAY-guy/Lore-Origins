@@ -1,0 +1,102 @@
+package;
+
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.FlxSprite;
+import flixel.FlxG;
+import flixel.addons.display.FlxBackdrop;
+#if desktop
+import Discord.DiscordClient;
+#end
+
+class FreeplaySelectState extends MusicBeatState{
+    public static var freeplayCats:Array<String> = ['Covers', 'Originals'];
+    public static var curCategory:Int = 0;
+	public var NameAlpha:Alphabet;
+	var grpCats:FlxTypedGroup<Alphabet>;
+	var curSelected:Int = 0;
+	var bg:FlxSprite;
+    var categoryIcon:FlxSprite;
+    
+    override function create(){
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence("Choosing the Lore", null);
+		#end
+
+        bg = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
+		bg.updateHitbox();
+		bg.screenCenter();
+		bg.color = 0xFF00c2ff;
+		add(bg);
+		
+		persistentUpdate = true;
+
+		var grid:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/grid'));
+		grid.scrollFactor.set(0, 0);
+		grid.velocity.set(40, 40);
+		grid.alpha = 0.5;
+		add(grid);
+
+		var lettabox1:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
+		lettabox1.scrollFactor.set(0, 0);
+		lettabox1.velocity.set(40, 0);
+		lettabox1.y = 635;
+		add(lettabox1);
+
+		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox2'), X, 0, 0);
+		lettabox2.scrollFactor.set(0, 0);
+		lettabox2.velocity.set(-40, 0);
+		add(lettabox2);
+
+        categoryIcon = new FlxSprite();
+        categoryIcon.frames = Paths.getSparrowAtlas('category/category-' + freeplayCats[curSelected].toLowerCase());
+        categoryIcon.animation.addByPrefix('idle', freeplayCats[curSelected].toLowerCase(), 24);
+        categoryIcon.animation.play('idle');
+		categoryIcon.updateHitbox();
+		categoryIcon.screenCenter();
+		add(categoryIcon);
+
+		NameAlpha = new Alphabet(20, (FlxG.height / 2) - 282, freeplayCats[curSelected], true);
+		NameAlpha.screenCenter(X);
+		Highscore.load();
+		add(NameAlpha);
+        changeSelection();
+        super.create();
+    }
+
+    override public function update(elapsed:Float){
+		if (controls.UI_LEFT_P) {
+			changeSelection(-1);
+        }
+		if (controls.UI_RIGHT_P) {
+			changeSelection(1);
+        }
+		if (controls.BACK) {
+			FlxG.sound.play(Paths.sound('cancelMenu'));
+			MusicBeatState.switchState(new MainMenuState());
+		}
+        if (controls.ACCEPT){
+            MusicBeatState.switchState(new FreeplayState());
+        }
+        curCategory = curSelected;
+        super.update(elapsed);
+    }
+
+    function changeSelection(change:Int = 0) {
+		curSelected += change;
+		if (curSelected < 0)
+			curSelected = freeplayCats.length - 1;
+		if (curSelected >= freeplayCats.length)
+			curSelected = 0;
+
+		NameAlpha.destroy();
+		NameAlpha = new Alphabet(20, (FlxG.height / 2) - 282, freeplayCats[curSelected], true);
+		NameAlpha.screenCenter(X);
+		add(NameAlpha);
+        categoryIcon.frames = Paths.getSparrowAtlas('category/category-' + freeplayCats[curSelected].toLowerCase());
+        categoryIcon.animation.addByPrefix('idle', freeplayCats[curSelected].toLowerCase(), 24);
+        categoryIcon.animation.play('idle');
+        categoryIcon.screenCenter();
+		FlxG.sound.play(Paths.sound('scrollMenu'));
+	}
+}

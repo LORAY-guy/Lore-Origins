@@ -20,12 +20,14 @@ import lime.app.Application;
 import Achievements;
 import editors.MasterEditorMenu;
 import flixel.input.keyboard.FlxKey;
+import flixel.addons.display.FlxBackdrop;
 
 using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '0.6.3'; //This is also used for Discord RPC
+	public static var psychEngineVersion:String = '0.6.3'; //This is used for Discord RPC
+	public static var loreVersion:String = '1.1'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
@@ -39,7 +41,6 @@ class MainMenuState extends MusicBeatState
 		'options'
 	];
 
-	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
@@ -53,7 +54,7 @@ class MainMenuState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		DiscordClient.changePresence("Lore Menu", null);
 		#end
 		debugKeys = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_1'));
 
@@ -71,28 +72,35 @@ class MainMenuState extends MusicBeatState
 		persistentUpdate = persistentDraw = true;
 
 		//var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('mainmenu/bg'));
 		bg.scrollFactor.set(0, 0);
-		bg.setGraphicSize(Std.int(bg.width * 1.175));
+		bg.setGraphicSize(Std.int(bg.width * 1.5));
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
-
+		
 		camFollow = new FlxObject(0, 0, 1, 1);
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 		add(camFollowPos);
 
-		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		magenta.scrollFactor.set(0, 0);
-		magenta.setGraphicSize(Std.int(magenta.width * 1.175));
-		magenta.updateHitbox();
-		magenta.screenCenter();
-		magenta.visible = false;
-		magenta.antialiasing = ClientPrefs.globalAntialiasing;
-		magenta.color = 0xFFfd719b;
-		add(magenta);
+		var grid:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/grid'));
+		grid.scrollFactor.set(0, 0);
+		grid.velocity.set(40, 40);
+		grid.alpha = 0.5;
+		add(grid);
+
+		var lettabox1:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
+		lettabox1.scrollFactor.set(0, 0);
+		lettabox1.velocity.set(40, 0);
+		lettabox1.y = 635;
+		add(lettabox1);
+
+		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox2'), X, 0, 0);
+		lettabox2.scrollFactor.set(0, 0);
+		lettabox2.velocity.set(-40, 0);
+		add(lettabox2);
 		
 		// magenta.scrollFactor.set();
 
@@ -106,9 +114,9 @@ class MainMenuState extends MusicBeatState
 
 		for (i in 0...optionShit.length)
 		{
-			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
+			var offset:Float = 92 - (Math.max(optionShit.length, 4) - 4) * 80;
 			var sizeOffset:Float = 1;
-			var menuItem:FlxSprite = new FlxSprite(0, (i * 150)  + offset);
+			var menuItem:FlxSprite = new FlxSprite(0, (i * 150) + offset);
 			if (optionShit[i] == 'shaggers') menuItem.y -= 12;
 			if (optionShit[i] == 'lore') 
 			{
@@ -136,11 +144,11 @@ class MainMenuState extends MusicBeatState
 
 		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
 		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionShit.setFormat(Paths.font('ourple.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Friday Night Funkin' v" + Application.current.meta.get('version'), 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Lore Origins v1.1", 12);
 		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionShit.setFormat(Paths.font('ourple.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
 		// NG.core.calls.event.logEvent('swag').send();
@@ -211,13 +219,12 @@ class MainMenuState extends MusicBeatState
 				if (optionShit[curSelected] == 'shaggers')
 				{
 					CoolUtil.browserLoad('https://youtube.com/@Shaggers');
+					CoolUtil.browserLoad('https://twitter.com/Shaggers_real?t=G27exZKT-OxLIQGURFe3bA&s=09');
 				}
 				else
 				{
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
-
-					if(ClientPrefs.flashing) FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
 					menuItems.forEach(function(spr:FlxSprite)
 					{
@@ -240,7 +247,7 @@ class MainMenuState extends MusicBeatState
 								switch (daChoice)
 								{
 									case 'lore':
-										MusicBeatState.switchState(new FreeplayState());
+										MusicBeatState.switchState(new FreeplaySelectState());
 									case 'credits':
 										MusicBeatState.switchState(new CreditsState());
 									case 'options':

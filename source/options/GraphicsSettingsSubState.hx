@@ -87,6 +87,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 				sprite.antialiasing = ClientPrefs.globalAntialiasing;
 			}
 		}
+		boyfriend.antialiasing = false; //lol
 	}
 
 	function onChangeFramerate()

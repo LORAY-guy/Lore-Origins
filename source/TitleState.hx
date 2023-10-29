@@ -231,7 +231,8 @@ class TitleState extends MusicBeatState
 		#end
 	}
 
-	var logoBl:FlxSprite;
+	var vhs:FlxSprite;
+	var gameTheoryLogo:FlxSprite;
 	var gfDance:FlxSprite;
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
@@ -281,17 +282,22 @@ class TitleState extends MusicBeatState
 		// bg.antialiasing = ClientPrefs.globalAntialiasing;
 		// bg.setGraphicSize(Std.int(bg.width * 0.6));
 		// bg.updateHitbox();
-		add(bg);
+		// add(bg);
 
-		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley);
-		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
+		vhs = new FlxSprite();
+		vhs.frames = Paths.getSparrowAtlas('VHS');
+		vhs.animation.addByPrefix('idle', 'VHS', 24, true);
+		vhs.animation.play('idle');
+		vhs.setGraphicSize(FlxG.width, FlxG.height);
+		vhs.antialiasing = ClientPrefs.globalAntialiasing;
+		vhs.updateHitbox();
+		vhs.screenCenter();
+		add(vhs);
 
-		logoBl.antialiasing = ClientPrefs.globalAntialiasing;
-		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
-		logoBl.animation.play('bump');
-		logoBl.updateHitbox();
-		// logoBl.screenCenter();
-		// logoBl.color = FlxColor.BLACK;
+		gameTheoryLogo = new FlxSprite().loadGraphic(Paths.image('gtLogo'));
+		gameTheoryLogo.screenCenter();
+		gameTheoryLogo.setGraphicSize(Std.int(gameTheoryLogo.width * 0.35));
+		// gameTheoryLogo.color = FlxColor.BLACK;
 
 		swagShader = new ColorSwap();
 		gfDance = new FlxSprite(titleJSON.gfx, titleJSON.gfy);
@@ -332,8 +338,8 @@ class TitleState extends MusicBeatState
 
 		add(gfDance);
 		gfDance.shader = swagShader.shader;
-		add(logoBl);
-		logoBl.shader = swagShader.shader;
+		add(gameTheoryLogo);
+		gameTheoryLogo.shader = swagShader.shader;
 
 		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
 		#if (desktop && MODS_ALLOWED)
@@ -437,14 +443,13 @@ class TitleState extends MusicBeatState
 	
 	var newTitle:Bool = false;
 	var titleTimer:Float = 0;
+	var pressedEnter:Bool = false;
 
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
-
-		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 
 		#if mobile
 		for (touch in FlxG.touches.list)
@@ -455,6 +460,8 @@ class TitleState extends MusicBeatState
 			}
 		}
 		#end
+
+		var pressedEnter = (FlxG.keys.justPressed.ENTER || controls.ACCEPT);
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
@@ -502,6 +509,9 @@ class TitleState extends MusicBeatState
 
 				transitioning = true;
 				// FlxG.sound.music.stop();
+
+				FlxTween.tween(gameTheoryLogo, {x: 780, angle: 270}, 1.5, {ease: FlxEase.expoInOut});
+				FlxTween.tween(FlxG.camera, {zoom: 5}, 1.5, {ease: FlxEase.expoInOut, startDelay: 0.2});
 
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
@@ -620,15 +630,19 @@ class TitleState extends MusicBeatState
 	{
 		super.beatHit();
 
-		if(logoBl != null)
-			logoBl.animation.play('bump', true);
-
 		if(gfDance != null) {
 			danceLeft = !danceLeft;
 			if (danceLeft)
 				gfDance.animation.play('danceRight');
 			else
 				gfDance.animation.play('danceLeft');
+		}
+
+		if (!pressedEnter)
+		{
+			gameTheoryLogo.setGraphicSize(Std.int(gameTheoryLogo.width * 0.375));
+			FlxTween.tween(gameTheoryLogo, {"scale.x" : 0.35}, 0.4, {ease: FlxEase.quadOut});
+			FlxTween.tween(gameTheoryLogo, {"scale.y" : 0.35}, 0.4, {ease: FlxEase.quadOut});
 		}
 
 		if(!closedState) {

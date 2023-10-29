@@ -13,6 +13,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
+import flixel.addons.display.FlxBackdrop;
 #if MODS_ALLOWED
 import sys.FileSystem;
 import sys.io.File;
@@ -41,13 +42,24 @@ class CreditsState extends MusicBeatState
 	{
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		DiscordClient.changePresence("Lore Credits", null);
 		#end
 
 		persistentUpdate = true;
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		add(bg);
 		bg.screenCenter();
+
+		var verttabox1:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/verttabox'), Y, 0, 0);
+		verttabox1.scrollFactor.set(0, 0);
+		verttabox1.velocity.set(0, 40);
+		add(verttabox1);
+
+		var verttabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/verttabox2'), Y, 0, 0);
+		verttabox2.scrollFactor.set(0, 0);
+		verttabox2.velocity.set(0, -40);
+		verttabox2.x = 1195;
+		add(verttabox2);
 		
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
@@ -152,7 +164,7 @@ class CreditsState extends MusicBeatState
 		add(descBox);
 
 		descText = new FlxText(50, FlxG.height + offsetThing - 25, 1180, "", 32);
-		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
+		descText.setFormat(Paths.font("ourple.ttf"), 32, FlxColor.WHITE, CENTER/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
 		descText.scrollFactor.set();
 		//descText.borderSize = 2.4;
 		descBox.sprTracker = descText;
@@ -209,6 +221,8 @@ class CreditsState extends MusicBeatState
 
 			if(controls.ACCEPT && (creditsStuff[curSelected][3] == null || creditsStuff[curSelected][3].length > 4)) {
 				CoolUtil.browserLoad(creditsStuff[curSelected][3]);
+				if (creditsStuff[curSelected][1] == 'shaggers')
+					CoolUtil.browserLoad('https://twitter.com/Shaggers_real?t=G27exZKT-OxLIQGURFe3bA&s=09');
 			}
 			if (controls.BACK)
 			{

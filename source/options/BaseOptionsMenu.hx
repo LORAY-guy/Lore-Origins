@@ -44,12 +44,14 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	public var title:String;
 	public var rpcTitle:String;
 
+	public var originY:Float = 0;
+
 	public function new()
 	{
 		super();
 
 		if(title == null) title = 'Options';
-		if(rpcTitle == null) rpcTitle = 'Options Menu';
+		if(rpcTitle == null) rpcTitle = 'Setting the LOOOOOOOOOOOOORE';
 		
 		#if desktop
 		DiscordClient.changePresence(rpcTitle, null);
@@ -82,7 +84,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		add(titleText);
 
 		descText = new FlxText(50, 600, 1180, "", 32);
-		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.setFormat(Paths.font("ourple.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		descText.scrollFactor.set();
 		descText.borderSize = 2.4;
 		add(descText);
@@ -133,6 +135,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	var nextAccept:Int = 5;
 	var holdTime:Float = 0;
 	var holdValue:Float = 0;
+	var flippedIdle:Bool = false;
 	override function update(elapsed:Float)
 	{
 		if (controls.UI_UP_P)
@@ -261,6 +264,10 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 		if(boyfriend != null && boyfriend.animation.curAnim.finished) {
 			boyfriend.dance();
+			boyfriend.flipX = flippedIdle;
+			flippedIdle = !flippedIdle;
+			boyfriend.y = (boyfriend.y + 20);
+			FlxTween.tween(boyfriend, {y: originY}, 0.15, {ease: FlxEase.cubeOut});
 		}
 
 		if(nextAccept > 0) {
@@ -337,12 +344,13 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			boyfriend.destroy();
 		}
 
-		boyfriend = new Character(840, 170, 'bf', true);
-		boyfriend.setGraphicSize(Std.int(boyfriend.width * 0.75));
+		boyfriend = new Character(910, 240, 'playguy', true);
+		boyfriend.setGraphicSize(Std.int(boyfriend.width * 0.3));
 		boyfriend.updateHitbox();
 		boyfriend.dance();
 		insert(1, boyfriend);
 		boyfriend.visible = wasVisible;
+		originY = boyfriend.y;
 	}
 
 	function reloadCheckboxes() {

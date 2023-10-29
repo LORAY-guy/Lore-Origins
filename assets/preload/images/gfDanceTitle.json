@@ -5,6 +5,6 @@
 	"starty":610,
 	"gfx":1000,
 	"gfy":1000,
-	"backgroundSprite":"thing",
-	"bpm":140
+	"backgroundSprite":"",
+	"bpm":130
 }

@@ -41,7 +41,7 @@ function createGhost(char)
     makeAnimatedLuaSprite(char..'Ghost'..songPos, getProperty(char..'.imageFile'),getProperty(char..'.x'),getProperty(char..'.y'))
     addLuaSprite(char..'Ghost'..songPos, false)
     setProperty(char..'Ghost'..songPos..'.scale.x',getProperty(char..'.scale.x'))
-	if char == 'boyfriend' then
+	if getProperty(char..'.imageFile') == 'characters/guy' or getProperty(char..'.imageFile') == 'characters/guyRTX' or getProperty(char..'.imageFile') == 'characters/goldenphone' then
 		setProperty(char..'Ghost'..songPos..'.antialiasing', false)
 	end
 	setProperty(char..'Ghost'..songPos..'.scale.y',getProperty(char..'.scale.y'))
