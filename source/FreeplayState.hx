@@ -58,7 +58,7 @@ class FreeplayState extends MusicBeatState
 		switch (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase())
 			{
 				case 'covers':
-					addWeek(['lored', 'lore-ryan', 'lore-awesomix', 'lore-apology', 'fever', 'chronology', 'lore-style', 'live'], 0, 0xFF00ff00, ['mat2', 'mat2', 'mat2', 'mat2', 'mat2', 'mat2', 'mat2', 'mat2']);
+					addWeek(['lored', 'lore-ryan', 'lore-awesomix', 'lore-apology', 'fever', 'chronology', 'lore-style', 'live', 'horse-lore'], 0, 0xFF00ff00, ['mat2', 'mat2', 'mat2', 'mat2', 'mat2', 'mat2', 'mat2', 'mat2', 'mat2']);
 				case 'originals':
 					addWeek(['lore-tropical'], 1, 0xff00c3ff, ['mat2']);
 			};
@@ -269,7 +269,6 @@ class FreeplayState extends MusicBeatState
 		var downP = controls.UI_DOWN_P;
 		var accepted = controls.ACCEPT;
 		var space = FlxG.keys.justPressed.SPACE;
-		var ctrl = FlxG.keys.justPressed.CONTROL;
 
 		var shiftMult:Int = 1;
 		if(FlxG.keys.pressed.SHIFT) shiftMult = 3;

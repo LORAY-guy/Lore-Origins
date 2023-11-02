@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="horse.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Idle0000" x="10" y="10" width="766" height="370" frameX="0" frameY="-73" frameWidth="766" frameHeight="443"/>
+	<SubTexture name="Idle0001" x="10" y="10" width="766" height="370" frameX="0" frameY="-73" frameWidth="766" frameHeight="443"/>
+	<SubTexture name="Idle0002" x="786" y="10" width="641" height="425" frameX="-62" frameY="-18" frameWidth="766" frameHeight="443"/>
+	<SubTexture name="Idle0003" x="786" y="10" width="641" height="425" frameX="-62" frameY="-18" frameWidth="766" frameHeight="443"/>
+	<SubTexture name="Idle0004" x="10" y="445" width="581" height="436" frameX="-92" frameY="-6" frameWidth="766" frameHeight="443"/>
+	<SubTexture name="Idle0005" x="10" y="445" width="581" height="436" frameX="-92" frameY="-6" frameWidth="766" frameHeight="443"/>
+	<SubTexture name="Idle0006" x="601" y="445" width="565" height="442" frameX="-100" frameY="0" frameWidth="766" frameHeight="443"/>
+	<SubTexture name="Idle0007" x="601" y="445" width="565" height="442" frameX="-100" frameY="0" frameWidth="766" frameHeight="443"/>
+	<SubTexture name="Idle0008" x="601" y="445" width="565" height="442" frameX="-100" frameY="0" frameWidth="766" frameHeight="443"/>
+	<SubTexture name="Idle0009" x="601" y="445" width="565" height="442" frameX="-100" frameY="0" frameWidth="766" frameHeight="443"/>
+</TextureAtlas>
