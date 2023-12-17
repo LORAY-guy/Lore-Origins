@@ -218,16 +218,24 @@ class Paths
 		return file;
 	}
 
-	inline static public function voices(song:String):Any
+	inline static public function voices(song:String, ?isNew:Bool = false):Any
 	{
 		var songKey:String = '${formatToSongPath(song)}/Voices';
+		#if sys
+		if (FileSystem.exists(formatToSongPath(song)+'-new') && isNew)
+			songKey = '${formatToSongPath(song)}/Voices-new';
+		#end
 		var voices = returnSound('songs', songKey);
 		return voices;
 	}
 
-	inline static public function inst(song:String):Any
+	inline static public function inst(song:String, ?isNew:Bool = false):Any
 	{
 		var songKey:String = '${formatToSongPath(song)}/Inst';
+		#if sys
+		if (FileSystem.exists(formatToSongPath(song)+'-new') && isNew)
+			songKey = '${formatToSongPath(song)}/Inst-new';
+		#end
 		var inst = returnSound('songs', songKey);
 		return inst;
 	}

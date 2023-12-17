@@ -94,7 +94,7 @@ class CreditsState extends MusicBeatState
 
 		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
 			['Lore Origins by'],
-			['Shaggers',			'shaggers',			'He gonna lore uranus',											'https://www.youtube.com/@Shaggers',	'00FF55'],
+			['LORAY',			'loray',				'He gonna lore uranus',											'https://www.youtube.com/@LORAY_',	'00FF55'],
 			[''],
 			['Lore Remixes by'],
 			['Kiwiquest',			'lex',				'Original composer of Lore',									'https://www.youtube.com/@kiwiquestlol','FF5102'],
@@ -222,11 +222,13 @@ class CreditsState extends MusicBeatState
 				}
 			}
 
-			if(controls.ACCEPT && (creditsStuff[curSelected][3] == null || creditsStuff[curSelected][3].length > 4)) {
-				CoolUtil.browserLoad(creditsStuff[curSelected][3]);
-				if (creditsStuff[curSelected][1] == 'shaggers')
-					CoolUtil.browserLoad('https://twitter.com/Shaggers_real?t=G27exZKT-OxLIQGURFe3bA&s=09');
+			if(controls.ACCEPT) {
+				if (creditsStuff[curSelected][0] == 'LORAY')
+					MusicBeatState.switchState(new LorayState());
+				else if (creditsStuff[curSelected][3] == null || creditsStuff[curSelected][3].length > 4)
+					CoolUtil.browserLoad(creditsStuff[curSelected][3]);
 			}
+
 			if (controls.BACK)
 			{
 				if(colorTween != null) {

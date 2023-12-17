@@ -10,7 +10,6 @@ function onGameOverStart()
 	setScrollFactor(getPropertyFromClass('GameOverSubstate', 'boyfriend'), 0, 0)
 	setProperty('boyfriend.x', 850)
 	setProperty('boyfriend.y', 500)
-	--objectPlayAnimation('boyfriend', 'die', true)
 	return Function_Continue;
 end
 
@@ -30,17 +29,17 @@ end
 
 function goodNoteHit(id, direction, noteType, isSustainNote)
 	if not getPropertyFromGroup('notes', id, 'gfNote') then
-	cancelTween('raise')
-	setProperty('boyfriend.y', defaultY)
-	setProperty('boyfriend.flipX', true)
+		cancelTween('raise')
+		setProperty('boyfriend.y', defaultY)
+		setProperty('boyfriend.flipX', true)
 	end
 end
 
 function noteMiss(id, direction, noteType, isSustainNote)
 	if not getPropertyFromGroup('notes', id, 'gfNote') then
-	cancelTween('raise')
-	setProperty('boyfriend.y', defaultY)
-	setProperty('boyfriend.flipX', true)
+		cancelTween('raise')
+		setProperty('boyfriend.y', defaultY)
+		setProperty('boyfriend.flipX', true)
 	end
 end
 
@@ -64,5 +63,13 @@ function onUpdate(e)
 		setProperty('iconP1.angle', angleOfs)
 	else
 		setProperty('iconP1.angle', 0)
+	end
+end
+
+function onEvent(eventName, value1, value2)
+	if eventName == 'Play Animation' and (value2 == 'bf' or value2 == 0) then
+		cancelTween('raise')
+		setProperty('boyfriend.y', defaultY)
+		setProperty('boyfriend.flipX', true)
 	end
 end

@@ -58,9 +58,41 @@ class FreeplayState extends MusicBeatState
 		switch (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase())
 			{
 				case 'covers':
-					addWeek(['lored', 'lore-ryan', 'lore-awesomix', 'lore-apology', 'fever', 'chronology', 'lore-style', 'live', 'horse-lore'], 0, 0xFF00ff00, ['mat2', 'mat2', 'mat2', 'mat2', 'mat2', 'mat2', 'mat2', 'mat2', 'mat2']);
+					addWeek(
+					[
+						'lored', 
+						'lore-ryan', 
+						'lore-awesomix',
+						'lore-apology',
+						'fever', 
+						'chronology', 
+						'lore-style', 
+						'live', 
+						'horse-lore'
+					], 
+					0, 
+					0xFF00ff00, 
+					[
+						'mat2', 
+						'mat2', 
+						'mat2', 
+						'mat2', 
+						'mat2', 
+						'mat2', 
+						'mat2', 
+						'mat2', 
+						'mat2'
+					]);
 				case 'originals':
-					addWeek(['lore-tropical'], 1, 0xff00c3ff, ['mat2']);
+					addWeek(
+						[
+							'lore-tropical',
+						], 
+						0, 
+						0xff00c3ff, 
+						[
+							'mat2',
+						]);
 			};
 
 		Paths.clearStoredMemory();
@@ -117,7 +149,7 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
+			var songText:Alphabet = new Alphabet(90, 320, FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase() == 'originals' ? CoolUtil.removeSymbol(songs[i].songName, "lore-") : 'Lore', true);
 			songText.isMenuItem = true;
 			songText.targetY = i - curSelected;
 			grpSongs.add(songText);
@@ -300,9 +332,9 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		if (controls.UI_LEFT_P)
+		if (controls.UI_LEFT_P && songs[curSelected].songName == 'lore-apology')
 			changeDiff(-1);
-		else if (controls.UI_RIGHT_P)
+		else if (controls.UI_RIGHT_P && songs[curSelected].songName == 'lore-apology')
 			changeDiff(1);
 		else if (upP || downP) changeDiff();
 
@@ -360,6 +392,7 @@ class FreeplayState extends MusicBeatState
 			PlayState.SONG = Song.loadFromJson(poop, songLowercase);
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
+			if (curDifficulty == 1) PlayState.isNew = true;
 
 			trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
 			if(colorTween != null) {
@@ -473,7 +506,7 @@ class FreeplayState extends MusicBeatState
 		PlayState.storyWeek = songs[curSelected].week;
 
 		CoolUtil.difficulties = CoolUtil.defaultDifficulties.copy();
-		var diffStr:String = 'Hard';
+		var diffStr:String = 'Lore';
 		if(diffStr != null) diffStr = diffStr.trim(); //Fuck you HTML5
 
 		if(diffStr != null && diffStr.length > 0)
@@ -520,6 +553,10 @@ class FreeplayState extends MusicBeatState
 		scoreBG.x = FlxG.width - (scoreBG.scale.x / 2);
 		diffText.x = Std.int(scoreBG.x + (scoreBG.width / 2));
 		diffText.x -= diffText.width / 2;
+	}
+
+	private function loreLess() {
+
 	}
 }
 

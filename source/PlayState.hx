@@ -320,6 +320,9 @@ class PlayState extends MusicBeatState
 	// stores the last combo score objects in an array
 	public static var lastScore:Array<FlxSprite> = [];
 
+	//Lore Origins shit
+	public static var isNew:Bool = false;
+
 	override public function create()
 	{
 		//trace('Playback Rate: ' + playbackRate);
@@ -1131,8 +1134,8 @@ class PlayState extends MusicBeatState
 		add(iconP2);
 		reloadHealthBarColors();
 
-		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt = new FlxText(0, ClientPrefs.downScroll == true ? 570 : 57, FlxG.width, "", 42);
+		scoreTxt.setFormat(Paths.font("DIGILF__.TTF"), 42, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.hideHud;
@@ -2255,10 +2258,7 @@ class PlayState extends MusicBeatState
 
 	public function updateScore(miss:Bool = false)
 	{
-		scoreTxt.text = 'Score: ' + songScore
-		+ ' | Misses: ' + songMisses
-		+ ' | Rating: ' + ratingName
-		+ (ratingName != '?' ? ' (${Highscore.floorDecimal(ratingPercent * 100, 2)}%) - $ratingFC' : '');
+		scoreTxt.text = 'Score:\n' + songScore;
 
 		if(ClientPrefs.scoreZoom && !miss && !cpuControlled)
 		{
@@ -2379,13 +2379,13 @@ class PlayState extends MusicBeatState
 		curSong = songData.song;
 
 		if (SONG.needsVoices)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
+			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song, isNew));
 		else
 			vocals = new FlxSound();
 
 		vocals.pitch = playbackRate;
 		FlxG.sound.list.add(vocals);
-		FlxG.sound.list.add(new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.song)));
+		FlxG.sound.list.add(new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.song, isNew)));
 
 		notes = new FlxTypedGroup<Note>();
 		add(notes);
@@ -3018,15 +3018,43 @@ class PlayState extends MusicBeatState
 		if (health > 2)
 			health = 2;
 
-		if (healthBar.percent < 20)
-			iconP1.animation.curAnim.curFrame = 1;
-		else
-			iconP1.animation.curAnim.curFrame = 0;
-
-		if (healthBar.percent > 80)
-			iconP2.animation.curAnim.curFrame = 1;
-		else
-			iconP2.animation.curAnim.curFrame = 0;
+		if (iconP1.isCool)
+			{
+				if (healthBar.percent < 20) {
+					iconP1.animation.curAnim.curFrame = 1;
+				} else if (healthBar.percent >= 20 && healthBar.percent <= 80) {
+					iconP1.animation.curAnim.curFrame = 0;
+				} else if (healthBar.percent > 80) {
+					iconP1.animation.curAnim.curFrame = 2;
+				}
+			}
+			else 
+			{
+				if (healthBar.percent < 20) {
+					iconP1.animation.curAnim.curFrame = 1;
+				} else {
+					iconP1.animation.curAnim.curFrame = 0;
+				}
+			}
+	
+			if (iconP2.isCool)
+			{
+				if (healthBar.percent < 20) {
+					iconP2.animation.curAnim.curFrame = 2;
+				} else if (healthBar.percent >= 20 && healthBar.percent <= 80) {
+					iconP2.animation.curAnim.curFrame = 0;
+				} else if (healthBar.percent > 80) {
+					iconP2.animation.curAnim.curFrame = 1;
+				}
+			}
+			else
+			{
+				if (healthBar.percent > 80) {
+					iconP2.animation.curAnim.curFrame = 1;
+				} else {
+					iconP2.animation.curAnim.curFrame = 0;
+				}
+			}
 
 		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene) {
 			persistentUpdate = false;

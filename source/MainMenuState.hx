@@ -25,7 +25,7 @@ using StringTools;
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.6.3'; //This is used for Discord RPC
-	public static var loreVersion:String = '1.1'; //This is also used for Discord RPC
+	public static var loreVersion:String = '1.3'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
@@ -34,7 +34,6 @@ class MainMenuState extends MusicBeatState
 	
 	var optionShit:Array<String> = [
 		'lore',
-		'shaggers',
 		'credits',
 		'options'
 	];
@@ -144,7 +143,7 @@ class MainMenuState extends MusicBeatState
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('ourple.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Lore Origins v1.1", 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Lore Origins v" + loreVersion, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('ourple.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -239,8 +238,6 @@ class MainMenuState extends MusicBeatState
 							{
 								case 'lore':
 									MusicBeatState.switchState(new FreeplaySelectState());
-								case 'shaggers':
-									MusicBeatState.switchState(new ShaggersState());
 								case 'credits':
 									MusicBeatState.switchState(new CreditsState());
 								case 'options':

@@ -2,7 +2,7 @@ local flick = false
 local camList = {'camGame', 'camHUD'}
 
 function onCreate()
-    makeAnimatedLuaSprite('monitor', 'stages/monitor', 0, 0)
+    makeAnimatedLuaSprite('monitor', 'monitor', 0, 0)
     addAnimationByPrefix('monitor', 'open', 'Open', 24, false)
 	addAnimationByIndices('monitor', 'nothing', 'Close', '0', 24)
 	objectPlayAnimation('monitor', 'nothing', false)
@@ -84,7 +84,7 @@ function onCreate()
     setProperty('vcrshit.visible', false)
     addLuaSprite('vcrshit', false)
 
-    makeLuaSprite('redboob','stages/red', 167, 59)
+    makeLuaSprite('redboob','red', 167, 59)
 	setObjectCamera('redboob', 'camHUD')
     scaleObject('redboob', 0.8, 0.8)
 	setProperty('redboob.visible', false)
@@ -208,10 +208,6 @@ end
 function onUpdate(elapsed)
     --debugPrint(getProperty('camFollow.x'), getProperty('camFollow.y'))
 
-    if gfSection then
-        setProperty('camFollow.x', 712)
-    end
-
     if curStep >= 2816 and curStep < 2832 then
         setProperty('camFollow.x', 712)
         setProperty('camFollow.y', 383)
@@ -222,8 +218,7 @@ function onTimerCompleted(tag, loops, loopsLeft)
 	if tag == 'byemonitor' then
         setProperty('defaultCamZoom', 1.2)
         doTweenZoom('camshit', 'camGame', 1.2, 0.01, 'linear')
-        doTweenX('dadcenter', 'dad', getProperty('dad.x') + 75, 0.01, 'linear')
-        --doTweenX('bfcenter', 'boyfriend', getProperty('boyfriend.x') - 50, 0.01, 'linear')
+        setProperty("dad.x", getProperty('dad.x') + 75)
 		setProperty('monitor.visible', false)
         setProperty('vcrshit.visible', true)
 	end

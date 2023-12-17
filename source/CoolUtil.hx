@@ -19,10 +19,10 @@ class CoolUtil
 {
 	public static var defaultDifficulties:Array<String> = [
 		'Easy',
-		'Normal',
-		'Hard'
+		'New',
+		'Lore'
 	];
-	public static var defaultDifficulty:String = 'Hard'; //The chart that has no suffix and starting difficulty on Freeplay/Story Mode
+	public static var defaultDifficulty:String = 'Lore'; //The chart that has no suffix and starting difficulty on Freeplay/Story Mode
 
 	public static var difficulties:Array<String> = [];
 
@@ -138,4 +138,10 @@ class CoolUtil
 		FlxG.openURL(site);
 		#end
 	}
+
+	inline public static function removeSymbol(input:String, symbol:String):String {
+		if (symbol.length > 1)
+        	return input.split(symbol).join("");
+		return input.split(symbol).join(" ");
+    }
 }

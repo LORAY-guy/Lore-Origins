@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "mat idle dance"
+		},
+		{
+			"offsets": [
+				223,
+				-13
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "mat left note"
+		},
+		{
+			"offsets": [
+				260,
+				-163
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "mat down note"
+		},
+		{
+			"offsets": [
+				20,
+				61
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "mat up note"
+		},
+		{
+			"offsets": [
+				121,
+				-9
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "mat right note"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/matpat2_sad",
+	"position": [
+		140,
+		0
+	],
+	"healthicon": "mat2",
+	"flip_x": false,
+	"healthbar_colors": [
+		64,
+		231,
+		129
+	],
+	"camera_position": [
+		-170,
+		40
+	],
+	"sing_duration": 5.7,
+	"scale": 1
+}

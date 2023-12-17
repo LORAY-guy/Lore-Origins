@@ -39,9 +39,9 @@ import lime.app.Application;
 import openfl.Assets;
 
 using StringTools;
+
 typedef TitleData =
 {
-
 	titlex:Float,
 	titley:Float,
 	startx:Float,
@@ -51,6 +51,7 @@ typedef TitleData =
 	backgroundSprite:String,
 	bpm:Int
 }
+
 class TitleState extends MusicBeatState
 {
 	public static var muteKeys:Array<FlxKey> = [FlxKey.ZERO];

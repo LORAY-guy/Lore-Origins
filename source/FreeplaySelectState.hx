@@ -4,6 +4,9 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.addons.display.FlxBackdrop;
+import flixel.effects.FlxFlicker;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -11,7 +14,7 @@ import Discord.DiscordClient;
 class FreeplaySelectState extends MusicBeatState{
     public static var freeplayCats:Array<String> = ['Covers', 'Originals'];
     public static var curCategory:Int = 0;
-	public var NameAlpha:Alphabet;
+	public var catName:Alphabet;
 	var grpCats:FlxTypedGroup<Alphabet>;
 	var curSelected:Int = 0;
 	var bg:FlxSprite;
@@ -56,11 +59,12 @@ class FreeplaySelectState extends MusicBeatState{
 		categoryIcon.screenCenter();
 		add(categoryIcon);
 
-		NameAlpha = new Alphabet(20, (FlxG.height / 2) - 282, freeplayCats[curSelected], true);
-		NameAlpha.screenCenter(X);
-		Highscore.load();
-		add(NameAlpha);
+		catName = new Alphabet(20, (FlxG.height / 2) - 282, freeplayCats[curSelected], true);
+		catName.screenCenter(X);
+		add(catName);
+
         changeSelection();
+
         super.create();
     }
 
@@ -75,8 +79,14 @@ class FreeplaySelectState extends MusicBeatState{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
 		}
-        if (controls.ACCEPT){
-            MusicBeatState.switchState(new FreeplayState());
+        if (controls.ACCEPT) {
+			FlxG.sound.play(Paths.sound('confirmMenu'));
+			
+			FlxTween.tween(catName, {alpha: 0}, 0.4, {ease: FlxEase.quadOut, onComplete: function(twn:FlxTween){catName.kill();}});
+			FlxFlicker.flicker(categoryIcon, 1, 0.06, false, false, function(flick:FlxFlicker)
+			{
+				MusicBeatState.switchState(new FreeplayState());
+			});
         }
         curCategory = curSelected;
         super.update(elapsed);
@@ -89,10 +99,10 @@ class FreeplaySelectState extends MusicBeatState{
 		if (curSelected >= freeplayCats.length)
 			curSelected = 0;
 
-		NameAlpha.destroy();
-		NameAlpha = new Alphabet(20, (FlxG.height / 2) - 282, freeplayCats[curSelected], true);
-		NameAlpha.screenCenter(X);
-		add(NameAlpha);
+		catName.destroy();
+		catName = new Alphabet(20, (FlxG.height / 2) - 282, freeplayCats[curSelected], true);
+		catName.screenCenter(X);
+		add(catName);
         categoryIcon.frames = Paths.getSparrowAtlas('category/category-' + freeplayCats[curSelected].toLowerCase());
         categoryIcon.animation.addByPrefix('idle', freeplayCats[curSelected].toLowerCase(), 24);
         categoryIcon.animation.play('idle');

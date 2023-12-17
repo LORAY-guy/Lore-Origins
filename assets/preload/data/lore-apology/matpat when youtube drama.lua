@@ -2,6 +2,7 @@ local otherStuff = {}
 local mult = 1.2
 local flipped = false
 local funni = true
+local defaultY = 0
 
 function onCreate()
     makeLuaSprite('ourple_bg', 'couch', 0, 0)
@@ -27,11 +28,12 @@ function onCreate()
 end
 
 function onCreatePost()
-    math.randomseed(os.time())
+    defaultY = getProperty('boyfriend.y')
 end
 
 function onSongStart()
-    removeLuaSprite('blackness', true)
+    setPropertyFromClass('flixel.FlxG', 'sound.music.volume', 0.9)
+    setProperty("blackness.alpha", 0)
 end
 
 function opponentNoteHit(membersIndex, noteData, noteType, isSustainNote)
@@ -59,6 +61,15 @@ function opponentNoteHit(membersIndex, noteData, noteType, isSustainNote)
     end
 end
 
+function goodNoteHit(membersIndex, noteData, noteType, isSustainNote)
+    if noteType == 'GF Sing' and gfSection and mustHitSection then
+		setProperty('boyfriend.y', defaultY)
+		setProperty('boyfriend.flipX', true)
+        playAnim("boyfriend", getProperty('singAnimations')[math.abs(noteData)+1], true, false, 0)
+        setProperty('boyfriend.holdTimer', 0)
+    end
+end
+
 function onUpdate(elapsed)
     if curStep < 64 and funni then
         doTweenX('matpatResizeX', 'matpat.scale', 1.3, 0.25, 'cubeOut')
@@ -75,12 +86,6 @@ function onUpdatePost(elapsed)
         updateHitbox('matpat')
         updateHitbox('ourple_bg')
     end
-
-    if curStep >= 1824 and curStep < 1856 then
-        setProperty('camZooming', false)
-        setProperty('camFollow.x', 691.5)
-        setProperty('camFollow.y', 383)
-    end
 end
 
 function onStepHit()
@@ -91,68 +96,83 @@ function onStepHit()
         end
     end
 
-    if curStep == 182 or curStep == 310 or curStep == 1206 or curStep == 1334 or curStep == 2486 or curStep == 2614 then
+    if curStep == 182 or curStep == 310 or curStep == 1338 or curStep == 1462 or curStep == 1590 or curStep == 2742 or curStep == 2616 or curStep == 2870 then
         setProperty('defaultCamZoom', 1.3)
         setProperty('cameraSpeed', 1000)
     end
 
-    if curStep == 192 or curStep == 1216 or curStep == 2496 then
+    if curStep == 192 or curStep == 1344 or curStep == 1472 or curStep == 1600 or curStep == 2624 or curStep == 2752 then
         setProperty('defaultCamZoom', 0.9)
         doTweenZoom('camGameGoBackQuick', 'camGame', 0.9, 0.01, 'linear')
     end
 
-    if curStep == 320 or curStep == 1344 then
+    if curStep == 312 then
+        strumBye()
+        doTweenAlpha("goingDownHUD", "camHUD", 0, (stepCrochet / 1000) * 8, "cubeOut")
+        doTweenAlpha("goingDown", "blackness", 1, (stepCrochet / 1000) * 8, "cubeOut")
+    end
+
+    if curStep == 320 or curStep == 576 then
         setProperty('defaultCamZoom', 0.8)
         doTweenZoom('camGameGoBackQuick', 'camGame', 0.8, 0.01, 'linear')
     end
 
-    if curStep == 576 or curStep == 1600 then
+    if curStep == 448 then
+        cameraFlash("camGame", "FFFFFF", 0.9)
+        setProperty("camHUD.alpha", 1)
+        strumHello()
+    end
+
+    if curStep == 560 then
+        setProperty('defaultCamZoom', 1.3)
+    end
+
+    if curStep == 832 or curStep == 1856 then
         setProperty('defaultCamZoom', 0.9)    
         setProperty('cameraSpeed', 1)
     end
 
-    if curStep == 1616 then
-        setProperty('cameraSpeed', 1000)
+    if curStep == 1120 or curStep == 1184 or curStep == 1248 then
+        epicBooms(false)
     end
 
-    if curStep == 1728 then
-        setProperty('cameraSpeed', 1)
-        setProperty('defaultCamZoom', 0.9) 
+    if curStep == 1312 then
+        epicBooms(true)
     end
 
-    if curStep == 1824 then
-        doTweenZoom('camGameEpicZoomInOnPhone', 'camGame', 1.3, (stepCrochet / 1000) * 16, 'expoIn')
+    if curStep == 1344 or curStep == 1856 or curStep == 1920 or curStep == 1984 or curStep == 2624 then
+        cameraFlash("camGame", "FFFFFF", 0.9)
     end
 
     if curStep == 1856 then
+        setProperty("camHUD.alpha", 0)
+        strumBye()
+    end
+
+    if curStep == 1984 then
+        setProperty('defaultCamZoom', 0.9) 
+        setProperty("camHUD.alpha", 1)
+        strumHello()
+    end
+
+    if curStep == 1824 then
+        doTweenZoom('camGameEpicZoomInOnOurple', 'camGame', 1.3, (stepCrochet / 1000) * 16, 'expoIn')
+    end
+
+    if curStep == 2080 then
         setProperty('defaultCamZoom', 0.8)
         doTweenZoom('camGameGoBackQuick', 'camGame', 0.8, 0.01, 'linear')
         setProperty('cameraSpeed', 1000)
-        setProperty('camZooming', true)
     end
 
-    if curStep == 2624 then
+    if curStep == 2880 then
         cameraFlash('camGame', 'FFFFFF', 0.9)
         setProperty('defaultCamZoom', 0.9)
         doTweenZoom('camGameGoBackQuick', 'camGame', 0.9, 0.01, 'linear')
     end
 
-    if curStep == 2632 then
+    if curStep == 2888 then
         doTweenZoom('finalZoomIn', 'camGame', 1.4, (stepCrochet / 1000) * 8, 'expoIn')
-    end
-end
-
-function onBeatHit()
-    if (curBeat >= 16 and curBeat < 76 and curBeat % 2 == 0) or (curBeat >= 272 and curBeat < 333 and curBeat % 2 == 0) or (curBeat >= 592 and curBeat < 656 and curBeat % 2 == 0) then
-        triggerEvent('Add Camera Zoom', '0.02', '0.02')
-    end
-
-    if (curBeat >= 80 and curBeat < 144) or (curBeat >= 336 and curBeat < 400) or (curBeat >= 464 and curBeat < 592) then
-        triggerEvent('Add Camera Zoom', '0.04', '0.02')
-    end
-
-    if (curBeat >= 144 and curBeat < 272) then
-        triggerEvent('Add Camera Zoom', '0.02', '0.02')
     end
 end
 
@@ -161,20 +181,72 @@ function onEvent(eventName, value1, value2)
         setProperty('defaultCamZoom', getProperty('defaultCamZoom') + 0.075)
         doTweenZoom('camGameGoInQuick', 'camGame', getProperty('defaultCamZoom'), 0.01, 'linear')
     end
-
-    if eventName == 'Play Animation' and value1 == 'singDOWN' then
-        setProperty('defaultCamZoom', 0.9)
-    end
 end
 
 function onTweenCompleted(tag)
-    if tag == 'camGameEpicZoomInOnPhone' then
+    if tag == 'camGameEpicZoomInOnOurple' then
         setProperty('defaultCamZoom', 1)
-        doTweenZoom('camGameGoBackQuick', 'camGame', getProperty('defaultCamZoom'), 0.01, 'linear')
+        doTweenZoom('camGameGoBackQuick', 'camGame', 1, 0.01, 'linear')
     end
 
     if tag == 'finalZoomIn' then
         setProperty('camGame.visible', false)
         setProperty('camHUD.visible', false)
+    end
+
+    if tag =='goingDown' then
+        doTweenAlpha("goingBack", "blackness", 0, (crochet / 1000) * 64, "cubeIn")
+    end
+end
+
+function onTimerCompleted(tag, loops, loopsLeft)
+    if tag == 'boomBitch' then
+        triggerEvent("Add Camera Zoom", "0.4", "0.2")
+    end
+
+    if tag == 'boomBitch2' then
+        triggerEvent("Add Camera Zoom", "0.4", "0.2")
+        runTimer("boomBitch3", (stepCrochet / 1000) * 4)
+    end
+
+    if tag == 'boomBitch3' then
+        triggerEvent("Add Camera Zoom", "0.4", "0.2")
+        runTimer("justFlash", (stepCrochet / 1000) * 4)
+    end
+
+    if tag == 'justFlash' then
+        cameraFlash("camGame", "FFFFFF", 0.9)
+    end
+end
+
+function epicBooms(isEnd)
+    triggerEvent("Add Camera Zoom", "0.4", "0.2")
+    runTimer("boomBitch", (stepCrochet / 1000) * 6, 3)
+    if not isEnd then
+        runTimer("boomBitch2", (stepCrochet / 1000) * 24)
+    end
+end
+
+function strumBye()
+    for i = 0, 7 do
+        if i < 4 then
+            noteTweenAngle('strumAngle'..i, i, -360, (stepCrochet / 1000) * 8, "quadIn")
+            noteTweenX('strum'..i, i, _G['defaultOpponentStrumX'..i] - 750, (stepCrochet / 1000) * 8, "quadIn")
+        else
+            noteTweenAngle('strumAngle'..i, i, 360, (stepCrochet / 1000) * 8, "quadIn")
+            noteTweenX('strum'..i, i, _G['defaultPlayerStrumX'..(i - 4)] + 750, (stepCrochet / 1000) * 8, "quadIn")
+        end
+    end
+end
+
+function strumHello()
+    for i = 0, 7 do
+        if i < 4 then
+            noteTweenAngle('strumAngle'..i, i, 0, (stepCrochet / 1000) * 8, "quadOut")
+            noteTweenX('strum'..i, i, _G['defaultOpponentStrumX'..i], (stepCrochet / 1000) * 8, "quadOut")
+        else
+            noteTweenAngle('strumAngle'..i, i, 0, (stepCrochet / 1000) * 8, "quadOut")
+            noteTweenX('strum'..i, i, _G['defaultPlayerStrumX'..(i - 4)], (stepCrochet / 1000) * 8, "quadOut")
+        end
     end
 end

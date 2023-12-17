@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="shaggers_discord.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="discord0000" x="10" y="10" width="581" height="447" frameX="-6" frameY="-3" frameWidth="591" frameHeight="450"/>
+	<SubTexture name="discord0001" x="601" y="10" width="586" height="443" frameX="-2" frameY="-3" frameWidth="591" frameHeight="450"/>
+	<SubTexture name="discord0002" x="1197" y="10" width="591" height="449" frameX="0" frameY="0" frameWidth="591" frameHeight="450"/>
+</TextureAtlas>
