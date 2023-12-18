@@ -94,6 +94,7 @@ class Note extends FlxSprite
 	public var distance:Float = 2000; //plan on doing scroll directions soon -bb
 
 	public var hitsoundDisabled:Bool = false;
+	public var isPixelNote:Bool = false;
 
 	private function set_multSpeed(value:Float):Float {
 		resizeByRatio(value / multSpeed);
@@ -161,7 +162,7 @@ class Note extends FlxSprite
 		return value;
 	}
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false, ?isPixelNote:Bool = false)
 	{
 		super();
 
@@ -171,6 +172,7 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 		this.inEditor = inEditor;
+		this.isPixelNote = isPixelNote;
 
 		x += (ClientPrefs.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X) + 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
@@ -200,8 +202,10 @@ class Note extends FlxSprite
 
 		if (isSustainNote && prevNote != null)
 		{
-			alpha = 0.6;
-			multAlpha = 0.6;
+			// alpha = 0.6;
+			// multAlpha = 0.6;
+			alpha = 1;
+			multAlpha = 1;
 			hitsoundDisabled = true;
 			if(ClientPrefs.downScroll) flipY = true;
 
@@ -214,8 +218,10 @@ class Note extends FlxSprite
 
 			offsetX -= width / 2;
 
-			if (PlayState.isPixelStage)
+			if (PlayState.isPixelStage || isPixelNote)
 				offsetX += 30;
+			if (PlayState.isOurpleNote || (!PlayState.isPixelStage || !isPixelNote))
+				offsetX -= 1;
 
 			if (prevNote.isSustainNote)
 			{
@@ -227,15 +233,20 @@ class Note extends FlxSprite
 					prevNote.scale.y *= PlayState.instance.songSpeed;
 				}
 
-				if(PlayState.isPixelStage) {
+				if(PlayState.isPixelStage || isPixelNote) {
 					prevNote.scale.y *= 1.19;
 					prevNote.scale.y *= (6 / height); //Auto adjust note size
 				}
-				prevNote.updateHitbox();
-				// prevNote.setGraphicSize();
+				
+				if (PlayState.isOurpleNote || (!PlayState.isPixelStage || !isPixelNote))
+				{
+					prevNote.offsetX += 12;
+				}
+				
+				prevNote.updateHitbox();				// prevNote.setGraphicSize();
 			}
 
-			if(PlayState.isPixelStage) {
+			if(PlayState.isPixelStage || isPixelNote) {
 				scale.y *= PlayState.daPixelZoom;
 				updateHitbox();
 			}
@@ -271,18 +282,18 @@ class Note extends FlxSprite
 
 		var lastScaleY:Float = scale.y;
 		var blahblah:String = arraySkin.join('/');
-		if(PlayState.isPixelStage) {
+		if(PlayState.isPixelStage || isPixelNote) {
 			if(isSustainNote) {
-				loadGraphic(Paths.image('pixelUI/' + blahblah + 'ENDS'));
+				loadGraphic(Paths.image('pixelHUD/' + blahblah + 'ENDS'));
 				width = width / 4;
 				height = height / 2;
 				originalHeightForCalcs = height;
-				loadGraphic(Paths.image('pixelUI/' + blahblah + 'ENDS'), true, Math.floor(width), Math.floor(height));
+				loadGraphic(Paths.image('pixelHUD/' + blahblah + 'ENDS'), true, Math.floor(width), Math.floor(height));
 			} else {
-				loadGraphic(Paths.image('pixelUI/' + blahblah));
+				loadGraphic(Paths.image('pixelHUD/' + blahblah));
 				width = width / 4;
-				height = height / 5;
-				loadGraphic(Paths.image('pixelUI/' + blahblah), true, Math.floor(width), Math.floor(height));
+				height = height / 4;
+				loadGraphic(Paths.image('pixelHUD/' + blahblah), true, Math.floor(width), Math.floor(height));
 			}
 			setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 			loadPixelNoteAnims();
@@ -292,6 +303,7 @@ class Note extends FlxSprite
 				offsetX += lastNoteOffsetXForPixelAutoAdjusting;
 				lastNoteOffsetXForPixelAutoAdjusting = (width - 7) * (PlayState.daPixelZoom / 2);
 				offsetX -= lastNoteOffsetXForPixelAutoAdjusting;
+				offsetX -= 20;
 
 				/*if(animName != null && !animName.endsWith('end'))
 				{
@@ -300,6 +312,10 @@ class Note extends FlxSprite
 					lastScaleY *= lastNoteScaleToo;
 				}*/
 			}
+		} else if (PlayState.isOurpleNote && (!PlayState.isPixelStage || !isPixelNote)){
+			frames = Paths.getSparrowAtlas(blahblah);
+			loadNoteAnims();
+			antialiasing = false;
 		} else {
 			frames = Paths.getSparrowAtlas(blahblah);
 			loadNoteAnims();

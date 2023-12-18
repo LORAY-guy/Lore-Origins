@@ -67,7 +67,7 @@ class HealthIcon extends FlxSprite
 			this.char = char;
 
 			antialiasing = ClientPrefs.globalAntialiasing;
-			if(char.endsWith('-pixel')) {
+			if (char.endsWith('-pixel') || char.startsWith('guy')) {
 				antialiasing = false;
 			}
 		}

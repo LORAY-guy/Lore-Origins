@@ -14,7 +14,8 @@ class StrumNote extends FlxSprite
 	public var direction:Float = 90;//plan on doing scroll directions soon -bb
 	public var downScroll:Bool = false;//plan on doing scroll directions soon -bb
 	public var sustainReduce:Bool = true;
-	
+	public var animOffsets:Map<String, Array<Float>>;
+
 	private var player:Int;
 	
 	public var texture(default, set):String = null;
@@ -33,6 +34,12 @@ class StrumNote extends FlxSprite
 		this.player = player;
 		this.noteData = leData;
 		super(x, y);
+		
+		#if (haxe >= "4.0.0")
+		animOffsets = new Map();
+		#else
+		animOffsets = new Map<String, Array<Float>>();
+		#end
 
 		var skin:String = 'NOTE_assets';
 		if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin;
@@ -48,10 +55,10 @@ class StrumNote extends FlxSprite
 
 		if(PlayState.isPixelStage)
 		{
-			loadGraphic(Paths.image('pixelUI/' + texture));
+			loadGraphic(Paths.image('pixelHUD/' + texture));
 			width = width / 4;
-			height = height / 5;
-			loadGraphic(Paths.image('pixelUI/' + texture), true, Math.floor(width), Math.floor(height));
+			height = height / 4;
+			loadGraphic(Paths.image('pixelHUD/' + texture), true, Math.floor(width), Math.floor(height));
 
 			antialiasing = false;
 			setGraphicSize(Std.int(width * PlayState.daPixelZoom));
@@ -64,20 +71,32 @@ class StrumNote extends FlxSprite
 			{
 				case 0:
 					animation.add('static', [0]);
-					animation.add('pressed', [4, 8], 12, false);
-					animation.add('confirm', [12, 16], 24, false);
+					animation.add('pressed', [8, 12], 12, false);
+					animation.add('confirm', [8, 12], 8, false);
+					addOffset('static',0,-6);
+					addOffset('pressed',0,-6);
+					addOffset('confirm',0,-6);
 				case 1:
 					animation.add('static', [1]);
-					animation.add('pressed', [5, 9], 12, false);
-					animation.add('confirm', [13, 17], 24, false);
+					animation.add('pressed', [9, 13], 12, false);
+					animation.add('confirm', [9, 13], 8, false);
+					addOffset('static',0,-6);
+					addOffset('pressed',0,-6);
+					addOffset('confirm',0,-6);
 				case 2:
 					animation.add('static', [2]);
-					animation.add('pressed', [6, 10], 12, false);
-					animation.add('confirm', [14, 18], 12, false);
+					animation.add('pressed', [10, 14], 12, false);
+					animation.add('confirm', [10, 14], 8, false);
+					addOffset('static',0,-6);
+					addOffset('pressed',0,-6);
+					addOffset('confirm',0,-6);
 				case 3:
 					animation.add('static', [3]);
-					animation.add('pressed', [7, 11], 12, false);
-					animation.add('confirm', [15, 19], 24, false);
+					animation.add('pressed', [11, 15], 12, false);
+					animation.add('confirm', [11, 15], 8, false);
+					addOffset('static',0,-6);
+					addOffset('pressed',0,-6);
+					addOffset('confirm',0,-6);
 			}
 		}
 		else
@@ -88,27 +107,48 @@ class StrumNote extends FlxSprite
 			animation.addByPrefix('purple', 'arrowLEFT');
 			animation.addByPrefix('red', 'arrowRIGHT');
 
-			antialiasing = ClientPrefs.globalAntialiasing;
+			antialiasing = false;
 			setGraphicSize(Std.int(width * 0.7));
 
 			switch (Math.abs(noteData) % 4)
 			{
 				case 0:
 					animation.addByPrefix('static', 'arrowLEFT');
-					animation.addByPrefix('pressed', 'left press', 24, false);
-					animation.addByPrefix('confirm', 'left confirm', 24, false);
+					animation.addByPrefix('pressed', 'left press', 30, false);
+					animation.addByPrefix('confirm', 'left confirm', 30, false);
+					if (PlayState.isOurpleNote)
+					{
+					addOffset('confirm', 2, 0,-1);
+					addOffset('pressed', 9, -3,-1); 
+
+					}
 				case 1:
 					animation.addByPrefix('static', 'arrowDOWN');
-					animation.addByPrefix('pressed', 'down press', 24, false);
+					animation.addByPrefix('pressed', 'down press', 30, false);
 					animation.addByPrefix('confirm', 'down confirm', 24, false);
+					if (PlayState.isOurpleNote)
+					{
+					addOffset('confirm', -3, -10);
+					addOffset('pressed', 3, -10);
+					}
 				case 2:
 					animation.addByPrefix('static', 'arrowUP');
-					animation.addByPrefix('pressed', 'up press', 24, false);
-					animation.addByPrefix('confirm', 'up confirm', 24, false);
+					animation.addByPrefix('pressed', 'up press', 30, false);
+					animation.addByPrefix('confirm', 'up confirm', 30, false);
+					if (PlayState.isOurpleNote)
+					{
+					addOffset('confirm', 2, 6);
+					addOffset('pressed', 1.5, 12.5);
+					}
 				case 3:
 					animation.addByPrefix('static', 'arrowRIGHT');
-					animation.addByPrefix('pressed', 'right press', 24, false);
-					animation.addByPrefix('confirm', 'right confirm', 24, false);
+					animation.addByPrefix('pressed', 'right press', 30, false);
+					animation.addByPrefix('confirm', 'right confirm', 30, false);
+					if (PlayState.isOurpleNote)
+					{
+					addOffset('confirm',-2, 0,1);
+					addOffset('pressed', -7, 0,1);
+					}
 			}
 		}
 		updateHitbox();
@@ -148,6 +188,18 @@ class StrumNote extends FlxSprite
 		animation.play(anim, force);
 		centerOffsets();
 		centerOrigin();
+
+		if (anim == 'static') angle = 0;
+		var daOffset = animOffsets.get(anim);
+		if (animOffsets.exists(anim))
+		{
+			centerOffsets();
+			offset.set(offset.x + daOffset[0], offset.y + daOffset[1]);
+			angle = daOffset[2];
+		}
+		else
+			centerOffsets();
+		
 		if(animation.curAnim == null || animation.curAnim.name == 'static') {
 			colorSwap.hue = 0;
 			colorSwap.saturation = 0;
@@ -165,4 +217,10 @@ class StrumNote extends FlxSprite
 			}
 		}
 	}
+	
+	public function addOffset(name:String, x:Float = 0, y:Float = 0, angle:Float = 0)
+	{
+		animOffsets[name] = [x, y, angle];
+	}
+
 }

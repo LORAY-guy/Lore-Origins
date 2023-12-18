@@ -22,12 +22,12 @@ class NoteSplash extends FlxSprite
 		shader = colorSwap.shader;
 
 		setupNoteSplash(x, y, note);
-		antialiasing = ClientPrefs.globalAntialiasing;
+		antialiasing = false;
 	}
 
 	public function setupNoteSplash(x:Float, y:Float, note:Int = 0, texture:String = null, hueColor:Float = 0, satColor:Float = 0, brtColor:Float = 0) {
 		setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
-		alpha = 0.6;
+		alpha = 1;
 
 		if(texture == null) {
 			texture = 'noteSplashes';
@@ -40,10 +40,12 @@ class NoteSplash extends FlxSprite
 		colorSwap.hue = hueColor;
 		colorSwap.saturation = satColor;
 		colorSwap.brightness = brtColor;
+		scale.set(0.8,0.8);
+		updateHitbox();
 		offset.set(10, 10);
 
-		var animNum:Int = FlxG.random.int(1, 2);
-		animation.play('note' + note + '-' + animNum, true);
+		//var animNum:Int = FlxG.random.int(1, 2);
+		animation.play('note' + note + '-' + 1, true);
 		if(animation.curAnim != null)animation.curAnim.frameRate = 24 + FlxG.random.int(-2, 2);
 	}
 
