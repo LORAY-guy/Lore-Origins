@@ -11,18 +11,6 @@ function onCreate()
     precacheSound('boop')
     precacheSound('sfx_taunt')
 
-    makeLuaSprite('shaggersSign', 'shaggersSign', -400, 175)
-    setObjectCamera('shaggersSign', 'camOther')
-    setProperty('shaggersSign.antialiasing', false)
-    addLuaSprite('shaggersSign', false)
-
-    makeLuaText('shag', 'Tropical\nShaggers', 300, -390, 185)
-    setObjectCamera('shag', 'camOther')
-    setTextAlignment('shag', 'left')
-    setTextFont('shag', 'ourple.ttf')
-    setTextSize('shag', 36)
-    addLuaText('shag', false)
-
     makeLuaText('thankstext', 'Thanks for playing!', 0, 0)
 	setObjectCamera('thankstext', 'camOther')
 	setTextSize('thankstext', 72)
@@ -88,21 +76,6 @@ function onUpdate(elapsed)
 end
 
 function onUpdatePost(elapsed)
-    if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.SEVEN') or getPropertyFromClass('flixel.FlxG', 'keys.justPressed.EIGHT') or getPropertyFromClass('flixel.FlxG', 'keys.justPressed.NUMPADMULTIPLY')then
-        playSound('boop', 0.7, 'boop')
-    end
-
-    if getPropertyFromClass('flixel.FlxG', 'mouse.visible') == true then
-        if mouseOverLapsSprite('shag', 'other') then
-            setTextColor('shag', '3fe780')
-            if mouseClicked() then
-                os.execute('start "" "https://youtube.com/@Shaggers"')
-            end
-        else
-            setTextColor('shag', 'FFFFFF')
-        end
-    end
-
     if curStep <= 3872 then
         if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.SPACE') == true and cooldown == false then
             if not firstSpace then
@@ -119,22 +92,7 @@ function onUpdatePost(elapsed)
     end
 end
 
-function onTweenCompleted(tag)
-    if tag == 'songsignbye' then
-        removeLuaSprite('songSign', true)
-        removeLuaSprite('shaggersSign', true)
-        removeLuaText('kiwi', true)
-        removeLuaText('shag', true)
-    end
-end
-
 function onTimerCompleted(tag, loops, loopsLeft)
-    if tag == 'byebye' then
-        doTweenX('shagsignbye', 'shaggersSign', -400, crochet / 200, 'quadInOut')
-        doTweenX('shagbye', 'shag', -390, crochet / 200, 'quadInOut')
-        setPropertyFromClass('flixel.FlxG', 'mouse.visible', false)
-    end
-
     if tag == 'hideTauntPlayer' then
         setProperty('tauntPlayer.visible', false)
         cooldown = false
@@ -143,17 +101,6 @@ function onTimerCompleted(tag, loops, loopsLeft)
     if tag == 'hideTauntMatpat' then
         setProperty('tauntMatpat.visible', false)
     end
-end
-
-function onSongStart()
-    doTweenX('shagsign', 'shaggersSign', 50, crochet / 250, 'quadInOut')
-    doTweenX('shag', 'shag', 60, crochet / 250, 'quadInOut')
-    runTimer('byebye', 4)
-    doTweenColor('timebar', 'timeBar', '3fe780', 0.01, 'linear')
-end
-
-function onDestroy()
-    setPropertyFromClass('flixel.FlxG', 'mouse.visible', false)
 end
 
 function onStepHit()
@@ -182,27 +129,6 @@ function onBeatHit()
     else
         bonus = 100
     end
-end
-
-function posOverlaps(
-    x1, y1, w1, h1, --r1,
-    x2, y2, w2, h2 --r2
-)
-    return (
-        x1 + w1 >= x2 and x1 < x2 + w2 and
-        y1 + h1 >= y2 and y1 < y2 + h2
-    )
-end
-
-function mouseOverLapsSprite(spr, cam)
-    local mouseX, mouseY = getMouseX(cam or 'other'), getMouseY(cam or 'other')
-    
-    local x, y, w, h = getProperty(spr .. '.x'), getProperty(spr .. '.y'), getProperty(spr .. '.width'), getProperty(spr .. '.height')
-    
-    return posOverlaps(
-        mouseX, mouseY, 1, 1,
-        x, y, w, h
-    )
 end
 
 function onSectionHit()

@@ -114,7 +114,6 @@ class MainMenuState extends MusicBeatState
 			var offset:Float = 92 - (Math.max(optionShit.length, 4) - 4) * 80;
 			var sizeOffset:Float = 1;
 			var menuItem:FlxSprite = new FlxSprite(0, (i * 150) + offset);
-			if (optionShit[i] == 'shaggers') menuItem.y -= 12;
 			if (optionShit[i] == 'lore') 
 			{
 				sizeOffset = 1.15;

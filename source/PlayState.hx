@@ -1,5 +1,6 @@
 package;
 
+import Credits.CreditsData;
 import flixel.addons.display.FlxBackdrop;
 import flixel.system.FlxAssets.FlxShader;
 import flixel.graphics.FlxGraphic;
@@ -235,10 +236,6 @@ class PlayState extends MusicBeatState
 	var dadbattleLight:BGSprite;
 	var dadbattleSmokes:FlxSpriteGroup;
 
-
-	var phillyGlowGradient:PhillyGlow.PhillyGlowGradient;
-	var phillyGlowParticles:FlxTypedGroup<PhillyGlow.PhillyGlowParticle>;
-
 	var heyTimer:Float;
 
 	public var songScore:Int = 0;
@@ -311,6 +308,14 @@ class PlayState extends MusicBeatState
 	public var pixelHUD:FlxSpriteGroup;
 	public var hudAssets:FlxSpriteGroup;
 
+	public var loraySign:FlxSprite;
+	public var lorayTxt:FlxText;
+
+	private var creditsJSON:CreditsData = null;
+	var creditsStep:Int = 0;
+
+	var debugKeys:Array<FlxKey>;
+
 	override public function create()
 	{
 		//trace('Playback Rate: ' + playbackRate);
@@ -339,7 +344,7 @@ class PlayState extends MusicBeatState
 		];
 
 		//Ratings
-		ratingsData.push(new Rating('sick')); //default rating
+		ratingsData.push(new Rating('sick'));
 
 		var rating:Rating = new Rating('good');
 		rating.ratingMod = 0.7;
@@ -868,6 +873,21 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
+		loraySign = new FlxSprite(-851, 140).loadGraphic(Paths.image('newOurpleHUD/loraySign'));
+		loraySign.scrollFactor.set();
+		loraySign.setGraphicSize(Std.int(loraySign.width * 0.7));
+		loraySign.antialiasing = ClientPrefs.globalAntialiasing;
+		add(loraySign);
+
+		lorayTxt = new FlxText(-626, 239, 300, 'Coded by\nLORAY', 48);
+		lorayTxt.setFormat(Paths.font("ourple.ttf"), 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(lorayTxt);
+
+		creditsJSON = Credits.getCreditsFile(SONG.song);
+
+		if (creditsJSON == null)
+			creditsJSON = Credits.dummy();
+
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -883,6 +903,9 @@ class PlayState extends MusicBeatState
 		timeBarBG.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
+
+		loraySign.cameras = [camHUD];
+		lorayTxt.cameras = [camHUD];
 
 		startingSong = true;
 		
@@ -1015,6 +1038,8 @@ class PlayState extends MusicBeatState
 
 		iconP1.scale.set(1.2,1.2); //i feel so schizo for doing this BUT it fixes the icons being incorrect spot at the beginning of a song
 		iconP2.scale.set(1.2,1.2);
+		iconP1.updateHitbox();
+		iconP2.updateHitbox();
 
 		super.create();
 
@@ -1750,6 +1775,11 @@ class PlayState extends MusicBeatState
 		FlxTween.tween(timeBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 		FlxTween.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 
+		if (creditsJSON != null && creditsJSON.step > 0)
+			creditsStep = creditsJSON.step;
+		else if (creditsJSON != null)
+			showCredits();
+
 		#if desktop
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText, SONG.song, iconP2.getCharacter(), true, songLength);
@@ -2220,6 +2250,20 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		if (lorayTxt != null)
+		{
+			if (FlxG.mouse.overlaps(loraySign)) //Doesn't work with FlxTexts, so here's a workaround ig
+			{
+				lorayTxt.color = 0x3fe780;
+				if (FlxG.mouse.justPressed)
+					CoolUtil.browserLoad('https://youtube.com/@LORAY_');
+			} else {
+				lorayTxt.color = 0xFFFFFF;
+			}
+		} else {
+			lorayTxt.color = 0xFFFFFF;
+		}
+
 		super.update(elapsed);
 
 		setOnLuas('curDecStep', curDecStep);
@@ -2240,6 +2284,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.anyJustPressed(debugKeysChart) && !endingSong && !inCutscene)
 		{
+			FlxG.sound.play('boop', 1);
 			openChartEditor();
 		}
 
@@ -3917,6 +3962,9 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
+		if (curStep == creditsStep)
+			showCredits();
+
 		lastStepHit = curStep;
 		setOnLuas('curStep', curStep);
 		callOnLuas('onStepHit', []);
@@ -3966,6 +4014,9 @@ class PlayState extends MusicBeatState
 		callOnLuas('onBeatHit', []);
 	}
 
+	//var oppColor:FlxColor;
+	//var bfColor:FlxColor;
+	//var gfColor:FlxColor;
 	override function sectionHit()
 	{
 		super.sectionHit();
@@ -3994,6 +4045,23 @@ class PlayState extends MusicBeatState
 			setOnLuas('altAnim', SONG.notes[curSection].altAnim);
 			setOnLuas('gfSection', SONG.notes[curSection].gfSection);
 		}
+
+		/*oppColor = FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]);
+		bfColor = FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]);
+		gfColor = FlxColor.fromRGB(gf.healthColorArray[0], gf.healthColorArray[1], gf.healthColorArray[2]);
+
+		if (!SONG.notes[curSection].mustHitSection)
+		{
+			FlxTween.color(timeBar, 0.4, bfColor, oppColor, {ease: FlxEase.sineOut});
+			if (SONG.notes[curSection].gfSection)
+				FlxTween.color(timeBar, 0.4, bfColor, gfColor, {ease: FlxEase.sineOut});
+		}
+		else
+		{
+			FlxTween.color(timeBar, 0.4, oppColor, bfColor, {ease: FlxEase.sineOut});
+			if (SONG.notes[curSection].gfSection)
+				FlxTween.color(timeBar, 0.4, oppColor, gfColor, {ease: FlxEase.sineOut});
+		}*/
 		
 		setOnLuas('curSection', curSection);
 		callOnLuas('onSectionHit', []);
@@ -4169,6 +4237,34 @@ class PlayState extends MusicBeatState
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
+	}
+
+	function showCredits()
+	{
+		if (creditsJSON.skip)
+		{
+			loraySign.x = -128;
+			lorayTxt.x = 97;
+		} else {
+			FlxTween.tween(loraySign, {x: -128}, Conductor.crochet / 300, {ease: FlxEase.bounceOut});
+			FlxTween.tween(lorayTxt, {x: 97}, Conductor.crochet / 300, {ease: FlxEase.bounceOut});
+		}
+
+		FlxG.mouse.visible = true;
+
+		new FlxTimer().start(4, function(tmr:FlxTimer)
+		{
+			FlxG.mouse.visible = false;
+			FlxTween.tween(lorayTxt, {x: -626}, Conductor.crochet / 250, {ease: FlxEase.quadIn});
+			FlxTween.tween(loraySign, {x: -851}, Conductor.crochet / 250, {
+				ease: FlxEase.quadIn, 
+				onComplete: function(twn:FlxTween)
+				{
+					loraySign.kill();
+					lorayTxt.kill();
+				}
+			});
+		});
 	}
 
 	#if ACHIEVEMENTS_ALLOWED
