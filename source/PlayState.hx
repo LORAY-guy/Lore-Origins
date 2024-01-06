@@ -2297,8 +2297,6 @@ class PlayState extends MusicBeatState
 		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9 * playbackRate), 0, 1));
 		iconP2.scale.set(mult, mult);
 
-		var iconOffset:Int = 26;
-
 		if (isPixelStage) {
 			var pixelOffset:Int = 0;
 			iconP1.x = pixelHUD.members[1].x + (pixelHUD.members[1].width - 150)/2 + pixelOffset;
@@ -2308,9 +2306,6 @@ class PlayState extends MusicBeatState
 			iconP1.x = healthBar.getGraphicMidpoint().x + (healthBar.width / 2) - (iconP1.width / 2.5);
 			iconP2.x = healthBar.getGraphicMidpoint().x - (healthBar.width / 2) - (iconP2.width / 2.5);
 		}
-
-		//iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
-		//iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
 
 		if (health > 2)
 			health = 2;
