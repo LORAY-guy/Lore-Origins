@@ -85,14 +85,16 @@ class FreeplayState extends MusicBeatState
 					]);
 				case 'originals':
 					addWeek(
-						[
-							'lore-tropical',
-						], 
-						0, 
-						0xff00c3ff, 
-						[
-							'mat2',
-						]);
+					[
+						'lore-tropical',
+						'lore-sad'
+					], 
+					0, 
+					0xff00c3ff, 
+					[
+						'mat2',
+						'mat2'
+					]);
 			};
 
 		Paths.clearStoredMemory();

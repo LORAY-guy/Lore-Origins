@@ -66,7 +66,7 @@ import StageData;
 import FunkinLua;
 import DialogueBoxPsych;
 import Conductor.Rating;
-
+import flixel.addons.display.FlxTiledSprite;
 #if !flash 
 import flixel.addons.display.FlxRuntimeShader;
 import openfl.filters.ShaderFilter;
@@ -113,6 +113,7 @@ class PlayState extends MusicBeatState
 	public var variables:Map<String, Dynamic> = new Map();
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
+	public var modchartBackdrop:Map<String, ModchartBackdrop> = new Map<String, ModchartBackdrop>();
 	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
 	public var modchartSounds:Map<String, FlxSound> = new Map<String, FlxSound>();
 	public var modchartTexts:Map<String, ModchartText> = new Map<String, ModchartText>();
@@ -124,6 +125,7 @@ class PlayState extends MusicBeatState
 	public var variables:Map<String, Dynamic> = new Map<String, Dynamic>();
 	public var modchartTweens:Map<String, FlxTween> = new Map();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map();
+	public var modchartBackdrop:Map<String, ModchartBackdrop> = new Map();
 	public var modchartTimers:Map<String, FlxTimer> = new Map();
 	public var modchartSounds:Map<String, FlxSound> = new Map();
 	public var modchartTexts:Map<String, ModchartText> = new Map();
@@ -310,6 +312,9 @@ class PlayState extends MusicBeatState
 
 	public var loraySign:FlxSprite;
 	public var lorayTxt:FlxText;
+
+	public var timerBar:FlxSprite;
+	public var backdropGT:FlxTiledSprite;
 
 	private var creditsJSON:CreditsData = null;
 	var creditsStep:Int = 0;
@@ -873,7 +878,7 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
-		loraySign = new FlxSprite(-851, 140).loadGraphic(Paths.image('newOurpleHUD/loraySign'));
+		loraySign = new FlxSprite(-851, 140).loadGraphic(Paths.image('newOurpleHUD/'+ (SONG.song.toLowerCase() == 'lore-sad' ? 'sadLoraySign' : 'loraySign')));
 		loraySign.scrollFactor.set();
 		loraySign.setGraphicSize(Std.int(loraySign.width * 0.7));
 		loraySign.antialiasing = ClientPrefs.globalAntialiasing;
@@ -1355,6 +1360,7 @@ class PlayState extends MusicBeatState
 
 	public function getLuaObject(tag:String, text:Bool=true):FlxSprite {
 		if(modchartSprites.exists(tag)) return modchartSprites.get(tag);
+		if(modchartBackdrop.exists(tag)) return modchartBackdrop.get(tag);
 		if(text && modchartTexts.exists(tag)) return modchartTexts.get(tag);
 		if(variables.exists(tag)) return variables.get(tag);
 		return null;
@@ -2284,7 +2290,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.anyJustPressed(debugKeysChart) && !endingSong && !inCutscene)
 		{
-			FlxG.sound.play('boop', 1);
+			//FlxG.sound.play(Paths.sound('boop'), 1);
 			openChartEditor();
 		}
 

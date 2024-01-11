@@ -33,6 +33,7 @@ import flixel.math.FlxMath;
 import flixel.util.FlxSave;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.system.FlxAssets.FlxShader;
+import flixel.addons.display.FlxBackdrop;
 
 #if (!flash && sys)
 import flixel.addons.display.FlxRuntimeShader;
@@ -1744,11 +1745,34 @@ class FunkinLua {
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 			leSprite.active = true;
 		});
+		Lua_helper.add_callback(lua, "makeLuaBackdrop", function(tag:String, image:String, pos:String, spacingX:Int, spacingY:Int) {
+			tag = tag.replace('.', '');
+			resetSpriteTag(tag);
+			var sprImage = Paths.image('daepicmatpat'); //default image for the lolz
+			if(image != null && image.length > 0) sprImage = Paths.image(image);
+			var leSprite:ModchartBackdrop = new ModchartBackdrop(sprImage, XY, spacingX, spacingY);
+
+			switch(pos.trim().toLowerCase())
+			{
+				case 'x':
+					leSprite.repeatAxes = X;
+					return;
+				case 'y':
+					leSprite.repeatAxes = Y;
+					return;
+				case 'xy':
+					leSprite.repeatAxes = XY;
+					return;
+			}
+
+			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
+			PlayState.instance.modchartBackdrop.set(tag, leSprite);
+			leSprite.active = true;
+		});
 		Lua_helper.add_callback(lua, "makeAnimatedLuaSprite", function(tag:String, image:String, x:Float, y:Float, ?spriteType:String = "sparrow") {
 			tag = tag.replace('.', '');
 			resetSpriteTag(tag);
 			var leSprite:ModchartSprite = new ModchartSprite(x, y);
-
 			loadFrames(leSprite, image, spriteType);
 			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
 			PlayState.instance.modchartSprites.set(tag, leSprite);
@@ -1884,6 +1908,36 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "addLuaSprite", function(tag:String, front:Bool = false) {
 			if(PlayState.instance.modchartSprites.exists(tag)) {
 				var shit:ModchartSprite = PlayState.instance.modchartSprites.get(tag);
+				if(!shit.wasAdded) {
+					if(front)
+					{
+						getInstance().add(shit);
+					}
+					else
+					{
+						if(PlayState.instance.isDead)
+						{
+							GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), shit);
+						}
+						else
+						{
+							var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gfGroup);
+							if(PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup) < position) {
+								position = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
+							} else if(PlayState.instance.members.indexOf(PlayState.instance.dadGroup) < position) {
+								position = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
+							}
+							PlayState.instance.insert(position, shit);
+						}
+					}
+					shit.wasAdded = true;
+					//trace('added a thing: ' + tag);
+				}
+			}
+		});
+		Lua_helper.add_callback(lua, "addLuaBackdrop", function(tag:String, front:Bool = false) {
+			if(PlayState.instance.modchartBackdrop.exists(tag)) {
+				var shit:ModchartBackdrop = PlayState.instance.modchartBackdrop.get(tag);
 				if(!shit.wasAdded) {
 					if(front)
 					{
@@ -3309,6 +3363,18 @@ class ModchartSprite extends FlxSprite
 	public function new(?x:Float = 0, ?y:Float = 0)
 	{
 		super(x, y);
+		antialiasing = ClientPrefs.globalAntialiasing;
+	}
+}
+
+class ModchartBackdrop extends FlxBackdrop
+{
+	public var wasAdded:Bool = false;
+	//public var isInFront:Bool = false;
+
+	public function new(?image, pos, ?spacingX = 0, ?spacingY = 0)
+	{
+		super(image, pos, spacingX, spacingY);
 		antialiasing = ClientPrefs.globalAntialiasing;
 	}
 }
