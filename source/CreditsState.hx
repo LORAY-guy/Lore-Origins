@@ -224,7 +224,10 @@ class CreditsState extends MusicBeatState
 
 			if(controls.ACCEPT) {
 				if (creditsStuff[curSelected][0] == 'LORAY')
+				{
 					MusicBeatState.switchState(new LorayState());
+					quitting = true;
+				}
 				else if (creditsStuff[curSelected][3] == null || creditsStuff[curSelected][3].length > 4)
 					CoolUtil.browserLoad(creditsStuff[curSelected][3]);
 			}

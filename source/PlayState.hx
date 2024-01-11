@@ -313,9 +313,6 @@ class PlayState extends MusicBeatState
 	public var loraySign:FlxSprite;
 	public var lorayTxt:FlxText;
 
-	public var timerBar:FlxSprite;
-	public var backdropGT:FlxTiledSprite;
-
 	private var creditsJSON:CreditsData = null;
 	var creditsStep:Int = 0;
 
