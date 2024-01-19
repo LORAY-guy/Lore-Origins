@@ -70,7 +70,7 @@ class FreeplaySelectState extends MusicBeatState{
     }
 
 	var selectedSomethin:Bool = false;
-
+	var canClick:Bool = true;
     override public function update(elapsed:Float){
 		if (!selectedSomethin)
 		{
@@ -85,8 +85,9 @@ class FreeplaySelectState extends MusicBeatState{
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new MainMenuState());
 			}
-			if (controls.ACCEPT) {
+			if (controls.ACCEPT || (FlxG.mouse.overlaps(categoryIcon) && FlxG.mouse.pressed)) {
 				selectedSomethin = true;
+				canClick = false;
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 				
 				FlxTween.tween(catName, {alpha: 0}, 0.4, {ease: FlxEase.quadOut, onComplete: function(twn:FlxTween){catName.kill();}});

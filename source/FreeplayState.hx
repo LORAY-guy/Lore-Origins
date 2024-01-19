@@ -69,7 +69,8 @@ class FreeplayState extends MusicBeatState
 						'chronology', 
 						'lore-style', 
 						'live', 
-						'horse-lore'
+						'horse-lore',
+						'detective'
 					], 
 					0, 
 					0xFF00ff00, 
@@ -82,6 +83,7 @@ class FreeplayState extends MusicBeatState
 						'mat2', 
 						'mat2', 
 						'mat2', 
+						'mat2',
 						'mat2'
 					]);
 				case 'originals':
@@ -387,6 +389,7 @@ class FreeplayState extends MusicBeatState
 			else if (accepted)
 			{
 				persistentUpdate = false;
+				FlxG.mouse.visible = false;
 				var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
 				var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
 				/*#if MODS_ALLOWED

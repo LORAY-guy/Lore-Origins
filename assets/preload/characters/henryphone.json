@@ -1,0 +1,166 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-68,
+				-66
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "Henry Down"
+		},
+		{
+			"offsets": [
+				-58,
+				-59
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWNmiss",
+			"indices": [],
+			"name": "Henry Miss Down"
+		},
+		{
+			"offsets": [
+				-6,
+				86
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "Henry Up"
+		},
+		{
+			"offsets": [
+				10,
+				90
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "Henry Idle"
+		},
+		{
+			"offsets": [
+				-65,
+				-4
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFTmiss",
+			"indices": [],
+			"name": "Henry Miss Left"
+		},
+		{
+			"offsets": [
+				90,
+				-32
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHTmiss",
+			"indices": [],
+			"name": "Henry Miss Right"
+		},
+		{
+			"offsets": [
+				-5,
+				81
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUPmiss",
+			"indices": [],
+			"name": "Henry Miss Up"
+		},
+		{
+			"offsets": [
+				75,
+				49
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "firstDeath",
+			"indices": [],
+			"name": "henry dies"
+		},
+		{
+			"offsets": [
+				24,
+				44
+			],
+			"loop": true,
+			"fps": 24,
+			"anim": "deathLoop",
+			"indices": [],
+			"name": "Henry Death loop"
+		},
+		{
+			"loop": true,
+			"offsets": [
+				86,
+				44
+			],
+			"anim": "deathConfirm",
+			"fps": 24,
+			"name": "Henry death enter",
+			"indices": []
+		},
+		{
+			"offsets": [
+				38,
+				312
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "intro",
+			"indices": [],
+			"name": "Henry Greatest Plan Intro"
+		},
+		{
+			"offsets": [
+				76,
+				18
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "Henry Right"
+		},
+		{
+			"offsets": [
+				-51,
+				60
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "Henry Left"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/henry_i_phone",
+	"position": [
+		0,
+		90
+	],
+	"healthicon": "henry",
+	"flip_x": false,
+	"healthbar_colors": [
+		189,
+		215,
+		216
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 4,
+	"scale": 1
+}

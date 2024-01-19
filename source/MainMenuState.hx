@@ -1,8 +1,12 @@
 package;
 
+import flixel.util.FlxTimer;
 #if desktop
 import Discord.DiscordClient;
 #end
+
+import editors.MasterEditorMenu;
+
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -15,17 +19,25 @@ import flixel.math.FlxMath;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import editors.MasterEditorMenu;
 import flixel.input.keyboard.FlxKey;
 import flixel.addons.display.FlxBackdrop;
+import flixel.system.FlxSound;
+
+import openfl.ui.Keyboard;
+import openfl.events.KeyboardEvent;
+import openfl.Assets;
 
 using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.6.3'; //This is used for Discord RPC
-	public static var loreVersion:String = '1.4.2'; //This is also used for Discord RPC
+	public static var loreVersion:String = '1.4.5'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
+
+	private var inputBuffer:String = "";
+	var charles:FlxSprite;
+	var playedSound:Bool = false;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
@@ -61,6 +73,7 @@ class MainMenuState extends MusicBeatState
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
+		Conductor.changeBPM(130);
 		persistentUpdate = persistentDraw = true;
 
 		//var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
@@ -142,14 +155,30 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat(Paths.font('ourple.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
+		/*charles = new FlxSprite(-800, -100);
+		charles.scale.x = 0.5;
+		charles.scale.y = 0.5;
+		charles.updateHitbox();
+		charles.frames = Paths.getSparrowAtlas('charles');
+		charles.animation.addByPrefix('idle', 'idle', 24, false);
+		charles.animation.addByPrefix('oh', 'oh', 24, false);
+		charles.animation.addByPrefix('perfect', 'perfect', 24, false);*/
+
 		// NG.core.calls.event.logEvent('swag').send();
 
+		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		changeItem();
+
+		//if (FlxG.save.data.henryUnlocked) unlockCharles();
+		FlxG.mouse.visible = true;
 
 		super.create();
 	}
 
 	var selectedSomethin:Bool = false;
+
+	public var usingMouse:Bool = false;
+	public var canClick:Bool = true;
 
 	override function update(elapsed:Float)
 	{
@@ -162,18 +191,90 @@ class MainMenuState extends MusicBeatState
 		var lerpVal:Float = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
 
+		if (controls.UI_UP_P || controls.UI_DOWN_P)
+			usingMouse = false;
+		else if (FlxG.mouse.overlaps(menuItems))
+			usingMouse = true;
+
 		if (!selectedSomethin)
 		{
-			if (controls.UI_UP_P)
+			if (usingMouse)
 			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
-				changeItem(-1);
-			}
+				menuItems.forEach(function(spr:FlxSprite)
+				{
+					if (FlxG.mouse.overlaps(spr, camGame))
+					{
+						curSelected = spr.ID;
 
-			if (controls.UI_DOWN_P)
+						if (spr.animation.curAnim.name != 'selected')
+						{
+							FlxG.sound.play(Paths.sound('scrollMenu'));
+							spr.animation.play('selected');
+
+							var add:Float = 0;
+							if(menuItems.length > 4) {
+								add = menuItems.length * 8;
+							}
+							camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y - add);
+							spr.centerOffsets();
+						}
+
+						if (FlxG.mouse.pressed)
+						{
+							selectedSomethin = true;
+							canClick = false;
+							FlxG.sound.play(Paths.sound('confirmMenu'));
+
+							menuItems.forEach(function(spr:FlxSprite)
+							{
+								if (curSelected != spr.ID)
+								{
+									FlxTween.tween(spr, {alpha: 0}, 0.4, {
+										ease: FlxEase.quadOut,
+										onComplete: function(twn:FlxTween)
+										{
+											spr.kill();
+										}
+									});
+								}
+							});
+
+							FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
+							{
+								var daChoice:String = optionShit[curSelected];
+
+								switch (daChoice)
+								{
+									case 'lore':
+										MusicBeatState.switchState(new FreeplaySelectState());
+									case 'credits':
+										MusicBeatState.switchState(new CreditsState());
+									case 'options':
+										LoadingState.loadAndSwitchState(new options.OptionsState());
+								}
+							});
+						}
+					} 
+					else if (spr.animation.curAnim.name != 'idle')
+					{
+						spr.animation.play('idle');
+						spr.updateHitbox();
+					}
+				});
+			} 
+			else 
 			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
-				changeItem(1);
+				if (controls.UI_UP_P)
+				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					changeItem(-1);
+				}
+	
+				if (controls.UI_DOWN_P)
+				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					changeItem(1);
+				}
 			}
 
 			if (controls.BACK)
@@ -226,9 +327,43 @@ class MainMenuState extends MusicBeatState
 				MusicBeatState.switchState(new MasterEditorMenu());
 			}
 			#end
+
+			if (charles != null)
+			{
+				if (FlxG.mouse.overlaps(charles, camGame))
+				{
+					if (!playedSound) FlxG.sound.play(Paths.sound('scrollMenu'));
+					playedSound = true;
+					if (FlxG.mouse.pressed && canClick)
+					{
+						FlxG.sound.play(Paths.sound('plan'), 1, false);
+						charles.animation.play('perfect', true, false, 0);
+						selectedSomethin = true;
+						canClick = FlxG.mouse.visible = false;
+
+						menuItems.forEach(function(spr:FlxSprite)
+						{
+							FlxTween.tween(spr, {alpha: 0}, 0.4, {
+								ease: FlxEase.quadOut,
+								onComplete: function(twn:FlxTween)
+								{
+									spr.kill();
+								}
+							});
+						});
+
+						new FlxTimer().start(1.2, function(tmr:FlxTimer) {
+							PlayState.SONG = Song.loadFromJson('lore-plan', 'lore-plan');
+							PlayState.storyDifficulty = 2;
+							LoadingState.loadAndSwitchState(new PlayState());
+						});
+					}
+				} else playedSound = false;
+			}
 		}
 
 		super.update(elapsed);
+		Conductor.songPosition = FlxG.sound.music.time;
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
@@ -261,5 +396,51 @@ class MainMenuState extends MusicBeatState
 				spr.centerOffsets();
 			}
 		});
+	}
+
+	private function onKeyDown(e:KeyboardEvent):Void 
+	{
+        var keyCode:Int = e.keyCode;
+        
+        if ((keyCode >= Keyboard.A && keyCode <= Keyboard.Z) || keyCode == Keyboard.BACKSPACE) 
+            handleInput(e.charCode);
+    }
+
+    private function handleInput(charCode:Int):Void 
+	{
+        var char:String = String.fromCharCode(charCode).toLowerCase();
+
+        if (charCode == Keyboard.BACKSPACE && inputBuffer.length > 0) {
+            inputBuffer = inputBuffer.substring(0, inputBuffer.length - 1);
+        } else {
+            inputBuffer += char;
+        }
+
+        if (inputBuffer == "henry" && !FlxG.save.data.henryUnlocked) //Making the check here in case i'll add another secret word later
+			//unlockCharles(true);
+        
+		
+		if (inputBuffer.length > 4)
+			inputBuffer = "";
+    }
+
+	function unlockCharles(unlock:Bool = false)
+	{
+		new FlxTimer().start(0.5, function(tmr:FlxTimer) {
+			FlxG.sound.play(Paths.sound('oh'), 1, false);
+			if (unlock) FlxG.save.data.henryUnlocked = true;
+
+			add(charles);
+
+			FlxTween.tween(charles, {x: -270}, 0.5, {ease: FlxEase.sineInOut});
+			charles.animation.play('oh', false, false, 0);
+		});
+	}
+
+	override function beatHit()
+	{
+		super.beatHit();
+
+		if (charles != null && curBeat % 2 == 0 && canClick) charles.animation.play('idle', false);
 	}
 }
