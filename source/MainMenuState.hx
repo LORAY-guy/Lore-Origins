@@ -25,14 +25,20 @@ import flixel.system.FlxSound;
 
 import openfl.ui.Keyboard;
 import openfl.events.KeyboardEvent;
-import openfl.Assets;
+
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#else
+import openfl.utils.Assets;
+#end
 
 using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.6.3'; //This is used for Discord RPC
-	public static var loreVersion:String = '1.4.5'; //This is also used for Discord RPC
+	public static var loreVersion:String = '1.5.0'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
 	private var inputBuffer:String = "";
@@ -170,7 +176,6 @@ class MainMenuState extends MusicBeatState
 		changeItem();
 
 		//if (FlxG.save.data.henryUnlocked) unlockCharles();
-		FlxG.mouse.visible = true;
 
 		super.create();
 	}

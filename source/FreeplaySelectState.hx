@@ -1,10 +1,10 @@
 package;
 
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.effects.FlxFlicker;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
@@ -79,6 +79,9 @@ class FreeplaySelectState extends MusicBeatState{
 			}
 			if (controls.UI_RIGHT_P) {
 				changeSelection(1);
+			}
+			if (FlxG.mouse.wheel != 0) {
+				changeSelection(FlxG.mouse.wheel);
 			}
 			if (controls.BACK) {
 				selectedSomethin = true;

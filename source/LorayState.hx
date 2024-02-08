@@ -3,12 +3,11 @@ package;
 #if desktop
 import Discord.DiscordClient;
 #end
+import Loray;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxTimer;
+import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxBackdrop;
 
 class LorayState extends MusicBeatState
@@ -18,19 +17,14 @@ class LorayState extends MusicBeatState
         ['Twitter', '0.45', '45',   'https://twitter.com/LORAY_man'], 
         ['Discord', '0.45', '0',    'https://discord.com/invite/JnsQV8az8C']
     ];
+
     var menuItems:FlxTypedGroup<FlxSprite>;
+    var lorays:FlxTypedGroup<Loray>;
 
-    public var NameAlpha:Alphabet;
+    public var appName:Alphabet;
     var bg:FlxSprite;
-    var categoryIcon:FlxSprite;
-    var ourpleLorayLeft:FlxSprite;
-    var ourpleLorayRight:FlxSprite;
 
-    var originY:Int = 460;
 	var curSelected:Int = 0;
-
-    var happyAnim:Bool = false;
-    var flippedIdle:Bool = false;
     
     override function create()
     {
@@ -40,9 +34,10 @@ class LorayState extends MusicBeatState
         #end
 
         persistentUpdate = true;
+
         bg = new FlxSprite().loadGraphic(Paths.image('menuBGMagenta'));
-        add(bg);
         bg.screenCenter();
+        add(bg);
 
         var grid:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/grid'));
 		grid.scrollFactor.set(0, 0);
@@ -52,6 +47,9 @@ class LorayState extends MusicBeatState
 
         menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
+
+        lorays = new FlxTypedGroup<Loray>();
+		add(lorays);
 
 		for (i in 0...appCats.length)
         {
@@ -74,26 +72,8 @@ class LorayState extends MusicBeatState
 			appItem.updateHitbox();
         }
 
-        ourpleLorayLeft = new FlxSprite(180, originY);
-        ourpleLorayLeft.frames = Paths.getSparrowAtlas('loray/OURPLE_LORAAAAAAAAAAY');
-        ourpleLorayLeft.animation.addByPrefix('idle', 'Idle', 24, false, false, false);
-        ourpleLorayLeft.animation.addByPrefix('happy', 'Up', 24, false, false, false);
-        ourpleLorayLeft.animation.play('idle', false, false, 0);
-        ourpleLorayLeft.scale.x = 3;
-        ourpleLorayLeft.scale.y = 3;
-        ourpleLorayLeft.antialiasing = false;
-        add(ourpleLorayLeft);
-
-        ourpleLorayRight = new FlxSprite(935, originY);
-        ourpleLorayRight.frames = Paths.getSparrowAtlas('loray/OURPLE_LORAAAAAAAAAAY');
-        ourpleLorayRight.animation.addByPrefix('idle', 'Idle', 24, false, false, false);
-        ourpleLorayRight.animation.addByPrefix('happy', 'Up', 24, false, false, false);
-        ourpleLorayRight.animation.play('idle', false, false, 0);
-        ourpleLorayRight.flipX = true;
-        ourpleLorayRight.scale.x = 3;
-        ourpleLorayRight.scale.y = 3;
-        ourpleLorayRight.antialiasing = false;
-        add(ourpleLorayRight);
+        lorays.add(new Loray(180));
+        lorays.add(new Loray(935));
 
 		var lettabox1:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox1.scrollFactor.set(0, 0);
@@ -106,62 +86,66 @@ class LorayState extends MusicBeatState
 		lettabox2.velocity.set(-40, 0);
 		add(lettabox2);
 
-        NameAlpha = new Alphabet(20, (FlxG.height / 2) + 220, appCats[curSelected][0].toLowerCase(), true);
-		NameAlpha.screenCenter(X);
-		add(NameAlpha);
+        appName = new Alphabet(20, (FlxG.height / 2) + 220, appCats[curSelected][0].toLowerCase(), true);
+		appName.screenCenter(X);
+		add(appName);
 
-        changeSelection();
+        changeSelection(0, false, false);
         super.create();
+
+        if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
     }
 
+    var canClick:Bool = true;
+    var usingMouse:Bool = false;
+    var quitting:Bool = false;
     override public function update(elapsed:Float){
-        if (controls.UI_LEFT_P) {
-            changeSelection(-1);
-        }
-        if (controls.UI_RIGHT_P) {
-            changeSelection(1);
-        }
-        if (controls.BACK) {
-            FlxG.sound.play(Paths.sound('cancelMenu'));
-            MusicBeatState.switchState(new CreditsState());
-        }
-        if (controls.ACCEPT) {
-            CoolUtil.browserLoad(appCats[curSelected][3]);
-            happyAnim = true;
-            ourpleLorayLeft.animation.play('happy', true, false, 0);
-            ourpleLorayRight.animation.play('happy', true, false, 0);
-            ourpleLorayLeft.flipX = false;
-            ourpleLorayRight.flipX = true;
-            new FlxTimer().start(0.7, function(tmr:FlxTimer)
-                {
-                    ourpleLorayLeft.y = originY;
-                    ourpleLorayRight.y = originY;
-                    happyAnim = false;
-                });
+        if (!quitting)
+        {
+            if (controls.UI_UP_P || controls.UI_DOWN_P)
+                usingMouse = false;
+            else if (FlxG.mouse.overlaps(menuItems) || FlxG.mouse.overlaps(lorays))
+                usingMouse = true;
+
+            menuItems.forEachAlive(function(spr:FlxSprite)
+            {
+                if (usingMouse && FlxG.mouse.overlaps(spr) && curSelected != spr.ID) changeSelection(spr.ID, true);
+            });
+
+            if (controls.UI_LEFT_P) {
+                changeSelection(-1);
+            }
+            if (controls.UI_RIGHT_P) {
+                changeSelection(1);
+            }
+
+            if (usingMouse && FlxG.mouse.wheel != 0) changeSelection(-FlxG.mouse.wheel);
+
+            if (controls.BACK) {
+                canClick = false;
+                quitting = true;
+                FlxG.sound.play(Paths.sound('cancelMenu'));
+                MusicBeatState.switchState(new CreditsState());
+            }
+            else if (controls.ACCEPT || (usingMouse && canClick && FlxG.mouse.justPressed && (FlxG.mouse.overlaps(menuItems)))) {
+                lorays.forEachAlive(function(spr:Loray) {spr.beHappy();});
+                FlxG.sound.play(Paths.sound('confirmMenu'));
+                FlxFlicker.flicker(menuItems.members[curSelected], 1, 0.06, true, false, function(flick:FlxFlicker){CoolUtil.browserLoad(appCats[curSelected][3]);});
+            }
+
+            lorays.forEachAlive(function(spr:Loray)
+            {
+                if (usingMouse && FlxG.mouse.overlaps(spr) && canClick && FlxG.mouse.justPressed) spr.beHappy();
+            });
         }
 
-        if (FlxG.sound.music != null)
-			Conductor.songPosition = FlxG.sound.music.time;
+        if (FlxG.sound.music != null) Conductor.songPosition = FlxG.sound.music.time;
         super.update(elapsed);
-
-        if (ourpleLorayLeft.animation.curAnim.name == 'happy') {
-            ourpleLorayLeft.x = 145;
-            ourpleLorayLeft.y = 380;
-        } else {
-            ourpleLorayLeft.x = 180;
-        }
-
-        if (ourpleLorayRight.animation.curAnim.name == 'happy') {
-            ourpleLorayRight.x = 890;
-            ourpleLorayRight.y = 380;
-        } else {
-            ourpleLorayRight.x = 935;
-        }
     }
 
-    function changeSelection(change:Int = 0) {
-        curSelected += change;
-        FlxG.sound.play(Paths.sound('scrollMenu'));
+    function changeSelection(change:Int = 0, ?goTo:Bool = false, ?playSound:Bool = true) {
+        if (!goTo) curSelected += change; else curSelected = change;
+        if (playSound) FlxG.sound.play(Paths.sound('scrollMenu'));
 
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
@@ -186,25 +170,16 @@ class LorayState extends MusicBeatState
             spr.updateHitbox();
         });
 
-        NameAlpha.destroy();
-		NameAlpha = new Alphabet(20, (FlxG.height / 2) + 220, appCats[curSelected][0], true);
-		NameAlpha.screenCenter(X);
-		add(NameAlpha);
+        appName.destroy();
+		appName = new Alphabet(20, (FlxG.height / 2) + 220, appCats[curSelected][0], true);
+		appName.screenCenter(X);
+		add(appName);
     }
 
     override public function beatHit()
     {
-        if (curBeat % 1 == 0 && !happyAnim)
-        {
-            ourpleLorayLeft.animation.play('idle', false, false, 0);
-            ourpleLorayRight.animation.play('idle', false, false, 0);
-			ourpleLorayLeft.flipX = flippedIdle;
-            ourpleLorayRight.flipX = !flippedIdle;
-			flippedIdle = !flippedIdle;
-			ourpleLorayLeft.y = (ourpleLorayLeft.y + 20);
-            ourpleLorayRight.y = (ourpleLorayRight.y + 20);
-			FlxTween.tween(ourpleLorayLeft, {y: originY}, 0.15, {ease: FlxEase.cubeOut});
-            FlxTween.tween(ourpleLorayRight, {y: originY}, 0.15, {ease: FlxEase.cubeOut});
-        }
+        lorays.forEachAlive(function(spr:Loray) {
+            spr.dance();
+        });
     }
 }

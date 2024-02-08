@@ -27,7 +27,7 @@ class CreditsState extends MusicBeatState
 	var curSelected:Int = -1;
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
-	private var iconArray:Array<AttachedSprite> = [];
+	private var iconArray:FlxTypedGroup<AttachedSprite>;
 	private var creditsStuff:Array<Array<String>> = [];
 
 	var bg:FlxSprite;
@@ -63,6 +63,9 @@ class CreditsState extends MusicBeatState
 		
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
+
+		iconArray = new FlxTypedGroup<AttachedSprite>();
+		add(iconArray);
 
 		#if MODS_ALLOWED
 		var path:String = 'modsList.txt';
@@ -139,18 +142,15 @@ class CreditsState extends MusicBeatState
 			grpOptions.add(optionText);
 
 			if(isSelectable) {
-				if(creditsStuff[i][5] != null)
-				{
-					Paths.currentModDirectory = creditsStuff[i][5];
-				}
+				if(creditsStuff[i][5] != null) Paths.currentModDirectory = creditsStuff[i][5];
 
 				var icon:AttachedSprite = new AttachedSprite('credits/' + creditsStuff[i][1]);
 				icon.xAdd = optionText.width + 10;
 				icon.sprTracker = optionText;
+				icon.ID = i;
 	
-				// using a FlxGroup is too much fuss!
-				iconArray.push(icon);
-				add(icon);
+				// using a FlxGroup is too much fuss? I DON'T THINK SO!! >:)
+				iconArray.add(icon);
 				Paths.currentModDirectory = '';
 
 				if(curSelected == -1) curSelected = i;
@@ -177,10 +177,14 @@ class CreditsState extends MusicBeatState
 		intendedColor = bg.color;
 		changeSelection();
 		super.create();
+
+		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
 	}
 
 	var quitting:Bool = false;
 	var holdTime:Float = 0;
+	public var usingMouse:Bool = false;
+	public var canClick:Bool = true;
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.7)
@@ -198,6 +202,11 @@ class CreditsState extends MusicBeatState
 				var upP = controls.UI_UP_P;
 				var downP = controls.UI_DOWN_P;
 
+				if (upP || downP)
+					usingMouse = false;
+				else if (FlxG.mouse.overlaps(grpOptions) || FlxG.mouse.overlaps(iconArray))
+					usingMouse = true;
+
 				if (upP)
 				{
 					changeSelection(-shiftMult);
@@ -208,6 +217,8 @@ class CreditsState extends MusicBeatState
 					changeSelection(shiftMult);
 					holdTime = 0;
 				}
+
+				if (usingMouse && FlxG.mouse.wheel != 0) changeSelection(-FlxG.mouse.wheel * shiftMult);
 
 				if(controls.UI_DOWN || controls.UI_UP)
 				{
@@ -222,11 +233,12 @@ class CreditsState extends MusicBeatState
 				}
 			}
 
-			if(controls.ACCEPT) {
+			if(controls.ACCEPT || (usingMouse && canClick && FlxG.mouse.justPressed && (FlxG.mouse.overlaps(grpOptions) || FlxG.mouse.overlaps(iconArray)))) {
 				if (creditsStuff[curSelected][0] == 'LORAY')
 				{
-					MusicBeatState.switchState(new LorayState());
 					quitting = true;
+					canClick = false;
+					MusicBeatState.switchState(new LorayState());
 				}
 				else if (creditsStuff[curSelected][3] == null || creditsStuff[curSelected][3].length > 4)
 					CoolUtil.browserLoad(creditsStuff[curSelected][3]);

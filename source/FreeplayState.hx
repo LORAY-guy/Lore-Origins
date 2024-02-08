@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.FlxEase;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -48,9 +49,10 @@ class FreeplayState extends MusicBeatState
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
 
-	private var iconArray:Array<HealthIcon> = [];
+	private var iconArray:FlxTypedGroup<HealthIcon>;
 
 	var bg:FlxSprite;
+	var randomizer:FlxText;
 	public static var intendedColor:Int;
 	var colorTween:FlxTween;
 
@@ -70,7 +72,8 @@ class FreeplayState extends MusicBeatState
 						'lore-style', 
 						'live', 
 						'horse-lore',
-						'detective'
+						'detective',
+						'measure-up'
 					], 
 					0, 
 					0xFF00ff00, 
@@ -83,6 +86,7 @@ class FreeplayState extends MusicBeatState
 						'mat2', 
 						'mat2', 
 						'mat2', 
+						'mat2',
 						'mat2',
 						'mat2'
 					]);
@@ -152,6 +156,9 @@ class FreeplayState extends MusicBeatState
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
+		iconArray = new FlxTypedGroup<HealthIcon>();
+		add(iconArray);
+
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet = new Alphabet(90, 320, FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase() == 'originals' ? CoolUtil.removeSymbol(songs[i].songName, "lore-") : 'Lore', true);
@@ -170,10 +177,10 @@ class FreeplayState extends MusicBeatState
 			Paths.currentModDirectory = songs[i].folder;
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
+			icon.ID = i;
 
-			// using a FlxGroup is too much fuss!
-			iconArray.push(icon);
-			add(icon);
+			// using a FlxGroup is too much fuss? I DON'T THINK SO!! >:)
+			iconArray.add(icon);
 
 			// songText.x += 40;
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
@@ -210,24 +217,16 @@ class FreeplayState extends MusicBeatState
 		changeSelection();
 		changeDiff();
 
-		var swag:Alphabet = new Alphabet(1, 0, "swag");
-
-		// JUST DOIN THIS SHIT FOR TESTING!!!
-		/* 
-			var md:String = Markdown.markdownToHtml(Assets.getText('CHANGELOG.md'));
-			var texFel:TextField = new TextField();
-			texFel.width = FlxG.width;
-			texFel.height = FlxG.height;
-			// texFel.
-			texFel.htmlText = md;
-			FlxG.stage.addChild(texFel);
-			// scoreText.textField.htmlText = md;
-			trace(md);
-		 */
-
 		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
 		textBG.alpha = 0.6;
 		add(textBG);
+
+		randomizer = new FlxText(690, 200, 550, "PRESS \'R\' OR CLICK ON ME TO PLAY A RANDOM LORE", 36);
+		randomizer.setFormat(Paths.font("ourple.ttf"), 36, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		randomizer.borderSize = 1.25;
+		randomizer.antialiasing = false;
+		add(randomizer);
+		startSwinging(randomizer);
 
 		#if PRELOAD_ALL
 		var leText:String = "Press SPACE to listen to the Song / Press CTRL to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.";
@@ -240,6 +239,8 @@ class FreeplayState extends MusicBeatState
 		text.setFormat(Paths.font("ourple.ttf"), size, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
 		add(text);
+
+		FlxG.mouse.visible = true;
 		super.create();
 	}
 
@@ -274,6 +275,8 @@ class FreeplayState extends MusicBeatState
 	var instPlaying:Int = -1;
 	public static var vocals:FlxSound = null;
 	var holdTime:Float = 0;
+	public var usingMouse:Bool = false;
+	public var canClick:Bool = true;
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.7)
@@ -314,6 +317,11 @@ class FreeplayState extends MusicBeatState
 		{
 			if(songs.length > 1)
 			{
+				if (upP || downP)
+					usingMouse = false;
+				else if (FlxG.mouse.overlaps(grpSongs) || FlxG.mouse.overlaps(iconArray) || FlxG.mouse.overlaps(randomizer))
+					usingMouse = true;
+
 				if (upP)
 				{
 					changeSelection(-shiftMult);
@@ -324,6 +332,8 @@ class FreeplayState extends MusicBeatState
 					changeSelection(shiftMult);
 					holdTime = 0;
 				}
+
+				if (usingMouse && FlxG.mouse.wheel != 0) changeSelection(-FlxG.mouse.wheel * shiftMult);
 	
 				if(controls.UI_DOWN || controls.UI_UP)
 				{
@@ -385,9 +395,28 @@ class FreeplayState extends MusicBeatState
 					#end
 				}
 			}
-	
-			else if (accepted)
+
+			else if ((FlxG.keys.pressed.R) || (usingMouse && canClick && FlxG.mouse.justPressed && FlxG.mouse.overlaps(randomizer)))
 			{
+				canClick = false;
+				persistentUpdate = false;
+				FlxG.mouse.visible = false;
+				var brub:Int = FlxG.random.int(0, songs.length-1);
+				var songLowercase:String = Paths.formatToSongPath(songs[brub].songName);
+				var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
+
+				PlayState.SONG = Song.loadFromJson(poop, songLowercase);
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = curDifficulty;
+
+				LoadingState.loadAndSwitchState(new PlayState());
+				FlxG.sound.music.volume = 0;
+				destroyFreeplayVocals();
+			}
+
+			else if ((accepted) || (usingMouse && canClick && FlxG.mouse.justPressed && (FlxG.mouse.overlaps(grpSongs) || FlxG.mouse.overlaps(iconArray))))
+			{
+				canClick = false;
 				persistentUpdate = false;
 				FlxG.mouse.visible = false;
 				var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
@@ -406,7 +435,6 @@ class FreeplayState extends MusicBeatState
 				PlayState.SONG = Song.loadFromJson(poop, songLowercase);
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = curDifficulty;
-				if (curDifficulty == 1) PlayState.isNew = true;
 	
 				trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
 				if(colorTween != null) {
@@ -496,12 +524,14 @@ class FreeplayState extends MusicBeatState
 
 		var bullShit:Int = 0;
 
-		for (i in 0...iconArray.length)
+		/*for (i in 0...iconArray.length)
 		{
 			iconArray[i].alpha = 0.6;
-		}
+		}*/
 
-		iconArray[curSelected].alpha = 1;
+		iconArray.forEachAlive(function(health:HealthIcon) {
+			health.alpha = (health.ID == curSelected) ? 1 : 0.6;
+		});
 
 		for (item in grpSongs.members)
 		{
@@ -571,9 +601,21 @@ class FreeplayState extends MusicBeatState
 		diffText.x -= diffText.width / 2;
 	}
 
-	private function loreLess() {
+	private function startSwinging(spr):Void {
+        FlxTween.tween(spr, {angle: 10}, 2, {ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween) 
+			{
+				reverseSwinging(spr);
+			}}
+		);
+    }
 
-	}
+    private function reverseSwinging(spr):Void {
+		FlxTween.tween(spr, {angle: -10}, 2, {ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween) 
+			{
+				startSwinging(spr);
+			}}
+		);
+    }
 }
 
 class SongMetadata

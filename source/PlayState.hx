@@ -314,7 +314,7 @@ class PlayState extends MusicBeatState
 	public var lorayTxt:FlxText;
 
 	private var creditsJSON:CreditsData = null;
-	var creditsStep:Int = 0;
+	var creditsStep:Int = -1;
 
 	var debugKeys:Array<FlxKey>;
 
@@ -400,8 +400,7 @@ class PlayState extends MusicBeatState
 		persistentUpdate = true;
 		persistentDraw = true;
 
-		if (SONG == null)
-			SONG = Song.loadFromJson('tutorial');
+		if (SONG == null) SONG = Song.loadFromJson('tutorial');
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
@@ -886,9 +885,7 @@ class PlayState extends MusicBeatState
 		add(lorayTxt);
 
 		creditsJSON = Credits.getCreditsFile(SONG.song);
-
-		if (creditsJSON == null)
-			creditsJSON = Credits.dummy();
+		if (creditsJSON == null) creditsJSON = Credits.dummy();
 
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];

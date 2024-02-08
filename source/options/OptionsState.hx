@@ -106,6 +106,10 @@ class OptionsState extends MusicBeatState
 			changeSelection(1);
 		}
 
+		if (FlxG.mouse.wheel != 0) {
+			changeSelection(-FlxG.mouse.wheel);
+		}
+
 		if (controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			if(onPlayState)
@@ -117,7 +121,7 @@ class OptionsState extends MusicBeatState
 			MusicBeatState.switchState(new MainMenuState());
 		}
 
-		if (controls.ACCEPT) {
+		if ((controls.ACCEPT) || (FlxG.mouse.overlaps(grpOptions) && FlxG.mouse.justPressed)) {
 			openSelectedSubstate(options[curSelected]);
 		}
 	}

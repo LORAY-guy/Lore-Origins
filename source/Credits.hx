@@ -42,7 +42,7 @@ class Credits
 	public static function dummy() {
 		return {
 			step: 0,
-			skip: true
+			skip: false
 		};
 	}
 }
