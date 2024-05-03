@@ -1,14 +1,15 @@
 package states;
 
+import backend.ExitButton;
+
 class OutdatedState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
 	var warnText:FlxText;
+	var exitButton:ExitButton;
 	
 	override function create()
 	{
-		super.create();
-
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Bro's fucked, he didn't update", null);
 		#end
@@ -34,12 +35,17 @@ class OutdatedState extends MusicBeatState
 		warnText.screenCenter(Y);
 		warnText.antialiasing = false;
 		add(warnText);
+
+		exitButton = new ExitButton();
+		insert(5, exitButton);
+
+		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
 		if(!leftState) {
-			if (controls.ACCEPT || FlxG.mouse.justPressed) {
+			if (controls.ACCEPT || (!FlxG.mouse.overlaps(exitButton) && FlxG.mouse.justPressed)) {
 				leftState = true;
 				CoolUtil.browserLoad("https://gamebanana.com/mods/476070");
 			}

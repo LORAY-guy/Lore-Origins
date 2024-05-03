@@ -82,6 +82,16 @@ class Bar extends FlxSpriteGroup
 			rightBar.color = right;
 	}
 
+	public function tweenBarColors(left:FlxColor = null, right:FlxColor = null, duration:Float = 1, ease:String = 'linear', ?onComplete:Null<FlxTimer> -> Void = null)
+	{
+		if (left != null)
+			FlxTween.color(leftBar, duration, leftBar.color, left, {ease: psychlua.LuaUtils.getTweenEaseByString(ease)});
+		if (right != null)
+			FlxTween.color(rightBar, duration, rightBar.color, right, {ease: psychlua.LuaUtils.getTweenEaseByString(ease)});
+		if (onComplete != null)
+			new FlxTimer().start(duration, onComplete);
+	}
+
 	public function updateBar()
 	{
 		if(leftBar == null || rightBar == null) return;

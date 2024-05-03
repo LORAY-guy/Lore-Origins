@@ -8,15 +8,16 @@ import flixel.addons.display.FlxBackdrop;
 
 import objects.CheckboxThingie;
 import objects.AttachedText;
-import options.Option;
+import options.OurpleOption;
 import backend.InputFormatter;
 import backend.Controls;
+import backend.ExitButton;
 
 class BaseOptionsMenu extends MusicBeatSubstate
 {
-	private var curOption:Option = null;
+	private var curOption:OurpleOption = null;
 	private var curSelected:Int = 0;
-	private var optionsArray:Array<Option>;
+	private var optionsArray:Array<OurpleOption>;
 
 	private var grpOptions:FlxTypedGroup<OptionFlxText>;
 	private var checkboxGroup:FlxTypedGroup<CheckboxThingie>;
@@ -30,6 +31,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	public var rpcTitle:String;
 
 	public var bg:FlxSprite;
+	public var exitButton:ExitButton;
 
 	public function new()
 	{
@@ -48,7 +50,6 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		add(bg);
 		spikes = new FlxSpriteGroup();
 		
-
 		var lettabox1:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox1.scrollFactor.set(0, 0);
 		lettabox1.velocity.set(40, 0);
@@ -124,9 +125,12 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 		changeSelection();
 		reloadCheckboxes();
+
+		exitButton = new ExitButton('options');
+		add(exitButton);
 	}
 
-	public function addOption(option:Option) {
+	public function addOption(option:OurpleOption) {
 		if(optionsArray == null || optionsArray.length < 1) optionsArray = [];
 		optionsArray.push(option);
 		return option;
@@ -282,7 +286,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 			if(controls.RESET)
 			{
-				var leOption:Option = optionsArray[curSelected];
+				var leOption:OurpleOption = optionsArray[curSelected];
 				if(leOption.type != 'keybind')
 				{
 					leOption.setValue(leOption.defaultValue);
@@ -411,7 +415,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	}
 
 	final MAX_KEYBIND_WIDTH = 320;
-	function updateBind(?text:String = null, ?option:Option = null)
+	function updateBind(?text:String = null, ?option:OurpleOption = null)
 	{
 		if(option == null) option = curOption;
 		if(text == null)
@@ -454,7 +458,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		ClientPrefs.toggleVolumeKeys(true);
 	}
 
-	function updateTextFrom(option:Option) {
+	function updateTextFrom(option:OurpleOption) {
 		if(option.type == 'keybind')
 		{
 			updateBind(option);

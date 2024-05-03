@@ -194,6 +194,12 @@ class Note extends FlxSprite
 					noMissAnimation = true;
 				case 'GF Sing':
 					gfNote = true;
+				case 'Matpat Talking':
+					if (ClientPrefs.data.lowQuality)
+					{
+						ignoreNote = false;
+						noAnimation = true;
+					}
 			}
 			if (value != null && value.length > 1) NoteTypesConfig.applyNoteTypeData(this, value);
 			if (hitsound != 'hitsound' && ClientPrefs.data.hitsoundVolume > 0) Paths.sound(hitsound); //precache new sound for being idiot-proof

@@ -42,6 +42,8 @@ class BaseStage extends FlxBasic
 	public var camHUD(get, never):FlxCamera;
 	public var camOther(get, never):FlxCamera;
 
+	public var cameraSpeed(get, set):Float;
+	public var camZooming(get, set):Bool;
 	public var defaultCamZoom(get, set):Float;
 	public var camFollow(get, never):FlxObject;
 
@@ -163,5 +165,19 @@ class BaseStage extends FlxBasic
 		game.defaultCamZoom = value;
 		return game.defaultCamZoom;
 	}
+	inline private function get_cameraSpeed():Float return game.cameraSpeed;
+	inline private function set_cameraSpeed(value:Float):Float
+	{
+		game.cameraSpeed = value;
+		return game.cameraSpeed;
+	}
+	inline private function get_camZooming():Bool return game.camZooming;
+	inline private function set_camZooming(value:Bool):Bool
+	{
+		game.camZooming = value;
+		return game.camZooming;
+	}
 	inline private function get_camFollow():FlxObject return game.camFollow;
+
+	inline private function lockCam(isDad:Null<Bool> = null) game.camLock(isDad);
 }

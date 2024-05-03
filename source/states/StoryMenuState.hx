@@ -13,7 +13,7 @@ import objects.MenuCharacter;
 import substates.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 
-class StoryMenuState extends MusicBeatState
+class StoryMenuState extends MusicBeatState //Keeping it in case I do something crazy in the future
 {
 	public static var weekCompleted:Map<String, Bool> = new Map<String, Bool>();
 

@@ -1,7 +1,11 @@
 package states;
 
+import backend.ExitButton;
+
+import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxBackdrop;
+
 import openfl.ui.Keyboard;
 import openfl.events.KeyboardEvent;
 
@@ -9,11 +13,14 @@ class FreeplaySelectState extends MusicBeatState
 {
     public static var freeplayCats:Array<String> = ['Covers', 'Originals'];
     public static var curCategory:Int = 0;
+	private static var curSelected:Int = 0;
+
 	public var catName:Alphabet;
-	var grpCats:FlxTypedGroup<Alphabet>;
-	var curSelected:Int = 0;
+	
 	var bg:FlxSprite;
     var categoryIcon:FlxSprite;
+
+	var matpat:FlxSprite;
 
 	//HENRY STUFF
 	private var inputBuffer:String = "";
@@ -27,6 +34,8 @@ class FreeplaySelectState extends MusicBeatState
 		DiscordClient.changePresence("Choosing the Lore", null);
 		#end
 
+		Paths.clearUnusedMemory();
+
         bg = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
 		bg.updateHitbox();
 		bg.screenCenter();
@@ -36,11 +45,21 @@ class FreeplaySelectState extends MusicBeatState
 		backend.Conductor.bpm = 130;
 		persistentUpdate = persistentDraw = true;
 
+		FlxTransitionableState.skipNextTransIn = true;
+		FlxTransitionableState.skipNextTransOut = true;
+
 		var grid:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/grid'));
 		grid.scrollFactor.set(0, 0);
 		grid.velocity.set(40, 40);
 		grid.alpha = 0.5;
 		add(grid);
+
+		matpat = new FlxSprite().loadGraphic(Paths.image('mainmenu/matpat_freeplay'));
+		matpat.flipX = true;
+		matpat.setGraphicSize(Std.int(matpat.width * 0.65));
+		matpat.updateHitbox();
+		matpat.x = (FlxG.width - matpat.width) + 155;
+		add(matpat);
 
 		var lettabox1:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox1.scrollFactor.set(0, 0);
@@ -57,12 +76,13 @@ class FreeplaySelectState extends MusicBeatState
         categoryIcon.frames = Paths.getSparrowAtlas('category/category-' + freeplayCats[curSelected].toLowerCase());
         categoryIcon.animation.addByPrefix('idle', freeplayCats[curSelected].toLowerCase(), 24);
         categoryIcon.animation.play('idle');
-		categoryIcon.updateHitbox();
 		categoryIcon.screenCenter();
+		categoryIcon.x -= 240;
 		add(categoryIcon);
 
-		catName = new Alphabet(20, (FlxG.height / 2) - 282, freeplayCats[curSelected], true);
+		catName = new Alphabet(0, (FlxG.height / 2) - 282, freeplayCats[curSelected], true);
 		catName.screenCenter(X);
+		catName.x -= 240;
 		add(catName);
 
 		/*charles = new FlxSprite(-800, -100);
@@ -77,12 +97,18 @@ class FreeplaySelectState extends MusicBeatState
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
         changeSelection();
 		//if (FlxG.save.data.henryUnlocked) unlockCharles();
-
+		
+		#if desktop if (!FlxG.mouse.visible) FlxG.mouse.visible = true; #end
         super.create();
+
+		FlxG.camera.y = 720;
+		FlxTween.tween(FlxG.camera, {y: 0}, 1.2, {ease: FlxEase.expoInOut});
+
+		add(new ExitButton());
     }
 
-	var selectedSomethin:Bool = false;
-	var canClick:Bool = true;
+	public var selectedSomethin:Bool = false;
+	public var canClick:Bool = true;
     override public function update(elapsed:Float)
 	{
 		if (!selectedSomethin)
@@ -99,11 +125,18 @@ class FreeplaySelectState extends MusicBeatState
 			if (controls.BACK) {
 				selectedSomethin = true;
 				FlxG.sound.play(Paths.sound('cancelMenu'));
-				MusicBeatState.switchState(new MainMenuState());
+				FlxG.camera.zoom += 0.06;
+				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+					MusicBeatState.switchState(new MainMenuState());
+				}});
 			}
-			if (controls.ACCEPT || (FlxG.mouse.overlaps(categoryIcon) && FlxG.mouse.pressed)) {
+			if (controls.ACCEPT || (FlxG.mouse.overlaps(categoryIcon) && FlxG.mouse.justPressed)) {
 				selectedSomethin = true;
 				canClick = false;
+
+				FlxG.camera.zoom += 0.06;
+				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut});
+
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 				
 				FlxTween.tween(catName, {alpha: 0}, 0.4, {ease: FlxEase.quadOut, onComplete: function(twn:FlxTween){catName.kill();}});
@@ -111,6 +144,9 @@ class FreeplaySelectState extends MusicBeatState
 				{
 					MusicBeatState.switchState(new FreeplayState());
 				});
+			} else if (FlxG.mouse.overlaps(matpat) && FlxG.mouse.justPressed) {
+				FlxG.sound.play(Paths.sound('helloInternet'));
+				matpat.setGraphicSize(Std.int(matpat.width * 1.1));
 			}
 
 			if (charles != null)
@@ -138,12 +174,16 @@ class FreeplaySelectState extends MusicBeatState
 			}
 		}
         curCategory = curSelected;
+		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
+		matpat.scale.x = FlxMath.lerp(0.65, matpat.scale.x, Math.exp(-elapsed * 7.5));
+		matpat.scale.y = FlxMath.lerp(0.65, matpat.scale.y, Math.exp(-elapsed * 7.5));
         super.update(elapsed);
 		Conductor.songPosition = FlxG.sound.music.time;
     }
 
     function changeSelection(change:Int = 0) 
 	{
+		FlxG.camera.zoom += 0.03;
 		curSelected += change;
 
 		if (curSelected >= freeplayCats.length)
@@ -153,12 +193,14 @@ class FreeplaySelectState extends MusicBeatState
 
 		catName.text = freeplayCats[curSelected];
 		catName.screenCenter(X);
+		catName.x -= 240;
 		add(catName);
 
         categoryIcon.frames = Paths.getSparrowAtlas('category/category-' + freeplayCats[curSelected].toLowerCase());
         categoryIcon.animation.addByPrefix('idle', freeplayCats[curSelected].toLowerCase(), 24);
         categoryIcon.animation.play('idle');
         categoryIcon.screenCenter();
+		categoryIcon.x -= 240;
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 

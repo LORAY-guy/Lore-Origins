@@ -60,6 +60,7 @@ class TitleState extends MusicBeatState
 	override public function create():Void
 	{
 		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
 
 		#if LUA_ALLOWED
 		Mods.pushGlobalMods();
@@ -336,11 +337,15 @@ class TitleState extends MusicBeatState
 
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
+					#if !html5
 					if (mustUpdate) {
 						MusicBeatState.switchState(new OutdatedState());
 					} else {
 						MusicBeatState.switchState(new MainMenuState());
 					}
+					#else
+					MusicBeatState.switchState(new MainMenuState());
+					#end
 					closedState = true;
 				});
 			}
@@ -391,7 +396,7 @@ class TitleState extends MusicBeatState
 		}
 	}
 
-	private var sickBeats:Int = 0; //Basically curBeat but won't be skipped if you hold the tab or resize the screen
+	private var sickBeats:Int = 0;
 	public static var closedState:Bool = false;
 	override function beatHit()
 	{

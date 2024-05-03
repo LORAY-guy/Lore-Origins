@@ -1,0 +1,37 @@
+- WEBSITE!!
+- NEW VLOO GUY MODE (See Lore Origins Settings) (WIP).
+- OURPLE SKIN SELECTOR (WIP) (Check Options).
+- Added Repugnant Cover.
+- Added Lore Mew Mix Cover (for Vloo Guy).
+- Added Lore Horse Mix Cover for Vloo Guy.
+- Ported every code to Source (better performance i think).
+- Added a Loading Screen (by whitemungus) with (useless) tips.
+- Added a Matpat art (by whitemungus again) in the Freeplay Select Menu (Tip: Click on him...multiple times...cuz funni).
+- Added an exit button on most of the menus for mouse cursor users.
+- Changed Menu Transitions.
+- Added a time bar color changing mechanic.
+- Readded miss counter.
+- Added Ourple Game Over screen.
+- Added Ourple Pause Menu.
+- Added a Lore Origins options substate menu.
+- Added the Ourple Countdown Animations.
+- Added cool main menu intro animation.
+- Detective now looks better.
+- Clicking on LORAYs in the Loray Credits Menu will play a randomized sound.
+- Set Freeplay Menu to gray for songs considered old. (more than a year old, because they're cringe).
+- Fixed scores in Freeplay not showing up.
+- Fixed randomizer triggering when restarting the song in the Music Player of the Freeplay Menu.
+- Fixed the Freeplay Select State not saving the last selected Freeplay Category (would always go back to "Covers").
+- Fixed a bug where accessing the Options menu from the Main Menu when once opened in PlayState would go back to PlayState.
+- Fixed score text not appearing on Middlescroll.
+- Shuffled the images in the Chronology cutscene (to prove that its actually coded-in and random lol).
+- Reduced size of the mouse cuz it was huuuuuuge.
+
+PS: The new Vloo Guy mode is a test for now, I've implemented it here for feedback on whether or not
+I should change the entire cast or only the "guy" and "phone guy" depending on the selected Ourple variant.
+
+Yes, you read that right, depending on the selected Ourple variant, which means, more Ourple alikes will soon be added to the roaster.
+If you are the director of any Ourple related mod and want your ourple to be part of the next update, contact me on Discord (loray_man) or on Twitter.
+
+If you want to try Vloo guy, the only songs available for him (for now) are Action (cover) and Lore Sad Mix (original).
+You can still use all the different Ourple Guy Skins throughout all the different covers/songs.

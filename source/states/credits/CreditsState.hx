@@ -1,7 +1,10 @@
 package states.credits;
 
+import backend.ExitButton;
 import objects.AttachedSprite;
+
 import flixel.addons.display.FlxBackdrop;
+import flixel.addons.transition.FlxTransitionableState;
 
 class CreditsState extends MusicBeatState
 {
@@ -25,6 +28,11 @@ class CreditsState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Lore Credits", null);
 		#end
+
+		Paths.clearUnusedMemory();
+
+		FlxTransitionableState.skipNextTransIn = true;
+		FlxTransitionableState.skipNextTransOut = true;
 
 		persistentUpdate = true;
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
@@ -51,10 +59,27 @@ class CreditsState extends MusicBeatState
 
 		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
 			['Lore Origins by'],
-			['LORAY',			'loray',				'He gonna lore uranus',											'https://www.youtube.com/@LORAY_',	'00FF55'],
+			['LORAY',				'loray',			'He gonna lore uranus',										 'https://www.youtube.com/@LORAY_',		'00FF55'],
+			[''],
+			['Additional Lore Origins Help'],
+			['Whitey',				'whitey',			'Art',									 					 'https://twitter.com/Whitemungus',		'BBBBBB'],
+			[''],
+			['OG Lore by'],
+			['Kiwiquest',			'lex',				'Original composer of Lore',								 'https://www.youtube.com/@kiwiquestlol','FF5102'],
 			[''],
 			['Lore Remixes by'],
-			['Kiwiquest',			'lex',				'Original composer of Lore',									'https://www.youtube.com/@kiwiquestlol','FF5102'],
+			['RandoHorn',			'rando',			'Made Lore Ryan Mix',								 		 'https://twitter.com/RandoHorn',		'AAAAAA'],
+			['PinkyMichael',		'pinky',			'Made Lore Apology Mix',								     'https://www.youtube.com/@pinkymichael76','FF63FF'],
+			['RixFX',				'rix',				'Made Lore Awesomix Mix',								     'https://twitter.com/rixfx_',			'AAAAAA'],
+			['KOSE',				'kose',				'Made Fever, Chronology, Detective',						 'https://www.youtube.com/@kosejumpscare','CC31C9'],
+			['smily',				'smily',			'Made Chronology',								 		 	 'https://twitter.com/boi_smily',		'AAAAAA'],
+			['Ari the when',	    'ari',				'Made Lore Style Mix',								 		 'https://twitter.com/Ari_the_when',	'AAAAAA'],
+			['EthanTheDoodler',		'ethan',			'Made Live',								 		 		 'https://twitter.com/D00dlerEthan',	'AAAAAA'],
+			['Clas25',				'clas',				'Made Lore Horse Mix',								 		 'https://www.youtube.com/@clasytpmv',	'AAAAAA'],
+			['Ahloof',				'ahloof',			'Made Detective',								 		 	 'https://twitter.com/ahhhloof',		'AAAAAA'],
+			['Fire_MF',				'fire',				'Made Measure Up',								 			 'https://www.youtube.com/@FireMarioFan','AAAAAA'],
+			['maddiesmiles',		'maddie',			'Made Measure Up, Repugnant',								 'https://www.youtube.com/channel/UC4WF3mjcu68swFdK3541yuA',		'AAAAAA'],
+			['Call',				'call',				'Made Action',									        	 'https://www.youtube.com/@Call_-_',	'38109E'],
 			[''],
 			['Psych Engine Team'],
 			['Shadow Mario',		'shadowmario',		'Main Programmer and Head of Psych Engine',					 'https://ko-fi.com/shadowmario',		'444444'],
@@ -112,7 +137,8 @@ class CreditsState extends MusicBeatState
 				}
 
 				var icon:AttachedSprite = new AttachedSprite(str);
-				if(str.endsWith('-pixel')) icon.antialiasing = false;
+				if (str.contains('missing')) icon.visible = false;
+				if (str.endsWith('-pixel')) icon.antialiasing = false;
 				icon.xAdd = optionText.width + 10;
 				icon.sprTracker = optionText;
 	
@@ -142,8 +168,14 @@ class CreditsState extends MusicBeatState
 
 		bg.color = CoolUtil.colorFromString(creditsStuff[curSelected][4]);
 		intendedColor = bg.color;
+
+		add(new ExitButton());
+
 		changeSelection();
 		super.create();
+
+		FlxG.camera.y = 720;
+		FlxTween.tween(FlxG.camera, {y: 0}, 1.2, {ease: FlxEase.expoInOut});
 
 		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
 	}
@@ -205,7 +237,11 @@ class CreditsState extends MusicBeatState
 				{
 					quitting = true;
 					canClick = false;
-					MusicBeatState.switchState(new LorayState());
+					FlxG.camera.zoom += 0.06;
+					FlxG.sound.play(Paths.sound('confirmMenu'));
+					FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+						MusicBeatState.switchState(new LorayState());
+					}});
 				}
 				else if (creditsStuff[curSelected][3] == null || creditsStuff[curSelected][3].length > 4)
 					CoolUtil.browserLoad(creditsStuff[curSelected][3]);
@@ -217,7 +253,10 @@ class CreditsState extends MusicBeatState
 					colorTween.cancel();
 				}
 				FlxG.sound.play(Paths.sound('cancelMenu'));
-				MusicBeatState.switchState(new MainMenuState());
+				FlxG.camera.zoom += 0.06;
+				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+					MusicBeatState.switchState(new MainMenuState());
+				}});
 				quitting = true;
 			}
 		}
@@ -239,12 +278,16 @@ class CreditsState extends MusicBeatState
 				}
 			}
 		}
+
+		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
+
 		super.update(elapsed);
 	}
 
 	var moveTween:FlxTween = null;
 	function changeSelection(change:Int = 0)
 	{
+		if (FlxG.camera.zoom <= 1.125) FlxG.camera.zoom += 0.03;
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		do {
 			curSelected += change;

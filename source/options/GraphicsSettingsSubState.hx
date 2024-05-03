@@ -11,7 +11,6 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 	public function new()
 	{
 		title = 'Graphics';
-		rpcTitle = 'Setting the LOOOOOOOOOOOOORE'; //for Discord Rich Presence
 
 		boyfriend = new Character(1050, 420, 'playguy', true);
 		boyfriend.setGraphicSize(Std.int(boyfriend.width * 0.3));
@@ -21,13 +20,13 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		originY = boyfriend.y;
 
 		//I'd suggest using "Low Quality" as an example for making your own option since it is the simplest here
-		var option:Option = new Option('Low Quality', //Name
+		var option:OurpleOption = new OurpleOption('Low Quality', //Name
 			'If checked, disables some background details,\ndecreases loading times and improves performance.', //Description
 			'lowQuality', //Save data variable name
 			'bool'); //Variable type
 		addOption(option);
 
-		var option:Option = new Option('Anti-Aliasing',
+		var option:OurpleOption = new OurpleOption('Anti-Aliasing',
 			'If unchecked, disables anti-aliasing, increases performance\nat the cost of sharper visuals.',
 			'antialiasing',
 			'bool');
@@ -35,20 +34,20 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		addOption(option);
 		antialiasingOption = optionsArray.length-1;
 
-		var option:Option = new Option('Shaders', //Name
+		var option:OurpleOption = new OurpleOption('Shaders', //Name
 			"If unchecked, disables shaders.\nIt's used for some visual effects, and also CPU intensive for weaker PCs.", //Description
 			'shaders',
 			'bool');
 		addOption(option);
 
-		var option:Option = new Option('GPU Caching', //Name
+		var option:OurpleOption = new OurpleOption('GPU Caching', //Name
 			"If checked, allows the GPU to be used for caching textures, decreasing RAM usage.\nDon't turn this on if you have a shitty Graphics Card.", //Description
 			'cacheOnGPU',
 			'bool');
 		addOption(option);
 
 		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
-		var option:Option = new Option('Framerate',
+		var option:OurpleOption = new OurpleOption('Framerate',
 			"Pretty self explanatory, isn't it?",
 			'framerate',
 			'int');

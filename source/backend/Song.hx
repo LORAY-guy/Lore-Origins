@@ -90,21 +90,28 @@ class Song
 		this.bpm = bpm;
 	}
 
-	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
+	public static function loadFromJson(jsonInput:String, ?folder:String, ?isOurple:Bool = false):SwagSong
 	{
 		var rawJson = null;
 		
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 		var formattedSong:String = Paths.formatToSongPath(jsonInput);
+		var guy:String = (ClientPrefs.data.guy != 'Ourple' ? '-' + ClientPrefs.data.guy : '');
 		#if MODS_ALLOWED
-		var moddyFile:String = Paths.modsJson(formattedFolder + '/' + formattedSong);
+		var moddyFile:String = Paths.modsJson(formattedFolder + '/' + formattedSong + guy);
 		if(FileSystem.exists(moddyFile)) {
 			rawJson = File.getContent(moddyFile).trim();
 		}
 		#end
 
+		var path:String;
 		if(rawJson == null) {
-			var path:String = Paths.json(formattedFolder + '/' + formattedSong);
+			if (isOurple)
+				path = Paths.json(formattedFolder + '/' + formattedSong + guy);
+			else
+				path = Paths.json(formattedFolder + '/' + formattedSong);
+
+			trace(path);
 
 			#if sys
 			if(FileSystem.exists(path))

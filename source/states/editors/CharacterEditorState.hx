@@ -20,11 +20,19 @@ import objects.Character;
 import objects.HealthIcon;
 import objects.Bar;
 
+#if(flxanimate && !html5)
+import flxanimate.FlxAnimate;
+#end
+
 class CharacterEditorState extends MusicBeatState
 {
 	var character:Character;
 	var ghost:FlxSprite;
+
+	#if(flxanimate && !html5) 
 	var animateGhost:FlxAnimate;
+	#end
+
 	var animateGhostImage:String;
 	var cameraFollowPointer:FlxSprite;
 	var isAnimateSprite:Bool = false;
@@ -299,6 +307,7 @@ class CharacterEditorState extends MusicBeatState
 				}
 				else if(myAnim != null) //This is VERY unoptimized and bad, I hope to find a better replacement that loads only a specific frame as bitmap in the future.
 				{
+					#if(flxanimate && !html5) 
 					if(animateGhost == null) //If I created the animateGhost on create() and you didn't load an atlas, it would crash the game on destroy, so we create it here
 					{
 						animateGhost = new FlxAnimate(ghost.x, ghost.y);
@@ -319,9 +328,14 @@ class CharacterEditorState extends MusicBeatState
 					animateGhost.anim.pause();
 
 					animateGhostImage = character.imageFile;
+					#end
 				}
 				
+				#if(flxanimate && !html5) 
 				var spr:FlxSprite = !character.isAnimateAtlas ? ghost : animateGhost;
+				#else
+				var spr:FlxSprite = ghost;
+				#end
 				if(spr != null)
 				{
 					spr.setPosition(character.x, character.y);
@@ -335,7 +349,11 @@ class CharacterEditorState extends MusicBeatState
 					spr.offset.set(character.offset.x, character.offset.y);
 					spr.visible = true;
 
+					#if(flxanimate && !html5) 
 					var otherSpr:FlxSprite = (spr == animateGhost) ? ghost : animateGhost;
+					#else
+					var otherSpr:FlxSprite = ghost;
+					#end
 					if(otherSpr != null) otherSpr.visible = false;
 				}
 				/*hideGhostButton.active = true;
@@ -359,12 +377,15 @@ class CharacterEditorState extends MusicBeatState
 			ghost.colorTransform.redOffset = value;
 			ghost.colorTransform.greenOffset = value;
 			ghost.colorTransform.blueOffset = value;
+			
+			#if(flxanimate && !html5) 
 			if(animateGhost != null)
 			{
 				animateGhost.colorTransform.redOffset = value;
 				animateGhost.colorTransform.greenOffset = value;
 				animateGhost.colorTransform.blueOffset = value;
 			}
+			#end
 		};
 
 		var ghostAlphaSlider:FlxUISlider = new FlxUISlider(this, 'ghostAlpha', 10, makeGhostButton.y + 25, 0, 1, 210, null, 5, FlxColor.WHITE, FlxColor.BLACK);
@@ -372,7 +393,9 @@ class CharacterEditorState extends MusicBeatState
 		ghostAlphaSlider.decimals = 2;
 		ghostAlphaSlider.callback = function(relativePos:Float) {
 			ghost.alpha = ghostAlpha;
+			#if(flxanimate && !html5) 
 			if(animateGhost != null) animateGhost.alpha = ghostAlpha;
+			#end
 		};
 		ghostAlphaSlider.value = ghostAlpha;
 
@@ -532,7 +555,9 @@ class CharacterEditorState extends MusicBeatState
 					if(character.animOffsets.exists(animationInputText.text))
 					{
 						if(!character.isAnimateAtlas) character.animation.remove(animationInputText.text);
+						#if(flxanimate && !html5) 
 						else @:privateAccess character.atlas.anim.animsMap.remove(animationInputText.text);
+						#end
 					}
 					character.animationsArray.remove(anim);
 				}
@@ -560,7 +585,9 @@ class CharacterEditorState extends MusicBeatState
 					if(character.animOffsets.exists(anim.anim))
 					{
 						if(!character.isAnimateAtlas) character.animation.remove(anim.anim);
+						#if(flxanimate && !html5) 
 						else @:privateAccess character.atlas.anim.animsMap.remove(anim.anim);
+						#end
 						character.animOffsets.remove(anim.anim);
 						character.animationsArray.remove(anim);
 					}
@@ -778,12 +805,17 @@ class CharacterEditorState extends MusicBeatState
 		var lastAnim:String = character.getAnimationName();
 		var anims:Array<AnimArray> = character.animationsArray.copy();
 
+		#if(flxanimate && !html5) 
 		character.destroyAtlas();
+		#end
 		character.isAnimateAtlas = false;
 		character.color = FlxColor.WHITE;
 		character.alpha = 1;
 
-		if(Paths.fileExists('images/' + character.imageFile + '/Animation.json', TEXT))
+		if(Paths.fileExists('images/' + character.imageFile + '.json', TEXT)) character.frames = Paths.getAsepriteAtlas(character.imageFile);
+		else if(Paths.fileExists('images/' + character.imageFile + '.txt', TEXT)) character.frames = Paths.getPackerAtlas(character.imageFile);
+		#if(flxanimate && !html5)
+		else if(Paths.fileExists('images/' + character.imageFile + '/Animation.json', TEXT))
 		{
 			character.atlas = new FlxAnimate();
 			character.atlas.showPivot = false;
@@ -797,8 +829,7 @@ class CharacterEditorState extends MusicBeatState
 			}
 			character.isAnimateAtlas = true;
 		}
-		else if(Paths.fileExists('images/' + character.imageFile + '.txt', TEXT)) character.frames = Paths.getPackerAtlas(character.imageFile);
-		else if(Paths.fileExists('images/' + character.imageFile + '.json', TEXT)) character.frames = Paths.getAsepriteAtlas(character.imageFile);
+		#end
 		else character.frames = Paths.getSparrowAtlas(character.imageFile);
 
 		for (anim in anims) {
@@ -992,11 +1023,13 @@ class CharacterEditorState extends MusicBeatState
 				frames = character.animation.curAnim.curFrame;
 				length = character.animation.curAnim.numFrames;
 			}
+			#if (flxanimate && !html5)
 			else
 			{
 				frames = character.atlas.anim.curFrame;
 				length = character.atlas.anim.length;
 			}
+			#end
 
 			if(FlxG.keys.justPressed.A || FlxG.keys.justPressed.D || holdingFrameTime > 0.5)
 			{
@@ -1008,7 +1041,7 @@ class CharacterEditorState extends MusicBeatState
 				{
 					frames = FlxMath.wrap(frames + Std.int(isLeft ? -shiftMult : shiftMult), 0, length-1);
 					if(!character.isAnimateAtlas) character.animation.curAnim.curFrame = frames;
-					else character.atlas.anim.curFrame = frames;
+					#if (flxanimate && !html5) else character.atlas.anim.curFrame = frames; #end
 					holdingFrameElapsed -= 0.1;
 				}
 			}
@@ -1171,6 +1204,7 @@ class CharacterEditorState extends MusicBeatState
 			else
 				character.animation.addByPrefix(anim, name, fps, loop);
 		}
+		#if (flxanimate && !html5)
 		else
 		{
 			if(indices != null && indices.length > 0)
@@ -1178,6 +1212,7 @@ class CharacterEditorState extends MusicBeatState
 			else
 				character.atlas.anim.addBySymbol(anim, name, fps, loop);
 		}
+		#end
 
 		if(!character.animOffsets.exists(anim))
 			character.addOffset(anim, 0, 0);
@@ -1198,6 +1233,7 @@ class CharacterEditorState extends MusicBeatState
 	var characterList:Array<String> = [];
 	function reloadCharacterDropDown() {
 		characterList = Mods.mergeAllTextsNamed('data/characterList.txt', Paths.getSharedPath());
+		#if !html5
 		var foldersToCheck:Array<String> = Mods.directoriesWithFile(Paths.getSharedPath(), 'characters/');
 		for (folder in foldersToCheck)
 			for (file in FileSystem.readDirectory(folder))
@@ -1207,6 +1243,7 @@ class CharacterEditorState extends MusicBeatState
 					if(!characterList.contains(charToCheck))
 						characterList.push(charToCheck);
 				}
+		#end
 
 		if(characterList.length < 1) characterList.push('');
 		charDropDown.setData(FlxUIDropDownMenu.makeStrIdLabelArray(characterList, true));

@@ -71,8 +71,7 @@
 					[
 						1585.90308370044,
 						1,
-						0,
-						"Alt Animation"
+						0
 					]
 				],
 				"gfSection": false,
@@ -82,16 +81,9 @@
 				"lengthInSteps": 16,
 				"sectionNotes": [
 					[
-						2114.53744493392,
-						3,
-						0,
-						"Alt Animation"
-					],
-					[
 						2422.90748898678,
 						0,
-						0,
-						"Alt Animation"
+						0
 					],
 					[
 						2841.40969162996,
@@ -101,6 +93,11 @@
 					[
 						2973.56828193833,
 						2,
+						0
+					],
+					[
+						2114.53744493392,
+						3,
 						0
 					]
 				],
@@ -9211,7 +9208,12 @@
 					[
 						173127.753303965,
 						6,
-						198.237885462555
+						0
+					],
+					[
+						173259.911894273,
+						4,
+						0
 					]
 				],
 				"typeOfSection": 0,
@@ -10189,82 +10191,82 @@
 				"bpm": 227
 			},
 			{
-				"gfSection": false,
-				"altAnim": false,
 				"typeOfSection": 0,
 				"sectionNotes": [],
-				"bpm": 227,
 				"sectionBeats": 4,
+				"altAnim": false,
+				"gfSection": false,
+				"bpm": 227,
 				"changeBPM": false,
 				"mustHitSection": true
 			},
 			{
-				"gfSection": false,
-				"altAnim": false,
 				"typeOfSection": 0,
 				"sectionNotes": [],
-				"bpm": 227,
 				"sectionBeats": 4,
+				"altAnim": false,
+				"gfSection": false,
+				"bpm": 227,
 				"changeBPM": false,
 				"mustHitSection": true
 			},
 			{
-				"gfSection": false,
-				"altAnim": false,
 				"typeOfSection": 0,
 				"sectionNotes": [],
-				"bpm": 227,
 				"sectionBeats": 4,
+				"altAnim": false,
+				"gfSection": false,
+				"bpm": 227,
 				"changeBPM": false,
 				"mustHitSection": true
 			},
 			{
-				"gfSection": false,
-				"altAnim": false,
 				"typeOfSection": 0,
 				"sectionNotes": [],
-				"bpm": 227,
 				"sectionBeats": 4,
+				"altAnim": false,
+				"gfSection": false,
+				"bpm": 227,
 				"changeBPM": false,
 				"mustHitSection": true
 			},
 			{
-				"gfSection": false,
-				"altAnim": false,
 				"typeOfSection": 0,
 				"sectionNotes": [],
-				"bpm": 227,
 				"sectionBeats": 4,
+				"altAnim": false,
+				"gfSection": false,
+				"bpm": 227,
 				"changeBPM": false,
 				"mustHitSection": true
 			},
 			{
-				"gfSection": false,
-				"altAnim": false,
 				"typeOfSection": 0,
 				"sectionNotes": [],
-				"bpm": 227,
 				"sectionBeats": 4,
+				"altAnim": false,
+				"gfSection": false,
+				"bpm": 227,
 				"changeBPM": false,
 				"mustHitSection": true
 			},
 			{
-				"gfSection": false,
-				"altAnim": false,
 				"typeOfSection": 0,
 				"sectionNotes": [],
-				"bpm": 227,
 				"sectionBeats": 4,
+				"altAnim": false,
+				"gfSection": false,
+				"bpm": 227,
 				"changeBPM": false,
 				"mustHitSection": true
 			},
 			{
-				"gfSection": false,
-				"altAnim": false,
 				"typeOfSection": 0,
 				"sectionNotes": [],
-				"bpm": 227,
 				"sectionBeats": 4,
+				"altAnim": false,
+				"gfSection": false,
+				"bpm": 227,
 				"changeBPM": false,
 				"mustHitSection": true
 			}
@@ -10793,12 +10795,12 @@
 			]
 		],
 		"player3": null,
+		"disableNoteRGB": true,
 		"splashSkin": "noteSplashes",
 		"song": "lore-apology",
 		"validScore": true,
 		"needsVoices": true,
 		"stage": "apology",
-		"disableNoteRGB": true,
 		"speed": 3.3,
 		"bpm": 227
 	}

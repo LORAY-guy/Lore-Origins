@@ -1,6 +1,6 @@
-#if LUA_ALLOWED
 package psychlua;
 
+#if LUA_ALLOWED
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
@@ -557,19 +557,19 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "doTweenX", function(tag:String, vars:String, value:Dynamic, duration:Float, ease:String, ?startDelay:Float = 0) {
-			oldTweenFunction(tag, vars, {x: value}, duration, ease, 'doTweenX');
+			oldTweenFunction(tag, vars, {x: value}, duration, ease, 'doTweenX', startDelay);
 		});
 		Lua_helper.add_callback(lua, "doTweenY", function(tag:String, vars:String, value:Dynamic, duration:Float, ease:String, ?startDelay:Float = 0) {
-			oldTweenFunction(tag, vars, {y: value}, duration, ease, 'doTweenY');
+			oldTweenFunction(tag, vars, {y: value}, duration, ease, 'doTweenY', startDelay);
 		});
 		Lua_helper.add_callback(lua, "doTweenAngle", function(tag:String, vars:String, value:Dynamic, duration:Float, ease:String, ?startDelay:Float = 0) {
-			oldTweenFunction(tag, vars, {angle: value}, duration, ease, 'doTweenAngle');
+			oldTweenFunction(tag, vars, {angle: value}, duration, ease, 'doTweenAngle', startDelay);
 		});
 		Lua_helper.add_callback(lua, "doTweenAlpha", function(tag:String, vars:String, value:Dynamic, duration:Float, ease:String, ?startDelay:Float = 0) {
-			oldTweenFunction(tag, vars, {alpha: value}, duration, ease, 'doTweenAlpha');
+			oldTweenFunction(tag, vars, {alpha: value}, duration, ease, 'doTweenAlpha', startDelay);
 		});
 		Lua_helper.add_callback(lua, "doTweenZoom", function(tag:String, vars:String, value:Dynamic, duration:Float, ease:String, ?startDelay:Float = 0) {
-			oldTweenFunction(tag, vars, {zoom: value}, duration, ease, 'doTweenZoom');
+			oldTweenFunction(tag, vars, {zoom: value}, duration, ease, 'doTweenZoom', startDelay);
 		});
 		Lua_helper.add_callback(lua, "doTweenColor", function(tag:String, vars:String, targetColor:String, duration:Float, ease:String, ?startDelay:Float = 0) {
 			var penisExam:Dynamic = LuaUtils.tweenPrepare(tag, vars);
@@ -1454,6 +1454,12 @@ class FunkinLua {
 				}
 			}
 		});
+
+		Lua_helper.add_callback(lua, "lockCam", function(isDad:Null<Bool> = null) { //I love camLock from Lore Origins
+			game.camLock(isDad);
+			return isDad;
+		});
+
 		#if FLX_PITCH
 		Lua_helper.add_callback(lua, "getSoundPitch", function(tag:String) {
 			if(tag != null && tag.length > 0 && game.modchartSounds.exists(tag)) {

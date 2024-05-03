@@ -625,6 +625,7 @@ class ChartingState extends MusicBeatState
 	var stepperBeats:FlxUINumericStepper;
 	var check_mustHitSection:FlxUICheckBox;
 	var check_gfSection:FlxUICheckBox;
+	var check_gfIsSinging:FlxUICheckBox;
 	var check_changeBPM:FlxUICheckBox;
 	var stepperSectionBPM:FlxUINumericStepper;
 	var check_altAnim:FlxUICheckBox;
@@ -640,6 +641,10 @@ class ChartingState extends MusicBeatState
 		check_mustHitSection = new FlxUICheckBox(10, 15, null, null, "Must hit section", 100);
 		check_mustHitSection.name = 'check_mustHit';
 		check_mustHitSection.checked = _song.notes[curSec].mustHitSection;
+
+		check_gfIsSinging = new FlxUICheckBox(130, 15, null, null, "GF is Singing", 100);
+		check_gfIsSinging.name = 'check_gfIsSinging';
+		check_gfIsSinging.checked = _song.notes[curSec].gfIsSinging;
 
 		check_gfSection = new FlxUICheckBox(10, check_mustHitSection.y + 22, null, null, "GF section", 100);
 		check_gfSection.name = 'check_gf';
@@ -875,6 +880,7 @@ class ChartingState extends MusicBeatState
 		tab_group_section.add(stepperSectionBPM);
 		tab_group_section.add(check_mustHitSection);
 		tab_group_section.add(check_gfSection);
+		tab_group_section.add(check_gfIsSinging);
 		tab_group_section.add(check_altAnim);
 		tab_group_section.add(check_changeBPM);
 		tab_group_section.add(copyButton);
@@ -1561,6 +1567,12 @@ class ChartingState extends MusicBeatState
 				case 'GF section':
 					_song.notes[curSec].gfSection = check.checked;
 
+					updateGrid();
+					updateHeads();
+
+				case 'GF is Singing':
+					_song.notes[curSec].gfIsSinging = check.checked;
+					
 					updateGrid();
 					updateHeads();
 
@@ -2611,6 +2623,7 @@ class ChartingState extends MusicBeatState
 		stepperBeats.value = getSectionBeats();
 		check_mustHitSection.checked = sec.mustHitSection;
 		check_gfSection.checked = sec.gfSection;
+		check_gfIsSinging.checked = sec.gfIsSinging;
 		check_altAnim.checked = sec.altAnim;
 		check_changeBPM.checked = sec.changeBPM;
 		stepperSectionBPM.value = sec.bpm;
@@ -2642,6 +2655,11 @@ class ChartingState extends MusicBeatState
 			leftIcon.changeIcon(characterData.iconP1);
 			rightIcon.changeIcon(characterData.iconP2);
 			if (_song.notes[curSec].gfSection) leftIcon.changeIcon('gf');
+		}
+		else if (_song.notes[curSec].gfIsSinging)
+		{
+			leftIcon.changeIcon(characterData.iconP2);
+			rightIcon.changeIcon('gf');
 		}
 		else
 		{
@@ -2895,6 +2913,7 @@ class ChartingState extends MusicBeatState
 			changeBPM: false,
 			mustHitSection: true,
 			gfSection: false,
+			gfIsSinging: false,
 			sectionNotes: [],
 			altAnim: false
 		};

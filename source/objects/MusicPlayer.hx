@@ -45,7 +45,7 @@ class MusicPlayer extends FlxGroup
 		songBG.alpha = 0.6;
 		add(songBG);
 
-		playbackBG = new FlxSprite(xPos - 6, 0).makeGraphic(1, 100, 0xFF000000);
+		playbackBG = new FlxSprite(xPos - 6, 0).makeGraphic(1, 125, 0xFF000000);
 		playbackBG.alpha = 0.6;
 		add(playbackBG);
 
@@ -90,9 +90,9 @@ class MusicPlayer extends FlxGroup
 		}
 
 		if (paused && !wasPlaying)
-			songTxt.text = 'PLAYING: ' + instance.songs[FreeplayState.curSelected].songName + ' (PAUSED)';
+			songTxt.text = 'PLAYING: Lore (PAUSED)';
 		else
-			songTxt.text = 'PLAYING: ' + instance.songs[FreeplayState.curSelected].songName;
+			songTxt.text = 'PLAYING: Lore';
 
 		positionSong();
 

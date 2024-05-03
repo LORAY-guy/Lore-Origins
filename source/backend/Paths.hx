@@ -1,22 +1,16 @@
 package backend;
 
-import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
-import flixel.math.FlxRect;
 
 import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.system.System;
-import openfl.geom.Rectangle;
 
 import lime.utils.Assets;
 import flash.media.Sound;
-
-import haxe.Json;
-
 
 #if MODS_ALLOWED
 import backend.Mods;
@@ -201,8 +195,8 @@ class Paths
 	inline static public function voices(song:String, postfix:String = null):Any
 	{
 		var songKey:String = '${formatToSongPath(song)}/Voices';
-		if(postfix != null) songKey += '-' + postfix;
-		//trace('songKey test: $songKey');
+		if(postfix != null) songKey += '-' + postfix + (ClientPrefs.data.guy != 'Ourple' ? '-' + ClientPrefs.data.guy : '-Ourple');
+		trace('$songKey');
 		var voices = returnSound(null, songKey, 'songs');
 		return voices;
 	}
@@ -535,7 +529,7 @@ class Paths
 	}
 	#end
 
-	#if flxanimate
+	#if (flxanimate && !html5)
 	public static function loadAnimateAtlas(spr:FlxAnimate, folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null)
 	{
 		var changedAnimJson = false;

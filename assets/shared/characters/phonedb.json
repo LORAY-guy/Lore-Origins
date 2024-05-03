@@ -1,100 +1,102 @@
 {
 	"animations": [
 		{
+			"loop": false,
 			"offsets": [
 				128,
 				100
 			],
-			"loop": false,
-			"fps": 24,
 			"anim": "singLEFT",
-			"indices": [],
-			"name": "left"
+			"fps": 24,
+			"name": "left",
+			"indices": []
 		},
 		{
+			"loop": false,
 			"offsets": [
 				120,
 				98
 			],
-			"loop": false,
-			"fps": 24,
 			"anim": "singDOWN",
-			"indices": [],
-			"name": "down"
+			"fps": 24,
+			"name": "down",
+			"indices": []
 		},
 		{
+			"loop": false,
 			"offsets": [
 				134,
 				100
 			],
-			"loop": false,
-			"fps": 24,
 			"anim": "singUP",
-			"indices": [],
-			"name": "up"
+			"fps": 24,
+			"name": "up",
+			"indices": []
 		},
 		{
+			"loop": false,
 			"offsets": [
 				126,
 				100
 			],
-			"loop": false,
-			"fps": 24,
 			"anim": "singRIGHT",
-			"indices": [],
-			"name": "right"
+			"fps": 24,
+			"name": "right",
+			"indices": []
 		},
 		{
-			"loop": false,
 			"offsets": [
 				128,
 				100
 			],
-			"anim": "danceLeft",
+			"loop": false,
 			"fps": 24,
-			"name": "dance left",
-			"indices": []
+			"anim": "danceLeft",
+			"indices": [],
+			"name": "dance left"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				120,
 				100
 			],
-			"anim": "danceRight",
+			"loop": false,
 			"fps": 24,
-			"name": "dance right",
-			"indices": []
+			"anim": "danceRight",
+			"indices": [],
+			"name": "dance right"
 		},
 		{
+			"loop": false,
 			"offsets": [
 				132,
 				90
 			],
-			"indices": [],
-			"fps": 24,
 			"anim": "welcome",
-			"loop": false,
-			"name": "hi"
+			"fps": 24,
+			"name": "hi",
+			"indices": []
 		}
 	],
+	"vocals_file": "",
 	"no_antialiasing": true,
 	"image": "characters/phone_db",
 	"position": [
 		350,
 		110
 	],
-	"healthicon": "dad",
+	"healthicon": "phone",
 	"flip_x": false,
 	"healthbar_colors": [
-		175,
-		102,
-		206
+		212,
+		54,
+		60
 	],
 	"camera_position": [
 		-430,
 		-60
 	],
 	"sing_duration": 6.1,
-	"scale": 2
+	"scale": 2,
+	"_editor_isPlayer": false
 }

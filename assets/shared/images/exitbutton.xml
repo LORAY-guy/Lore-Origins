@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="exitbutton.png">
+<SubTexture name="in0000" x="0" y="280" width="127" height="123" frameX="-37" frameY="-55" frameWidth="200" frameHeight="200" />
+<SubTexture name="in0001" x="0" y="0" width="146" height="143" frameX="-29" frameY="-45" frameWidth="200" frameHeight="200" />
+<SubTexture name="in0002" x="146" y="0" width="146" height="142" frameX="-32" frameY="-48" frameWidth="200" frameHeight="200" />
+<SubTexture name="in0003" x="0" y="143" width="143" height="137" frameX="-30" frameY="-48" frameWidth="200" frameHeight="200" />
+<SubTexture name="pop0000" x="292" y="133" width="132" height="126" frameX="-35" frameY="-52" frameWidth="200" frameHeight="200" />
+<SubTexture name="pop0001" x="292" y="0" width="138" height="133" frameX="-33" frameY="-50" frameWidth="200" frameHeight="200" />
+<SubTexture name="pop0002" x="0" y="143" width="143" height="137" frameX="-30" frameY="-48" frameWidth="200" frameHeight="200" />
+<SubTexture name="idle0000" x="143" y="143" width="145" height="137" frameX="-29" frameY="-48" frameWidth="200" frameHeight="200" />
+<SubTexture name="idle0001" x="0" y="143" width="143" height="137" frameX="-30" frameY="-48" frameWidth="200" frameHeight="200" />
+</TextureAtlas>

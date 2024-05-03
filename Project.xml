@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Lore Origins" file="Lore Origins" packageName="com.shadowmario.psychengine" package="com.shadowmario.psychengine" main="Main" version="1.6.0" company="LORAY" />
+	<app title="Lore Origins" file="Lore Origins" packageName="com.shadowmario.psychengine" package="com.shadowmario.psychengine" main="Main" version="1.7.0" company="LORAY" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -21,9 +21,9 @@
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
 	<define name="HSCRIPT_ALLOWED" if="desktop" />
-	<define name="LUA_ALLOWED" if="desktop" />
+	<define name="LUA_ALLOWED" if="desktop"/>
 	<define name="CHECK_FOR_UPDATES"/>
-	<define name="DISCORD_ALLOWED" />
+	<define name="DISCORD_ALLOWED" if="desktop" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 

@@ -125,11 +125,11 @@ class Main extends Sprite
 
 		#if html5
 		FlxG.autoPause = false;
-		FlxG.mouse.visible = false;
-		#else
-		FlxG.mouse.load('assets/shared/images/cursor.png', 1.5, -8, -7);
-		FlxG.mouse.visible = true;
 		#end
+		
+		var curGuy:String = ClientPrefs.data.guy.toLowerCase();
+		FlxG.mouse.load('assets/shared/images/cursors/$curGuy-cursor.png', 1, -8, -7);
+		FlxG.mouse.visible = true;
 		
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);

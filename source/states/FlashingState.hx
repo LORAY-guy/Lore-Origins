@@ -13,8 +13,6 @@ class FlashingState extends MusicBeatState
 
 	override function create()
 	{
-		super.create();
-
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
@@ -34,6 +32,8 @@ class FlashingState extends MusicBeatState
 			FlxTween.angle(arm,-1,1,6, {ease: FlxEase.sineInOut, type: PINGPONG});
 		}});
 		FlxG.camera.shake(0.003, 1.5);
+
+		super.create();
 	}
 
 	override function update(elapsed:Float)

@@ -38,6 +38,18 @@ typedef AnimArray = {
 	var offsets:Array<Int>;
 }
 
+//I know it sounds easier to just make the strumTime variable
+//but the thing is that it would smometimes make the ghost of the already playing animation
+//So you couldn't really see it
+//This painful workaround makes sure to play the other not playing animation
+
+@:structInit class GhostData {
+	public var strumTime:Float = 0;
+	public var frameName:String = '';
+	public var offsetX:Float = 0;
+	public var offsetY:Float = 0;
+}
+
 class Character extends FlxSprite
 {
 	/**
@@ -78,6 +90,12 @@ class Character extends FlxSprite
 	public var noAntialiasing:Bool = false;
 	public var originalFlipX:Bool = false;
 	public var editorIsPlayer:Null<Bool> = null;
+
+	//Ourple Guy shit
+	public var flipped:Bool = true;
+	public var flippedIdle:Bool = false;
+	public var defaultY:Float = 0;
+	public var ghostData:GhostData = {};
 
 	public function new(x:Float, y:Float, ?character:String = 'playguy', ?isPlayer:Bool = false)
 	{
@@ -130,7 +148,7 @@ class Character extends FlxSprite
 	{
 		isAnimateAtlas = false;
 
-		#if flxanimate
+		#if (flxanimate && !html5)
 		var animToFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT, null, true);
 		if (#if MODS_ALLOWED FileSystem.exists(animToFind) || #end Assets.exists(animToFind))
 			isAnimateAtlas = true;
@@ -141,7 +159,7 @@ class Character extends FlxSprite
 
 		if(!isAnimateAtlas)
 			frames = Paths.getAtlas(json.image);
-		#if flxanimate
+		#if (flxanimate && !html5)
 		else
 		{
 			atlas = new FlxAnimate();
@@ -198,7 +216,7 @@ class Character extends FlxSprite
 					else
 						animation.addByPrefix(animAnim, animName, animFps, animLoop);
 				}
-				#if flxanimate
+				#if (flxanimate && !html5)
 				else
 				{
 					if(animIndices != null && animIndices.length > 0)
@@ -212,7 +230,7 @@ class Character extends FlxSprite
 				else addOffset(anim.anim, 0, 0);
 			}
 		}
-		#if flxanimate
+		#if (flxanimate && !html5)
 		if(isAnimateAtlas) copyAtlasValues();
 		#end
 		//trace('Loaded file to character ' + curCharacter);
@@ -220,6 +238,7 @@ class Character extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+		#if (flxanimate && !html5)
 		if(isAnimateAtlas) atlas.update(elapsed);
 
 		if(debugMode || (!isAnimateAtlas && animation.curAnim == null) || (isAnimateAtlas && atlas.anim.curSymbol == null))
@@ -227,6 +246,7 @@ class Character extends FlxSprite
 			super.update(elapsed);
 			return;
 		}
+		#end
 
 		if(heyTimer > 0)
 		{
@@ -271,45 +291,73 @@ class Character extends FlxSprite
 	}
 
 	inline public function isAnimationNull():Bool
+		#if (flxanimate && !html5)
 		return !isAnimateAtlas ? (animation.curAnim == null) : (atlas.anim.curSymbol == null);
+		#else
+		return animation.curAnim == null;
+		#end
 
 	inline public function getAnimationName():String
 	{
 		var name:String = '';
 		@:privateAccess
+		#if (flxanimate && !html5)
 		if(!isAnimationNull()) name = !isAnimateAtlas ? animation.curAnim.name : atlas.anim.lastPlayedAnim;
 		return (name != null) ? name : '';
+		#else
+		if(!isAnimationNull()) name = animation.curAnim.name;
+		return (name != null) ? name : '';
+		#end
 	}
 
 	public function isAnimationFinished():Bool
 	{
+		#if (flxanimate && !html5)
 		if(isAnimationNull()) return false;
 		return !isAnimateAtlas ? animation.curAnim.finished : atlas.anim.finished;
+		#else
+		if(isAnimationNull()) return false;
+		return animation.curAnim.finished;
+		#end
 	}
 
 	public function finishAnimation():Void
 	{
 		if(isAnimationNull()) return;
 
+		#if (flxanimate && !html5)
 		if(!isAnimateAtlas) animation.curAnim.finish();
 		else atlas.anim.curFrame = atlas.anim.length - 1;
+		#else
+		animation.curAnim.finish();
+		#end
 	}
 
 	public var animPaused(get, set):Bool;
 	private function get_animPaused():Bool
 	{
 		if(isAnimationNull()) return false;
+
+		#if (flxanimate && !html5)
 		return !isAnimateAtlas ? animation.curAnim.paused : atlas.anim.isPlaying;
+		#else
+		return animation.curAnim.paused;
+		#end
 	}
 	private function set_animPaused(value:Bool):Bool
 	{
 		if(isAnimationNull()) return value;
+
+		#if (flxanimate && !html5)
 		if(!isAnimateAtlas) animation.curAnim.paused = value;
 		else
 		{
 			if(value) atlas.anim.pause();
 			else atlas.anim.resume();
-		} 
+		}
+		#else
+		animation.curAnim.paused = value;
+		#end
 
 		return value;
 	}
@@ -333,7 +381,7 @@ class Character extends FlxSprite
 					playAnim('danceLeft' + idleSuffix);
 			}
 			else if(animOffsets.exists('idle' + idleSuffix)) {
-					playAnim('idle' + idleSuffix);
+				playAnim('idle' + idleSuffix);
 			}
 		}
 	}
@@ -341,8 +389,13 @@ class Character extends FlxSprite
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
 		specialAnim = false;
+		
+		#if (flxanimate && !html5)
 		if(!isAnimateAtlas) animation.play(AnimName, Force, Reversed, Frame);
 		else atlas.anim.play(AnimName, Force, Reversed, Frame);
+		#else
+		animation.play(AnimName, Force, Reversed, Frame);
+		#end
 
 		if (animOffsets.exists(AnimName))
 		{
@@ -372,6 +425,7 @@ class Character extends FlxSprite
 	public var danceEveryNumBeats:Int = 2;
 	private var settingCharacterUp:Bool = true;
 	public function recalculateDanceIdle() {
+		defaultY = y;
 		var lastDanceIdle:Bool = danceIdle;
 		danceIdle = (animOffsets.exists('danceLeft' + idleSuffix) && animOffsets.exists('danceRight' + idleSuffix));
 
@@ -405,7 +459,7 @@ class Character extends FlxSprite
 	// Atlas support
 	// special thanks ne_eo for the references, you're the goat!!
 	public var isAnimateAtlas:Bool = false;
-	#if flxanimate
+	#if (flxanimate && !html5)
 	public var atlas:FlxAnimate;
 	public override function draw()
 	{

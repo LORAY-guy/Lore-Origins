@@ -1,5 +1,7 @@
 package states;
 
+import backend.ExitButton;
+
 import flixel.FlxObject;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
@@ -11,8 +13,9 @@ import options.OptionsState;
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.7.3'; // This is used for Discord RPC
-	public static var loreVersion:String = '1.6.0'; //This is also used for Discord RPC
+	public static var loreVersion:String = '1.7.0'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
+	public static var playedIntro:Bool = false;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
@@ -21,8 +24,6 @@ class MainMenuState extends MusicBeatState
 		'options',
 		'credits'
 	];
-
-	private var camGame:FlxCamera;
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -40,13 +41,10 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("Lore Menu", null);
 		#end
 
-		camGame = new FlxCamera();
+		Paths.clearUnusedMemory();
 
-		FlxG.cameras.reset(camGame);
-		FlxG.cameras.setDefaultDrawTarget(camGame, true);
-
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
+		FlxTransitionableState.skipNextTransIn = true;
+		FlxTransitionableState.skipNextTransOut = true;
 
 		persistentUpdate = persistentDraw = true;
 
@@ -119,10 +117,16 @@ class MainMenuState extends MusicBeatState
 		changeItem();
 		super.create();
 
-		#if !html5 if (!FlxG.mouse.visible) FlxG.mouse.visible = true; #end
+		if (!playedIntro) playIntro();
+		FlxG.camera.y = 720;
+		FlxTween.tween(FlxG.camera, {y: 0}, 1.2, {ease: FlxEase.expoInOut});
+
+		add(new ExitButton('title'));
+
+		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
 	}
 
-	var selectedSomethin:Bool = false;
+	public var selectedSomethin:Bool = false;
 
 	public var usingMouse:Bool = false;
 	public var canClick:Bool = true;
@@ -136,10 +140,15 @@ class MainMenuState extends MusicBeatState
 				FreeplayState.vocals.volume += 0.5 * elapsed;
 		}
 
+		if (FlxG.mouse.justMoved) FlxG.mouse.visible = true;
+
 		if (controls.UI_LEFT_P || controls.UI_RIGHT_P)
+		{
 			usingMouse = false;
+			FlxG.mouse.visible = false;
+		}
 		else
-			usingMouse = (FlxG.mouse.overlaps(menuItems));
+			usingMouse = (FlxG.mouse.overlaps(menuItems) && FlxG.mouse.visible);
 		
 		if (!selectedSomethin)
 		{
@@ -149,10 +158,11 @@ class MainMenuState extends MusicBeatState
 				{
 					if (FlxG.mouse.overlaps(spr))
 					{
-						curSelected = spr.ID;
-
 						if (spr.animation.curAnim.name != 'selected')
 						{
+							FlxG.camera.zoom += 0.03;
+							curSelected = spr.ID;
+
 							FlxG.sound.play(Paths.sound('scrollMenu'));
 							spr.animation.play('selected');
 
@@ -190,7 +200,9 @@ class MainMenuState extends MusicBeatState
 			{
 				selectedSomethin = true;
 				FlxG.sound.play(Paths.sound('cancelMenu'));
-				MusicBeatState.switchState(new TitleState());
+				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+					MusicBeatState.switchState(new TitleState());
+				}});
 			}
 
 			if (controls.ACCEPT)
@@ -202,17 +214,23 @@ class MainMenuState extends MusicBeatState
 			#if desktop
 			if (controls.justPressed('debug_1'))
 			{
-				selectedSomethin = true;
-				MusicBeatState.switchState(new MasterEditorMenu());
+				/*selectedSomethin = true;
+				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+					MusicBeatState.switchState(new MasterEditorMenu());
+				}});*/
+				FlxG.sound.play(Paths.sound('cancelMenu'));
 			}
 			#end
 		}
 
+		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
 		super.update(elapsed);
 	}
 
 	function changeItem(huh:Int = 0)
 	{
+		FlxG.camera.zoom += 0.03;
+
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 		menuItems.members[curSelected].animation.play('idle');
 		menuItems.members[curSelected].updateHitbox();
@@ -233,6 +251,10 @@ class MainMenuState extends MusicBeatState
 
 	private function processItems():Void
 	{
+		FlxG.camera.zoom += 0.06;
+		FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut});
+		//if (ClientPrefs.data.flashing) FlxG.camera.flash(FlxColor.WHITE, 0.7);
+
 		menuItems.forEach(function(spr:FlxSprite) {
 			if (curSelected != spr.ID)
 			{
@@ -258,10 +280,27 @@ class MainMenuState extends MusicBeatState
 						case 'credits':
 							MusicBeatState.switchState(new states.credits.CreditsState());
 						case 'options':
-							LoadingState.loadAndSwitchState(new options.OptionsState());
+							OptionsState.onPlayState = false;
+							MusicBeatState.switchState(new options.OptionsState());
 					}
 				});
 			}
 		});
+	}
+
+	function playIntro() 
+	{
+		selectedSomethin = true;
+		canClick = false;
+		for (i in 0...menuItems.members.length)
+		{
+			var posX:Float = menuItems.members[i].x;
+			menuItems.members[i].x = -1000;
+			FlxTween.tween(menuItems.members[i], {x: posX}, 1, {startDelay: 1, ease: FlxEase.cubeOut, onComplete: function(twn:FlxTween) {
+				selectedSomethin = false;
+				canClick = true;
+			}});
+		}
+		playedIntro = true;
 	}
 }

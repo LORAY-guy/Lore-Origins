@@ -75,6 +75,17 @@ import states.TitleState;
 	public var safeFrames:Float = 10;
 	public var guitarHeroSustains:Bool = true;
 	public var discordRPC:Bool = true;
+
+	/**LORE ORIGINS STUFF**/
+	public var ourpleData:Map<String, String> = [
+		'Ourple' => 'Normal',
+		'Vloo' => 'Mad'
+	];
+	public var guy:String = 'Ourple';
+	public var lorayWatermark:Bool = true;
+	public var characterGhost:Bool = true;
+	public var exitButtonX:String = 'Left';
+	public var hideOldCovers:Bool = false;
 }
 
 class ClientPrefs {

@@ -28,7 +28,6 @@ class LoadingState extends MusicBeatState
 	var stopMusic = false;
 	var directory:String;
 	var callbacks:MultiCallback;
-	var targetShit:Float = 0;
 
 	function new(target:FlxState, stopMusic:Bool, directory:String)
 	{
@@ -39,35 +38,78 @@ class LoadingState extends MusicBeatState
 	}
 
 	var funkay:FlxSprite;
-	var loadBar:FlxSprite;
+	var loadingText:FlxText;
+    var dots:String = ".";
+
+	var uselessTipsList:Array<String> = [
+		"If you don\'t hit a note, you will miss!",
+		"There is multiple songs named \'Lore\'!",
+		"If you look at the songs in Freeplay, you will find Matpat!",
+		"If you click the \'X\' in windowed mode, you close the mod!",
+		"You can navigate the menu using the controls!",
+		"You can change your settings in settings!",
+		"If you have 0 HP, then you die!",
+		"[Insert tip with obscure lore here]",
+		"Look at the tip screen for more helpful tips!",
+		"Hit notes to increase your combo!",
+		"The song \'Lore\' contains the motif of the song \'Lore\'",
+		"If you open this mod, you will play Lore Origins! :D",
+		"Hello Internet, welcome to the LOOOOOOOOOOOOOADING screen!",
+		"Well, well, well...",
+		"Skibidi dop dop dop yes yes",
+		"I always come back...",
+		"Don't you tell me how many calories I need, bitch!",
+		"Ohh, look at that thick layer of cream, I want that thickness inside my body...",
+		"Hello everybody, my name is Matpat.",
+		"WAS THAT THE LOADING OF 87?!!",
+		"Oh, Hi! welcome to my schooooooool house...",
+		"https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+		"Hi, I'm Baldi! Nice to meet ya. Fuck me in the ass and call me Patricia. Book's your game? Just shout my name. When you let me use my whip... So that's one book right? But you're all wrong! You haven't even let me use my thong. While I sing you this song, It goes \"Ding dong\". Like the door I open on you. Here\'s a tip, abandon ship. Or you're gonna see me campfire willy. Oh, oh Oh hi there! Welcome to my hooker palace. Oh, oh, oh hi there! Please don't leave, I have no friends. Oh, oh, oh hi there! Let's go camping, Let me touch ya. Oh, oh, oh hi there! Haha, I tied you up!",
+		"According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little.  Barry! Breakfast is ready! Ooming! Hang on a second. Hello? - Barry? - Adam? - Oan you believe this is happening? - I can't. I'll pick you up. Looking sharp. Use the stairs. Your father paid good money for those. Sorry. I'm excited." // Bee movie script
+	];
+
 	override function create()
 	{
 		var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xffcaff4d);
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
-		funkay = new FlxSprite(0, 0).loadGraphic(Paths.getPath('images/funkay.png', IMAGE));
-		funkay.setGraphicSize(0, FlxG.height);
+		funkay = new FlxSprite().loadGraphic(Paths.image('loading/whitey'));
+		funkay.setGraphicSize(funkay.width * (1/6));
 		funkay.updateHitbox();
 		add(funkay);
 		funkay.antialiasing = ClientPrefs.data.antialiasing;
 		funkay.scrollFactor.set();
 		funkay.screenCenter();
 
-		loadBar = new FlxSprite(0, FlxG.height - 20).makeGraphic(FlxG.width, 10, 0xffff16d2);
-		loadBar.screenCenter(X);
-		add(loadBar);
-		
+		loadingText = new FlxText(FlxG.width - 400, FlxG.height - 90, 720, "Loading", 76);
+        loadingText.setFormat(Paths.font('matpat.ttf'), 76, 0x3fe730, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		loadingText.borderSize = 4;
+        add(loadingText);
+
+		var uselessTip:FlxText = new FlxText(0, FlxG.height - 210, FlxG.width - (FlxG.width * (1/4)), '', 48);
+		uselessTip.setFormat(Paths.font('matpat.ttf'), 48, 0x3fe730, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+
+		var tip:String = uselessTipsList[FlxG.random.int(0, uselessTipsList.length)];
+
+		if (tip == null)
+			tip = Std.string(FlxG.random.int(0, 255)) + '.' + Std.string(FlxG.random.int(0, 255)) + '.' + Std.string(FlxG.random.int(0, 255)) + '.' + Std.string(FlxG.random.int(0, 255)); // fake IP address generator ;)
+		else if (tip.length > 200)
+			uselessTip.y = 0;
+
+		uselessTip.text = 'TIP: ' + tip;
+		uselessTip.screenCenter(X);
+		uselessTip.borderSize = 4;
+        add(uselessTip);
+
+		var timer = new FlxTimer();
+        timer.start(0.5, onTimerTick, 0);
+
 		initSongsManifest().onComplete
 		(
 			function (lib)
 			{
 				callbacks = new MultiCallback(onLoad);
 				var introComplete = callbacks.add("introComplete");
-				if (PlayState.SONG != null) {
-					checkLoadSong(getSongPath());
-					if (PlayState.SONG.needsVoices)
-						checkLoadSong(getVocalPath());
-				}
 				if(directory != null && directory.length > 0 && directory != 'shared') {
 					checkLibrary('week_assets');
 				}
@@ -77,21 +119,6 @@ class LoadingState extends MusicBeatState
 				new FlxTimer().start(fadeTime + MIN_TIME, function(_) introComplete());
 			}
 		);
-	}
-	
-	function checkLoadSong(path:String)
-	{
-		if (!Assets.cache.hasSound(path))
-		{
-			var library = Assets.getLibrary("songs");
-			final symbolPath = path.split(":").pop();
-			// @:privateAccess
-			// library.types.set(symbolPath, SOUND);
-			// @:privateAccess
-			// library.pathGroups.set(symbolPath, [library.__cacheBreak(symbolPath)]);
-			var callback = callbacks.add("song:" + path);
-			Assets.loadSound(path).onComplete(function (_) { callback(); });
-		}
 	}
 	
 	function checkLibrary(library:String) {
@@ -110,17 +137,8 @@ class LoadingState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		funkay.setGraphicSize(Std.int(0.88 * FlxG.width + 0.9 * (funkay.width - 0.88 * FlxG.width)));
-		funkay.updateHitbox();
-		if(controls.ACCEPT)
-		{
-			funkay.setGraphicSize(Std.int(funkay.width + 60));
-			funkay.updateHitbox();
-		}
 
 		if(callbacks != null) {
-			targetShit = FlxMath.remapToRange(callbacks.numRemaining / callbacks.length, 1, 0, 0, 1);
-			loadBar.scale.x += 0.5 * (targetShit - loadBar.scale.x);
 		}
 	}
 	
@@ -129,17 +147,9 @@ class LoadingState extends MusicBeatState
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 		
-		MusicBeatState.switchState(target);
-	}
-	
-	static function getSongPath()
-	{
-		return Paths.inst(PlayState.SONG.song);
-	}
-	
-	static function getVocalPath()
-	{
-		return Paths.voices(PlayState.SONG.song);
+		new FlxTimer().start(1, function(tmr:FlxTimer) {
+			MusicBeatState.switchState(target);
+		});
 	}
 	
 	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false)
@@ -158,34 +168,17 @@ class LoadingState extends MusicBeatState
 		Paths.setCurrentLevel(directory);
 		trace('Setting asset folder to ' + directory);
 
-		/*#if NO_PRELOAD_ALL
 		var loaded:Bool = false;
-		if (PlayState.SONG != null) {
-			loaded = isSoundLoaded(getSongPath()) && (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath())) && isLibraryLoaded('week_assets');
-		}
 		
 		if (!loaded)
 			return new LoadingState(target, stopMusic, directory);
-		#end*/
+
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 		
 		return target;
 	}
-	
-	/*#if NO_PRELOAD_ALL
-	static function isSoundLoaded(path:String):Bool
-	{
-		trace(path);
-		return Assets.cache.hasSound(path);
-	}
-	
-	static function isLibraryLoaded(library:String):Bool
-	{
-		return Assets.getLibrary(library) != null;
-	}
-	#end*/
-	
+
 	override function destroy()
 	{
 		super.destroy();
@@ -258,6 +251,14 @@ class LoadingState extends MusicBeatState
 
 		return promise.future;
 	}
+
+	private function onTimerTick(timer:FlxTimer):Void {
+        dots += ".";
+        if (dots.length > 3) {
+            dots = ".";
+        }
+        loadingText.text = "Loading" + dots;
+    }
 }
 
 class MultiCallback

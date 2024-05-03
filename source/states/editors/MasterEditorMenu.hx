@@ -1,5 +1,6 @@
 package states.editors;
 
+import backend.ExitButton;
 import backend.WeekData;
 
 import objects.Character;
@@ -91,6 +92,11 @@ class MasterEditorMenu extends MusicBeatState
 
 		FlxG.mouse.visible = false;
 		super.create();
+
+		FlxG.camera.y = 720;
+		FlxTween.tween(FlxG.camera, {y: 0}, 1.2, {ease: FlxEase.expoInOut});
+
+		new ExitButton();
 	}
 
 	override function update(elapsed:Float)

@@ -6,6 +6,7 @@ typedef SwagSection =
 	var sectionBeats:Float;
 	var mustHitSection:Bool;
 	var gfSection:Bool;
+	var gfIsSinging:Bool;
 	var bpm:Float;
 	var changeBPM:Bool;
 	var altAnim:Bool;

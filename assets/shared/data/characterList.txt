@@ -1,3 +1,10 @@
 matpat2
 playguy
+playguy-mad
+playguy-staring
+vloo
+vloo-mad
 phone
+casseteman
+mark
+prange

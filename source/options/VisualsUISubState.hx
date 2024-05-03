@@ -11,7 +11,6 @@ class VisualsUISubState extends BaseOptionsMenu
 	public function new()
 	{
 		title = 'Visuals and UI';
-		rpcTitle = 'Setting the LOOOOOOOOOOOOORE'; //for Discord Rich Presence
 
 		// for note skins
 		/*notes = new FlxTypedGroup<StrumNote>();
@@ -33,7 +32,7 @@ class VisualsUISubState extends BaseOptionsMenu
 				ClientPrefs.data.noteSkin = ClientPrefs.defaultData.noteSkin; //Reset to default if saved noteskin couldnt be found
 
 			noteSkins.insert(0, ClientPrefs.defaultData.noteSkin); //Default skin always comes first
-			var option:Option = new Option('Note Skins:',
+			var option:OurpleOption = new OurpleOption('Note Skins:',
 				"Select your prefered Note skin.",
 				'noteSkin',
 				'string',
@@ -50,7 +49,7 @@ class VisualsUISubState extends BaseOptionsMenu
 				ClientPrefs.data.splashSkin = ClientPrefs.defaultData.splashSkin; //Reset to default if saved splashskin couldnt be found
 
 			noteSplashes.insert(0, ClientPrefs.defaultData.splashSkin); //Default skin always comes first
-			var option:Option = new Option('Note Splashes:',
+			var option:OurpleOption = new OurpleOption('Note Splashes:',
 				"Select your prefered Note Splash variation or turn it off.",
 				'splashSkin',
 				'string',
@@ -58,7 +57,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			addOption(option);
 		}*/
 
-		var option:Option = new Option('Note Splash Opacity',
+		var option:OurpleOption = new OurpleOption('Note Splash Opacity',
 			'How much transparent should the Note Splashes be.',
 			'splashAlpha',
 			'percent');
@@ -69,38 +68,38 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.decimals = 1;
 		addOption(option);
 
-		var option:Option = new Option('Hide HUD',
+		var option:OurpleOption = new OurpleOption('Hide HUD',
 			'If checked, hides most HUD elements.',
 			'hideHud',
 			'bool');
 		addOption(option);
 		
-		var option:Option = new Option('Time Bar:',
+		var option:OurpleOption = new OurpleOption('Time Bar:',
 			"What should the Time Bar display?",
 			'timeBarType',
 			'string',
 			['Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
 		addOption(option);
 
-		var option:Option = new Option('Flashing Lights',
+		var option:OurpleOption = new OurpleOption('Flashing Lights',
 			"Uncheck this if you're sensitive to flashing lights!",
 			'flashing',
 			'bool');
 		addOption(option);
 
-		var option:Option = new Option('Camera Zooms',
+		var option:OurpleOption = new OurpleOption('Camera Zooms',
 			"If unchecked, the camera won't zoom in on a beat hit.",
 			'camZooms',
 			'bool');
 		addOption(option);
 
-		var option:Option = new Option('Score Text Zoom on Hit',
+		var option:OurpleOption = new OurpleOption('Score Text Zoom on Hit',
 			"If unchecked, disables the Score text zooming\neverytime you hit a note.",
 			'scoreZoom',
 			'bool');
 		addOption(option);
 
-		var option:Option = new Option('Health Bar Opacity',
+		var option:OurpleOption = new OurpleOption('Health Bar Opacity',
 			'How much transparent should the health bar and icons be.',
 			'healthBarAlpha',
 			'percent');
@@ -112,7 +111,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 		
 		#if !mobile
-		var option:Option = new Option('FPS Counter',
+		var option:OurpleOption = new OurpleOption('FPS Counter',
 			'If unchecked, hides FPS Counter.',
 			'showFPS',
 			'bool');
@@ -120,7 +119,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.onChange = onChangeFPSCounter;
 		#end
 		
-		var option:Option = new Option('Pause Screen Song:',
+		var option:OurpleOption = new OurpleOption('Pause Screen Song:',
 			"What song do you prefer for the Pause Screen?",
 			'pauseMusic',
 			'string',
@@ -129,7 +128,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.onChange = onChangePauseMusic;
 		
 		#if CHECK_FOR_UPDATES
-		var option:Option = new Option('Check for Updates',
+		var option:OurpleOption = new OurpleOption('Check for Updates',
 			'Don\'t you dare turning this off, Ourple Guy knows where you live...',
 			'checkForUpdates',
 			'bool');
@@ -137,14 +136,14 @@ class VisualsUISubState extends BaseOptionsMenu
 		#end
 
 		#if DISCORD_ALLOWED
-		var option:Option = new Option('Discord Rich Presence',
+		var option:OurpleOption = new OurpleOption('Discord Rich Presence',
 			"Uncheck this to prevent accidental leaks, it will hide the Application from your \"Playing\" box on Discord",
 			'discordRPC',
 			'bool');
 		addOption(option);
 		#end
 
-		var option:Option = new Option('Combo Stacking',
+		var option:OurpleOption = new OurpleOption('Combo Stacking',
 			"If unchecked, Ratings and Combo won't stack, saving on System Memory and making them easier to read",
 			'comboStacking',
 			'bool');

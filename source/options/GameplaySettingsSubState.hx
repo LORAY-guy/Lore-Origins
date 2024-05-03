@@ -5,47 +5,46 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 	public function new()
 	{
 		title = 'Gameplay Settings';
-		rpcTitle = 'Setting the LOOOOOOOOOOOOORE'; //for Discord Rich Presence
 
 		//I'd suggest using "Downscroll" as an example for making your own option since it is the simplest here
-		var option:Option = new Option('Downscroll', //Name
+		var option:OurpleOption = new OurpleOption('Downscroll', //Name
 			'If checked, notes go Down instead of Up, simple enough.', //Description
 			'downScroll', //Save data variable name
 			'bool'); //Variable type
 		addOption(option);
 
-		var option:Option = new Option('Middlescroll',
+		var option:OurpleOption = new OurpleOption('Middlescroll',
 			'If checked, your notes get centered.',
 			'middleScroll',
 			'bool');
 		addOption(option);
 
-		var option:Option = new Option('Opponent Notes',
+		var option:OurpleOption = new OurpleOption('Opponent Notes',
 			'If unchecked, opponent notes get hidden.',
 			'opponentStrums',
 			'bool');
 		addOption(option);
 
-		var option:Option = new Option('Ghost Tapping',
+		var option:OurpleOption = new OurpleOption('Ghost Tapping',
 			"If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.",
 			'ghostTapping',
 			'bool');
 		addOption(option);
 		
-		var option:Option = new Option('Auto Pause',
+		var option:OurpleOption = new OurpleOption('Auto Pause',
 			"If checked, the game automatically pauses if the screen isn't on focus.",
 			'autoPause',
 			'bool');
 		addOption(option);
 		option.onChange = onChangeAutoPause;
 
-		var option:Option = new Option('Disable Reset Button',
+		var option:OurpleOption = new OurpleOption('Disable Reset Button',
 			"If checked, pressing Reset won't do anything.",
 			'noReset',
 			'bool');
 		addOption(option);
 
-		var option:Option = new Option('Hitsound Volume',
+		var option:OurpleOption = new OurpleOption('Hitsound Volume',
 			'Funny notes does \"Tick!\" when you hit them.',
 			'hitsoundVolume',
 			'percent');
@@ -57,7 +56,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.decimals = 1;
 		option.onChange = onChangeHitsoundVolume;
 
-		var option:Option = new Option('Rating Offset',
+		var option:OurpleOption = new OurpleOption('Rating Offset',
 			'Changes how late/early you have to hit for a "Sick!"\nHigher values mean you have to hit later.',
 			'ratingOffset',
 			'int');
@@ -67,7 +66,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 30;
 		addOption(option);
 
-		var option:Option = new Option('Sick! Hit Window',
+		var option:OurpleOption = new OurpleOption('Sick! Hit Window',
 			'Changes the amount of time you have\nfor hitting a "Sick!" in milliseconds.',
 			'sickWindow',
 			'int');
@@ -77,7 +76,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 45;
 		addOption(option);
 
-		var option:Option = new Option('Good Hit Window',
+		var option:OurpleOption = new OurpleOption('Good Hit Window',
 			'Changes the amount of time you have\nfor hitting a "Good" in milliseconds.',
 			'goodWindow',
 			'int');
@@ -87,7 +86,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 90;
 		addOption(option);
 
-		var option:Option = new Option('Bad Hit Window',
+		var option:OurpleOption = new OurpleOption('Bad Hit Window',
 			'Changes the amount of time you have\nfor hitting a "Bad" in milliseconds.',
 			'badWindow',
 			'int');
@@ -97,7 +96,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 135;
 		addOption(option);
 
-		var option:Option = new Option('Safe Frames',
+		var option:OurpleOption = new OurpleOption('Safe Frames',
 			'Changes how many frames you have for\nhitting a note earlier or late.',
 			'safeFrames',
 			'float');
@@ -107,7 +106,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		addOption(option);
 
-		var option:Option = new Option('Sustains as One Note',
+		var option:OurpleOption = new OurpleOption('Sustains as One Note',
 			"If checked, Hold Notes can't be pressed if you miss,\nand count as a single Hit/Miss.\nUncheck this if you prefer the old Input System.",
 			'guitarHeroSustains',
 			'bool');

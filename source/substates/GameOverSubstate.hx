@@ -18,18 +18,18 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	var stageSuffix:String = "";
 
-	public static var characterName:String = 'bf-dead';
-	public static var deathSoundName:String = 'fnf_loss_sfx';
-	public static var loopSoundName:String = 'gameOver';
-	public static var endSoundName:String = 'gameOverEnd';
+	public static var characterName:String = 'playguy';
+	public static var deathSoundName:String = 'ourple_death';
+	public static var loopSoundName:String = 'wind';
+	public static var endSoundName:String = '';
 
 	public static var instance:GameOverSubstate;
 
 	public static function resetVariables() {
-		characterName = 'bf-dead';
-		deathSoundName = 'fnf_loss_sfx';
-		loopSoundName = 'gameOver';
-		endSoundName = 'gameOverEnd';
+		characterName = 'playguy';
+		deathSoundName = 'ourple_death';
+		loopSoundName = 'wind';
+		endSoundName = '';
 
 		var _song = PlayState.SONG;
 		if(_song != null)
@@ -49,16 +49,29 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		Conductor.songPosition = 0;
 
+		if (PlayState.instance.boyfriend.curCharacter == 'playguyrtx') characterName = 'playguyrtx';
+		else if (PlayState.instance.boyfriend.curCharacter == 'mark') characterName = 'mark';
+
 		boyfriend = new Character(PlayState.instance.boyfriend.getScreenPosition().x, PlayState.instance.boyfriend.getScreenPosition().y, characterName, true);
 		boyfriend.x += boyfriend.positionArray[0] - PlayState.instance.boyfriend.positionArray[0];
 		boyfriend.y += boyfriend.positionArray[1] - PlayState.instance.boyfriend.positionArray[1];
+		if (PlayState.instance.boyfriend.curCharacter.startsWith('playguy'))
+		{
+			boyfriend.scrollFactor.set(0, 0);
+			boyfriend.x = 850;
+			boyfriend.y = 500;
+			FlxG.camera.zoom = 0.8;
+		}
 		add(boyfriend);
 
 		FlxG.sound.play(Paths.sound(deathSoundName));
 		FlxG.camera.scroll.set();
 		FlxG.camera.target = null;
 
-		boyfriend.playAnim('firstDeath');
+		if (boyfriend.curCharacter == 'mark')
+			boyfriend.playAnim('singUP-alt');
+		else
+			boyfriend.playAnim('firstDeath');
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 		camFollow.setPosition(boyfriend.getGraphicMidpoint().x + boyfriend.cameraPosition[0], boyfriend.getGraphicMidpoint().y + boyfriend.cameraPosition[1]);
@@ -92,10 +105,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.chartingMode = false;
 
 			Mods.loadTopMod();
-			if (PlayState.isStoryMode)
-				MusicBeatState.switchState(new StoryMenuState());
-			else
-				MusicBeatState.switchState(new FreeplayState());
+			MusicBeatState.switchState(new FreeplayState());
 
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			PlayState.instance.callOnScripts('onGameOverConfirm', [false]);
@@ -117,22 +127,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				if (boyfriend.animation.curAnim.finished && !playingDeathSound)
 				{
 					startedDeath = true;
-					if (PlayState.SONG.stage == 'tank')
-					{
-						playingDeathSound = true;
-						coolStartDeath(0.2);
-						
-						var exclude:Array<Int> = [];
-						//if(!ClientPrefs.cursing) exclude = [1, 3, 8, 13, 17, 21];
-
-						FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude)), 1, false, null, true, function() {
-							if(!isEnding)
-							{
-								FlxG.sound.music.fadeIn(0.2, 1, 4);
-							}
-						});
-					}
-					else coolStartDeath();
+					coolStartDeath();
 				}
 			}
 		}

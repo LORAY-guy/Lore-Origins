@@ -1,5 +1,6 @@
 package states;
 
+import backend.ExitButton;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
@@ -12,6 +13,7 @@ import substates.ResetScoreSubState;
 
 import flixel.math.FlxMath;
 import flixel.addons.display.FlxBackdrop;
+import flixel.addons.transition.FlxTransitionableState;
 
 class FreeplayState extends MusicBeatState
 {
@@ -51,29 +53,54 @@ class FreeplayState extends MusicBeatState
 	var bottomBG:FlxSprite;
 
 	var player:MusicPlayer;
+	var exitButton:ExitButton;
 
 	override function create()
 	{
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
+		
 		switch (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase())
 		{
 			case 'covers':
-				addWeek(
-				[
-					'lored', 
-					'lore-ryan', 
-					'lore-awesomix',
-					'lore-apology',
-					'fever', 
-					'chronology', 
-					'lore-style', 
-					'live', 
-					'horse-lore',
-					'detective',
-					'measure-up',
-					'action'
-				], 
-				0, 
-				0xFF00ff00);
+				if (!ClientPrefs.data.hideOldCovers && ClientPrefs.data.guy == 'Ourple')
+				{
+					addWeek(
+					[
+						'lored', 
+						'lore-ryan', 
+						'lore-awesomix'
+					], 
+					0, 
+					0xff797979);
+				}
+				if (ClientPrefs.data.guy != 'Ourple') {
+					addWeek(
+						[
+							'lore-og',
+							'horse-lore',
+							'action'
+						], 
+						0,
+						0xFF00ff00);
+				} else {
+					addWeek(
+						[
+							'lore-apology',
+							#if !html5 'fever', #end
+							'chronology', 
+							'lore-style',
+							'live', 
+							'horse-lore',
+							'detective',
+							'measure-up',
+							'action',
+							'repugnant'
+						], 
+						0, 
+						0xFF00ff00);
+				}
+				PlayState.isCover = true;
 			case 'originals':
 				addWeek(
 				[
@@ -82,14 +109,15 @@ class FreeplayState extends MusicBeatState
 				], 
 				0, 
 				0xff00c3ff);
+				PlayState.isCover = false;
 		};
-
-		Paths.clearStoredMemory();
-		//Paths.clearUnusedMemory();
 		
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
+
+		FlxTransitionableState.skipNextTransIn = true;
+		FlxTransitionableState.skipNextTransOut = true;
 
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
@@ -226,6 +254,12 @@ class FreeplayState extends MusicBeatState
 		
 		#if desktop if (!FlxG.mouse.visible) FlxG.mouse.visible = true; #end
 		super.create();
+
+		FlxG.camera.y = 720;
+		FlxTween.tween(FlxG.camera, {y: 0}, 1.2, {ease: FlxEase.expoInOut});
+
+		exitButton = new ExitButton('freeplayselect');
+		add(exitButton);
 	}
 
 	override function closeSubState() {
@@ -286,7 +320,7 @@ class FreeplayState extends MusicBeatState
 				{
 					if (controls.UI_DOWN || controls.UI_UP)
 						usingMouse = false;
-					else if (FlxG.mouse.overlaps(grpSongs) || FlxG.mouse.overlaps(iconArray) || FlxG.mouse.overlaps(randomizer) || FlxG.mouse.wheel != 0)
+					else if (FlxG.mouse.justMoved || FlxG.mouse.wheel != 0)
 						usingMouse = true;
 					
 					if(FlxG.keys.justPressed.HOME)
@@ -352,7 +386,9 @@ class FreeplayState extends MusicBeatState
 						colorTween.cancel();
 					}
 					FlxG.sound.play(Paths.sound('cancelMenu'));
-					MusicBeatState.switchState(new states.FreeplaySelectState());
+					FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+						MusicBeatState.switchState(new states.FreeplaySelectState());
+					}});
 				}
 			}
 	
@@ -371,7 +407,7 @@ class FreeplayState extends MusicBeatState
 	
 					Mods.currentModDirectory = songs[curSelected].folder;
 					var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), 0);
-					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase(), ((FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory] == 'Covers') || (poop == 'lore-sad')));
 					if (PlayState.SONG.needsVoices)
 					{
 						vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
@@ -404,7 +440,7 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 	
-			else if ((FlxG.keys.pressed.R) || (usingMouse && canClick && FlxG.mouse.justPressed && FlxG.mouse.overlaps(randomizer)))
+			else if ((!player.playingMusic) && ((FlxG.keys.pressed.R) || (usingMouse && canClick && FlxG.mouse.justPressed && FlxG.mouse.overlaps(randomizer))))
 			{
 				canClick = false;
 				persistentUpdate = false;
@@ -412,17 +448,21 @@ class FreeplayState extends MusicBeatState
 				var brub:Int = FlxG.random.int(0, songs.length-1);
 				var songLowercase:String = Paths.formatToSongPath(songs[brub].songName);
 				var poop:String = Highscore.formatSong(songLowercase, 0);
+				trace(poop);
 	
-				PlayState.SONG = Song.loadFromJson(poop, songLowercase);
+				PlayState.SONG = Song.loadFromJson(poop, songLowercase, ((FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory] == 'Covers') || (poop == 'lore-sad')));
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = 1;
 	
-				LoadingState.loadAndSwitchState(new PlayState());
-				FlxG.sound.music.volume = 0;
+				FlxG.camera.zoom += 0.06;
+				FlxG.sound.music.fadeOut(1.2, 0, function(twn:FlxTween) {FlxG.sound.music.stop();});
+				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+					LoadingState.loadAndSwitchState(new PlayState());
+				}});
 				destroyFreeplayVocals();
 			}
 	
-			else if ((!player.playingMusic) && ((controls.ACCEPT) || (usingMouse && canClick && FlxG.mouse.justPressed && (FlxG.mouse.overlaps(grpSongs) || FlxG.mouse.overlaps(iconArray)))))
+			else if ((!player.playingMusic) && ((controls.ACCEPT) || (usingMouse && canClick && FlxG.mouse.justPressed && ((FlxG.mouse.overlaps(grpSongs) || FlxG.mouse.overlaps(iconArray) && !FlxG.mouse.overlaps(exitButton))))))
 			{
 				canClick = false;
 				persistentUpdate = false;
@@ -433,11 +473,10 @@ class FreeplayState extends MusicBeatState
 	
 				try
 				{
-					PlayState.SONG = Song.loadFromJson(poop, songLowercase);
+					PlayState.SONG = Song.loadFromJson(poop, songLowercase, ((FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory] == 'Covers') || (poop == 'lore-sad')));
 					PlayState.isStoryMode = false;
 					PlayState.storyDifficulty = 0;
-	
-					trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
+
 					if(colorTween != null) {
 						colorTween.cancel();
 					}
@@ -458,9 +497,12 @@ class FreeplayState extends MusicBeatState
 					super.update(elapsed);
 					return;
 				}
-				LoadingState.loadAndSwitchState(new PlayState());
+				FlxG.camera.zoom += 0.06;
+				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+					LoadingState.loadAndSwitchState(new PlayState());
+				}});
 	
-				FlxG.sound.music.volume = 0;
+				FlxG.sound.music.fadeOut(1.2, 0, function(twn:FlxTween) {FlxG.sound.music.stop();});
 						
 				destroyFreeplayVocals();
 				#if (DISCORD_ALLOWED && MODS_ALLOWED)
@@ -476,6 +518,7 @@ class FreeplayState extends MusicBeatState
 		}
 
 		updateTexts(elapsed);
+		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
 		super.update(elapsed);
 	}
 
@@ -493,8 +536,6 @@ class FreeplayState extends MusicBeatState
 			return;
 
 		if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
-		var lastList:Array<String> = Difficulty.list;
 
 		iconArray.members[curSelected].alpha = 0.6;
 
@@ -517,6 +558,11 @@ class FreeplayState extends MusicBeatState
 				}
 			});
 		}
+
+		#if !switch
+		intendedScore = Highscore.getScore(songs[curSelected].songName, 0);
+		intendedRating = Highscore.getRating(songs[curSelected].songName, 0);
+		#end
 
 		var bullShit:Int = 0;
 	
@@ -588,8 +634,6 @@ class FreeplayState extends MusicBeatState
 		super.destroy();
 
 		FlxG.autoPause = ClientPrefs.data.autoPause;
-		if (!FlxG.sound.music.playing)
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 	}	
 }
 
