@@ -4,7 +4,6 @@ package objects;
 import openfl.events.Event;
 import openfl.geom.Matrix;
 import flash.display.BitmapData;
-import openfl.Lib;
 
 class AchievementPopup extends openfl.display.Sprite {
 	public var onFinish:Void->Void = null;
@@ -20,8 +19,6 @@ class AchievementPopup extends openfl.display.Sprite {
 
 		// achievement icon
 		var graphic = null;
-		var hasAntialias:Bool = ClientPrefs.data.antialiasing;
-		var image:String = 'achievements/$achieve';
 		
 		var achievement:Achievement = null;
 		if(Achievements.exists(achieve)) achievement = Achievements.get(achieve);
@@ -31,18 +28,11 @@ class AchievementPopup extends openfl.display.Sprite {
 		if(achievement != null) Mods.currentModDirectory = achievement.mod != null ? achievement.mod : '';
 		#end
 
-		if(Paths.fileExists('images/$image-pixel.png', IMAGE))
-		{
-			graphic = Paths.image('$image-pixel', false);
-			hasAntialias = false;
-		}
-		else graphic = Paths.image(image, false);
+		graphic = Paths.image('achievements/unlocked', false);
 
 		#if MODS_ALLOWED
 		Mods.currentModDirectory = lastMod;
 		#end
-
-		if(graphic == null) graphic = Paths.image('unknownMod', false);
 
 		var sizeX = 100;
 		var sizeY = 100;
@@ -50,7 +40,7 @@ class AchievementPopup extends openfl.display.Sprite {
 		var imgX = 15;
 		var imgY = 15;
 		var image = graphic.bitmap;
-		graphics.beginBitmapFill(image, new Matrix(sizeX / image.width, 0, 0, sizeY / image.height, imgX, imgY), false, hasAntialias);
+		graphics.beginBitmapFill(image, new Matrix(sizeX / image.width, 0, 0, sizeY / image.height, imgX, imgY), false, false);
 		graphics.drawRect(imgX, imgY, sizeX + 10, sizeY + 10);
 
 		// achievement name/description
@@ -65,8 +55,8 @@ class AchievementPopup extends openfl.display.Sprite {
 		var textX = sizeX + imgX + 15;
 		var textY = imgY + 20;
 
-		var text:FlxText = new FlxText(0, 0, 270, 'TEST!!!', 16);
-		text.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT);
+		var text:FlxText = new FlxText(0, 0, 270, 'Lore', 16);
+		text.setFormat(Paths.font("ourple.ttf"), 16, FlxColor.WHITE, LEFT);
 		drawTextAt(text, name, textX, textY);
 		drawTextAt(text, desc, textX, textY + 30);
 		graphics.endFill();
@@ -152,8 +142,7 @@ class AchievementPopup extends openfl.display.Sprite {
 		Achievements._popups.remove(this);
 		//trace('destroyed achievement, new count: ' + Achievements._popups.length);
 
-		if (FlxG.game.contains(this))
-		{
+		if (FlxG.game.contains(this)) {
 			FlxG.game.removeChild(this);
 		}
 		FlxG.stage.removeEventListener(Event.RESIZE, onResize);

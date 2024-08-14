@@ -1,14 +1,14 @@
 package backend;
 
 import openfl.utils.Assets;
-import lime.utils.Assets as LimeAssets;
 
 class CoolUtil
 {
+	public static var isGolden:Bool = false;
+
 	inline public static function quantize(f:Float, snap:Float){
 		// changed so this actually works lol
 		var m:Float = Math.fround(f * snap);
-		//trace(snap);
 		return (m / snap);
 	}
 
@@ -167,4 +167,11 @@ class CoolUtil
         	return input.split(symbol).join("");
 		return input.split(symbol).join(" ");
     }
+
+	public static function reloadOurpleCursor(golden:Bool = false)
+	{
+		isGolden = golden;
+		var curGuy:String = (golden ? 'golden-' : '') + ClientPrefs.data.guy.toLowerCase();
+        FlxG.mouse.load('assets/shared/images/cursors/$curGuy-cursor.png', 1, -5, -5);
+	}
 }

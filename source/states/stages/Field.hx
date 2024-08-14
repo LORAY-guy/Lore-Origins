@@ -74,7 +74,7 @@ class Field extends BaseStage {
         horsePhone.updateHitbox();
         add(horsePhone);
 
-        stool = new BGSprite('stoolphone', 455, 24, 1, 1);
+        stool = new BGSprite('stoolphone', 405, 24, 1, 1);
         add(stool);
 
         phone = new BGSprite('phone', 0, -300, 1, 1);
@@ -124,7 +124,7 @@ class Field extends BaseStage {
             }});
             new FlxTimer().start(2.25, function(tmr:FlxTimer) {
                 phoneFollow = false;
-                FlxTween.tween(phone, {x: 400}, 0.4, {ease: FlxEase.linear, onComplete: function(twn:FlxTween) {
+                FlxTween.tween(phone, {x: 350}, 0.4, {ease: FlxEase.linear, onComplete: function(twn:FlxTween) {
                     phone.destroy();
                     stool.destroy();
                     remove(horsePhone);

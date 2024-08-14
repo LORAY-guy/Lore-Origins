@@ -1,0 +1,89 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-5,
+				0
+			],
+			"loop": false,
+			"fps": 12,
+			"anim": "idle",
+			"indices": [],
+			"name": "wink idle"
+		},
+		{
+			"offsets": [
+				5,
+				14
+			],
+			"loop": false,
+			"fps": 12,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "wink left"
+		},
+		{
+			"offsets": [
+				-20,
+				-1
+			],
+			"loop": false,
+			"fps": 12,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "wink down"
+		},
+		{
+			"offsets": [
+				-26,
+				17
+			],
+			"loop": false,
+			"fps": 12,
+			"anim": "singUP",
+			"indices": [],
+			"name": "wink up"
+		},
+		{
+			"offsets": [
+				-28,
+				3
+			],
+			"loop": false,
+			"fps": 12,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "wink right"
+		},
+		{
+			"offsets": [
+				-13,
+				-5
+			],
+			"loop": false,
+			"fps": 15,
+			"anim": "hey",
+			"indices": [],
+			"name": "wink Silly"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/wink",
+	"position": [
+		-280,
+		-240
+	],
+	"healthicon": "wink-icon",
+	"flip_x": false,
+	"healthbar_colors": [
+		255,
+		167,
+		240
+	],
+	"camera_position": [
+		120,
+		230
+	],
+	"sing_duration": 4,
+	"scale": 0.5
+}

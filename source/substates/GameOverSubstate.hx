@@ -1,12 +1,8 @@
 package substates;
 
-import backend.WeekData;
-
 import objects.Character;
 import flixel.FlxObject;
-import flixel.FlxSubState;
 
-import states.StoryMenuState;
 import states.FreeplayState;
 
 class GameOverSubstate extends MusicBeatSubstate
@@ -49,29 +45,40 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		Conductor.songPosition = 0;
 
-		if (PlayState.instance.boyfriend.curCharacter == 'playguyrtx') characterName = 'playguyrtx';
-		else if (PlayState.instance.boyfriend.curCharacter == 'mark') characterName = 'mark';
+		characterName = PlayState.instance.boyfriend.curCharacter;
+		if (characterName == 'lixian') characterName += '-dead';
+		else if (characterName != 'mark') characterName = 'playguy';
 
 		boyfriend = new Character(PlayState.instance.boyfriend.getScreenPosition().x, PlayState.instance.boyfriend.getScreenPosition().y, characterName, true);
 		boyfriend.x += boyfriend.positionArray[0] - PlayState.instance.boyfriend.positionArray[0];
 		boyfriend.y += boyfriend.positionArray[1] - PlayState.instance.boyfriend.positionArray[1];
-		if (PlayState.instance.boyfriend.curCharacter.startsWith('playguy'))
-		{
-			boyfriend.scrollFactor.set(0, 0);
-			boyfriend.x = 850;
-			boyfriend.y = 500;
-			FlxG.camera.zoom = 0.8;
+
+		switch (boyfriend.curCharacter) {
+			case 'mark':
+				boyfriend.playAnim('singUP-alt');
+				deathSoundName = 'crush';
+				loopSoundName = 'gameOver';
+				endSoundName = 'happyKids';
+			case 'lixian-dead':
+				boyfriend.scrollFactor.set();
+				boyfriend.x = FlxG.width - boyfriend.width;
+				boyfriend.y = FlxG.height - boyfriend.height;
+				boyfriend.playAnim('firstDeath');
+				deathSoundName = 'crush';
+				loopSoundName = 'gameOver';
+				endSoundName = 'happyKids';
+			default: //Ourple Guy
+				boyfriend.scrollFactor.set();
+				boyfriend.x = 850;
+				boyfriend.y = 500;
+				FlxG.camera.zoom = 0.8;
+				boyfriend.playAnim('firstDeath');
 		}
 		add(boyfriend);
 
 		FlxG.sound.play(Paths.sound(deathSoundName));
 		FlxG.camera.scroll.set();
 		FlxG.camera.target = null;
-
-		if (boyfriend.curCharacter == 'mark')
-			boyfriend.playAnim('singUP-alt');
-		else
-			boyfriend.playAnim('firstDeath');
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 		camFollow.setPosition(boyfriend.getGraphicMidpoint().x + boyfriend.cameraPosition[0], boyfriend.getGraphicMidpoint().y + boyfriend.cameraPosition[1]);
@@ -91,12 +98,10 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		PlayState.instance.callOnScripts('onUpdate', [elapsed]);
 
-		if (controls.ACCEPT)
-		{
+		if (controls.ACCEPT_P)
 			endBullshit();
-		}
 
-		if (controls.BACK)
+		if (controls.BACK_P)
 		{
 			#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
 			FlxG.sound.music.stop();
@@ -105,7 +110,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.chartingMode = false;
 
 			Mods.loadTopMod();
-			MusicBeatState.switchState(new FreeplayState());
+			MusicBeatState.switchState(new FreeplayState(true));
 
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			PlayState.instance.callOnScripts('onGameOverConfirm', [false]);
@@ -151,9 +156,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (!isEnding)
 		{
 			isEnding = true;
-			boyfriend.playAnim('deathConfirm', true);
+			if (boyfriend.curCharacter != 'mark') boyfriend.playAnim('deathConfirm', true);
 			FlxG.sound.music.stop();
-			FlxG.sound.play(Paths.music(endSoundName));
+			if (endSoundName.length > 1) FlxG.sound.play(Paths.music(endSoundName));
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)
 			{
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()

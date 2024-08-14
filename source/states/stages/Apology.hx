@@ -86,16 +86,16 @@ class Apology extends BaseStage
         {
             if (funni)
             {
-                matpat.scale.x = FlxMath.lerp(1.3, matpat.scale.x, Math.exp(-elapsed * 9.2));
-                matpat.scale.y = FlxMath.lerp(1.3, matpat.scale.y, Math.exp(-elapsed * 9.2));
-                ourple_bg.scale.x = FlxMath.lerp(1, ourple_bg.scale.x, Math.exp(-elapsed * 9.2));
-                ourple_bg.scale.y = FlxMath.lerp(1, ourple_bg.scale.y, Math.exp(-elapsed * 9.2));
+                matpat.scale.x = FlxMath.lerp(1.3, matpat.scale.x, Math.exp(-elapsed * 10.5));
+                matpat.scale.y = FlxMath.lerp(1.3, matpat.scale.y, Math.exp(-elapsed * 10.5));
+                ourple_bg.scale.x = FlxMath.lerp(1, ourple_bg.scale.x, Math.exp(-elapsed * 10.5));
+                ourple_bg.scale.y = FlxMath.lerp(1, ourple_bg.scale.y, Math.exp(-elapsed * 10.5));
             }
 
             if (dad.animation.curAnim.name != 'idle' && dad.animation.curAnim.curFrame == 0)
             {
                 matpat.scale.set((matpat.scale.x * mult), (matpat.scale.y * mult));
-                ourple_bg.scale.set((ourple_bg.scale.x * mult), (ourple_bg.scale.y * mult));
+                ourple_bg.scale.set((ourple_bg.scale.x * mult - 0.01), (ourple_bg.scale.y * mult - 0.01));
                 matpat.x = 460;
                 matpat.y = 150;
     
@@ -139,9 +139,10 @@ class Apology extends BaseStage
         switch (curStep)
         {
             case 64:
+                PlayState.instance.inLoreCutscene = false;
                 camGame.flash(FlxColor.WHITE, 0.9);
                 for (i in 0...otherStuff.length)
-                    otherStuff[i].destroy();
+                    otherStuff[i].visible = false; //It just crashes all the time if i destroy them so im just gonna keep them invisible
 
             case 182, 310, 1338, 1462, 1590, 2742, 2616, 2870:
                 defaultCamZoom = 1.3;
@@ -153,6 +154,7 @@ class Apology extends BaseStage
                 if (curStep == 1344 || curStep == 2624) camGame.flash(FlxColor.WHITE, 0.9);
 
             case 312:
+                PlayState.instance.inLoreCutscene = true;
                 strumBye();
                 FlxTween.tween(camHUD, {alpha: 0}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.cubeOut});
                 FlxTween.tween(blackness, {alpha: 1}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.cubeOut, onComplete: function(twn:FlxTween) {
@@ -164,6 +166,7 @@ class Apology extends BaseStage
                 camGame.zoom = 0.8;
 
             case 448:
+                PlayState.instance.inLoreCutscene = false;
                 camGame.flash(FlxColor.WHITE, 0.9);
                 camHUD.alpha = 1;
                 strumHello();
@@ -178,6 +181,7 @@ class Apology extends BaseStage
                 {
                     camGame.flash(FlxColor.WHITE, 0.9);
                     camHUD.alpha = 0;
+                    PlayState.instance.inLoreCutscene = true;
                     strumBye();
                 }
 
@@ -200,6 +204,7 @@ class Apology extends BaseStage
                     defaultCamZoom = 0.9;
                     camHUD.alpha = 1;
                     strumHello();
+                    PlayState.instance.inLoreCutscene = false;
                 }
 
             case 2080:

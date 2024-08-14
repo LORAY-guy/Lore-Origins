@@ -14,13 +14,12 @@ typedef CreditsData =
 	skip:Bool
 }
 
+//Just realized I could've just added those parameters to the Chart Editor... 4 months after having done this...
 class Credits
 {
     public static function getCreditsFile(song:String):CreditsData {
 		var rawJson:String = null;
 		var path:String = Paths.json(song.toLowerCase() + '/credits');
-
-		trace(path);
 
 		#if MODS_ALLOWED
 		var modPath:String = Paths.modsJson(song + '/credits');

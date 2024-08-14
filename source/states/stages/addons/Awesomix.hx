@@ -49,7 +49,7 @@ class Awesomix extends BaseStage
         add(prange);
 
         ourple = new FlxSprite((FlxG.width / 2) - 150, 120);
-        ourple.frames = Paths.getSparrowAtlas('characters/guy');
+        ourple.frames = Paths.getSparrowAtlas('characters/playguy');
         ourple.animation.addByPrefix('lol', 'idle', 24, false, false, false);
         ourple.animation.play('lol', false, false, 0);
         ourple.scale.set(3, 3);
@@ -184,6 +184,7 @@ class Awesomix extends BaseStage
                     var ourples:Array<Dynamic> = [mapa, backstageblur]; 
                     for (guy in 0...ourples.length)
                         ourples[guy].destroy();
+                    PlayState.instance.inLoreCutscene = false;
                 }
             
             case 2046:

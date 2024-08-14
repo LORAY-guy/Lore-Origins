@@ -1,6 +1,5 @@
 package states;
 
-import backend.ExitButton;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
@@ -13,7 +12,6 @@ import substates.ResetScoreSubState;
 
 import flixel.math.FlxMath;
 import flixel.addons.display.FlxBackdrop;
-import flixel.addons.transition.FlxTransitionableState;
 
 class FreeplayState extends MusicBeatState
 {
@@ -57,67 +55,13 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
-		
-		switch (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase())
-		{
-			case 'covers':
-				if (!ClientPrefs.data.hideOldCovers && ClientPrefs.data.guy == 'Ourple')
-				{
-					addWeek(
-					[
-						'lored', 
-						'lore-ryan', 
-						'lore-awesomix'
-					], 
-					0, 
-					0xff797979);
-				}
-				if (ClientPrefs.data.guy != 'Ourple') {
-					addWeek(
-						[
-							'lore-og',
-							'horse-lore',
-							'action'
-						], 
-						0,
-						0xFF00ff00);
-				} else {
-					addWeek(
-						[
-							'lore-apology',
-							#if !html5 'fever', #end
-							'chronology', 
-							'lore-style',
-							'live', 
-							'horse-lore',
-							'detective',
-							'measure-up',
-							'action',
-							'repugnant'
-						], 
-						0, 
-						0xFF00ff00);
-				}
-				PlayState.isCover = true;
-			case 'originals':
-				addWeek(
-				[
-					'lore-tropical',
-					'lore-sad'
-				], 
-				0, 
-				0xff00c3ff);
-				PlayState.isCover = false;
-		};
+
+		createOurpleWeek(); //Added the week creation to a function for better readability
 		
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
-
-		FlxTransitionableState.skipNextTransIn = true;
-		FlxTransitionableState.skipNextTransOut = true;
 
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
@@ -255,9 +199,6 @@ class FreeplayState extends MusicBeatState
 		#if desktop if (!FlxG.mouse.visible) FlxG.mouse.visible = true; #end
 		super.create();
 
-		FlxG.camera.y = 720;
-		FlxTween.tween(FlxG.camera, {y: 0}, 1.2, {ease: FlxEase.expoInOut});
-
 		exitButton = new ExitButton('freeplayselect');
 		add(exitButton);
 	}
@@ -365,7 +306,7 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 	
-			if (controls.BACK)
+			if (controls.BACK_P)
 			{
 				if (player.playingMusic)
 				{
@@ -378,17 +319,14 @@ class FreeplayState extends MusicBeatState
 					player.switchPlayMusic();
 	
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-					FlxTween.tween(FlxG.sound.music, {volume: 1}, 1);
+					FlxG.sound.music.fadeIn(1, 0, 1);
 				}
 				else 
 				{
 					if(colorTween != null) {
 						colorTween.cancel();
 					}
-					FlxG.sound.play(Paths.sound('cancelMenu'));
-					FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
-						MusicBeatState.switchState(new states.FreeplaySelectState());
-					}});
+					exitState(new states.FreeplaySelectState(true));
 				}
 			}
 	
@@ -407,7 +345,7 @@ class FreeplayState extends MusicBeatState
 	
 					Mods.currentModDirectory = songs[curSelected].folder;
 					var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), 0);
-					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase(), ((FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory] == 'Covers') || (poop == 'lore-sad')));
+					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase(), (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory] == 'Covers'));
 					if (PlayState.SONG.needsVoices)
 					{
 						vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
@@ -450,68 +388,34 @@ class FreeplayState extends MusicBeatState
 				var poop:String = Highscore.formatSong(songLowercase, 0);
 				trace(poop);
 	
-				PlayState.SONG = Song.loadFromJson(poop, songLowercase, ((FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory] == 'Covers') || (poop == 'lore-sad')));
+				PlayState.SONG = Song.loadFromJson(poop, songLowercase, (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory] == 'Covers'));
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = 1;
+				if (songLowercase == 'sunk') PlayState.sunkMark = FlxG.random.getObject(['Mark', 'Captain']);
 	
 				FlxG.camera.zoom += 0.06;
 				FlxG.sound.music.fadeOut(1.2, 0, function(twn:FlxTween) {FlxG.sound.music.stop();});
-				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+				FlxTween.tween(FlxG.camera, {y: Lib.application.window.height}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
 					LoadingState.loadAndSwitchState(new PlayState());
 				}});
 				destroyFreeplayVocals();
 			}
 	
-			else if ((!player.playingMusic) && ((controls.ACCEPT) || (usingMouse && canClick && FlxG.mouse.justPressed && ((FlxG.mouse.overlaps(grpSongs) || FlxG.mouse.overlaps(iconArray) && !FlxG.mouse.overlaps(exitButton))))))
+			else if (!player.playingMusic && !FlxG.mouse.overlaps(exitButton) && ((controls.ACCEPT_P) || (usingMouse && canClick && FlxG.mouse.justPressed && ((FlxG.mouse.overlaps(grpSongs) || FlxG.mouse.overlaps(iconArray))))))
 			{
-				canClick = false;
-				persistentUpdate = false;
-				FlxG.mouse.visible = false;
 				var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
-				var poop:String = Highscore.formatSong(songLowercase, 0);
-				trace(poop);
-	
-				try
-				{
-					PlayState.SONG = Song.loadFromJson(poop, songLowercase, ((FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory] == 'Covers') || (poop == 'lore-sad')));
-					PlayState.isStoryMode = false;
-					PlayState.storyDifficulty = 0;
 
-					if(colorTween != null) {
-						colorTween.cancel();
-					}
+				if (songLowercase == 'sunk') {
+					inSubstate = true;
+					openSubState(new SelectSunkDifficulty());
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+				} else {
+					processSong(songLowercase);
 				}
-				catch(e:Dynamic)
-				{
-					trace('ERROR! $e');
-	
-					var errorStr:String = e.toString();
-					if(errorStr.startsWith('[file_contents,assets/data/')) errorStr = 'Missing file: ' + errorStr.substring(34, errorStr.length-1); //Missing chart
-					missingText.text = 'ERROR WHILE LOADING CHART:\n$errorStr';
-					missingText.screenCenter(Y);
-					missingText.visible = true;
-					missingTextBG.visible = true;
-					FlxG.sound.play(Paths.sound('cancelMenu'));
-	
-					updateTexts(elapsed);
-					super.update(elapsed);
-					return;
-				}
-				FlxG.camera.zoom += 0.06;
-				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
-					LoadingState.loadAndSwitchState(new PlayState());
-				}});
-	
-				FlxG.sound.music.fadeOut(1.2, 0, function(twn:FlxTween) {FlxG.sound.music.stop();});
-						
-				destroyFreeplayVocals();
-				#if (DISCORD_ALLOWED && MODS_ALLOWED)
-				DiscordClient.loadModRPC();
-				#end
 			}
-			else if(controls.RESET && !player.playingMusic)
+			else if(controls.RESET_P && !player.playingMusic)
 			{
-				persistentUpdate = false;
+				inSubstate = true;
 				openSubState(new ResetScoreSubState(songs[curSelected].songName, 1, songs[curSelected].songCharacter));
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 			}
@@ -629,12 +533,91 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
+	private function createOurpleWeek():Void 
+	{
+		switch (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase())
+		{
+			case 'covers':
+				if (!ClientPrefs.data.hideOldCovers && ClientPrefs.data.guy == 'Ourple')
+				{
+					addWeek(
+					[
+						'lored',
+						'lore-ryan',
+						'lore-awesomix'
+					], 
+					0, 
+					0xff797979);
+				}
+				if (ClientPrefs.data.guy != 'Ourple') {
+					addWeek(
+						[
+							'lore-og'
+						], 
+						0,
+						0xFF00ff00);
+				} else {
+					addWeek(
+						[
+							'lore-apology',
+							'fever',
+							'chronology', 
+							'lore-style',
+							'live', 
+							'horse-lore',
+							'detective',
+							'measure-up',
+							'action',
+							'repugnant'
+						], 
+						0, 
+						0xFF00ff00);
+				}
+				PlayState.isCover = true;
+			case 'originals':
+				addWeek(
+				[
+					'lore-tropical',
+					'lore-sad',
+					'sunk',
+					'lore-ar'
+				], 
+				0, 
+				0xff00c3ff);
+				PlayState.isCover = false;
+		};
+	}
+
+	public function processSong(songLowercase:String) {
+		canClick = false;
+		persistentUpdate = false;
+		FlxG.mouse.visible = false;
+		var poop:String = Highscore.formatSong(songLowercase, 0);
+
+		PlayState.SONG = Song.loadFromJson(poop + (songLowercase == 'sunk' ? '-' + PlayState.sunkMark : ''), songLowercase, PlayState.isCover);
+		PlayState.isStoryMode = false;
+		PlayState.storyDifficulty = 0;
+
+		if(colorTween != null) {
+			colorTween.cancel();
+		}
+		
+		FlxG.camera.zoom += 0.06;
+		FlxTween.tween(FlxG.camera, {y: Lib.application.window.height}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+			LoadingState.loadAndSwitchState(new PlayState());
+		}});
+
+		FlxG.sound.music.fadeOut(1.2, 0, function(twn:FlxTween) {FlxG.sound.music.stop();});
+				
+		destroyFreeplayVocals();
+	}
+
 	override function destroy():Void
 	{
 		super.destroy();
 
 		FlxG.autoPause = ClientPrefs.data.autoPause;
-	}	
+	}
 }
 
 class SongMetadata
@@ -654,5 +637,92 @@ class SongMetadata
 		this.color = color;
 		this.folder = Mods.currentModDirectory;
 		if(this.folder == null) this.folder = '';
+	}
+}
+
+class SelectSunkDifficulty extends MusicBeatSubstate //Basically copied the ResetScoreSubstate
+{
+	var bg:FlxSprite;
+	var alphabetArray:Array<Alphabet> = [];
+	var onMark:Bool = false;
+	var markText:Alphabet;
+	var captainText:Alphabet;
+	var freeplay:FreeplayState = cast FlxG.state;
+	var enterReleased:Bool = false; //Would just always be false cuz it would instantly select on open
+
+	public function new()
+	{
+		super();
+
+		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		bg.alpha = 0;
+		bg.scrollFactor.set();
+		add(bg);
+
+		var text:Alphabet = new Alphabet(0, 180, "Select the difficulty:", true);
+		text.screenCenter(X);
+		alphabetArray.push(text);
+		text.alpha = 0;
+		add(text);
+
+		markText = new Alphabet(0, text.y + 150, 'Mark', true);
+		markText.screenCenter(X);
+		markText.x -= 200;
+		add(markText);
+
+		captainText = new Alphabet(0, text.y + 150, 'Captain', true);
+		captainText.screenCenter(X);
+		captainText.x += 215;
+		add(captainText);
+
+		updateOptions();
+	}
+
+	override function update(elapsed:Float)
+	{
+		bg.alpha += elapsed * 1.5;
+		if(bg.alpha > 0.6) bg.alpha = 0.6;
+
+		for (i in 0...alphabetArray.length) {
+			var spr = alphabetArray[i];
+			spr.alpha += elapsed * 2.5;
+		}
+
+		if(controls.UI_LEFT_P || controls.UI_RIGHT_P) {
+			FlxG.sound.play(Paths.sound('scrollMenu'));
+			onMark = !onMark;
+			updateOptions();
+		}
+		if(controls.BACK_P) {
+			FlxG.sound.play(Paths.sound('cancelMenu'));
+			FreeplayState.inSubstate = false;
+			close();
+		} else if(enterReleased && controls.ACCEPT_P) {
+			if(onMark) {
+				PlayState.sunkMark = 'Mark';
+			} else {
+				PlayState.sunkMark = 'Captain';
+			}
+			FlxG.sound.play(Paths.sound('confirmMenu'));
+			freeplay.processSong('sunk');
+			FreeplayState.inSubstate = false;
+			close();
+		}
+
+		if (controls.ACCEPT_R)
+			enterReleased = true;
+
+		super.update(elapsed);
+	}
+
+	function updateOptions() {
+		var scales:Array<Float> = [0.75, 1];
+		var alphas:Array<Float> = [0.6, 1.25];
+		var confirmInt:Int = onMark ? 1 : 0;
+
+		markText.alpha = alphas[confirmInt];
+		markText.scale.set(scales[confirmInt], scales[confirmInt]);
+		captainText.alpha = alphas[1 - confirmInt];
+		captainText.scale.set(scales[1 - confirmInt], scales[1 - confirmInt]);
 	}
 }

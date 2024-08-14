@@ -195,8 +195,8 @@ class Paths
 	inline static public function voices(song:String, postfix:String = null):Any
 	{
 		var songKey:String = '${formatToSongPath(song)}/Voices';
-		if(postfix != null) songKey += '-' + postfix + (ClientPrefs.data.guy != 'Ourple' ? '-' + ClientPrefs.data.guy : '-Ourple');
-		trace('$songKey');
+		if(postfix != null) songKey += '-' + postfix;
+		if(PlayState.isCover && (PlayState.SONG.song.toLowerCase() == 'lore-og' && postfix != 'Opponent')) songKey += (ClientPrefs.data.guy != 'Ourple' ? '-' + ClientPrefs.data.guy : '-Ourple');
 		var voices = returnSound(null, songKey, 'songs');
 		return voices;
 	}
@@ -244,6 +244,11 @@ class Paths
 
 		trace('oh no its returning null NOOOO ($file)');
 		return null;
+	}
+
+	inline static public function imageRandom(key:String, min:Int, max:Int, ?library:String) //Why didn't they do that?
+	{
+		return image(key + FlxG.random.int(min, max), library);
 	}
 
 	static public function cacheBitmap(file:String, ?bitmap:BitmapData = null, ?allowGPU:Bool = true)

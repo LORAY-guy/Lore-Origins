@@ -4,6 +4,7 @@ import lime.app.Promise;
 import lime.app.Future;
 
 import flixel.FlxState;
+import flixel.addons.transition.FlxTransitionableState;
 
 import openfl.utils.Assets;
 import lime.utils.Assets as LimeAssets;
@@ -53,13 +54,18 @@ class LoadingState extends MusicBeatState
 		"Look at the tip screen for more helpful tips!",
 		"Hit notes to increase your combo!",
 		"The song \'Lore\' contains the motif of the song \'Lore\'",
-		"If you open this mod, you will play Lore Origins! :D",
 		"Hello Internet, welcome to the LOOOOOOOOOOOOOADING screen!",
 		"Well, well, well...",
 		"Skibidi dop dop dop yes yes",
 		"I always come back...",
 		"Don't you tell me how many calories I need, bitch!",
+		"So.... many.... \"HUNGRY\" middle-aged women...",
+		"I am the HUMAN CONDOM!",
+		"If Internet Explorer is brave enough to ask to be your default browser, you can be brave enough to ask that girl out.",
+		"If you set the bar low enough, you have nowhere to go but up.",
+		"The meaning of life is to find your gift.\nThe purpose of life is to give that gift to others.",
 		"Ohh, look at that thick layer of cream, I want that thickness inside my body...",
+		"You do realize that lunch is the most important meal of the day...",
 		"Hello everybody, my name is Matpat.",
 		"WAS THAT THE LOADING OF 87?!!",
 		"Oh, Hi! welcome to my schooooooool house...",
@@ -70,9 +76,6 @@ class LoadingState extends MusicBeatState
 
 	override function create()
 	{
-		var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xffcaff4d);
-		bg.antialiasing = ClientPrefs.data.antialiasing;
-		add(bg);
 		funkay = new FlxSprite().loadGraphic(Paths.image('loading/whitey'));
 		funkay.setGraphicSize(funkay.width * (1/6));
 		funkay.updateHitbox();
@@ -122,7 +125,6 @@ class LoadingState extends MusicBeatState
 	}
 	
 	function checkLibrary(library:String) {
-		trace(Assets.hasLibrary(library));
 		if (Assets.getLibrary(library) == null)
 		{
 			@:privateAccess
@@ -134,21 +136,13 @@ class LoadingState extends MusicBeatState
 		}
 	}
 	
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-
-		if(callbacks != null) {
-		}
-	}
-	
 	function onLoad()
 	{
-		if (stopMusic && FlxG.sound.music != null)
-			FlxG.sound.music.stop();
+		if (stopMusic && FlxG.sound.music != null) FlxG.sound.music.stop();
 		
+		FlxTransitionableState.skipNextTransOut = false;
 		new FlxTimer().start(1, function(tmr:FlxTimer) {
-			MusicBeatState.switchState(target);
+			FlxG.camera.fade(FlxG.camera.bgColor, 0.5, false, function() MusicBeatState.switchState(target));
 		});
 	}
 	
@@ -166,7 +160,6 @@ class LoadingState extends MusicBeatState
 		if(weekDir != null && weekDir.length > 0 && weekDir != '') directory = weekDir;
 
 		Paths.setCurrentLevel(directory);
-		trace('Setting asset folder to ' + directory);
 
 		var loaded:Bool = false;
 		

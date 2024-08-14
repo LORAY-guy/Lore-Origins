@@ -24,6 +24,7 @@
 	<define name="LUA_ALLOWED" if="desktop"/>
 	<define name="CHECK_FOR_UPDATES"/>
 	<define name="DISCORD_ALLOWED" if="desktop" />
+	<define name="ACHIEVEMENTS_ALLOWED" if="desktop" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -57,16 +58,17 @@
 
 	<!-- Assets -->
 	<assets path="assets/fonts" />
-	<assets path="assets/shared"        exclude="*.ogg" if="web"/>
-	<assets path="assets/shared"        exclude="*.mp3" unless="web"/>
-	<assets path="assets/videos"        library="videos"        if="VIDEOS_ALLOWED"/>
-	<assets path="assets/songs"         library="songs"         exclude="*.ogg" if="web"/>
-	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web"/>
+	<assets path="assets/shared"        exclude="*.ogg" if="web" />
+	<assets path="assets/shared"        exclude="*.mp3" unless="web" />
+	<assets path="assets/videos"        library="videos"        if="VIDEOS_ALLOWED" />
+	<assets path="assets/songs"         library="songs"         exclude="*.ogg" if="web" />
+	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web" />
 
-	<library name="videos"        preload="true" if="VIDEOS_ALLOWED"/>
+	<library name="videos"        preload="true" if="VIDEOS_ALLOWED" />
 	<library name="songs"         preload="true" />
 
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
+	<assets path='Patch Note.txt' />
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
@@ -80,7 +82,7 @@
 	<haxelib name="SScript" if="HSCRIPT_ALLOWED"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
-	<haxelib name="flxanimate"/>
+	<haxelib name="flxanimate" unless="html5"/>
 
 	<!-- Disable Discord IO Thread -->
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />

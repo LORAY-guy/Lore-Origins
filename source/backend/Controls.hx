@@ -73,14 +73,32 @@ class Controls
 
 
 	// Pressed buttons (others)
+	public var ACCEPT_P(get, never):Bool;
+	public var BACK_P(get, never):Bool;
+	public var PAUSE_P(get, never):Bool;
+	public var RESET_P(get, never):Bool;
+	private function get_ACCEPT_P() return justPressed('accept');
+	private function get_BACK_P() return justPressed('back');
+	private function get_PAUSE_P() return justPressed('pause');
+	private function get_RESET_P() return justPressed('reset');
+
 	public var ACCEPT(get, never):Bool;
 	public var BACK(get, never):Bool;
 	public var PAUSE(get, never):Bool;
 	public var RESET(get, never):Bool;
-	private function get_ACCEPT() return justPressed('accept');
-	private function get_BACK() return justPressed('back');
-	private function get_PAUSE() return justPressed('pause');
-	private function get_RESET() return justPressed('reset');
+	private function get_ACCEPT() return pressed('accept');
+	private function get_BACK() return pressed('back');
+	private function get_PAUSE() return pressed('pause');
+	private function get_RESET() return pressed('reset');
+
+	public var ACCEPT_R(get, never):Bool;
+	public var BACK_R(get, never):Bool;
+	public var PAUSE_R(get, never):Bool;
+	public var RESET_R(get, never):Bool;
+	private function get_ACCEPT_R() return justReleased('accept');
+	private function get_BACK_R() return justReleased('back');
+	private function get_PAUSE_R() return justReleased('pause');
+	private function get_RESET_R() return justReleased('reset');
 
 	//Gamepad & Keyboard stuff
 	public var keyboardBinds:Map<String, Array<FlxKey>>;

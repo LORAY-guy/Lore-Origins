@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="phone.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Call0000" x="0" y="0" width="479" height="1018"/>
+	<SubTexture name="Call0001" x="484" y="0" width="479" height="1018"/>
+	<SubTexture name="Call0002" x="968" y="0" width="479" height="1018"/>
+	<SubTexture name="Call0003" x="1452" y="0" width="479" height="1018"/>
+	<SubTexture name="Call0004" x="1936" y="0" width="479" height="1018"/>
+	<SubTexture name="Call0005" x="0" y="1023" width="479" height="1018"/>
+	<SubTexture name="Call0006" x="0" y="2046" width="479" height="1018"/>
+	<SubTexture name="Call0007" x="0" y="3069" width="479" height="1018"/>
+	<SubTexture name="Call0008" x="484" y="1023" width="479" height="1018"/>
+	<SubTexture name="Call0009" x="968" y="1023" width="479" height="1018"/>
+	<SubTexture name="Call0010" x="1452" y="1023" width="479" height="1018"/>
+	<SubTexture name="Call0011" x="1936" y="1023" width="479" height="1018"/>
+	<SubTexture name="Call0012" x="484" y="2046" width="479" height="1018"/>
+	<SubTexture name="Call0013" x="484" y="3069" width="479" height="1018"/>
+	<SubTexture name="Call0014" x="968" y="2046" width="479" height="1018"/>
+	<SubTexture name="Call0015" x="968" y="3069" width="479" height="1018"/>
+	<SubTexture name="Call0016" x="1452" y="2046" width="479" height="1018"/>
+	<SubTexture name="Call0017" x="1452" y="2046" width="479" height="1018"/>
+	<SubTexture name="Idle0000" x="0" y="0" width="479" height="1018"/>
+	<SubTexture name="InCall0000" x="1452" y="3069" width="479" height="1018"/>
+</TextureAtlas>

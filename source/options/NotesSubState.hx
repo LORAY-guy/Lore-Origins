@@ -166,6 +166,8 @@ class NotesSubState extends MusicBeatSubstate
 		FlxG.mouse.visible = !controls.controllerMode;
 		controllerPointer.visible = controls.controllerMode;
 		_lastControllerMode = controls.controllerMode;
+
+		add(new ExitButton('options'));
 	}
 
 	function updateTip()
@@ -182,7 +184,7 @@ class NotesSubState extends MusicBeatSubstate
 		NUMPADSEVEN => '7', NUMPADEIGHT => '8', NUMPADNINE => '9', A => 'A', B => 'B', C => 'C', D => 'D', E => 'E', F => 'F'];
 
 	override function update(elapsed:Float) {
-		if (controls.BACK) {
+		if (controls.BACK_P) {
 			FlxG.mouse.visible = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			close();
@@ -238,7 +240,7 @@ class NotesSubState extends MusicBeatSubstate
 			controllerPointer.x = Math.max(0, Math.min(FlxG.width, controllerPointer.x + analogX * 1000 * elapsed));
 			controllerPointer.y = Math.max(0, Math.min(FlxG.height, controllerPointer.y + analogY * 1000 * elapsed));
 		}
-		var controllerPressed:Bool = (controls.controllerMode && controls.ACCEPT);
+		var controllerPressed:Bool = (controls.controllerMode && controls.ACCEPT_P);
 		//
 
 		if(FlxG.keys.justPressed.CONTROL)
@@ -433,7 +435,7 @@ class NotesSubState extends MusicBeatSubstate
 		// holding
 		if(holdingOnObj != null)
 		{
-			if (FlxG.mouse.justReleased || (controls.controllerMode && controls.justReleased('accept')))
+			if (FlxG.mouse.justReleased || (controls.controllerMode && controls.ACCEPT_R))
 			{
 				holdingOnObj = null;
 				_storedColor = getShaderColor();
@@ -465,7 +467,7 @@ class NotesSubState extends MusicBeatSubstate
 				}
 			} 
 		}
-		else if(controls.RESET && hexTypeNum < 0)
+		else if(controls.RESET_P && hexTypeNum < 0)
 		{
 			if(FlxG.keys.pressed.SHIFT || FlxG.gamepads.anyJustPressed(LEFT_SHOULDER))
 			{

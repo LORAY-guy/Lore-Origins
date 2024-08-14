@@ -13,7 +13,7 @@ import objects.MenuCharacter;
 import substates.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 
-class StoryMenuState extends MusicBeatState //Keeping it in case I do something crazy in the future
+class StoryMenuState extends MusicBeatState //Keeping it in case I do something crazy in the future (like the sexy v2 update)
 {
 	public static var weekCompleted:Map<String, Bool> = new Map<String, Bool>();
 
@@ -239,19 +239,19 @@ class StoryMenuState extends MusicBeatState //Keeping it in case I do something 
 				persistentUpdate = false;
 				openSubState(new GameplayChangersSubstate());
 			}
-			else if(controls.RESET)
+			else if(controls.RESET_P)
 			{
 				persistentUpdate = false;
 				openSubState(new ResetScoreSubState('', curDifficulty, '', curWeek));
 				//FlxG.sound.play(Paths.sound('scrollMenu'));
 			}
-			else if (controls.ACCEPT)
+			else if (controls.ACCEPT_P)
 			{
 				selectWeek();
 			}
 		}
 
-		if (controls.BACK && !movedBack && !selectedWeek)
+		if (controls.BACK_P && !movedBack && !selectedWeek)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;

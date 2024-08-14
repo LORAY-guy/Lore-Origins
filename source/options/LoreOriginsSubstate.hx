@@ -6,17 +6,6 @@ class LoreOriginsSubstate extends BaseOptionsMenu
 	{
 		title = 'Lore Origins Settings';
 
-		if (!OptionsState.onPlayState)
-		{
-			var option:OurpleOption = new OurpleOption('Guy :',
-			"Select and play as your favorite Guy! (WIP)",
-			'guy',
-			'string',
-			['Ourple', 'Vloo']);
-			option.onChange = onChangeCursor;
-			addOption(option);
-		}
-
 		var option:OurpleOption = new OurpleOption('LORAY Watermark', //Name
 		'If unchecked, the LORAY credit at the beginning of every song will be disabled.', //Description
 		'lorayWatermark', //Save data variable name
@@ -29,6 +18,17 @@ class LoreOriginsSubstate extends BaseOptionsMenu
 		'bool'); //Variable type
 		addOption(option);
 
+		var option:OurpleOption = new OurpleOption('Misc. Events Mult.', //Name
+		'Multiplier of how random events may occur during a game (used for Achievements). Set to 0 to disable.', //Description
+		'miscEvents', //Save data variable name
+		'float'); //Variable type
+		addOption(option);
+
+		option.minValue = 0.0;
+		option.maxValue = 3.0;
+		option.changeValue = 0.5;
+		option.displayFormat = '%vx';
+
 		var option:OurpleOption = new OurpleOption('Hide Old Covers', //Name
 		'If checked, the covers considered old will be hidden from the freeplay menu.', //Description
 		'hideOldCovers', //Save data variable name
@@ -36,7 +36,7 @@ class LoreOriginsSubstate extends BaseOptionsMenu
 		addOption(option);
 
 		var option:OurpleOption = new OurpleOption('Exit Button Position:',
-		"On what side of the screen should the Exit Button be located?",
+		'On what side of the screen should the Exit Button be located?',
 		'exitButtonX',
 		'string',
 		['Left', 'Right']);
@@ -49,19 +49,10 @@ class LoreOriginsSubstate extends BaseOptionsMenu
     function onChangeExitButton()
     {
 		if (exitButton.visible) {
-			if (ClientPrefs.data.exitButtonX == 'Right')
-				FlxTween.tween(exitButton, {x: FlxG.width - exitButton.width}, 1, {ease: FlxEase.bounceOut});
-			else
-				FlxTween.tween(exitButton, {x: 0}, 1, {ease: FlxEase.bounceOut});
+			FlxTween.tween(exitButton, {x: (ClientPrefs.data.exitButtonX == 'Right' ? FlxG.width - exitButton.width : 0)}, 1, {ease: FlxEase.bounceOut});
 		} else {
 			exitButton.x = (ClientPrefs.data.exitButtonX == 'Right' ? FlxG.width - exitButton.width : 0);
 		}
 		options.OptionsState.exitButton.x = (ClientPrefs.data.exitButtonX == 'Right' ? FlxG.width - options.OptionsState.exitButton.width : 0);
-	}
-
-	function onChangeCursor()
-	{
-		var curGuy:String = ClientPrefs.data.guy.toLowerCase();
-		FlxG.mouse.load('assets/shared/images/cursors/$curGuy-cursor.png', 1, -8, -7);
 	}
 }

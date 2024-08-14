@@ -11,7 +11,6 @@ import objects.AttachedText;
 import options.OurpleOption;
 import backend.InputFormatter;
 import backend.Controls;
-import backend.ExitButton;
 
 class BaseOptionsMenu extends MusicBeatSubstate
 {
@@ -164,7 +163,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			changeSelection(1);
 		}
 
-		if (controls.BACK) {
+		if (controls.BACK_P) {
 			close();
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
@@ -173,7 +172,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		{
 			if(curOption.type == 'bool')
 			{
-				if(controls.ACCEPT)
+				if(controls.ACCEPT_P)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					curOption.setValue((curOption.getValue() == true) ? false : true);
@@ -185,7 +184,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			{
 				if(curOption.type == 'keybind')
 				{
-					if(controls.ACCEPT)
+					if(controls.ACCEPT_P)
 					{
 						bindingBlack = new FlxSprite().makeGraphic(1, 1, FlxColor.WHITE);
 						bindingBlack.scale.set(FlxG.width, FlxG.height);
@@ -284,7 +283,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 				}
 			}
 
-			if(controls.RESET)
+			if(controls.RESET_P)
 			{
 				var leOption:OurpleOption = optionsArray[curSelected];
 				if(leOption.type != 'keybind')

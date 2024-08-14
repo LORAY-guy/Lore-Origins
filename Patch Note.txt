@@ -1,0 +1,48 @@
+- OURPLE SKIN SELECTOR (WIP)!
+- ACHIEVEMENTS!
+- Added Repugnant Cover.
+- Added Lore AR Mix.
+- Added Sunk (Lore Iron Lung Mix) to the Originals.
+- Remixed Tropical Mix.
+- Remixed Lore Sad Mix.
+- Ported all the Lua codes to Source (better performance i think).
+- Added proper credits (with new Credits subgroups).
+- Added a Loading Screen (by whitemungus) with (useless) tips.
+- Added a Matpat art (by whitemungus again) in the Freeplay Select Menu (Tip: Click on him...multiple times...cuz funni).
+- Added an exit button on most of the menus for mouse cursor users.
+- Added a saving icon at the bottom right corner of the screen.
+- Changed Menu Transitions.
+- Added a time bar color changing mechanic.
+- Readded miss counter.
+- Added Ourple Game Over screen.
+- Added Ourple Pause Menu.
+- Added a Lore Origins options substate menu.
+- Removed the Note Colors option menu.
+- Removed the Rating offset menu to the Adjust Delay/Note option menu.
+- Added the Ourple Countdown Animations.
+- Added cool main menu intro animation.
+- Detective now looks better.
+- Clicking on LORAYs in the Loray Credits Menu will play a randomized sound.
+- Recentered the Main Menu elements.
+- Set Freeplay Menu to gray for songs considered old. (more than a year old, because they're kinda cringe).
+- Fixed scores in Freeplay not showing up.
+- Fixed randomizer triggering when restarting the song in the Music Player of the Freeplay Menu.
+- Fixed the Freeplay Select State not saving the last selected Freeplay Category (would always go back to "Covers").
+- Fixed a bug where accessing the Options menu from the Main Menu when once opened in PlayState would go back to PlayState.
+- Fixed score text not appearing on Middlescroll.
+- Fixed LORAY watermark hitbox being too large.
+- Shuffled the images in the Chronology cutscene (to prove that its actually coded-in and random lol).
+- Brought back the HaxeFlixel intro (with a twist).
+- Changed the FPS counter font.
+- Reduced size of the mouse cuz it was huuuuuuge.
+- 395248
+
+NEW OURPLES ADDED TO THE LORE ROASTER -> Hrey Guy, Nuu Guy, Bloxxy Guy, Wink Woman, Blink Dude and Cool Buddy.
+
+Soon, the mod is going to welcome multiple Ourple Guy Variants as skins and will change the gameplay for even more content.
+If you are the director of any Ourple related mod and want your ourple to be part of the next update, contact me on Discord (loray_man) or on Twitter (https://x.com/LORAY_man).
+(That is if I ever consider making another update...)
+
+IMPORTANT NOTE : If Chronology crashes, it's actually normal, the thing is I added so many events to it that the game literally crashes because of how many there are (that's my theory anyway, cuz everything should be working fine).
+
+ADDITIONAL NOTE: If you are having performance issues, I recommand disabling the miscellanous events in the Lore Origins settings.

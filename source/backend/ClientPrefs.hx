@@ -42,7 +42,7 @@ import states.TitleState;
 	public var noReset:Bool = false;
 	public var healthBarAlpha:Float = 1;
 	public var hitsoundVolume:Float = 0;
-	public var pauseMusic:String = 'Tea Time';
+	public var pauseMusic:String = 'Break Beats';
 	public var checkForUpdates:Bool = true;
 	public var comboStacking:Bool = true;
 	public var gameplaySettings:Map<String, Dynamic> = [
@@ -67,7 +67,6 @@ import states.TitleState;
 		'opponentplay' => false
 	];
 
-	public var comboOffset:Array<Int> = [0, 0, 0, 0];
 	public var ratingOffset:Int = 0;
 	public var sickWindow:Int = 45;
 	public var goodWindow:Int = 90;
@@ -79,13 +78,28 @@ import states.TitleState;
 	/**LORE ORIGINS STUFF**/
 	public var ourpleData:Map<String, String> = [
 		'Ourple' => 'Normal',
-		'Vloo' => 'Mad'
+		'Vloo' => 'Normal',
+		'Bloxxy' => 'Normal',
+		'Blink' => 'Normal',
+		'Cool' => 'Normal',
+		'Hrey' => 'Normal',
+		'Nuu' => 'Normal',
+		'Wink' => 'Normal'
 	];
 	public var guy:String = 'Ourple';
 	public var lorayWatermark:Bool = true;
 	public var characterGhost:Bool = true;
+	public var miscEvents:Float = 1;
 	public var exitButtonX:String = 'Left';
 	public var hideOldCovers:Bool = false;
+
+	/**ACHIEVEMENTS STUFF**/
+	public var songPlayed:Map<String, Array<String>> = [
+		'Covers' => [],
+		'Originals' => []
+	];
+	public var ourpleUsed:Array<String> = [];
+	public var unlockedEverything:Bool = false;
 }
 
 class ClientPrefs {
@@ -163,7 +177,9 @@ class ClientPrefs {
 		defaultButtons = gamepadBinds.copy();
 	}
 
-	public static function saveSettings() {
+	public static function saveSettings(?showDance:Bool = true) {
+		if (showDance) MusicBeatState.getState().saveDance();
+
 		for (key in Reflect.fields(data))
 			Reflect.setField(FlxG.save.data, key, Reflect.field(data, key));
 
@@ -194,7 +210,7 @@ class ClientPrefs {
 
 		if(FlxG.save.data.framerate == null) {
 			final refreshRate:Int = FlxG.stage.application.window.displayMode.refreshRate;
-			data.framerate = Std.int(FlxMath.bound(refreshRate, 60, 240));
+			data.framerate = Std.int(FlxMath.bound(refreshRate, 15, 240));
 		}
 		#end
 

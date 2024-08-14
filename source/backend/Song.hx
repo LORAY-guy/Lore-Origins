@@ -16,6 +16,7 @@ typedef SwagSong =
 
 	var player1:String;
 	var player2:String;
+	var player4:String;
 	var gfVersion:String;
 	var stage:String;
 
@@ -48,6 +49,7 @@ class Song
 	public var stage:String;
 	public var player1:String = 'playguy';
 	public var player2:String = 'matpat2';
+	public var player4:String = 'mark-webcam';
 	public var gfVersion:String = 'phone';
 
 	private static function onLoadJson(songJson:Dynamic) // Convert old charts to newest format
@@ -110,8 +112,6 @@ class Song
 				path = Paths.json(formattedFolder + '/' + formattedSong + guy);
 			else
 				path = Paths.json(formattedFolder + '/' + formattedSong);
-
-			trace(path);
 
 			#if sys
 			if(FileSystem.exists(path))

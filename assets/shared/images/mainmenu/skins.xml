@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="skins.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="skins_idle0000" x="0" y="0" width="221" height="368"/>
+	<SubTexture name="skins_s0000" x="0" y="373" width="221" height="368"/>
+	<SubTexture name="skins_s0001" x="226" y="0" width="221" height="368"/>
+	<SubTexture name="skins_s0002" x="452" y="0" width="221" height="368"/>
+	<SubTexture name="skins_s0003" x="226" y="373" width="221" height="368"/>
+	<SubTexture name="skins_s0004" x="452" y="373" width="221" height="368"/>
+</TextureAtlas>

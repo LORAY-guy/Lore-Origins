@@ -180,6 +180,7 @@ class Repugnant extends BaseStage
                 if (ClientPrefs.data.lowQuality)
                     FlxTween.tween(camHUD, {alpha: 0}, 1, {ease: FlxEase.sineInOut});
                 else
+                    PlayState.instance.inLoreCutscene = true;
                     showGTLogo();
 
             case 1580:
@@ -252,6 +253,7 @@ class Repugnant extends BaseStage
                 cameraSpeed = 1000;
                 matpat = null;
                 cutsceneElts.destroy();
+                PlayState.instance.inLoreCutscene = false;
 
             case 1792:
                 camGame.flash(FlxColor.WHITE, 1);

@@ -121,4 +121,8 @@ class MusicBeatSubstate extends FlxSubState
 		if(PlayState.SONG != null && PlayState.SONG.notes[curSection] != null) val = PlayState.SONG.notes[curSection].sectionBeats;
 		return val == null ? 4 : val;
 	}
+
+	public static function getSubState():MusicBeatSubstate {
+		return cast (FlxG.state.subState, MusicBeatSubstate);
+	}
 }

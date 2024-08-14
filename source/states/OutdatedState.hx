@@ -1,14 +1,11 @@
 package states;
 
-import backend.ExitButton;
-
 class OutdatedState extends MusicBeatState
 {
-	public static var leftState:Bool = false;
+	var leftState:Bool = false;
 	var warnText:FlxText;
-	var exitButton:ExitButton;
 	
-	override function create()
+	override function create():Void
 	{
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Bro's fucked, he didn't update", null);
@@ -33,23 +30,21 @@ class OutdatedState extends MusicBeatState
 			36);
 		warnText.setFormat(Paths.font("ourple.ttf"), 36);
 		warnText.screenCenter(Y);
-		warnText.antialiasing = false;
 		add(warnText);
 
-		exitButton = new ExitButton();
-		insert(5, exitButton);
+		FlxTween.tween(FlxG.sound.music, {pitch: 0.5}, 1);
 
 		super.create();
 	}
 
-	override function update(elapsed:Float)
+	override function update(elapsed:Float):Void
 	{
 		if(!leftState) {
-			if (controls.ACCEPT || (!FlxG.mouse.overlaps(exitButton) && FlxG.mouse.justPressed)) {
+			if (controls.ACCEPT_P || FlxG.mouse.justPressed) {
 				leftState = true;
 				CoolUtil.browserLoad("https://gamebanana.com/mods/476070");
 			}
-			else if(controls.BACK) {
+			else if(controls.BACK_P) {
 				leftState = true;
 			}
 
@@ -58,7 +53,7 @@ class OutdatedState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				FlxTween.tween(warnText, {alpha: 0}, 1, {
 					onComplete: function (twn:FlxTween) {
-						MusicBeatState.switchState(new states.MainMenuState());
+						MusicBeatState.switchState(new states.MainMenuState(true));
 					}
 				});
 			}

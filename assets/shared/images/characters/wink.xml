@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="wink.png">
+<SubTexture name="wink idle0000" x="434" y="0" width="272" height="373" frameX="-206" frameY="-97" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink idle0001" x="978" y="0" width="284" height="363" frameX="-199" frameY="-108" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink idle0002" x="544" y="439" width="278" height="365" frameX="-203" frameY="-106" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink idle0003" x="272" y="439" width="272" height="368" frameX="-206" frameY="-102" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink idle0004" x="0" y="439" width="272" height="372" frameX="-206" frameY="-98" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink idle0005" x="706" y="0" width="272" height="373" frameX="-206" frameY="-97" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink left0000" x="978" y="363" width="279" height="354" frameX="-149" frameY="-125" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink left0001" x="0" y="811" width="281" height="353" frameX="-149" frameY="-124" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink up0000" x="0" y="0" width="228" height="439" frameX="-216" frameY="-24" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink up0001" x="228" y="0" width="206" height="419" frameX="-230" frameY="-41" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink right0000" x="0" y="1164" width="321" height="332" frameX="-238" frameY="-133" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink right0001" x="281" y="811" width="342" height="350" frameX="-225" frameY="-111" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink down0000" x="1560" y="0" width="332" height="259" frameX="-158" frameY="-213" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink down0001" x="944" y="1164" width="306" height="290" frameX="-168" frameY="-179" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink Silly0000" x="628" y="1164" width="316" height="322" frameX="-198" frameY="-156" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink Silly0001" x="321" y="1164" width="307" height="325" frameX="-203" frameY="-153" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink Silly0002" x="1262" y="334" width="298" height="332" frameX="-207" frameY="-145" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink Silly0003" x="1262" y="0" width="298" height="334" frameX="-207" frameY="-143" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink Silly0004" x="623" y="811" width="298" height="337" frameX="-207" frameY="-140" frameWidth="640" frameHeight="640" />
+<SubTexture name="wink Silly0005" x="921" y="811" width="298" height="337" frameX="-207" frameY="-140" frameWidth="640" frameHeight="640" />
+</TextureAtlas>

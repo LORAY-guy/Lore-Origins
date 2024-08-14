@@ -1,5 +1,6 @@
 package;
 
+import objects.Note;
 import flixel.FlxState;
 
 class LatencyState extends FlxState
@@ -28,7 +29,7 @@ class LatencyState extends FlxState
 		strumLine = new FlxSprite(FlxG.width / 2, 100).makeGraphic(FlxG.width, 5);
 		add(strumLine);
 
-		Conductor.changeBPM(120);
+		Conductor.bpm = 120;
 
 		super.create();
 	}
@@ -44,12 +45,12 @@ class LatencyState extends FlxState
 		if (FlxG.keys.pressed.SHIFT)
 			multiply = 10;
 
-		if (FlxG.keys.justPressed.RIGHT)
+		if (Controls.instance.UI_LEFT_P)
 			Conductor.offset += 1 * multiply;
-		if (FlxG.keys.justPressed.LEFT)
+		if (Controls.instance.UI_RIGHT_P)
 			Conductor.offset -= 1 * multiply;
 
-		if (FlxG.keys.justPressed.SPACE)
+		if (Controls.instance.ACCEPT)
 		{
 			FlxG.sound.music.stop();
 

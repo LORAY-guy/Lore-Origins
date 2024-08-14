@@ -1,18 +1,9 @@
 package substates;
 
-import flixel.*;
-import flixel.FlxSubState;
-import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUIPopup;
 import flixel.ui.FlxButton;
-
-import openfl.display.BitmapData;
 import openfl.geom.Rectangle;
 
-/**
- * ...
- * @author 
- */
 class Prompt extends MusicBeatSubstate
 {
 	var selected = 0;
@@ -50,86 +41,36 @@ class Prompt extends MusicBeatSubstate
 	override public function create():Void 
 	{
 		super.create();
-		if (goAnyway){
-			
-			
-				if(okc != null)okc();
+		if (goAnyway) {
+			if(okc != null)	okc();
 			close();
+		} else {
+			panel = new FlxSprite(0, 0);
+			panelbg = new FlxSprite(0, 0);
+			makeSelectorGraphic(panel,300,150,0xff999999);
+			makeSelectorGraphic(panelbg,304,154,0xff000000);
+			panel.scrollFactor.set();
+			panel.screenCenter();
+			panelbg.scrollFactor.set();
+			panelbg.screenCenter();
 			
-		}else{
-		panel = new FlxSprite(0, 0);
-		panelbg = new FlxSprite(0, 0);
-		makeSelectorGraphic(panel,300,150,0xff999999);
-		makeSelectorGraphic(panelbg,304,154,0xff000000);
-		//panel.makeGraphic(300, 150, 0xff999999);
-		//panel.loadGraphic(Paths.image('ui/promptbg'));
-		/*
-		buttons.frames = Paths.getSparrowAtlas('ui/prompt_buttons');
-		buttons.animation.addByIndices('but0', 'buttons', [0], '', 0);
-		buttons.animation.addByIndices('but1', 'buttons', [1], '', 0);
-		buttons.animation.play('but0');
-		buttons.scrollFactor.set();*/
-		panel.scrollFactor.set();
-		panel.screenCenter();
-		panelbg.scrollFactor.set();
-		panelbg.screenCenter();
-		
-		add(panelbg);
-		add(panel);
-		add(buttonAccept);
-		add(buttonNo);
-		//add(buttons);
-		var textshit:FlxText = new FlxText(buttonNo.width*2, panel.y, 300, theText, 16);
-		textshit.alignment = 'center';
-		add(textshit);
-		textshit.screenCenter();
-		buttonAccept.screenCenter();
-		buttonNo.screenCenter();
-		buttonAccept.x -= buttonNo.width/1.5;
-		buttonAccept.y = panel.y + panel.height-30;
-		buttonNo.x += buttonNo.width/1.5;
-		buttonNo.y = panel.y + panel.height-30;
-		textshit.scrollFactor.set();
+			add(panelbg);
+			add(panel);
+			add(buttonAccept);
+			add(buttonNo);
+			var textshit:FlxText = new FlxText(buttonNo.width*2, panel.y, 300, theText, 16);
+			textshit.alignment = 'center';
+			add(textshit);
+			textshit.screenCenter();
+			buttonAccept.screenCenter();
+			buttonNo.screenCenter();
+			buttonAccept.x -= buttonNo.width/1.5;
+			buttonAccept.y = panel.y + panel.height-30;
+			buttonNo.x += buttonNo.width/1.5;
+			buttonNo.y = panel.y + panel.height-30;
+			textshit.scrollFactor.set();
 		}
 	}
-	/*
-	override public function update(elapsed:Float):Void 
-	{
-		super.update(elapsed);
-		
-		
-		
-		if (!goAnyway){
-			
-			
-			
-		if (controls.UI_LEFT_P || controls.UI_RIGHT_P){
-			if (selected == 0){
-				selected = 1;
-			}else{
-				selected = 0;
-			}
-			FlxG.sound.play(Paths.sound('scrollMenu'));
-			//buttons.animation.play('but' + selected);
-		}
-		buttonAccept.color.brightness = 0.5;
-		buttonNo.color.brightness = 0.5;
-		if (selected == 0 ) buttonAccept.color.brightness = 0.9;
-		if (selected == 1 ) buttonNo.color.brightness = 0.9;
-		if (controls.ACCEPT ){
-			if (selected == 0){
-				FlxG.sound.play(Paths.sound('confirmMenu'));
-				if(okc != null)okc();
-			}else{
-				FlxG.sound.play(Paths.sound('cancelMenu'));
-				if(cancelc != null)cancelc();
-			}
-			close();
-		}
-		
-		}
-	}
-	*/
 	
 	function makeSelectorGraphic(panel:FlxSprite,w,h,color:FlxColor)
 	{
@@ -163,5 +104,4 @@ class Prompt extends MusicBeatSubstate
 		panel.pixels.fillRect(new Rectangle((flipX ? antiX : 6), Std.int(Math.abs(antiY - 2)),  5, 1), color);
 		panel.pixels.fillRect(new Rectangle((flipX ? antiX : 8), Std.int(Math.abs(antiY - 1)),  3, 1), color);
 	}
-	
 }

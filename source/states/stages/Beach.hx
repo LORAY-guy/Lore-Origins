@@ -5,7 +5,6 @@ class Beach extends BaseStage
     var beach:BGSprite;
     var stool:BGSprite;
 
-    var thanksText:FlxText;
     var tutorialTxt:FlxText;
     public static var tauntPlayer:FlxSprite;
     public static var tauntMatpat:FlxSprite;
@@ -31,13 +30,6 @@ class Beach extends BaseStage
         stool.setGraphicSize(Std.int(beach.width * 0.15));
         stool.updateHitbox();
         add(stool);
-
-        thanksText = new FlxText(0, 0, 0, 'Thanks for playing!', 72);
-        thanksText.setFormat(Paths.font('ourple.ttf'), 72, FlxColor.GREEN);
-        thanksText.visible = false;
-        thanksText.cameras = [camOther];
-        thanksText.screenCenter(XY);
-        add(thanksText);
 
         tauntPlayer = new FlxSprite(1190, 520);
         tauntPlayer.frames = Paths.getSparrowAtlas('taunt');
@@ -68,12 +60,8 @@ class Beach extends BaseStage
 
     override function createPost() 
     {
-        if (ClientPrefs.getGameplaySetting('botplay')) {
-            thanksText.text = 'Thanks for watching!';
-            thanksText.screenCenter(XY);
-        }
-        PlayState.instance.gf.y = 450;
-        PlayState.instance.gf.visible = false;
+        gf.y = 450;
+        gf.visible = false;
 
         super.createPost();
     }
@@ -97,7 +85,6 @@ class Beach extends BaseStage
         
         if (curStep == 3872) {
             brubMoment = false;
-            thanksText.visible = true;
         }
     }
 
@@ -116,7 +103,7 @@ class Beach extends BaseStage
     {
         tauntMatpat.animation.play('taunt', true, false, 0);
         tauntMatpat.visible = true;
-        PlayState.instance.dad.playAnim('sing' + animationsList[FlxG.random.int(0, animationsList.length-1)], true, false, 4);
+        dad.playAnim('sing' + animationsList[FlxG.random.int(0, animationsList.length-1)], true, false, 4);
         matpatTaunt = true;
         bonus += 1500;
         new FlxTimer().start(0.35, function(tmr:FlxTimer) {
@@ -139,7 +126,7 @@ class Beach extends BaseStage
         return randomAnimation;
     }
 
-    function resetVars()
+    private function resetVars()
     {
         cooldown = false;
         firstSpace = false;

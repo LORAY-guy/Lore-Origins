@@ -1,7 +1,6 @@
 package backend;
 
 import openfl.utils.Assets;
-import haxe.Json;
 import backend.Song;
 
 typedef StageFile = {
@@ -13,11 +12,14 @@ typedef StageFile = {
 	var boyfriend:Array<Dynamic>;
 	var girlfriend:Array<Dynamic>;
 	var opponent:Array<Dynamic>;
+	var mark:Array<Dynamic>;
 	var hide_girlfriend:Bool;
+	var hide_mark:Bool;
 
 	var camera_boyfriend:Array<Float>;
 	var camera_opponent:Array<Float>;
 	var camera_girlfriend:Array<Float>;
+	var camera_mark:Array<Float>;
 	var camera_speed:Null<Float>;
 }
 
@@ -33,11 +35,14 @@ class StageData {
 			boyfriend: [770, 100],
 			girlfriend: [400, 130],
 			opponent: [100, 100],
+			mark: [180, 70],
 			hide_girlfriend: false,
+			hide_mark: true,
 
 			camera_boyfriend: [0, 0],
 			camera_opponent: [0, 0],
 			camera_girlfriend: [0, 0],
+			camera_mark: [0, 0],
 			camera_speed: 1
 		};
 	}
@@ -47,28 +52,6 @@ class StageData {
 		var stage:String = '';
 		if(SONG.stage != null) {
 			stage = SONG.stage;
-		} else if(SONG.song != null) {
-			switch (SONG.song.toLowerCase().replace(' ', '-'))
-			{
-				case 'spookeez' | 'south' | 'monster':
-					stage = 'spooky';
-				case 'pico' | 'blammed' | 'philly' | 'philly-nice':
-					stage = 'philly';
-				case 'milf' | 'satin-panties' | 'high':
-					stage = 'limo';
-				case 'cocoa' | 'eggnog':
-					stage = 'mall';
-				case 'winter-horrorland':
-					stage = 'mallEvil';
-				case 'senpai' | 'roses':
-					stage = 'school';
-				case 'thorns':
-					stage = 'schoolEvil';
-				case 'ugh' | 'guns' | 'stress':
-					stage = 'tank';
-				default:
-					stage = 'stage';
-			}
 		} else {
 			stage = 'stage';
 		}
@@ -102,29 +85,5 @@ class StageData {
 			return null;
 		}
 		return cast tjson.TJSON.parse(rawJson);
-	}
-
-	public static function vanillaSongStage(songName):String
-	{
-		switch (songName)
-		{
-			case 'spookeez' | 'south' | 'monster':
-				return 'spooky';
-			case 'pico' | 'blammed' | 'philly' | 'philly-nice':
-				return 'philly';
-			case 'milf' | 'satin-panties' | 'high':
-				return 'limo';
-			case 'cocoa' | 'eggnog':
-				return 'mall';
-			case 'winter-horrorland':
-				return 'mallEvil';
-			case 'senpai' | 'roses':
-				return 'school';
-			case 'thorns':
-				return 'schoolEvil';
-			case 'ugh' | 'guns' | 'stress':
-				return 'tank';
-		}
-		return 'stage';
 	}
 }

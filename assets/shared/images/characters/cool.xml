@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="cool.png">
+<SubTexture name="cool idle0000" x="0" y="2317" width="219" height="455" frameX="-539" frameY="-172" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool idle0001" x="2651" y="0" width="214" height="475" frameX="-541" frameY="-152" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool idle0002" x="1119" y="623" width="178" height="513" frameX="-554" frameY="-114" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool idle0003" x="986" y="1817" width="204" height="495" frameX="-547" frameY="-132" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool idle0004" x="986" y="1817" width="204" height="495" frameX="-547" frameY="-132" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool idle0005" x="986" y="1817" width="204" height="495" frameX="-547" frameY="-132" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool right0000" x="1190" y="1817" width="316" height="495" frameX="-543" frameY="-132" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool right0001" x="1506" y="1817" width="316" height="492" frameX="-537" frameY="-135" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool right0002" x="1822" y="1817" width="316" height="492" frameX="-536" frameY="-135" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool left0000" x="1929" y="0" width="359" height="508" frameX="-386" frameY="-118" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool left0001" x="2288" y="0" width="363" height="506" frameX="-386" frameY="-120" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool left0002" x="2288" y="506" width="363" height="506" frameX="-388" frameY="-120" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool up0000" x="1929" y="508" width="294" height="505" frameX="-483" frameY="-121" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool up0001" x="330" y="1817" width="326" height="499" frameX="-465" frameY="-127" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool up0002" x="656" y="1817" width="330" height="496" frameX="-463" frameY="-130" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool down0000" x="2288" y="1012" width="294" height="506" frameX="-483" frameY="-167" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool down0001" x="1929" y="1013" width="326" height="504" frameX="-465" frameY="-167" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool down0002" x="0" y="1817" width="330" height="500" frameX="-463" frameY="-167" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altr0000" x="1299" y="0" width="630" height="580" frameX="-548" frameY="-45" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altr0001" x="1299" y="580" width="609" height="579" frameX="-544" frameY="-48" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altr0002" x="615" y="1239" width="589" height="575" frameX="-543" frameY="-52" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altl0000" x="0" y="0" width="656" height="623" frameX="-51" frameY="0" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altl0001" x="0" y="1239" width="615" height="578" frameX="-107" frameY="-48" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altl0002" x="1204" y="1239" width="609" height="570" frameX="-115" frameY="-56" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altu0000" x="0" y="623" width="458" height="616" frameX="-417" frameY="-2" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altu0001" x="656" y="0" width="643" height="623" frameX="-326" frameY="-2" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altu0002" x="458" y="623" width="661" height="612" frameX="-317" frameY="-13" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altd0000" x="2138" y="1817" width="444" height="492" frameX="-459" frameY="-134" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altd0001" x="611" y="2317" width="406" height="402" frameX="-479" frameY="-225" frameWidth="1280" frameHeight="720" />
+<SubTexture name="cool altd0002" x="219" y="2317" width="392" height="411" frameX="-486" frameY="-216" frameWidth="1280" frameHeight="720" />
+</TextureAtlas>

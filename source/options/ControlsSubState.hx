@@ -1,14 +1,14 @@
 package options;
 
 import backend.InputFormatter;
-import flixel.addons.display.FlxBackdrop;
-import flixel.addons.display.FlxGridOverlay;
 import objects.AttachedSprite;
 
 import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.gamepad.FlxGamepadManager;
+import flixel.addons.display.FlxBackdrop;
+import flixel.addons.display.FlxGridOverlay;
 
 class ControlsSubState extends MusicBeatSubstate
 {
@@ -110,6 +110,8 @@ class ControlsSubState extends MusicBeatSubstate
 		add(text);
 
 		createTexts();
+
+		add(new ExitButton('options'));
 	}
 
 	var lastID:Int = 0;

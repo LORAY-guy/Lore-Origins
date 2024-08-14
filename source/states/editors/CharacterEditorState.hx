@@ -1075,19 +1075,15 @@ class CharacterEditorState extends MusicBeatState
 		}
 	}
 
-	final assetFolder = 'week1';  //load from assets/week1/
 	inline function loadBG()
 	{
-		var lastLoaded = Paths.currentLevel;
-		Paths.currentLevel = assetFolder;
-
 		/////////////
 		// bg data //
 		/////////////
-		var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
+		var bg:BGSprite = new BGSprite('lore/wall', -600, -200, 0.9, 0.9);
 		add(bg);
 
-		var stageFront:BGSprite = new BGSprite('stagefront', -650, 600, 0.9, 0.9);
+		var stageFront:BGSprite = new BGSprite('lore/floor', -650, 600, 0.9, 0.9);
 		stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
 		stageFront.updateHitbox();
 		add(stageFront);
@@ -1095,8 +1091,6 @@ class CharacterEditorState extends MusicBeatState
 		dadPosition.set(100, 100);
 		bfPosition.set(770, 100);
 		/////////////
-
-		Paths.currentLevel = lastLoaded;
 	}
 
 

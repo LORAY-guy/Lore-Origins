@@ -1,19 +1,13 @@
 package states;
 
-import backend.ExitButton;
-
 import flixel.FlxObject;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxBackdrop;
-
-import states.editors.MasterEditorMenu;
-import options.OptionsState;
 
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.7.3'; // This is used for Discord RPC
-	public static var loreVersion:String = '1.7.0'; //This is also used for Discord RPC
+	public static var loreVersion:String = '2.0'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 	public static var playedIntro:Bool = false;
 
@@ -21,13 +15,14 @@ class MainMenuState extends MusicBeatState
 
 	var optionShit:Array<String> = [
 		'lore',
+		'skins',
+		'achievements',
 		'options',
 		'credits'
 	];
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
-	var camFollowPos:FlxObject;
 
 	override function create()
 	{
@@ -43,9 +38,6 @@ class MainMenuState extends MusicBeatState
 
 		Paths.clearUnusedMemory();
 
-		FlxTransitionableState.skipNextTransIn = true;
-		FlxTransitionableState.skipNextTransOut = true;
-
 		persistentUpdate = persistentDraw = true;
 
 		var xScroll:Float = Math.min(0.1 - (0.05 * (optionShit.length - 4)), 0.01);
@@ -58,9 +50,7 @@ class MainMenuState extends MusicBeatState
 		add(bg);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
-		camFollowPos = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
-		add(camFollowPos);
 
 		var grid:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/grid'));
 		grid.scrollFactor.set(0, 0);
@@ -86,24 +76,21 @@ class MainMenuState extends MusicBeatState
 
 		for (i in 0...optionShit.length)
 		{
-			var offset:Float = (i * 410) + (48 * (optionShit.length - 4) * 0.135);
-			var menuItem:FlxSprite = new FlxSprite(offset + 125, 128);
+			var offset:Float = (i * 410) + (48 * (optionShit.length - 5) * 0.135);
+			var menuItem:FlxSprite = new FlxSprite(offset + 115);
 			menuItem.scale.x = scale;
 			menuItem.scale.y = scale;
 			menuItem.frames = Paths.getSparrowAtlas('mainmenu/' + optionShit[i]);
 			menuItem.animation.addByPrefix('idle', optionShit[i] + '_idle', 8);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + '_s', 8);
 			menuItem.animation.play('idle');
+			menuItem.scrollFactor.set(1, 0);
 			menuItem.updateHitbox();
+			menuItem.screenCenter(Y);
 			menuItem.centerOffsets();
 			menuItem.ID = i;
 			menuItems.add(menuItem);
-
-			var scr:Float = (optionShit.length < 4) ? 0 : 1;
-			menuItem.scrollFactor.set(scr, 0.25);
 		}
-
-		FlxG.camera.follow(camFollowPos, null, 1);
 
 		var psychVer:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
 		psychVer.scrollFactor.set();
@@ -117,13 +104,13 @@ class MainMenuState extends MusicBeatState
 		changeItem();
 		super.create();
 
-		if (!playedIntro) playIntro();
-		FlxG.camera.y = 720;
-		FlxTween.tween(FlxG.camera, {y: 0}, 1.2, {ease: FlxEase.expoInOut});
+		FlxG.camera.follow(camFollow, null, 9);
 
-		add(new ExitButton('title'));
+		if (!playedIntro) playIntro();
+		if (FlxG.sound.music.pitch < 1) FlxTween.tween(FlxG.sound.music, {pitch: 1}, 1); // For Outdated State transition
 
 		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
+		add(new ExitButton('title'));
 	}
 
 	public var selectedSomethin:Bool = false;
@@ -166,11 +153,7 @@ class MainMenuState extends MusicBeatState
 							FlxG.sound.play(Paths.sound('scrollMenu'));
 							spr.animation.play('selected');
 
-							var add:Float = 0;
-							if(menuItems.length > 4) {
-								add = menuItems.length * 8;
-							}
-							camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y - add);
+							camFollow.setPosition(menuItems.members[curSelected].getGraphicMidpoint().x - getPosOffsetMenuItems());
 							spr.centerOffsets();
 						}
 
@@ -196,16 +179,13 @@ class MainMenuState extends MusicBeatState
 					changeItem(1);
 			}
 
-			if (controls.BACK)
+			if (controls.BACK_P)
 			{
 				selectedSomethin = true;
-				FlxG.sound.play(Paths.sound('cancelMenu'));
-				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
-					MusicBeatState.switchState(new TitleState());
-				}});
+				exitState(new TitleState());
 			}
 
-			if (controls.ACCEPT)
+			if (controls.ACCEPT_P)
 			{
 				selectedSomethin = true;
 				FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -215,10 +195,8 @@ class MainMenuState extends MusicBeatState
 			if (controls.justPressed('debug_1'))
 			{
 				/*selectedSomethin = true;
-				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
-					MusicBeatState.switchState(new MasterEditorMenu());
-				}});*/
-				FlxG.sound.play(Paths.sound('cancelMenu'));
+				exitState(new MasterEditorMenu(true));*/
+				FlxG.sound.play(Paths.sound('cancelMenu')); //You ain't getting access to this, bozo.
 			}
 			#end
 		}
@@ -245,15 +223,14 @@ class MainMenuState extends MusicBeatState
 		menuItems.members[curSelected].animation.play('selected');
 		menuItems.members[curSelected].centerOffsets();
 
-		camFollow.setPosition(menuItems.members[curSelected].getGraphicMidpoint().x,
-			menuItems.members[curSelected].getGraphicMidpoint().y - (menuItems.length > 4 ? menuItems.length * 8 : 0));
+		camFollow.setPosition(menuItems.members[curSelected].getGraphicMidpoint().x - getPosOffsetMenuItems());
+
 	}
 
 	private function processItems():Void
 	{
 		FlxG.camera.zoom += 0.06;
-		FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut});
-		//if (ClientPrefs.data.flashing) FlxG.camera.flash(FlxColor.WHITE, 0.7);
+		FlxTween.tween(FlxG.camera, {y: Lib.application.window.height}, 1.2, {ease: FlxEase.expoInOut});
 
 		menuItems.forEach(function(spr:FlxSprite) {
 			if (curSelected != spr.ID)
@@ -276,12 +253,16 @@ class MainMenuState extends MusicBeatState
 					switch (daChoice)
 					{
 						case 'lore':
-							MusicBeatState.switchState(new states.FreeplaySelectState());
-						case 'credits':
-							MusicBeatState.switchState(new states.credits.CreditsState());
+							MusicBeatState.switchState(new states.FreeplaySelectState(true));
 						case 'options':
-							OptionsState.onPlayState = false;
-							MusicBeatState.switchState(new options.OptionsState());
+							options.OptionsState.onPlayState = false;
+							MusicBeatState.switchState(new options.OptionsState(true));
+						case 'skins':
+							MusicBeatState.switchState(new states.OurpleSkinSelector(true));
+						case 'achievements':
+							MusicBeatState.switchState(new states.AchievementsMenuState(true));
+						case 'credits':
+							MusicBeatState.switchState(new states.credits.CreditsSubgroupState(true));
 					}
 				});
 			}
@@ -302,5 +283,11 @@ class MainMenuState extends MusicBeatState
 			}});
 		}
 		playedIntro = true;
+	}
+
+	private function getPosOffsetMenuItems():Float {
+		var midIndex = menuItems.length / 2;
+		var offsetFactor = 120;
+		return (curSelected - midIndex) * offsetFactor;
 	}
 }

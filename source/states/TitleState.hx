@@ -53,8 +53,6 @@ class TitleState extends MusicBeatState
 
 	var mustUpdate:Bool = false;
 
-	var titleJSON:TitleData;
-
 	public static var updateVersion:String = '';
 
 	override public function create():Void
@@ -78,6 +76,9 @@ class TitleState extends MusicBeatState
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
 
 		ClientPrefs.loadPrefs();
+
+		CoolUtil.reloadOurpleCursor();
+		FlxG.mouse.visible = true;
 
 		#if CHECK_FOR_UPDATES
 		if(ClientPrefs.data.checkForUpdates && !closedState) {
@@ -105,9 +106,6 @@ class TitleState extends MusicBeatState
 
 		Highscore.load();
 
-		// IGNORE THIS!!!
-		titleJSON = tjson.TJSON.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));
-
 		if(!initialized)
 		{
 			if(FlxG.save.data != null && FlxG.save.data.fullscreen)
@@ -127,7 +125,7 @@ class TitleState extends MusicBeatState
 		#if !html5 if (!FlxG.mouse.visible) FlxG.mouse.visible = true; #end
 		
 		#if FREEPLAY
-		MusicBeatState.switchState(new FreeplayState());
+		MusicBeatState.switchState(new FreeplayState(true));
 		#elseif CHARTING
 		MusicBeatState.switchState(new ChartingState());
 		#else
@@ -163,7 +161,7 @@ class TitleState extends MusicBeatState
 			}
 		}
 
-		Conductor.bpm = titleJSON.bpm;
+		Conductor.bpm = 130;
 		persistentUpdate = true;
 
 		var bg:FlxSprite = new FlxSprite();
@@ -189,7 +187,7 @@ class TitleState extends MusicBeatState
 		add(gameTheoryLogo);
 		gameTheoryLogo.shader = swagShader.shader;
 
-		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
+		titleText = new FlxSprite(140, 610);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
 		var animFrames:Array<FlxFrame> = [];
 		@:privateAccess {
@@ -274,7 +272,7 @@ class TitleState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
-		pressedEnter = (FlxG.keys.justPressed.ENTER || controls.ACCEPT || FlxG.mouse.justPressed);
+		pressedEnter = (FlxG.keys.justPressed.ENTER || controls.ACCEPT_P || FlxG.mouse.justPressed);
 
 		#if mobile
 		for (touch in FlxG.touches.list)
@@ -341,10 +339,10 @@ class TitleState extends MusicBeatState
 					if (mustUpdate) {
 						MusicBeatState.switchState(new OutdatedState());
 					} else {
-						MusicBeatState.switchState(new MainMenuState());
+						MusicBeatState.switchState(new MainMenuState(true));
 					}
 					#else
-					MusicBeatState.switchState(new MainMenuState());
+					MusicBeatState.switchState(new MainMenuState(true));
 					#end
 					closedState = true;
 				});

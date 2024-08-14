@@ -94,6 +94,7 @@ class Character extends FlxSprite
 	//Ourple Guy shit
 	public var flipped:Bool = true;
 	public var flippedIdle:Bool = false;
+	public var defaultX:Float = 0;
 	public var defaultY:Float = 0;
 	public var ghostData:GhostData = {};
 
@@ -425,6 +426,7 @@ class Character extends FlxSprite
 	public var danceEveryNumBeats:Int = 2;
 	private var settingCharacterUp:Bool = true;
 	public function recalculateDanceIdle() {
+		defaultX = x;
 		defaultY = y;
 		var lastDanceIdle:Bool = danceIdle;
 		danceIdle = (animOffsets.exists('danceLeft' + idleSuffix) && animOffsets.exists('danceRight' + idleSuffix));

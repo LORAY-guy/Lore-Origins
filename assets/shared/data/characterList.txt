@@ -1,10 +1,14 @@
 matpat2
+matpat-sunk
+matpat-sunk-alt
 playguy
 playguy-mad
 playguy-staring
-vloo
-vloo-mad
 phone
-casseteman
+goldenphone
 mark
+mark-webcam
 prange
+prangealt
+lixian
+shaghorn

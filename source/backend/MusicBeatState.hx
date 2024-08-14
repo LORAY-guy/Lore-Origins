@@ -15,6 +15,13 @@ class MusicBeatState extends FlxUIState
 
 	private var curDecStep:Float = 0;
 	private var curDecBeat:Float = 0;
+
+	private var epicTransition:Bool = false;
+
+	public var dance:FlxSprite;
+
+	public var leavingState:Bool = false;
+
 	public var controls(get, never):Controls;
 	private function get_controls()
 	{
@@ -22,6 +29,11 @@ class MusicBeatState extends FlxUIState
 	}
 
 	var _psychCameraInitialized:Bool = false;
+
+	public function new(epicTransition:Bool = false) {
+		super();
+		this.epicTransition = epicTransition;
+	}
 
 	override function create() {
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
@@ -33,9 +45,19 @@ class MusicBeatState extends FlxUIState
 
 		if(!skip) {
 			openSubState(new CustomFadeTransition(0.6, true));
-		}
-		FlxTransitionableState.skipNextTransOut = false;
+		}		
 		timePassedOnState = 0;
+
+		initSaveDance();
+
+		if (epicTransition) {
+			FlxTransitionableState.skipNextTransIn = true;
+			FlxTransitionableState.skipNextTransOut = true;
+			//If the player set the height 1280x1080 for exemple, the screen will go down to 1080.
+			//If i used FlxG.height, it would stop midway (since it is set to 720 and doesn't update when the window is resized) and looked weird.
+			FlxG.camera.y = Lib.application.window.height;
+			FlxTween.tween(FlxG.camera, {y: 0}, 1.2, {ease: FlxEase.expoInOut});
+		}
 	}
 
 	public function initPsychCamera():PsychCamera
@@ -165,6 +187,16 @@ class MusicBeatState extends FlxUIState
 		return cast (FlxG.state, MusicBeatState);
 	}
 
+	public function exitState(state:FlxState, ?playSound:Bool = true, ?isPlayState:Bool = false):Void {
+		if (!leavingState) {
+			leavingState = true;
+			if (playSound) FlxG.sound.play(Paths.sound('cancelMenu'));
+			FlxTween.tween(FlxG.camera, {y: Lib.application.window.height}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+				if (isPlayState) LoadingState.loadAndSwitchState(state); else MusicBeatState.switchState(state);
+			}});
+		}
+	}
+
 	public function stepHit():Void
 	{
 		stagesFunc(function(stage:BaseStage) {
@@ -209,5 +241,35 @@ class MusicBeatState extends FlxUIState
 		var val:Null<Float> = 4;
 		if(PlayState.SONG != null && PlayState.SONG.notes[curSection] != null) val = PlayState.SONG.notes[curSection].sectionBeats;
 		return val == null ? 4 : val;
+	}
+
+	public function initSaveDance()
+	{
+		dance = new FlxSprite();
+		dance.frames = Paths.getSparrowAtlas('loadingDance');
+		dance.animation.addByPrefix('idle', 'idle', 24, true);
+		dance.animation.play('idle', false);
+		dance.scale.set(0.25, 0.25);
+		dance.updateHitbox();
+		dance.scrollFactor.set(0, 0);
+		dance.setPosition((FlxG.width - dance.width) - 15, (FlxG.height - dance.height) - 10);
+		dance.antialiasing = false;
+		dance.alpha = 0;
+		if (FlxG.state.subState != null)
+			MusicBeatSubstate.getSubState().insert(1000, dance);
+		else
+			getState().insert(1000, dance);
+	}
+
+	public function saveDance()
+	{
+		if (dance == null) initSaveDance();
+		FlxTween.cancelTweensOf(dance);
+		dance.alpha = 1;
+
+		FlxTween.tween(dance, {alpha: 0}, 0.5, {
+			ease: FlxEase.sineInOut,
+			startDelay: 0.5
+		});
 	}
 }

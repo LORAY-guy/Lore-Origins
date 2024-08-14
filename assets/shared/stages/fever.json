@@ -6,10 +6,13 @@
 	"boyfriend": [800, -10],
 	"girlfriend": [420, 70],
 	"opponent": [100, -10],
+	"mark": [180, 70],
 	"hide_girlfriend": false,
+	"hide_mark": true,
 
 	"camera_boyfriend": [-20, 0],
 	"camera_opponent": [70, 65],
 	"camera_girlfriend": [20, 0],
+	"camera_mark": [0, 0],
 	"camera_speed": 100
 }

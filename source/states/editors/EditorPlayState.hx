@@ -513,7 +513,7 @@ class EditorPlayState extends MusicBeatSubstate
 	private function cachePopUpScore()
 	{
 		for (rating in ratingsData)
-			Paths.image(rating.image);
+			Paths.image('OurpleHUD/ratings/' + rating.image);
 		
 		for (i in 0...10)
 			Paths.image('num' + i);
@@ -556,25 +556,37 @@ class EditorPlayState extends MusicBeatSubstate
 		var pixelShitPart1:String = "";
 		var pixelShitPart2:String = '';
 
-		rating.loadGraphic(Paths.image(pixelShitPart1 + daRating.image + pixelShitPart2));
-		rating.screenCenter();
-		rating.x = coolText.x - 40;
-		rating.y -= 60;
-		rating.acceleration.y = 550 * playbackRate * playbackRate;
-		rating.velocity.y -= FlxG.random.int(140, 175) * playbackRate;
-		rating.velocity.x -= FlxG.random.int(0, 10) * playbackRate;
-		rating.visible = (!ClientPrefs.data.hideHud && showRating);
-		rating.x += ClientPrefs.data.comboOffset[0];
-		rating.y -= ClientPrefs.data.comboOffset[1];
+		var uiPrefix:String = 'OurpleHUD/ratings/';
+		var uiSuffix:String = '';
+		var guy:String = (ClientPrefs.data.guy != 'Ourple' ? '-' + ClientPrefs.data.guy : '');
 
-		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
+		var isitonehundra:String = '';
+		if (ratingFC == 'SFC' && (daRating.image == 'sick')) isitonehundra = '100';
+
+		rating.loadGraphic(Paths.image(uiPrefix + daRating.image + isitonehundra + uiSuffix + guy));
+		rating.setPosition(FlxG.width - 310, FlxG.height - 150);
+		rating.acceleration.y = 550 * playbackRate * playbackRate;
+		rating.velocity.y -= FlxG.random.int(140, 200) * playbackRate;
+		rating.velocity.x -= FlxG.random.int(0, 20) * playbackRate;
+		rating.visible = (!ClientPrefs.data.hideHud && showRating);
+		rating.angle = FlxG.random.int(-10, 10);
+		rating.angularVelocity = FlxG.random.int(-20, 20) * playbackRate;
+		rating.scrollFactor.set();
+		rating.antialiasing = false;
+		rating.scale.set(0.85, 0.85);
+
+		if (isitonehundra == '100') {
+			rating.color = FlxColor.YELLOW;
+			FlxTween.color(rating, 0.25, FlxColor.YELLOW, FlxColor.WHITE);
+		}
+
+		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image('combo'));
 		comboSpr.screenCenter();
 		comboSpr.x = coolText.x;
 		comboSpr.acceleration.y = FlxG.random.int(200, 300) * playbackRate * playbackRate;
 		comboSpr.velocity.y -= FlxG.random.int(140, 160) * playbackRate;
 		comboSpr.visible = (!ClientPrefs.data.hideHud && showCombo);
-		comboSpr.x += ClientPrefs.data.comboOffset[0];
-		comboSpr.y -= ClientPrefs.data.comboOffset[1];
+		comboSpr.antialiasing = false;
 		comboSpr.y += 60;
 		comboSpr.velocity.x += FlxG.random.int(1, 10) * playbackRate;
 
@@ -603,9 +615,8 @@ class EditorPlayState extends MusicBeatSubstate
 		var daLoop:Int = 0;
 		var xThing:Float = 0;
 		if (showCombo)
-		{
 			insert(members.indexOf(strumLineNotes), comboSpr);
-		}
+
 		if (!ClientPrefs.data.comboStacking)
 		{
 			if (lastCombo != null) lastCombo.kill();
@@ -623,8 +634,8 @@ class EditorPlayState extends MusicBeatSubstate
 		{
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
 			numScore.screenCenter();
-			numScore.x = coolText.x + (43 * daLoop) - 90 + ClientPrefs.data.comboOffset[2];
-			numScore.y += 80 - ClientPrefs.data.comboOffset[3];
+			numScore.x = (rating.x - 550)  + (43 * daLoop) - 90;
+			numScore.y = rating.y;
 			
 			if (!ClientPrefs.data.comboStacking)
 				lastScore.push(numScore);
@@ -653,13 +664,8 @@ class EditorPlayState extends MusicBeatSubstate
 			if(numScore.x > xThing) xThing = numScore.x;
 		}
 		comboSpr.x = xThing + 50;
-		/*
-			trace(combo);
-			trace(seperatedScore);
-			*/
 
 		coolText.text = Std.string(seperatedScore);
-		// add(coolText);
 
 		FlxTween.tween(rating, {alpha: 0}, 0.2 / playbackRate, {
 			startDelay: Conductor.crochet * 0.001 / playbackRate
@@ -670,7 +676,6 @@ class EditorPlayState extends MusicBeatSubstate
 			{
 				coolText.destroy();
 				comboSpr.destroy();
-
 				rating.destroy();
 			},
 			startDelay: Conductor.crochet * 0.002 / playbackRate
@@ -689,7 +694,7 @@ class EditorPlayState extends MusicBeatSubstate
 			//Prevents crash specifically on debug without needing to try catch shit
 			@:privateAccess if (!FlxG.keys._keyListMap.exists(eventKey)) return;
 			#end
-	
+
 			if(FlxG.keys.checkStatus(eventKey, JUST_PRESSED)) keyPressed(key);
 		}
 	}

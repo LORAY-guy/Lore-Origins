@@ -147,7 +147,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		super.update(elapsed);
 
-		if(controls.BACK)
+		if(controls.BACK_P)
 		{
 			close();
 			return;
@@ -195,7 +195,7 @@ class PauseSubState extends MusicBeatSubstate
 				}
 		}
 
-		if (controls.ACCEPT && (cantUnpause <= 0 || !controls.controllerMode))
+		if (controls.ACCEPT_P && (cantUnpause <= 0 || !controls.controllerMode))
 		{
 			switch (daSelected)
 			{
@@ -253,7 +253,7 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.seenCutscene = false;
 
 					Mods.loadTopMod();
-					MusicBeatState.switchState(new FreeplayState());
+					MusicBeatState.switchState(new FreeplayState(true));
 
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
 					PlayState.changedDifficulty = false;

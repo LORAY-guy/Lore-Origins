@@ -4,14 +4,18 @@ import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 
-import backend.ExitButton;
-
 class LorayState extends MusicBeatState
 {
-    public static var appCats:Array<Array<String>> = [ // App Name, Scale, X Offset, Link
-        ['Youtube', '0.45', '0',    'https://youtube.com/@LORAY_'],
-        ['Twitter', '0.45', '45',   'https://twitter.com/LORAY_man'], 
-        ['Discord', '0.45', '0',    'https://discord.com/invite/JnsQV8az8C']
+    /**
+        @param App_Name String
+        @param Scale Float
+        @param X_Offset Int/Float
+        @param Link String
+    **/
+    public static var appCats:Array<Array<Dynamic>> = [
+        ['Youtube', 0.45, 0,    'https://youtube.com/@LORAY_'],
+        ['Twitter', 0.45, 45,   'https://twitter.com/LORAY_man'], 
+        ['Discord', 0.45, 0,    'https://discord.com/invite/JnsQV8az8C']
     ];
 
     var menuItems:FlxTypedGroup<FlxSprite>;
@@ -56,13 +60,12 @@ class LorayState extends MusicBeatState
         {
             var offset:Float = (Math.max(appCats.length, 4) - 4) * 75;
             var appItem:FlxSprite = new FlxSprite((i * 410 - (i * 5)) + offset, 0);
-            var scaleItem:Float = Std.parseFloat(appCats[i][1]);
-            appItem.x += 80 + Std.parseInt(appCats[i][2]);
+            var scaleItem:Float = appCats[i][1];
+            appItem.x += 80 + appCats[i][2];
             appItem.frames = Paths.getSparrowAtlas('loray/loray_' + appCats[i][0].toLowerCase());
 			appItem.animation.addByPrefix('idle', appCats[i][0].toLowerCase(), 24);
 			appItem.animation.play('idle');
-            appItem.scale.x = scaleItem;
-            appItem.scale.y = scaleItem;
+            appItem.scale.set(scaleItem, scaleItem);
             appItem.screenCenter(Y);
 			appItem.ID = i;
 			menuItems.add(appItem);
@@ -96,53 +99,44 @@ class LorayState extends MusicBeatState
         changeSelection(0, false, false);
         super.create();
 
-        FlxG.camera.y = 720;
-		FlxTween.tween(FlxG.camera, {y: 0}, 1.2, {ease: FlxEase.expoInOut});
-
         if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
     }
 
     var canClick:Bool = true;
     var usingMouse:Bool = false;
     var quitting:Bool = false;
-    override public function update(elapsed:Float){
-        if (!quitting)
-        {
-            if (controls.UI_UP_P || controls.UI_DOWN_P)
-                usingMouse = false;
-            else if (FlxG.mouse.overlaps(menuItems) || FlxG.mouse.overlaps(lorays))
-                usingMouse = true;
+    override public function update(elapsed:Float) {
+        if (controls.UI_UP_P || controls.UI_DOWN_P)
+            usingMouse = false;
+        else if (FlxG.mouse.overlaps(menuItems) || FlxG.mouse.overlaps(lorays))
+            usingMouse = true;
 
-            menuItems.forEachAlive(function(spr:FlxSprite){if (usingMouse && FlxG.mouse.overlaps(spr) && curSelected != spr.ID) changeSelection(spr.ID, true);});
+        menuItems.forEachAlive(function(spr:FlxSprite){if (usingMouse && FlxG.mouse.overlaps(spr) && curSelected != spr.ID) changeSelection(spr.ID, true);});
 
-            if (controls.UI_LEFT_P) {
-                changeSelection(-1);
-            }
-            if (controls.UI_RIGHT_P) {
-                changeSelection(1);
-            }
-
-            if (usingMouse && FlxG.mouse.wheel != 0) changeSelection(-FlxG.mouse.wheel);
-
-            if (controls.BACK) {
-                canClick = false;
-                quitting = true;
-                FlxG.sound.play(Paths.sound('cancelMenu'));
-                FlxG.mouse.visible = false;
-                FlxG.camera.zoom += 0.06;
-                FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
-					MusicBeatState.switchState(new states.credits.CreditsState());
-				}});
-            }
-            else if (controls.ACCEPT || (usingMouse && canClick && FlxG.mouse.justPressed && (FlxG.mouse.overlaps(menuItems)))) {
-                lorays.forEachAlive(function(spr:Loray) {spr.beHappy();});
-                FlxG.camera.zoom += 0.06;
-                FlxG.sound.play(Paths.sound('confirmMenu'));
-                FlxFlicker.flicker(menuItems.members[curSelected], 1, 0.06, true, false, function(flick:FlxFlicker){CoolUtil.browserLoad(appCats[curSelected][3]);});
-            }
-
-            lorays.forEachAlive(function(spr:Loray){if (usingMouse && FlxG.mouse.overlaps(spr) && canClick && FlxG.mouse.justPressed) spr.beHappy();});
+        if (controls.UI_LEFT_P) {
+            changeSelection(-1);
         }
+        if (controls.UI_RIGHT_P) {
+            changeSelection(1);
+        }
+
+        if (usingMouse && FlxG.mouse.wheel != 0) changeSelection(-FlxG.mouse.wheel);
+
+        if (controls.ACCEPT_P || (usingMouse && canClick && FlxG.mouse.justPressed && (FlxG.mouse.overlaps(menuItems)))) {
+            lorays.forEachAlive(function(spr:Loray) {spr.beHappy();});
+            FlxG.camera.zoom += 0.06;
+            FlxG.sound.play(Paths.sound('confirmMenu'));
+            FlxFlicker.flicker(menuItems.members[curSelected], 1, 0.06, true, false, function(flick:FlxFlicker){CoolUtil.browserLoad(appCats[curSelected][3]);});
+        } else if (controls.BACK_P) {
+            canClick = false;
+            quitting = true;
+            MusicBeatState.switchState(new states.credits.CreditsState());
+        }
+
+        lorays.forEachAlive(function(spr:Loray) {
+            if (usingMouse && FlxG.mouse.overlaps(spr) && canClick && FlxG.mouse.justPressed) 
+                spr.beHappy(true);
+        });
 
         if (FlxG.sound.music != null) Conductor.songPosition = FlxG.sound.music.time;
         FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
@@ -162,16 +156,11 @@ class LorayState extends MusicBeatState
 		menuItems.forEach(function(spr:FlxSprite)
 		{
 			spr.animation.play('idle');
-			if (spr.ID == curSelected)
-			{
-                spr.scale.x = Std.parseFloat(appCats[curSelected][1]) + 0.1;
-                spr.scale.y = Std.parseFloat(appCats[curSelected][1]) + 0.1;
+			if (spr.ID == curSelected) {
+                spr.scale.set(appCats[curSelected][1] + 0.1, appCats[curSelected][1] + 0.1);
 				spr.centerOffsets();
-			}
-            else
-            {
-                spr.scale.x = Std.parseFloat(appCats[spr.ID][1]);
-                spr.scale.y = Std.parseFloat(appCats[spr.ID][1]);
+			} else {
+                spr.scale.set(appCats[spr.ID][1], appCats[spr.ID][1]);
                 spr.centerOffsets();
             }
             spr.updateHitbox();
@@ -194,7 +183,6 @@ class LorayState extends MusicBeatState
 class Loray extends FlxSprite
 {
     public static var lorays:Array<Loray> = [];
-	public static var tweensMap:Map<String, FlxTween> = new Map<String, FlxTween>();
 
     public var happy:Bool = false;
     public var originX:Float = 0;
@@ -210,7 +198,6 @@ class Loray extends FlxSprite
         animation.play('idle', false, false, 0);
         scale.x = 3;
         scale.y = 3;
-        antialiasing = false;
         ID = lorays.length;
         flipX = (ID % 2 == 0) ? true : false;
         lorays.push(this);
@@ -218,12 +205,12 @@ class Loray extends FlxSprite
         this.originX = x;
     }
 
-    public function beHappy() 
+    public function beHappy(?unlockAchievement:Bool = false) 
     {
         happy = true;
         FlxG.camera.zoom += 0.06;
         FlxG.sound.play(Paths.soundRandom('loraySounds/ourple', 1, 10), 0.4);
-        cancelTween('idle' + ID);
+        FlxTween.cancelTweensOf(this, ['y']);
         animation.play('happy', true, false, 0);
         x = originX - 45;
         y = 380;
@@ -236,6 +223,7 @@ class Loray extends FlxSprite
             flipX = (ID % 2 == 0) ? false : true;
             dance();
         });
+        if (unlockAchievement) Achievements.unlock('loray_hater');
     }
 
     public function dance()
@@ -245,13 +233,7 @@ class Loray extends FlxSprite
             animation.play('idle', true, false, 0);
             y = (y + 20);
             flipX = !flipX;
-            tweensMap.set('idle' + ID, FlxTween.tween(this, {y: originY}, 0.15, {ease: FlxEase.cubeOut, onComplete: function(twn:FlxTween) {tweensMap.remove('idle' + ID);}}));
+            FlxTween.tween(this, {y: originY}, 0.15, {ease: FlxEase.cubeOut});
         }
-    }
-
-    public function cancelTween(ID:String)
-    {
-        if (tweensMap.exists(ID)) tweensMap.get(ID).cancel();
-        tweensMap.remove(ID);
     }
 }

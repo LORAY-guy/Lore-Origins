@@ -1,6 +1,5 @@
 package options;
 
-import backend.ExitButton;
 import backend.StageData;
 
 import states.MainMenuState;
@@ -10,7 +9,7 @@ import flixel.addons.transition.FlxTransitionableState;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals and UI', 'Gameplay', 'Lore Origins Options', 'Skin Selector (WIP)'];
+	var options:Array<String> = ['Controls', 'Adjust Delay', 'Graphics', 'Visuals and UI', 'Gameplay', 'Lore Origins Options'];
 	private var grpOptions:FlxTypedGroup<FlxText>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -21,8 +20,6 @@ class OptionsState extends MusicBeatState
 	
 	function openSelectedSubstate(label:String) {
 		switch(label) {
-			case 'Note Colors':
-				openSubState(new options.NotesSubState());
 			case 'Controls':
 				openSubState(new options.ControlsSubState());
 			case 'Graphics':
@@ -31,15 +28,12 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.VisualsUISubState());
 			case 'Gameplay':
 				openSubState(new options.GameplaySettingsSubState());
-			case 'Adjust Delay and Combo':
+			case 'Adjust Delay':
 				FlxG.sound.music.fadeOut(1.2, 0);
-				FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
-					MusicBeatState.switchState(new options.NoteOffsetState());
-				}});
+				FlxTransitionableState.skipNextTransOut = false;
+				exitState(new options.NoteOffsetState());
 			case 'Lore Origins Options':
 				openSubState(new options.LoreOriginsSubstate());
-			case 'Skin Selector (WIP)':
-				openSubState(new options.OurpleSkinSelector());
 		}
 	}
 
@@ -50,9 +44,6 @@ class OptionsState extends MusicBeatState
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Options Menu", null);
 		#end
-
-		FlxTransitionableState.skipNextTransIn = true;
-		FlxTransitionableState.skipNextTransOut = true;
 
 		var bg = new FlxSprite().loadGraphic(Paths.image('options/bg'));
 		bg.setGraphicSize(1280);
@@ -96,14 +87,11 @@ class OptionsState extends MusicBeatState
 		}
 
 		changeSelection();
-		ClientPrefs.saveSettings();
 
 		super.create();
-
-		FlxG.camera.y = 720;
-		FlxTween.tween(FlxG.camera, {y: 0}, 1.2, {ease: FlxEase.expoInOut});
-
-		exitButton = new ExitButton();
+		ClientPrefs.saveSettings();
+		
+		exitButton = (onPlayState ? new ExitButton('playstate') : new ExitButton());
 		add(exitButton);
 
 		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
@@ -112,9 +100,6 @@ class OptionsState extends MusicBeatState
 	override function closeSubState() {
 		super.closeSubState();
 		ClientPrefs.saveSettings();
-		#if DISCORD_ALLOWED
-		DiscordClient.changePresence("Options Menu", null);
-		#end
 	}
 
 	override function update(elapsed:Float) {
@@ -127,19 +112,16 @@ class OptionsState extends MusicBeatState
 			changeSelection(1);
 		}
 	
-		if (controls.BACK) {
-			FlxG.sound.play(Paths.sound('cancelMenu'));
-			FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
-				if(onPlayState)
-				{
-					StageData.loadDirectory(PlayState.SONG);
-					LoadingState.loadAndSwitchState(new PlayState());
-					FlxG.sound.music.volume = 0;
-				}
-				else MusicBeatState.switchState(new MainMenuState());
-			}});
+		if (controls.BACK_P) {
+			if(onPlayState)
+			{
+				StageData.loadDirectory(PlayState.SONG);
+				exitState(new PlayState(), true, true);
+				FlxG.sound.music.volume = 0;
+			}
+			else exitState(new MainMenuState(true));
 		}
-		else if (controls.ACCEPT) openSelectedSubstate(options[curSelected]);
+		else if (controls.ACCEPT_P) openSelectedSubstate(options[curSelected]);
 	}
 	
 	function changeSelection(change:Int = 0) {

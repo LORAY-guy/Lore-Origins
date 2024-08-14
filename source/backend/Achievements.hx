@@ -3,7 +3,6 @@ package backend;
 #if ACHIEVEMENTS_ALLOWED
 import objects.AchievementPopup;
 import haxe.Exception;
-import haxe.Json;
 
 #if LUA_ALLOWED
 import psychlua.FunkinLua;
@@ -14,6 +13,7 @@ typedef Achievement =
 	var name:String;
 	var description:String;
 	@:optional var hidden:Bool;
+	@:optional var hiddenDesc:Bool;
 	@:optional var maxScore:Float;
 	@:optional var maxDecimals:Int;
 
@@ -25,23 +25,20 @@ typedef Achievement =
 class Achievements {
 	public static function init()
 	{
-		createAchievement('friday_night_play',		{name: "Freaky on a Friday Night", description: "Play on a Friday... Night.", hidden: true});
-		createAchievement('week1_nomiss',			{name: "She Calls Me Daddy Too", description: "Beat Week 1 on Hard with no Misses."});
-		createAchievement('week2_nomiss',			{name: "No More Tricks", description: "Beat Week 2 on Hard with no Misses."});
-		createAchievement('week3_nomiss',			{name: "Call Me The Hitman", description: "Beat Week 3 on Hard with no Misses."});
-		createAchievement('week4_nomiss',			{name: "Lady Killer", description: "Beat Week 4 on Hard with no Misses."});
-		createAchievement('week5_nomiss',			{name: "Missless Christmas", description: "Beat Week 5 on Hard with no Misses."});
-		createAchievement('week6_nomiss',			{name: "Highscore!!", description: "Beat Week 6 on Hard with no Misses."});
-		createAchievement('week7_nomiss',			{name: "God Effing Damn It!", description: "Beat Week 7 on Hard with no Misses."});
-		createAchievement('ur_bad',					{name: "What a Funkin' Disaster!", description: "Complete a Song with a rating lower than 20%."});
-		createAchievement('ur_good',				{name: "Perfectionist", description: "Complete a Song with a rating of 100%."});
-		createAchievement('roadkill_enthusiast',	{name: "Roadkill Enthusiast", description: "Watch the Henchmen die 50 times.", maxScore: 50, maxDecimals: 0});
-		createAchievement('oversinging', 			{name: "Oversinging Much...?", description: "Sing for 10 seconds without going back to Idle."});
-		createAchievement('hype',					{name: "Hyperactive", description: "Finish a Song without going back to Idle."});
-		createAchievement('two_keys',				{name: "Just the Two of Us", description: "Finish a Song pressing only two keys."});
-		createAchievement('toastie',				{name: "Toaster Gamer", description: "Have you tried to run the game on a toaster?"});
-		createAchievement('debugger',				{name: "Debugger", description: "Beat the \"Test\" Stage from the Chart Editor.", hidden: true});
-		
+		createAchievement('frame_by_frame',			{name: "Frame By Frame", description: "Finish a song under 30 fps."});
+		createAchievement('u_scawy',				{name: "U scawy", description: "Scare Ourple Guy for more than 60 seconds in one attempt."});
+		createAchievement('wake_up',				{name: "Wake Up, Internet!", description: "Click on Matpat 50 times.", maxScore: 50});
+		createAchievement('loray_hater',			{name: "LORAY Hater", description: "Punch LORAY."});
+		createAchievement('lolbit',					{name: "Please, Stand By!", description: "Encounter and Beat Lolbit.", hiddenDesc: true});
+		createAchievement('bonnet',					{name: "Well, hello again!", description: "Encounter and Beat Bonnet.", hiddenDesc: true});
+		createAchievement('trash_gang',				{name: "Psst! I have something to tell you...", description: "Encounter one of the members of Trash and the Gang.", hiddenDesc: true});
+		createAchievement('exploiter',				{name: "Exploiter", description: "Skip a song by using a FNAF game exploit."});
+		createAchievement('cheater',				{name: "Cheater", description: "Skip a song by using another FNAF game exploit."});
+		createAchievement('too_sad',				{name: "I'm too Sad for this...", description: "Don't press a single note in Lore Sad Mix.", hiddenDesc: true});
+		createAchievement('lore_enjoyer',			{name: "Lore Enjoyer", description: "Play all the Lore covers."});
+		createAchievement('ourple_lover',			{name: "Ourple Lover", description: "Finish Lore with all the Ourple variants."});
+		createAchievement('true_theorist',			{name: "True Theorist", description: "Play the entirety of Lore Origins."});
+
 		//dont delete this thing below
 		_originalLength = _sortID + 1;
 	}
@@ -188,82 +185,6 @@ class Achievements {
 		achievements.set(name, data);
 		_sortID++;
 	}
-
-	#if MODS_ALLOWED
-	public static function reloadList()
-	{
-		// remove modded achievements
-		if((_sortID + 1) > _originalLength)
-			for (key => value in achievements)
-				if(value.mod != null)
-					achievements.remove(key);
-
-		_sortID = _originalLength-1;
-
-		var modLoaded:String = Mods.currentModDirectory;
-		Mods.currentModDirectory = null;
-		loadAchievementJson(Paths.mods('data/achievements.json'));
-		for (i => mod in Mods.parseList().enabled)
-		{
-			Mods.currentModDirectory = mod;
-			loadAchievementJson(Paths.mods('$mod/data/achievements.json'));
-		}
-		Mods.currentModDirectory = modLoaded;
-	}
-
-	inline static function loadAchievementJson(path:String, addMods:Bool = true)
-	{
-		var retVal:Array<Dynamic> = null;
-		if(FileSystem.exists(path)) {
-			try {
-				var rawJson:String = File.getContent(path).trim();
-				if(rawJson != null && rawJson.length > 0) retVal = tjson.TJSON.parse(rawJson); //Json.parse('{"achievements": $rawJson}').achievements;
-				
-				if(addMods && retVal != null)
-				{
-					for (i in 0...retVal.length)
-					{
-						var achieve:Dynamic = retVal[i];
-						if(achieve == null)
-						{
-							var errorTitle = 'Mod name: ' + Mods.currentModDirectory != null ? Mods.currentModDirectory : "None";
-							var errorMsg = 'Achievement #${i+1} is invalid.';
-							#if windows
-							lime.app.Application.current.window.alert(errorMsg, errorTitle);
-							#end
-							trace('$errorTitle - $errorMsg');
-							continue;
-						}
-
-						var key:String = achieve.save;
-						if(key == null || key.trim().length < 1)
-						{
-							var errorTitle = 'Error on Achievement: ' + (achieve.name != null ? achieve.name : achieve.save);
-							var errorMsg = 'Missing valid "save" value.';
-							#if windows
-							lime.app.Application.current.window.alert(errorMsg, errorTitle);
-							#end
-							trace('$errorTitle - $errorMsg');
-							continue;
-						}
-						key = key.trim();
-						if(achievements.exists(key)) continue;
-
-						createAchievement(key, achieve, Mods.currentModDirectory);
-					}
-				}
-			} catch(e:Dynamic) {
-				var errorTitle = 'Mod name: ' + Mods.currentModDirectory != null ? Mods.currentModDirectory : "None";
-				var errorMsg = 'Error loading achievements.json: $e';
-				#if windows
-				lime.app.Application.current.window.alert(errorMsg, errorTitle);
-				#end
-				trace('$errorTitle - $errorMsg');
-			}
-		}
-		return retVal;
-	}
-	#end
 
 	#if LUA_ALLOWED
 	public static function addLuaCallbacks(lua:State)

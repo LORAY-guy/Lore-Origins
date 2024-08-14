@@ -22,6 +22,7 @@ class ExitButton extends FlxSprite
         antialiasing = false;
         visible = false;
         x = (ClientPrefs.data.exitButtonX == 'Right' ? FlxG.width - width : 0);
+        scrollFactor.set();
 
         this.prevState = getStateFromString(prevState);
         this.prevStateString = prevState.toLowerCase(); //Just in case I need it.
@@ -37,8 +38,9 @@ class ExitButton extends FlxSprite
                 animation.play('in', true);
             }
     
-            if (FlxG.mouse.justPressed)
+            if (!clicked && FlxG.mouse.justPressed) {
                 handleButtonClick();
+            }
     
             elapsedSinceMouseLeft = 0.0;
         } 
@@ -64,58 +66,62 @@ class ExitButton extends FlxSprite
         });
 
         FlxG.sound.play(Paths.sound('cancelMenu'), 0.9);
-        
-        FlxTween.tween(FlxG.camera, {y: 720}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
-            if (this.prevStateString != 'playstate' || this.prevStateString != 'options') 
+
+        switch (this.prevStateString)
+        {
+            case 'options':
+                MusicBeatSubstate.getSubState().close();
+            case 'credits':
                 MusicBeatState.switchState(this.prevState);
-            else
-                LoadingState.loadAndSwitchState(this.prevState);
-        }});
+            default:
+                FlxTween.tween(FlxG.camera, {y: Lib.application.window.height}, 1.2, {
+                    ease: FlxEase.expoInOut, 
+                    onComplete: function(twn:FlxTween) {
+                        switch (this.prevStateString) {
+                            case 'playstate':
+                                StageData.loadDirectory(PlayState.SONG);
+                                LoadingState.loadAndSwitchState(this.prevState);
+                                FlxG.sound.music.volume = 0;
+                            default:
+                                MusicBeatState.switchState(this.prevState);
+                        }
+                    }
+                });
+        }
     }
     
-    function handleAnimationEnd():Void
+    function handleAnimationEnd():Void 
     {
-        if (this.animation.curAnim.name == 'pop' && this.animation.curAnim.finished) 
-            animation.play('in', false, true);
-    
-        if (this.animation.curAnim.name == 'in' && this.animation.curAnim.finished && !clicked)
-        {
-            if (this.animation.curAnim.reversed) 
-                visible = false;
-            else 
-                animation.play('idle');
+        if (animation.curAnim.finished) {
+            switch (animation.curAnim.name) 
+            {
+                case 'pop':
+                    animation.play('in', false, true);
+                case 'in':
+                    if (!clicked) {
+                        if (animation.curAnim.reversed) visible = false;
+                        else animation.play('idle');
+                    }
+                default:
+                    if (!clicked) animation.play('idle');
+            }
         }
-    
-        if (!clicked && this.animation.curAnim.finished && this.animation.curAnim.name != 'idle') 
-            animation.play('idle');
     }
 
     private function getStateFromString(type:String = ''):Dynamic {
 		switch(type.toLowerCase().trim())
 		{
-			case 'mainmenu': return new states.MainMenuState();
-			case 'freeplay': return new states.FreeplayState();
-			case 'freeplayselect': return new states.FreeplaySelectState();
-			case 'options': return new options.OptionsState();
-            case 'title': return new states.TitleState();
+			case 'freeplay': return new states.FreeplayState(true);
+			case 'freeplayselect': return new states.FreeplaySelectState(true);
+			case 'options': return new options.OptionsState(true);
             case 'credits': return new states.credits.CreditsState();
+            case 'creditssubgroup': return new states.credits.CreditsSubgroupState(true);
+            case 'title': return new states.TitleState();
+            case 'playstate': return new states.PlayState();
             case 'exit': 
-                exitGame();
+                Main.exitGame();
                 return null;
+            default: return new states.MainMenuState(true);
 		}
-        return new states.MainMenuState();
 	}
-
-    public static function exitGame():Void
-    {
-        #if windows
-        Sys.exit(0);
-        #elseif html5
-        js.Browser.window.close();
-        #elseif linux
-        Sys.command("pkill Lore Origins");
-        #elseif mac
-        Sys.command("pkill -f Lore Origins");
-        #end
-    }
 }
