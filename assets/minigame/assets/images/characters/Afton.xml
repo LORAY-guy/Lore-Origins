@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Afton.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Dying0000" x="0" y="0" width="222" height="277"/>
+	<SubTexture name="Dying0001" x="0" y="282" width="222" height="277"/>
+	<SubTexture name="DyingEvenMore0000" x="0" y="564" width="222" height="277"/>
+	<SubTexture name="DyingEvenMore0001" x="227" y="0" width="222" height="277"/>
+	<SubTexture name="DyingMore0000" x="454" y="0" width="222" height="277"/>
+	<SubTexture name="DyingMore0001" x="681" y="0" width="222" height="277"/>
+	<SubTexture name="HeDeadChat0000" x="227" y="282" width="222" height="277"/>
+	<SubTexture name="Idle0000" x="227" y="564" width="222" height="277"/>
+	<SubTexture name="Laughing0000" x="454" y="282" width="222" height="277"/>
+	<SubTexture name="Laughing0001" x="681" y="282" width="222" height="277"/>
+	<SubTexture name="Running0000" x="454" y="564" width="222" height="277"/>
+	<SubTexture name="Running0001" x="681" y="564" width="222" height="277"/>
+</TextureAtlas>

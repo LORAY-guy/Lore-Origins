@@ -1,0 +1,102 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "danceLeft"
+		},
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "Down"
+		},
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "Left"
+		},
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "Right"
+		},
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "Up"
+		},
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "danceLeft",
+			"indices": [],
+			"name": "danceLeft"
+		},
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "danceRight",
+			"indices": [],
+			"name": "danceRight"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/muyskerm",
+	"position": [
+		0,
+		0
+	],
+	"healthicon": "muyskerm",
+	"flip_x": false,
+	"healthbar_colors": [
+		154,
+		118,
+		227
+	],
+	"camera_position": [
+		170,
+		240
+	],
+	"sing_duration": 6.1,
+	"scale": 0.35,
+	"_editor_isPlayer": false
+}

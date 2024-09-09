@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Bonnie.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Down0000" x="0" y="0" width="119" height="195" frameX="0" frameY="0" frameWidth="119" frameHeight="196"/>
+	<SubTexture name="Down0001" x="370" y="0" width="119" height="193" frameX="0" frameY="-3" frameWidth="119" frameHeight="196"/>
+	<SubTexture name="Idle0000" x="0" y="0" width="119" height="195" frameX="0" frameY="0" frameWidth="119" frameHeight="196"/>
+	<SubTexture name="Idle0001" x="370" y="0" width="119" height="193" frameX="0" frameY="-3" frameWidth="119" frameHeight="196"/>
+	<SubTexture name="Left0000" x="247" y="0" width="118" height="195" frameX="0" frameY="0" frameWidth="118" frameHeight="196"/>
+	<SubTexture name="Left0001" x="123" y="200" width="118" height="192" frameX="0" frameY="-4" frameWidth="118" frameHeight="196"/>
+	<SubTexture name="Right0000" x="124" y="0" width="118" height="195" frameX="0" frameY="0" frameWidth="118" frameHeight="196"/>
+	<SubTexture name="Right0001" x="0" y="200" width="118" height="192" frameX="0" frameY="-4" frameWidth="118" frameHeight="196"/>
+	<SubTexture name="Up0000" x="370" y="198" width="119" height="192" frameX="0" frameY="0" frameWidth="119" frameHeight="193"/>
+	<SubTexture name="Up0001" x="246" y="200" width="119" height="189" frameX="0" frameY="-4" frameWidth="119" frameHeight="193"/>
+</TextureAtlas>

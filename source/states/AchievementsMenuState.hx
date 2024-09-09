@@ -20,12 +20,14 @@ class AchievementsMenuState extends MusicBeatState
 	public var progressBar:Bar;
 	public var box:FlxSprite;
 	public var ourpleFella:FlxSprite;
+	private var distractibleCode:FlxText;
 
 	var camFollow:FlxObject;
 
 	var MAX_PER_ROW:Int = 4;
 
 	var inCutscene:Bool = false;
+	var showingCode:Bool = false;
 
 	override function create()
 	{
@@ -54,6 +56,14 @@ class AchievementsMenuState extends MusicBeatState
 		menuBG.velocity.x = 20;
 		menuBG.scrollFactor.set();
 		add(menuBG);
+
+		distractibleCode = new FlxText(0, 0, 0, "205777", 32);
+		distractibleCode.setFormat(Paths.font('mark.ttf'), 32, FlxColor.GRAY, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		distractibleCode.scrollFactor.set();
+		distractibleCode.borderSize = 1.5;
+		distractibleCode.alpha = 0.5;
+		distractibleCode.x = -distractibleCode.width;
+		add(distractibleCode);
 
 		grpOptions = new FlxSpriteGroup();
 		grpOptions.scrollFactor.x = 0;
@@ -281,6 +291,16 @@ class AchievementsMenuState extends MusicBeatState
 		else camFollow.setPosition(0, grpOptions.members[curSelected].getGraphicMidpoint().y - 100);
 
 		grpOptions.members[curSelected].alpha = 1;
+
+		if (!showingCode && FlxG.random.bool(1)) 
+		{
+			showingCode = true;
+			distractibleCode.y = FlxG.random.float(80, FlxG.height - 80); //80 is the height of the lettaboxes, to avoid spawning the code behind them
+			FlxTween.tween(distractibleCode, {x: distractibleCode.width + FlxG.width}, 20, {ease: FlxEase.linear, onComplete: function(twn:FlxTween) {
+				showingCode = false;
+				distractibleCode.x = -distractibleCode.width;
+			}});
+		}
 	}
 
 	function createGoldenFella()

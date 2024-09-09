@@ -91,7 +91,7 @@ import states.TitleState;
 	public var characterGhost:Bool = true;
 	public var miscEvents:Float = 1;
 	public var exitButtonX:String = 'Left';
-	public var hideOldCovers:Bool = false;
+	public var hideOldCovers:Bool = true;
 
 	/**ACHIEVEMENTS STUFF**/
 	public var songPlayed:Map<String, Array<String>> = [

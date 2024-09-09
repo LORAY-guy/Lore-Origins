@@ -28,6 +28,10 @@ class MusicBeatState extends FlxUIState
 		return Controls.instance;
 	}
 
+	public var variables:Map<String, Dynamic> = new Map<String, Dynamic>();
+	public static function getVariables()
+		return getState().variables;
+
 	var _psychCameraInitialized:Bool = false;
 
 	public function new(epicTransition:Bool = false) {

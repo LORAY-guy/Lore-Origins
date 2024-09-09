@@ -1,0 +1,88 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "Down"
+		},
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "Left"
+		},
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "Right"
+		},
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "Up"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-1,
+				-186
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "Idle",
+			"indices": [
+				0,
+				0,
+				1,
+				2,
+				3,
+				4,
+				5
+			]
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/LordMinion777",
+	"position": [
+		0,
+		0
+	],
+	"healthicon": "lordminion",
+	"flip_x": false,
+	"healthbar_colors": [
+		209,
+		0,
+		38
+	],
+	"camera_position": [
+		170,
+		240
+	],
+	"sing_duration": 6.1,
+	"scale": 0.35,
+	"_editor_isPlayer": false
+}

@@ -139,7 +139,7 @@ class Fever extends BaseStage
         if (curStep == 2496 || curStep == 2528)
             cameraSpeed = 1;
 
-        if (crowd != null) {
+        if (!ClientPrefs.data.lowQuality) {
             if (curStep == 768 || curStep == 2432)
                 crowd.loadGraphic(Paths.image('fever/crowdrtx'));
             else if (curStep == 1280 || curStep == 2560)
@@ -184,6 +184,11 @@ class Fever extends BaseStage
             (curBeat >= 632 && curBeat < 635)) {
             camGame.zoom += 0.06;
             camHUD.zoom += 0.04;
+        }
+
+        if (!ClientPrefs.data.lowQuality) {
+            crowd.y = crowd.y + 20;
+            FlxTween.tween(crowd, {y: crowd.y - 20}, 0.15, {ease: FlxEase.cubeOut});
         }
     }
 }

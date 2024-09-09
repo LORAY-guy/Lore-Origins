@@ -77,6 +77,7 @@ class Note extends FlxSprite
 	public var gfNote:Bool = false;
 	public var markNote:Bool = false;
 	public var singWithMark:Bool = false;
+	public var singWithBF:Bool = false;
 	public var earlyHitMult:Float = 1;
 	public var lateHitMult:Float = 1;
 	public var lowPriority:Bool = false;
@@ -206,6 +207,9 @@ class Note extends FlxSprite
 					markNote = true;
 				case 'Mark Harmony':
 					singWithMark = true;
+				case 'Opponent Possesses BF':
+					noAnimation = true;
+					singWithBF = true;
 			}
 			if (value != null && value.length > 1) NoteTypesConfig.applyNoteTypeData(this, value);
 			if (hitsound != 'hitsound' && ClientPrefs.data.hitsoundVolume > 0) Paths.sound(hitsound); //precache new sound for being idiot-proof

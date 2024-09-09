@@ -49,8 +49,8 @@ import psychlua.LuaUtils;
 import psychlua.HScript;
 #end
 
-#if SScript
-import tea.SScript;
+#if HSCRIPT_ALLOWED
+import crowplexus.iris.Iris;
 #end
 
 /**
@@ -94,7 +94,6 @@ class PlayState extends MusicBeatState
 	public var dadMap:Map<String, Character> = new Map<String, Character>();
 	public var gfMap:Map<String, Character> = new Map<String, Character>();
 	public var markMap:Map<String, Character> = new Map<String, Character>();
-	public var variables:Map<String, Dynamic> = new Map<String, Dynamic>();
 
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
@@ -167,6 +166,12 @@ class PlayState extends MusicBeatState
 	public var opponentStrums:FlxTypedGroup<StrumNote>;
 	public var playerStrums:FlxTypedGroup<StrumNote>;
 	public var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
+
+	//added that cuz useful
+	public var defaultPlayerStrumX:Array<Float> = [];
+	public var defaultPlayerStrumY:Array<Float> = [];
+	public var defaultOpponentStrumX:Array<Float> = [];
+	public var defaultOpponentStrumY:Array<Float> = [];
 
 	public var camZooming:Bool = false;
 	public var camZoomingMult:Float = 1;
@@ -467,7 +472,7 @@ class PlayState extends MusicBeatState
 
 		switch (SONG.song.toLowerCase())
 		{
-			case 'lore-awesomix': new states.stages.addons.Awesomix(); //Don't you tell many how many lores I need, bitch!
+			case 'lore-awesomix': new states.stages.addons.Awesomix(); //Don't you tell how much lore I need, bitch!
 			case 'detective': new states.stages.addons.Detective(); //Detective Matpat, at your service.
 			case 'action': new states.stages.addons.Action(); //But, y'know... it's just a theory...
 			case 'repugnant': new states.stages.addons.Repugnant(); //Phone guy's in love with foxy, Rule34 is in shambles
@@ -895,6 +900,11 @@ class PlayState extends MusicBeatState
 				isCameraOnForcedPos = true;
 				camFollow.x = 197.5;
 				camFollow.y = 171;
+
+			case 'distractible':
+				isCameraOnForcedPos = true;
+				camFollow.x = 0;
+				camFollow.y = 0;
 		}
 
 		iconP1.scale.set(1.2, 1.2); //i feel so schizo for doing this BUT it fixes the icons being incorrect spot at the beginning of a song
@@ -1096,7 +1106,7 @@ class PlayState extends MusicBeatState
 
 		if(doPush)
 		{
-			if(SScript.global.exists(scriptFile))
+			if(Iris.instances.exists(scriptFile))
 				doPush = false;
 
 			if(doPush) initHScript(scriptFile);
@@ -1141,20 +1151,21 @@ class PlayState extends MusicBeatState
 		}
 
 		var video:VideoHandler = new VideoHandler();
-			#if (hxCodec >= "3.0.0")
-			// Recent versions
-			video.play(filepath);
-			video.bitmap.onEndReached.add(function()
-			{
-				video.destroy();
-				startAndEnd();
-				return;
-			}, true);
-			#end
+
+		#if (hxCodec >= "3.0.0")
+		// Recent versions
+		video.play(filepath);
+		video.bitmap.onEndReached.add(function()
+		{
+			video.destroy();
+			startAndEnd();
+			return;
+		}, true);
 		#else
 		FlxG.log.warn('Platform not supported!');
 		startAndEnd();
 		return;
+		#end
 		#end
 	}
 
@@ -1211,7 +1222,7 @@ class PlayState extends MusicBeatState
 	#if ACHIEVEMENTS_ALLOWED
 	function cacheAchievementsStuff()
 	{
-		if (ClientPrefs.data.miscEvents > 0)
+		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible')
 		{
 			Paths.sound('lolbit');
 			Paths.sound('nosepush');
@@ -1386,11 +1397,15 @@ class PlayState extends MusicBeatState
 			generateStaticArrows(1);
 			for (i in 0...playerStrums.length) {
 				setOnScripts('defaultPlayerStrumX' + i, playerStrums.members[i].x);
+				defaultPlayerStrumX.push(playerStrums.members[i].x);
 				setOnScripts('defaultPlayerStrumY' + i, playerStrums.members[i].y);
+				defaultPlayerStrumY.push(playerStrums.members[i].y);
 			}
 			for (i in 0...opponentStrums.length) {
 				setOnScripts('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
+				defaultOpponentStrumX.push(opponentStrums.members[i].x);
 				setOnScripts('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
+				defaultOpponentStrumY.push(opponentStrums.members[i].y);
 				//if(ClientPrefs.data.middleScroll) opponentStrums.members[i].visible = false;
 			}
 
@@ -1811,6 +1826,10 @@ class PlayState extends MusicBeatState
 				camGame.flash(FlxColor.WHITE, 0.7);
 				camGame.zoom = 1.1;
 				defaultCamZoom = 1.1;
+
+			case 'distractible':
+				camGame.alpha = 1;
+				camGame.flash(FlxColor.WHITE, 1.2);
 		}
 	}
 
@@ -2065,7 +2084,7 @@ class PlayState extends MusicBeatState
 			var targetAlpha:Float = 1;
 			if (player < 1)
 			{
-				if(!ClientPrefs.data.opponentStrums) targetAlpha = 0;
+				if(!ClientPrefs.data.opponentStrums || SONG.song.toLowerCase() == 'distractible') targetAlpha = 0;
 				else if(ClientPrefs.data.middleScroll || songName == 'lore-ar') targetAlpha = 0.35;
 			}
 
@@ -2115,7 +2134,7 @@ class PlayState extends MusicBeatState
 			eventTimers.active = false;
 
 			#if ACHIEVEMENTS_ALLOWED
-			if (ClientPrefs.data.miscEvents > 0) {
+			if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible') {
 				if (whisper.playing) whisper.pause();
 				if (lolBitState) lolBitSound.pause();
 			} 
@@ -2155,7 +2174,7 @@ class PlayState extends MusicBeatState
 			eventTimers.active = true;
 
 			#if ACHIEVEMENTS_ALLOWED
-			if (ClientPrefs.data.miscEvents > 0) {
+			if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible') {
 				if (no1crate.visible) whisper.resume();
 				if (lolBitState) lolBitSound.resume();
 			}
@@ -2721,7 +2740,7 @@ class PlayState extends MusicBeatState
 				#end
 
 				#if ACHIEVEMENTS_ALLOWED
-				if (ClientPrefs.data.miscEvents > 0)
+				if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible')
 				{
 					if (lolBitState) {
 						lolBitWarning.destroy();
@@ -2734,8 +2753,10 @@ class PlayState extends MusicBeatState
 				}
 				#end
 
+				#if ACHIEVEMENTS_ALLOWED
 				if (SONG.song.toLowerCase() == 'lore-sad' && songHits == 0 && canReset)
 					Achievements.unlock('too_sad');
+				#end
 
 				if (SONG.song == 'lore-ar')
 					phoneCam.visible = false;
@@ -3163,7 +3184,7 @@ class PlayState extends MusicBeatState
 		seenCutscene = false;
 
 		#if ACHIEVEMENTS_ALLOWED
-		if (ClientPrefs.data.miscEvents > 0)
+		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible')
 		{
 			if (lolBitState) closeLolBitState(false);
 			if (no1crate.visible) {
@@ -3476,7 +3497,7 @@ class PlayState extends MusicBeatState
 		{
 			inputBuffer += char;
 	
-			if (ClientPrefs.data.miscEvents > 0 && lolBitState)
+			if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && lolBitState)
 			{
 				if (char == 'l' || char == 'o') 
 					FlxG.sound.play(Paths.sound('cameraBlip'), 1);
@@ -3484,10 +3505,10 @@ class PlayState extends MusicBeatState
 					inputBuffer = "";
 			}
 	
-			switch (inputBuffer) 
+			switch (inputBuffer)
 			{
 				case "lol":
-					if (ClientPrefs.data.miscEvents > 0 && lolBitState) 
+					if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && lolBitState) 
 						closeLolBitState();
 					else
 						inputBuffer = "";
@@ -3812,6 +3833,9 @@ class PlayState extends MusicBeatState
 			else if (note.singWithMark) {
 				mark.playAnim(animToPlay, true);
 				mark.holdTimer = 0;
+			} else if (note.singWithBF) {
+				boyfriend.playAnim(animToPlay, true);
+				boyfriend.holdTimer = 0;
 			}
 
 			if(char != null)
@@ -3821,7 +3845,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (ClientPrefs.data.characterGhost)
+		if (ClientPrefs.data.characterGhost && SONG.song.toLowerCase() != 'distractible')
 		{
 			if (dad.ghostData.strumTime == note.strumTime && !note.isSustainNote) createGhost(dad);
 
@@ -3909,6 +3933,12 @@ class PlayState extends MusicBeatState
 				mark.holdTimer = 0;
 			}
 
+			if (note.singWithBF)
+			{
+				boyfriend.playAnim(animToPlay + note.animSuffix, true);
+				boyfriend.holdTimer = 0;
+			}
+
 			if(char != null)
 			{
 				char.playAnim(animToPlay + note.animSuffix, true);
@@ -3962,7 +3992,7 @@ class PlayState extends MusicBeatState
 			boyfriend.holdTimer = 0;
 		}
 
-		if (ClientPrefs.data.characterGhost)
+		if (ClientPrefs.data.characterGhost && SONG.song.toLowerCase() != 'distractible')
 		{
 			if (boyfriend.ghostData.strumTime == note.strumTime && !isSus) createGhost(boyfriend);
 			if (gf != null && gf.ghostData.strumTime == note.strumTime && !isSus && (leType == 'GF Sing' || SONG.notes[curSection].gfSection)) createGhost(gf);
@@ -4502,7 +4532,7 @@ class PlayState extends MusicBeatState
 
 		#if ACHIEVEMENTS_ALLOWED
 		//Lolbit Achievement Shit
-		if (ClientPrefs.data.miscEvents > 0 && !skippedSong && !inLoreCutscene)
+		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && !skippedSong && !inLoreCutscene)
 		{
 			if (!lolBitState && FlxG.random.bool(lolBitLuck))
 			{
@@ -4590,7 +4620,7 @@ class PlayState extends MusicBeatState
 
 		if(FileSystem.exists(scriptToLoad))
 		{
-			if (SScript.global.exists(scriptToLoad)) return false;
+			if (Iris.instances.exists(scriptToLoad)) return false;
 
 			initHScript(scriptToLoad);
 			return true;
@@ -4600,51 +4630,20 @@ class PlayState extends MusicBeatState
 
 	public function initHScript(file:String)
 	{
+		var newScript:HScript = null;
 		try
 		{
-			var newScript:HScript = new HScript(null, file);
-			if(newScript.parsingException != null)
-			{
-				addTextToDebug('ERROR ON LOADING: ${newScript.parsingException.message}', FlxColor.RED);
-				newScript.destroy();
-				return;
-			}
-
+			newScript = new HScript(null, file);
+			newScript.call('onCreate');
+			trace('initialized hscript interp successfully: $file');
 			hscriptArray.push(newScript);
-			if(newScript.exists('onCreate'))
-			{
-				var callValue = newScript.call('onCreate');
-				if(!callValue.succeeded)
-				{
-					for (e in callValue.exceptions)
-					{
-						if (e != null)
-						{
-							var len:Int = e.message.indexOf('\n') + 1;
-							if(len <= 0) len = e.message.length;
-								addTextToDebug('ERROR ($file: onCreate) - ${e.message.substr(0, len)}', FlxColor.RED);
-						}
-					}
-
-					newScript.destroy();
-					hscriptArray.remove(newScript);
-					trace('failed to initialize tea interp!!! ($file)');
-				}
-				else trace('initialized tea interp successfully: $file');
-			}
-
 		}
-		catch(e)
+		catch(e:Dynamic)
 		{
-			var len:Int = e.message.indexOf('\n') + 1;
-			if(len <= 0) len = e.message.length;
-			addTextToDebug('ERROR - ' + e.message.substr(0, len), FlxColor.RED);
-			var newScript:HScript = cast (SScript.global.get(file), HScript);
+			addTextToDebug('ERROR ON LOADING ($file) - $e', FlxColor.RED);
+			var newScript:HScript = cast (Iris.instances.get(file), HScript);
 			if(newScript != null)
-			{
 				newScript.destroy();
-				hscriptArray.remove(newScript);
-			}
 		}
 	}
 	#end
@@ -5020,10 +5019,11 @@ class PlayState extends MusicBeatState
 			{
 				case 'lixian': return 'Notas Perdidas: ';
 				case 'mark': return 'Small Brain Moments: ';
+				case 'markiplier': return 'Times Distracted: '; //Distractible Markiplier
 				default: return 'Misses: ';
 			}
 		} else {
-			return 'Revived Kids: ';
+			return 'Revived Souls: ';
 		}
 		return 'Misses: ';
 	}

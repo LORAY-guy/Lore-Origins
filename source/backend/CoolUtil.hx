@@ -130,6 +130,30 @@ class CoolUtil
 		#end
 	}
 
+	inline public static function openMinigame():Void {
+		try {
+			#if sys
+			var currentDir = Sys.getCwd();
+			var minigameDir = FileSystem.absolutePath(currentDir + '/assets/minigame');
+			var minigamePath = minigameDir + '/minigame.exe';
+			minigamePath = minigamePath.replace('/', '\\');
+			trace("Minigame path: " + minigamePath);
+
+			Sys.setCwd(minigameDir);
+
+			var process = new Process(minigamePath, [], false);
+
+			Sys.setCwd(currentDir);
+
+			Main.exitGame();
+			#else
+			trace("This function is only supported on native targets.");
+			#end
+		} catch (e:Dynamic) {
+			trace("Failed to open the minigame: " + e);
+		}
+	}
+
 	/**
 		Helper Function to Fix Save Files for Flixel 5
 

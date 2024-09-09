@@ -48,6 +48,11 @@ class BaseStage extends FlxBasic
 	public var defaultCamZoom(get, set):Float;
 	public var camFollow(get, never):FlxObject;
 
+	public var defaultPlayerStrumX(get, never):Array<Float>;
+	public var defaultPlayerStrumY(get, never):Array<Float>;
+	public var defaultOpponentStrumX(get, never):Array<Float>;
+	public var defaultOpponentStrumY(get, never):Array<Float>;
+
 	public function new()
 	{
 		this.game = MusicBeatState.getState();
@@ -180,6 +185,11 @@ class BaseStage extends FlxBasic
 		return game.camZooming;
 	}
 	inline private function get_camFollow():FlxObject return game.camFollow;
+
+	inline private function get_defaultPlayerStrumX():Array<Float> return game.defaultPlayerStrumX;
+	inline private function get_defaultPlayerStrumY():Array<Float> return game.defaultPlayerStrumY;
+	inline private function get_defaultOpponentStrumX():Array<Float> return game.defaultOpponentStrumX;
+	inline private function get_defaultOpponentStrumY():Array<Float> return game.defaultOpponentStrumY;
 
 	inline private function lockCam(isDad:Null<Bool> = null) game.camLock(isDad);
 }

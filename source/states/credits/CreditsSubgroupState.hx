@@ -1,5 +1,8 @@
 package states.credits;
 
+import backend.Highscore;
+import backend.Song;
+
 import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxBackdrop;
 
@@ -24,6 +27,7 @@ class CreditsSubgroupState extends MusicBeatState
 		#end
 
 		Paths.clearUnusedMemory();
+        if (FlxG.camera.visible == false) FlxG.camera.visible = true;
 
         persistentUpdate = persistentDraw = true;
 
@@ -304,11 +308,21 @@ class Keypad extends FlxTypedGroup<FlxSprite>
         switch (enteredCode)
         {
             case '395248':
-                trace('super spooky secret omg');
-                resetCode(false);
+                CoolUtil.openMinigame();
             case '555882':
-                trace('play Lua song');
+                trace('play secret Lua song');
+            case '205777':
                 resetCode(false);
+                PlayState.SONG = Song.loadFromJson('distractible', 'distractible', PlayState.isCover);
+                PlayState.isStoryMode = false;
+                PlayState.storyDifficulty = 0;
+
+                FlxG.camera.zoom += 0.06;
+                FlxTween.tween(FlxG.camera, {y: Lib.application.window.height}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+                    LoadingState.loadAndSwitchState(new PlayState());
+                }});
+
+                FlxG.sound.music.fadeOut(1.2, 0, function(twn:FlxTween) {FlxG.sound.music.stop();});
             case '69420':
                 trace('lol');
                 FlxG.sound.play(Paths.sound('keypad/69420'));

@@ -91,6 +91,8 @@ class Sad extends BaseStage
     {
         super.createPost();
 
+        FlxG.sound.play(Paths.sound('spotlight'), 0.01);
+
         if (!ClientPrefs.data.lowQuality) {
             curtains = new BGSprite("lore/curtain", -75, 135, 1.2, 1.2);
             curtains.setGraphicSize(Std.int(curtains.width * 1.2));
@@ -150,7 +152,7 @@ class Sad extends BaseStage
         phoneIcon.flipX = true;
         phoneIcon.angle = -25;
         phoneIcon.visible = false;
-        phoneIcon.alpha = 0;
+        phoneIcon.alpha = 0.0001; //Precaching purposes
         
         phoneIcon.updateHitbox();
         add(phoneIcon);

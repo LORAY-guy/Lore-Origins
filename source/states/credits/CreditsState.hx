@@ -253,11 +253,13 @@ class CreditsState extends MusicBeatState
 					[''],
 					['Helpers'],
 					['Whitey',				'whitey',			'Art',									 		 'https://x.com/Whitemungus',			'BBBBBB'],
+					['Who',					'who',				'Made Lore Sad Mix art cover',					 'https://x.com/agustheartist',			'919191'],
 					['Loopy',				'loopy',			'Made Skins banner art',						 'https://x.com/ExeWiglett',			'EB7A34'],
 					['TimNail',				'tim',				'Playtesting',									 'https://x.com/FnfTimothy',			'BBBBBB'],
 					['Serby', 				'serby', 			'Made ending custcene in \"I can, tho\"', 		 'https://x.com/SerbyAnimations',		'A848C6'],
 					//['bobz', 				'bobz', 			'Charted Lore AR mix',  	 'https://x.com/bobzforvever', 								'05F505'], They lowkey did basically nothing, I actually made 90% of the chart
-					['Ahloof',				'ahloof',			'Playtested \"I can, tho\"',					 'https://x.com/ahhhloof',			    '01FF8D']
+					['Ahloof',				'ahloof',			'Playtested \"I can, tho\"',					 'https://x.com/ahhhloof',			    '01FF8D'],
+					['PinkyMichael',		'pinky',			'Helped with Distractible song',				 'https://x.com/PinkyMichael76',		'FF63FF'],
 				];
 			case 'Composers':
 				defaultList = [
@@ -266,7 +268,7 @@ class CreditsState extends MusicBeatState
 					[''],
 					['Lore Remixes by'],
 					['RandoHorn',			'rando',			'Made Lore Ryan Mix',								 		 'https://x.com/RandoHorn',		'AAAAAA'],
-					['PinkyMichael',		'pinky',			'Made Lore Apology Mix',								     'https://www.youtube.com/@pinkymichael76','FF63FF'],
+					['PinkyMichael',		'pinky',			'Made Lore Apology Mix',								     'https://x.com/PinkyMichael76','FF63FF'],
 					['RixFX',				'rix',				'Made Lore Awesomix Mix',								     'https://x.com/rixfx_',			'AAAAAA'],
 					['KOSE',				'kose',				'Made Fever, Chronology, Detective',						 'https://www.youtube.com/@kosejumpscare','CC31C9'],
 					['smily',				'smily',			'Made Chronology',								 		 	 'https://x.com/boi_smily',		'AAAAAA'],

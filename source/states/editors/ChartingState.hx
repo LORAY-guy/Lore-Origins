@@ -57,7 +57,8 @@ class ChartingState extends MusicBeatState
 		'GF Sing',
 		'No Animation',
 		'Mark Sing',
-		'Mark Harmony'
+		'Mark Harmony',
+		'Opponent Possesses BF'
 	];
 	public var ignoreWarnings = false;
 	var curNoteTypes:Array<String> = [];
