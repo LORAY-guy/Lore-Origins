@@ -96,6 +96,8 @@ class SoundFrontEnd
 	 */
 	public var volume(default, set):Float = 1;
 
+	public var isCheater:Bool = false;
+
 	/**
 	 * Set up and play a looping background soundtrack.
 	 *
@@ -331,9 +333,11 @@ class SoundFrontEnd
 	/**
 	 * Toggles muted, also activating the sound tray.
 	 */
-	public function toggleMuted():Void
+	public function toggleMuted(?cheat:Bool = false):Void
 	{
 		muted = !muted;
+
+		if (cheat) isCheater = muted; //Cheater achievement
 
 		if (volumeHandler != null)
 		{
@@ -387,8 +391,10 @@ class SoundFrontEnd
 			list.update(elapsed);
 
 		#if FLX_KEYBOARD
-		if (FlxG.keys.anyJustReleased(muteKeys) || (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.S)) //Cheater achievement
+		if (FlxG.keys.anyJustReleased(muteKeys))
 			toggleMuted();
+		else if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.S)
+			toggleMuted(true);
 		else if (FlxG.keys.anyJustReleased(volumeUpKeys))
 			changeVolume(0.1);
 		else if (FlxG.keys.anyJustReleased(volumeDownKeys))

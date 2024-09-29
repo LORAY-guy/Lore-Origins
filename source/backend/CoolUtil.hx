@@ -1,5 +1,6 @@
 package backend;
 
+import cpp.NativeProcess;
 import openfl.utils.Assets;
 
 class CoolUtil
@@ -130,18 +131,21 @@ class CoolUtil
 		#end
 	}
 
-	inline public static function openMinigame():Void {
+	inline public static function openMinigame():Void 
+	{
 		try {
 			#if sys
 			var currentDir = Sys.getCwd();
 			var minigameDir = FileSystem.absolutePath(currentDir + '/assets/minigame');
-			var minigamePath = minigameDir + '/minigame.exe';
-			minigamePath = minigamePath.replace('/', '\\');
-			trace("Minigame path: " + minigamePath);
 
 			Sys.setCwd(minigameDir);
 
-			var process = new Process(minigamePath, [], false);
+			#if (linux || mac)
+			Sys.command("chmod", ["+x", "./minigame"]);
+			Sys.command("/bin/sh", ["-c", "nohup ./minigame >/dev/null 2>&1 &"]);
+			#elseif windows
+			var process = new Process("I can, tho.exe", [], false);
+			#end
 
 			Sys.setCwd(currentDir);
 

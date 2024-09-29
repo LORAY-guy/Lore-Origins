@@ -57,7 +57,7 @@ class FreeplayState extends MusicBeatState
 	{
 		Paths.clearUnusedMemory();
 
-		createOurpleWeek(); //Added the week creation to a function for better readability
+		createOurpleWeek(); //Added the week creation as a function for better readability
 		
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
@@ -123,6 +123,7 @@ class FreeplayState extends MusicBeatState
 
 			Mods.currentModDirectory = songs[i].folder;
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+			if (songs[i].songName == 'lore-sad') icon.animation.curAnim.curFrame = 1;
 			icon.sprTracker = songText;
 			
 			// too laggy with a lot of songs, so i had to recode the logic for it
@@ -378,7 +379,7 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 	
-			else if ((!player.playingMusic) && ((FlxG.keys.pressed.R) || (usingMouse && canClick && FlxG.mouse.justPressed && FlxG.mouse.overlaps(randomizer))))
+			else if ((!player.playingMusic) && ((FlxG.keys.justPressed.R) || (usingMouse && canClick && FlxG.mouse.justPressed && FlxG.mouse.overlaps(randomizer))))
 			{
 				canClick = false;
 				persistentUpdate = false;
@@ -581,8 +582,8 @@ class FreeplayState extends MusicBeatState
 					'lore-sad',
 					'sunk',
 					'lore-ar'
-				], 
-				0, 
+				],
+				0,
 				0xff00c3ff);
 				PlayState.isCover = false;
 		};
@@ -659,7 +660,7 @@ class SelectSunkDifficulty extends MusicBeatSubstate //Basically copied the Rese
 		bg.scrollFactor.set();
 		add(bg);
 
-		var text:Alphabet = new Alphabet(0, 180, "Select the difficulty:", true);
+		var text:Alphabet = new Alphabet(0, 180, "Select the ending:", true);
 		text.screenCenter(X);
 		alphabetArray.push(text);
 		text.alpha = 0;

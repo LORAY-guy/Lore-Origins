@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="phone.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="BlackScreen0000" x="0" y="0" width="942" height="1842"/>
+	<SubTexture name="Call0000" x="1894" y="0" width="942" height="1842"/>
+	<SubTexture name="Calling0000" x="947" y="0" width="942" height="1842"/>
+</TextureAtlas>

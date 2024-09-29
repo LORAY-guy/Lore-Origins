@@ -4,6 +4,7 @@ package objects;
 import openfl.events.Event;
 import openfl.geom.Matrix;
 import flash.display.BitmapData;
+import flixel.graphics.FlxGraphic;
 
 class AchievementPopup extends openfl.display.Sprite {
 	public var onFinish:Void->Void = null;
@@ -18,7 +19,7 @@ class AchievementPopup extends openfl.display.Sprite {
 		graphics.drawRoundRect(0, 0, 420, 130, 16, 16);
 
 		// achievement icon
-		var graphic = null;
+		var graphic:FlxGraphic = Paths.image('achievements/unlocked');
 		
 		var achievement:Achievement = null;
 		if(Achievements.exists(achieve)) achievement = Achievements.get(achieve);
@@ -27,8 +28,6 @@ class AchievementPopup extends openfl.display.Sprite {
 		var lastMod = Mods.currentModDirectory;
 		if(achievement != null) Mods.currentModDirectory = achievement.mod != null ? achievement.mod : '';
 		#end
-
-		graphic = Paths.image('achievements/unlocked', false);
 
 		#if MODS_ALLOWED
 		Mods.currentModDirectory = lastMod;
@@ -39,7 +38,7 @@ class AchievementPopup extends openfl.display.Sprite {
 
 		var imgX = 15;
 		var imgY = 15;
-		var image = graphic.bitmap;
+		var image:openfl.display.BitmapData = graphic.bitmap.clone();
 		graphics.beginBitmapFill(image, new Matrix(sizeX / image.width, 0, 0, sizeY / image.height, imgX, imgY), false, false);
 		graphics.drawRect(imgX, imgY, sizeX + 10, sizeY + 10);
 
@@ -49,7 +48,7 @@ class AchievementPopup extends openfl.display.Sprite {
 		if(achievement != null)
 		{
 			if(achievement.name != null) name = achievement.name;
-			if(achievement.description != null)  desc = achievement.description;
+			if(achievement.description != null) desc = achievement.description;
 		}
 
 		var textX = sizeX + imgX + 15;

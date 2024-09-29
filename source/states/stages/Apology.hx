@@ -9,25 +9,23 @@ class Apology extends BaseStage
     var stagelight_left:FlxSprite;
     var stagelight_right:FlxSprite;
 
-    var ourple_bg:FlxSprite;
-    var matpat:FlxSprite;
-    public static var blackness:FlxSprite;
-
-    var otherStuff:Array<FlxSprite> = [];
-    var mult:Float = 1.02;
-    var flipped:Bool = false;
-    var funni:Bool = true;
+    var redbg:FlxSprite;
+    var gtlogo:FlxSprite;
+    var gtRoom:FlxSprite;
+    var matpatIntro:FlxSprite;
 
     override function create()
     {   
         stageback = new FlxSprite(-600, -300).loadGraphic(Paths.image('apology/stageback'));
         stageback.scrollFactor.set(1, 1);
+        stageback.antialiasing = ClientPrefs.data.antialiasing;
         add(stageback);
 
         stagefront = new FlxSprite(-650, 600).loadGraphic(Paths.image('apology/stagefront'));
         stagefront.scrollFactor.set(1, 1);
         stagefront.scale.set(1.1, 1.1);
         stagefront.updateHitbox();
+        stagefront.antialiasing = ClientPrefs.data.antialiasing;
         add(stagefront);
 
         if (!ClientPrefs.data.lowQuality)
@@ -36,6 +34,7 @@ class Apology extends BaseStage
             stagelight_left.scrollFactor.set(1.1, 1.1);
             stagelight_left.scale.set(1.1, 1.1);
             stagelight_left.updateHitbox();
+            stagelight_left.antialiasing = ClientPrefs.data.antialiasing;
             add(stagelight_left);
 
             stagelight_right = new FlxSprite(1225, -100).loadGraphic(Paths.image('stage_light'));
@@ -43,37 +42,58 @@ class Apology extends BaseStage
             stagelight_right.scale.set(1.1, 1.1);
             stagelight_right.updateHitbox();
             stagelight_right.flipX = true;
+            stagelight_right.antialiasing = ClientPrefs.data.antialiasing;
             add(stagelight_right);
 
             stagecurtains = new FlxSprite(-525, -300).loadGraphic(Paths.image('apology/stagecurtains'));
             stagecurtains.scrollFactor.set(1.3, 1.3);
             stagecurtains.scale.set(0.9, 0.9);
             stagecurtains.updateHitbox();
+            stagecurtains.antialiasing = ClientPrefs.data.antialiasing;
             add(stagecurtains);
         }
 
-        resetVars();
         super.create();
     }
 
     override function createPost() 
     {
-        ourple_bg = new FlxSprite().loadGraphic(Paths.image('couch'));
-        ourple_bg.cameras = [camOther];
-        ourple_bg.screenCenter(XY);
-        otherStuff.push(ourple_bg);
-        add(ourple_bg);
+        redbg = new FlxSprite().loadGraphic(Paths.image('gtbg'));
+        redbg.scrollFactor.set();
+        redbg.scale.set((2/3), (2/3));
+        redbg.updateHitbox();
+        redbg.screenCenter();
+        redbg.antialiasing = ClientPrefs.data.antialiasing;
+        add(redbg);
+        redbg.alpha = 0.0001;
 
-        matpat = new FlxSprite().loadGraphic(Paths.image('daepicmatpat'));
-        matpat.cameras = [camOther];
-        matpat.scale.set(1.3, 1.3);
-        matpat.updateHitbox();
-        otherStuff.push(matpat);
-        add(matpat);
+        gtlogo = new FlxSprite().loadGraphic(Paths.image('gtLogo'));
+        gtlogo.scrollFactor.set();
+        gtlogo.scale.set((1/3), (1/3));
+        gtlogo.updateHitbox();
+        gtlogo.screenCenter();
+        gtlogo.antialiasing = ClientPrefs.data.antialiasing;
+        add(gtlogo);
+        gtlogo.alpha = 0.0001;
 
-        blackness = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK);
-        blackness.cameras = [camOther];
-        add(blackness);
+        gtRoom = new FlxSprite().loadGraphic(Paths.image('couch'));
+        gtRoom.scale.set(1.2, 1.2);
+        gtRoom.updateHitbox();
+        gtRoom.cameras = [camOther];
+        gtRoom.screenCenter();
+        gtRoom.antialiasing = ClientPrefs.data.antialiasing;
+        add(gtRoom);
+        gtRoom.alpha = 0.001;
+
+        matpatIntro = new FlxSprite().loadGraphic(Paths.image('daepicmatpat'));
+        matpatIntro.scale.set(1.4, 1.4);
+        matpatIntro.updateHitbox();
+        matpatIntro.y = 100;
+        matpatIntro.cameras = [camOther];
+        matpatIntro.screenCenter(X);
+        matpatIntro.antialiasing = ClientPrefs.data.antialiasing;
+        add(matpatIntro);
+        matpatIntro.alpha = 0.001;
 
         super.createPost();
     }
@@ -82,206 +102,197 @@ class Apology extends BaseStage
     {
         super.update(elapsed);
 
-        if (curStep < 64 && matpat != null && ourple_bg != null) // Would crash when leaving the level for some reason
-        {
-            if (funni)
-            {
-                matpat.scale.x = FlxMath.lerp(1.3, matpat.scale.x, Math.exp(-elapsed * 10.5));
-                matpat.scale.y = FlxMath.lerp(1.3, matpat.scale.y, Math.exp(-elapsed * 10.5));
-                ourple_bg.scale.x = FlxMath.lerp(1, ourple_bg.scale.x, Math.exp(-elapsed * 10.5));
-                ourple_bg.scale.y = FlxMath.lerp(1, ourple_bg.scale.y, Math.exp(-elapsed * 10.5));
-            }
-
-            if (dad.animation.curAnim.name != 'idle' && dad.animation.curAnim.curFrame == 0)
-            {
-                matpat.scale.set((matpat.scale.x * mult), (matpat.scale.y * mult));
-                ourple_bg.scale.set((ourple_bg.scale.x * mult - 0.01), (ourple_bg.scale.y * mult - 0.01));
-                matpat.x = 460;
-                matpat.y = 150;
-    
-                if (curStep >= 24 && curStep <= 42)
-                {
-                    funni = false;
-                    mult = 1.015;
-                    if (!flipped)
-                    {
-                        flipped = true;
-                        matpat.flipX = true;
-                    }
-                } else {
-                    funni = true;
-                    mult = 1.02;
-                    if (flipped)
-                    {
-                        flipped = false;
-                        matpat.flipX = false;
-                    }
-                }
-            }
-
-            matpat.screenCenter(X);
-            ourple_bg.screenCenter(X);
-            matpat.updateHitbox();
-            ourple_bg.updateHitbox();
+        if (curStep >= 320 && curStep < 336) {
+            gtlogo.angle = FlxMath.lerp(1, gtlogo.angle, Math.exp(-elapsed * 7.5));
+            gtlogo.scale.set(FlxMath.lerp((1/3), gtlogo.scale.x, Math.exp(-elapsed * 7.5)), FlxMath.lerp((1/3), gtlogo.scale.y, Math.exp(-elapsed * 7.5)));
+            gtlogo.updateHitbox();
+            gtlogo.screenCenter();
         }
     }
 
-    override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float) {
-        if (eventName == 'Play Animation' && value1 == 'ringstart' && curStep < 1728) {
-            defaultCamZoom += 0.075;
-            camGame.zoom = defaultCamZoom;
+    override function sectionHit()
+    {
+        super.sectionHit();
+
+        if (curSection >= 54 && curSection <= 69) { //nice...
+            coolCameraEffect(1.5, true);
+            camGame.zoom += 0.05;
+            camHUD.zoom += 0.05;
         }
+    }
+
+    override function stepHit()
+    {
+        super.stepHit();
+    
+        if (curStep == 2) {
+            showSprites();
+        } else if (curStep == 12) {
+            matpatIntro.flipX = true;
+        } else if (curStep == 24 || curStep == 32 || curStep == 37 || curStep == 45) {
+            scaleSprites();
+        } else if (curStep == 64) {
+            cleanUpScene();
+        } else if (curStep == 182 || curStep == 304 || curStep == 464 || curStep == 592 || curStep == 854 || curStep == 1368 || curStep == 1878 || curStep == 2202 || curStep == 2454) {
+            zoomCamera(1.2);
+        } else if (curStep == 192 || curStep == 480 || curStep == 1376 || curStep == 1504 || curStep == 2016 || curStep == 2720 || curStep == 2848) {
+            zoomFlash(0.9, 1.2, 1.0);
+        } else if (curStep == 856 || curStep == 1632 || curStep == 1888 || curStep == 2208 || curStep == 2464 || curStep == 2976) {
+            zoomFlash(0.8, 1.2);
+        } else if (curStep == 330 || curStep == 334) {
+            gtLogoAnimToggle();
+        } else if (curStep == 336) {
+            fadeAndTween();
+        } else if (curStep == 352) {
+            cancelTweensAndFade();
+        } else if (curStep == 1616 || curStep == 2838 || curStep == 2960) {
+            zoomCamera(1.2);
+        } else if (curStep == 2992) {
+            hideCameras();
+        }
+    }
+    
+    private function showSprites() 
+    {
+        gtRoom.alpha = 1;
+        matpatIntro.alpha = 1;
+    }
+    
+    private function scaleSprites() 
+    {
+        var scales = [1.5, 1.6, 1.7, 1.4];
+        var roomScales = [1.275, 1.325, 1.4, 1.2];
+        var index = curStep == 24 ? 0 : curStep == 32 ? 1 : curStep == 37 ? 2 : 3;
         
+        matpatIntro.scale.set(scales[index], scales[index]);
+        matpatIntro.updateHitbox();
+        matpatIntro.screenCenter(X);
+        
+        gtRoom.scale.set(roomScales[index], roomScales[index]);
+        gtRoom.updateHitbox();
+        gtRoom.screenCenter();
+    }
+    
+    private function cleanUpScene() 
+    {
+        remove(gtRoom);
+        remove(matpatIntro);
+        camGame.flash(FlxColor.WHITE, 1.2);
+        cameraSpeed = 1000;
+    }
+    
+    private function zoomCamera(zoomValue:Float) 
+    {
+        defaultCamZoom = zoomValue;
+        camGame.zoom = zoomValue;
+    }
+    
+    private function zoomFlash(newZoom:Float, flashDuration:Float, initialZoom:Float = 0) 
+    {
+        defaultCamZoom = newZoom;
+        camGame.zoom = newZoom;
+        camGame.flash(FlxColor.WHITE, flashDuration);
+        if (initialZoom != 0) {
+            camHUD.zoom = initialZoom;
+        }
+    }
+    
+    private function gtLogoAnimToggle() {
+        gtLogoAnim(curStep == 330 || curStep == 336);
+    }
+    
+    private function fadeAndTween() 
+    {
+        camHUD.fade(FlxColor.BLACK, (Conductor.crochet / 1000) * 4, false, true);
+        FlxTween.tween(gtlogo, {angle: 360, x: -gtlogo.width}, (Conductor.crochet / 1000) * 4, {
+            ease: FlxEase.quadIn,
+            onComplete: function(twn:FlxTween) {
+                remove(gtlogo);
+                remove(redbg);
+            }
+        });
+        FlxTween.tween(camGame, {zoom: 5}, (Conductor.crochet / 1000) * 4, {ease: FlxEase.expoIn});
+        strumBye();
+    }
+    
+    private function cancelTweensAndFade() 
+    {
+        FlxTween.cancelTweensOf(camGame);
+        defaultCamZoom = 1;
+        camGame.zoom = 1;
+        camHUD.fade(FlxColor.BLACK, 0, true, true);
+        camGame.fade(FlxColor.BLACK, (Conductor.crochet / 1000) * 64, true, true);
+        camHUD.visible = false;
+        cameraSpeed = 1000;
+    }
+    
+    private function hideCameras() 
+    {
+        camGame.visible = false;
+        camHUD.visible = false;
+    }
+
+    override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float) 
+    {
+        if (eventName == "Add Camera Zoom" && flValue1 == 0.04 && flValue2 == 0.03) {
+            coolCameraEffect(1.5, true);
+        }
         super.eventCalled(eventName, value1, value2, flValue1, flValue2, strumTime);
     }
 
-    override function stepHit() {
-        switch (curStep)
+    var mult:Int = 1;
+    private function coolCameraEffect(power:Float, zoom:Bool)
+    {
+        FlxTween.cancelTweensOf(camGame, ['angle']);
+        FlxTween.cancelTweensOf(camHUD, ['angle']);
+
+        camGame.angle = (power * mult);
+        camHUD.angle = (power * -mult);
+
+        if (zoom)
         {
-            case 64:
-                PlayState.instance.inLoreCutscene = false;
-                camGame.flash(FlxColor.WHITE, 0.9);
-                for (i in 0...otherStuff.length)
-                    otherStuff[i].visible = false; //It just crashes all the time if i destroy them so im just gonna keep them invisible
-
-            case 182, 310, 1338, 1462, 1590, 2742, 2616, 2870:
-                defaultCamZoom = 1.3;
-                cameraSpeed = 1000;
-
-            case 192, 1344, 1472, 1600, 2624, 2752:
-                defaultCamZoom = 0.9;
-                camGame.zoom = 0.9;
-                if (curStep == 1344 || curStep == 2624) camGame.flash(FlxColor.WHITE, 0.9);
-
-            case 312:
-                PlayState.instance.inLoreCutscene = true;
-                strumBye();
-                FlxTween.tween(camHUD, {alpha: 0}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.cubeOut});
-                FlxTween.tween(blackness, {alpha: 1}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.cubeOut, onComplete: function(twn:FlxTween) {
-                    FlxTween.tween(blackness, {alpha: 0}, (Conductor.crochet / 1000) * 64, {ease: FlxEase.cubeIn});                
-                }});
-
-            case 320, 576:
-                defaultCamZoom = 0.8;
-                camGame.zoom = 0.8;
-
-            case 448:
-                PlayState.instance.inLoreCutscene = false;
-                camGame.flash(FlxColor.WHITE, 0.9);
-                camHUD.alpha = 1;
-                strumHello();
-
-            case 560:
-                defaultCamZoom = 1.3;
-
-            case 832, 1856:
-                defaultCamZoom = 0.9;
-                cameraSpeed = 1;
-                if (curStep == 1856)
-                {
-                    camGame.flash(FlxColor.WHITE, 0.9);
-                    camHUD.alpha = 0;
-                    PlayState.instance.inLoreCutscene = true;
-                    strumBye();
-                }
-
-            case 1120, 1184, 1248:
-                epicBooms(false);
-
-            case 1312:
-                epicBooms(true);
-
-            case 1824:
-                FlxTween.tween(camGame, {zoom: 1.3}, (Conductor.stepCrochet / 1000) * 16, {ease: FlxEase.expoIn, onComplete: function(twn:FlxTween) {
-                    defaultCamZoom = 1;
-                    camGame.zoom = 1;
-                }});
-
-            case 1920, 1984:
-                camGame.flash(FlxColor.WHITE, 0.9);
-                if (curStep == 1984)
-                {
-                    defaultCamZoom = 0.9;
-                    camHUD.alpha = 1;
-                    strumHello();
-                    PlayState.instance.inLoreCutscene = false;
-                }
-
-            case 2080:
-                defaultCamZoom = 0.8;
-                camGame.zoom = 0.8;
-                cameraSpeed = 1000;
-
-            case 2880:
-                camGame.flash(FlxColor.WHITE, 0.9);
-                defaultCamZoom = 0.9;
-                camGame.zoom = 0.9;
-
-            case 2888:
-                FlxTween.tween(camGame, {zoom: 2}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.expoIn, onComplete: function(twn:FlxTween) {
-                    camGame.visible = false;
-                    camHUD.visible = false;
-                }});
+            camGame.zoom += (power / 10);
+            camHUD.zoom += (power / 10) / 2;
         }
-        
-        super.stepHit();
+
+        FlxTween.tween(camGame, {angle: 0}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadOut});
+        FlxTween.tween(camHUD, {angle: 0}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadOut});
+        mult = -mult;
     }
 
-    function epicBooms(isEnd:Bool)
+    private function gtLogoAnim(reverse:Bool)
     {
-        camGame.zoom += 0.2;
-        camHUD.zoom += 0.1;
-        new FlxTimer().start((Conductor.stepCrochet / 1000) * 6, function(tmr:FlxTimer) {
-            camGame.zoom += 0.2;
-            camHUD.zoom += 0.1;
-        }, 3);
-
-        if (!isEnd)
-        {
-            new FlxTimer().start((Conductor.stepCrochet / 1000) * 24, function(tmr:FlxTimer) {
-                camGame.zoom += 0.2;
-                camHUD.zoom += 0.1;
-                new FlxTimer().start((Conductor.stepCrochet / 1000) * 4, function(tmr:FlxTimer) {
-                    camGame.zoom += 0.2;
-                    camHUD.zoom += 0.1;
-                    new FlxTimer().start((Conductor.stepCrochet / 1000) * 4, function(tmr:FlxTimer) {
-                        camGame.flash(FlxColor.WHITE, 0.9);
-                    });
-                });
-            });
-        }
+        gtlogo.angle = reverse ? -15 : 15;
+        camGame.zoom += 0.025;
+        camHUD.zoom += 0.025;
+        gtlogo.scale.set(0.4, 0.4);
+        gtlogo.updateHitbox();
+        gtlogo.screenCenter();
     }
 
     function strumBye()
     {
-        for (i in 0...7)
+        for (i in 0...8)
         {
             var curNote = PlayState.instance.strumLineNotes.members[i % PlayState.instance.strumLineNotes.length];
             if (i < 4) {
-                FlxTween.tween(curNote, {angle: -360, x: curNote.x - 750}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadIn});
+                FlxTween.tween(curNote, {angle: -360, x: -curNote.width}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadIn});
             } else {
-                FlxTween.tween(curNote, {angle: 360, x: curNote.x + 750}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadIn});
+                FlxTween.tween(curNote, {angle: 360, x: curNote.width + FlxG.width}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadIn});
             }
         }
     }
 
     function strumHello()
     {
-        for (i in 0...7)
+        for (i in 0...8)
         {
             var curNote = PlayState.instance.strumLineNotes.members[i % PlayState.instance.strumLineNotes.length];
             if (i < 4) {
-                FlxTween.tween(curNote, {angle: 0, x: curNote.x + 750}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadOut});
+                FlxTween.tween(curNote, {angle: 0, x: defaultOpponentStrumX[i]}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadOut});
             } else {
-                FlxTween.tween(curNote, {angle: 0, x: curNote.x - 750}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadOut});
+                FlxTween.tween(curNote, {angle: 0, x: defaultPlayerStrumX[i-4]}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadOut});
             }
         }
-    }
-
-    function resetVars()
-    {
-        mult = 1.2;
-        flipped = false;
-        funni = true;
     }
 }

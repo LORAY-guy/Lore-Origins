@@ -56,7 +56,8 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		final refreshRate:Int = FlxG.stage.application.window.displayMode.refreshRate;
 		option.minValue = 15; //For the Frame by Frame achievement
 		option.maxValue = 240;
-		option.defaultValue = Std.int(FlxMath.bound(refreshRate, option.minValue, option.maxValue));
+		//Linux doesn't receive refresh rate, so it sets it to 15 which isn't good, here's a little workaround for our coding fellas
+		option.defaultValue = (refreshRate > option.minValue ? Std.int(FlxMath.bound(refreshRate, option.minValue, option.maxValue)) : 60);
 		option.displayFormat = '%v FPS';
 		option.onChange = onChangeFramerate;
 		#end

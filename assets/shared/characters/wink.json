@@ -13,14 +13,14 @@
 		},
 		{
 			"offsets": [
-				5,
-				14
+				-28,
+				3
 			],
 			"loop": false,
 			"fps": 12,
 			"anim": "singLEFT",
 			"indices": [],
-			"name": "wink left"
+			"name": "wink right"
 		},
 		{
 			"offsets": [
@@ -46,14 +46,14 @@
 		},
 		{
 			"offsets": [
-				-28,
-				3
+				5,
+				14
 			],
 			"loop": false,
 			"fps": 12,
 			"anim": "singRIGHT",
 			"indices": [],
-			"name": "wink right"
+			"name": "wink left"
 		},
 		{
 			"offsets": [
@@ -70,10 +70,10 @@
 	"no_antialiasing": false,
 	"image": "characters/wink",
 	"position": [
-		-280,
-		-240
+		-50,
+		235
 	],
-	"healthicon": "wink-icon",
+	"healthicon": "wink",
 	"flip_x": false,
 	"healthbar_colors": [
 		255,
@@ -81,9 +81,9 @@
 		240
 	],
 	"camera_position": [
-		120,
-		230
+		150,
+		-60
 	],
 	"sing_duration": 4,
-	"scale": 0.5
+	"scale": 1.2
 }

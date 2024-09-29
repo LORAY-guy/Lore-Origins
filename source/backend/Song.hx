@@ -108,10 +108,7 @@ class Song
 
 		var path:String;
 		if(rawJson == null) {
-			if (isOurple)
-				path = Paths.json(formattedFolder + '/' + formattedSong + guy);
-			else
-				path = Paths.json(formattedFolder + '/' + formattedSong);
+			path = Paths.json(formattedFolder + '/' + formattedSong + (isOurple ? guy : ''));
 
 			#if sys
 			if(FileSystem.exists(path))

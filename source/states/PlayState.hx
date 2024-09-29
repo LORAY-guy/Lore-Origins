@@ -530,7 +530,7 @@ class PlayState extends MusicBeatState
 			startCharacterScripts(gf.curCharacter);
 		}
 
-		if (sunkMark == 'Mark') stageData.hide_mark = false;
+		if (SONG.song.toLowerCase() == 'sunk' && sunkMark == 'Mark') stageData.hide_mark = false;
 
 		if (!stageData.hide_mark)
 		{
@@ -798,7 +798,7 @@ class PlayState extends MusicBeatState
 				skipCountdown = true;
 		}
 
-		if (FlxG.sound.muted) skipCountdown = true;
+		if (FlxG.sound.muted && FlxG.sound.isCheater) skipCountdown = true;
 
 		startingSong = true;
 
@@ -872,8 +872,6 @@ class PlayState extends MusicBeatState
 				inLoreCutscene = true;
 
 			case 'lore-apology':
-				vocals.volume = 0;
-				FlxG.sound.music.volume = 0;
 				inLoreCutscene = true;
 			
 			case 'lore-sad':
@@ -1768,12 +1766,6 @@ class PlayState extends MusicBeatState
 				inLoreCutscene = true;
 				FlxTween.tween(states.stages.addons.Awesomix.prange, {x: (FlxG.width / 2) - 210, angle: 0}, 1.5, {ease: FlxEase.cubeOut});
 
-			case 'lore-apology':
-				FlxG.sound.music.volume = 0.9;
-				vocals.volume = 0.85;
-				opponentVocals.volume = 0.85;
-				states.stages.Apology.blackness.alpha = 0; 
-
 			case 'chronology':
 				camOther.flash(FlxColor.WHITE, 1.7);
 				vocals.volume = 0.85;
@@ -2469,9 +2461,6 @@ class PlayState extends MusicBeatState
 
 		if (gf != null)
 		{
-			if (gf.animation.curAnim.name == 'ringstart' && gf.animation.curAnim.finished)
-				gf.animation.play('ringloop', true, false, 0);
-	
 			if (gf.animation.curAnim.name.contains('ring') && !gf.animation.curAnim.name.endsWith('end')) {
 				ringing = true;
 				angleOfs = FlxG.random.float(-5, 5);
@@ -2483,13 +2472,37 @@ class PlayState extends MusicBeatState
 		}
 
 		#if ACHIEVEMENTS_ALLOWED
+		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible')
+		{
+			if (bonnet.visible && FlxG.mouse.overlaps(bonnet, camOther) && FlxG.mouse.justPressed)
+			{
+				bonnetSound.play();
+				FlxTween.tween(bonnet, {y: FlxG.height + bonnet.height}, 0.3, {ease: FlxEase.sineIn, onComplete: function(twn:FlxTween) {
+					FlxTween.cancelTweensOf(bonnet);
+					FlxG.mouse.visible = false;
+					resetBonnet();
+					Achievements.unlock('bonnet');
+				}});
+			}
+	
+			if (bucketBob.visible) {
+				bucketBob.setPosition(FlxG.random.float(-5, 5), FlxG.random.float(-5, 5));
+				if (FlxG.random.bool(0.25)) bucketBob.loadGraphic(Paths.imageRandom('miscEvents/bob', 1, 2));
+			}
+	
+			if (no1crate.visible && boomNoise.playing) {
+				no1crate.setPosition(FlxG.random.float(-5, 5), FlxG.random.float(-5, 5));
+				if (FlxG.random.bool(0.25)) no1crate.loadGraphic(Paths.imageRandom('miscEvents/no1crate-', 1, 3));
+			}
+		}
+
 		if (healthBar.percent < 20.0 && scaredTime <= 60)
 		{
 			scaredTime += elapsed;
 			if (scaredTime >= 60) Achievements.unlock('u_scawy');
 		}
-		
-		if (!endingSong && !startingSong && FlxG.sound.muted)
+
+		if (!endingSong && !startingSong && FlxG.sound.muted && FlxG.sound.isCheater)
 		{
 			Achievements.unlock('cheater');
 			skippedSong = true;
@@ -2499,7 +2512,7 @@ class PlayState extends MusicBeatState
 			vocals.volume = 0;
 			opponentVocals.volume = 0;
 		}
-		
+
 		if (FlxG.keys.pressed.C && FlxG.keys.pressed.D && (FlxG.keys.justPressed.NUMPADPLUS || FlxG.keys.justPressed.PLUS))
 		{
 			skippedSong = true;
@@ -2508,27 +2521,6 @@ class PlayState extends MusicBeatState
 			endSong();
 			vocals.volume = 0;
 			opponentVocals.volume = 0;
-		}
-
-		if (bonnet.visible && FlxG.mouse.overlaps(bonnet, camOther) && FlxG.mouse.justPressed)
-		{
-			bonnetSound.play();
-			FlxTween.tween(bonnet, {y: FlxG.height + bonnet.height}, 0.3, {ease: FlxEase.sineIn, onComplete: function(twn:FlxTween) {
-				FlxTween.cancelTweensOf(bonnet);
-				FlxG.mouse.visible = false;
-				resetBonnet();
-				Achievements.unlock('bonnet');
-			}});
-		}
-
-		if (bucketBob.visible) {
-			bucketBob.setPosition(FlxG.random.float(-5, 5), FlxG.random.float(-5, 5));
-			if (FlxG.random.bool(0.25)) bucketBob.loadGraphic(Paths.imageRandom('miscEvents/bob', 1, 2));
-		}
-
-		if (no1crate.visible && boomNoise.playing) {
-			no1crate.setPosition(FlxG.random.float(-5, 5), FlxG.random.float(-5, 5));
-			if (FlxG.random.bool(0.25)) no1crate.loadGraphic(Paths.imageRandom('miscEvents/no1crate-', 1, 3));
 		}
 		#end
 
@@ -3196,7 +3188,7 @@ class PlayState extends MusicBeatState
 		}
 			
 
-		if (!skippedSong) checkForAchievement(['frame_by_frame', 'lore_enjoyer', 'ourple_lover', 'true_theorist']);
+		if (!skippedSong) checkForAchievement(['frame_by_frame', 'lore_enjoyer', 'true_theorist']);
 		#end
 
 		var ret:Dynamic = callOnScripts('onEndSong', null, true);
@@ -3982,16 +3974,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (SONG.song.toLowerCase() == 'lore-apology' && leType == 'GF Sing' && SONG.notes[curSection].gfSection && SONG.notes[curSection].mustHitSection)
-		{
-			if (eventTweensManager.exists('raise')) eventTweensManager.get('raise').cancel();
-			boyfriend.y = boyfriend.defaultY;
-			if (boyfriend.curCharacter.contains('staring')) boyfriend.x = boyfriend.defaultX;
-			boyfriend.flipX = true;
-			boyfriend.animation.play(singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, leData)))], true, false, 0);
-			boyfriend.holdTimer = 0;
-		}
-
 		if (ClientPrefs.data.characterGhost && SONG.song.toLowerCase() != 'distractible')
 		{
 			if (boyfriend.ghostData.strumTime == note.strumTime && !isSus) createGhost(boyfriend);
@@ -4095,6 +4077,17 @@ class PlayState extends MusicBeatState
 		while (hscriptArray.length > 0)
 			hscriptArray.pop();
 		#end
+
+		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible')
+		{
+			if (lolBitState) {
+				closeLolBitState(false);
+				lolBitWarning.destroy();
+				lolBitSound.destroy();
+			}
+			boomNoise.destroy();
+			whisper.destroy();
+		}
 
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
@@ -4881,6 +4874,21 @@ class PlayState extends MusicBeatState
 		var usedPractice:Bool = (ClientPrefs.getGameplaySetting('practice') || ClientPrefs.getGameplaySetting('botplay'));
 		if(cpuControlled) return;
 
+		if (!usedPractice)
+		{
+			if (isCover && !ClientPrefs.data.songPlayed.get('Covers').contains(SONG.song)) {
+				ClientPrefs.data.songPlayed.get('Covers').push(SONG.song);
+			} else if (!isCover && !ClientPrefs.data.songPlayed.get('Originals').contains(SONG.song)) {
+				ClientPrefs.data.songPlayed.get('Originals').push(SONG.song);
+			}
+
+			if (ClientPrefs.data.guy != 'Ourple' && !ClientPrefs.data.ourpleUsed.contains(ClientPrefs.data.guy)) {
+				ClientPrefs.data.ourpleUsed.push(ClientPrefs.data.guy); //Keeping this just in case
+			}
+
+			if (SONG.song.toLowerCase() == 'distractible') Achievements.unlock('distracted');
+		}
+
 		for (name in achievesToCheck) {
 			if(!Achievements.exists(name)) continue;
 
@@ -4890,17 +4898,9 @@ class PlayState extends MusicBeatState
 				case 'frame_by_frame':
 					unlock = (ClientPrefs.data.framerate < 30 && !usedPractice);
 				case 'lore_enjoyer':
-					if (!usedPractice && isCover && !ClientPrefs.data.songPlayed.get('Covers').contains(SONG.song))
-						ClientPrefs.data.songPlayed.get('Covers').push(SONG.song);
-					unlock = (ClientPrefs.data.songPlayed.get('Covers').length >= 10);
-				case 'ourple_lover':
-					if (!usedPractice && ClientPrefs.data.guy != 'Ourple' && !ClientPrefs.data.ourpleUsed.contains(ClientPrefs.data.guy))
-						ClientPrefs.data.ourpleUsed.push(ClientPrefs.data.guy);
-					unlock = (ClientPrefs.data.ourpleUsed.length >= 5);
+					unlock = (ClientPrefs.data.songPlayed.get('Covers').length >= 10 && ClientPrefs.data.songPlayed.get('Originals').length >= 4);
 				case 'true_theorist':
-					if (!usedPractice && !isCover && !ClientPrefs.data.songPlayed.get('Originals').contains(SONG.song))
-						ClientPrefs.data.songPlayed.get('Originals').push(SONG.song);
-					unlock = (Achievements.isUnlocked('lore_enjoyer') && ClientPrefs.data.songPlayed.get('Originals').length >= 2 && Achievements.isUnlocked('ourple_lover'));
+					unlock = Achievements.allUnlocked();
 			}
 
 			if(unlock) Achievements.unlock(name);

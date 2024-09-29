@@ -126,16 +126,6 @@ class MainMenuState extends MusicBeatState
 			if (FreeplayState.vocals != null)
 				FreeplayState.vocals.volume += 0.5 * elapsed;
 		}
-
-		if (FlxG.mouse.justMoved) FlxG.mouse.visible = true;
-
-		if (controls.UI_LEFT_P || controls.UI_RIGHT_P)
-		{
-			usingMouse = false;
-			FlxG.mouse.visible = false;
-		}
-		else
-			usingMouse = (FlxG.mouse.overlaps(menuItems) && FlxG.mouse.visible);
 		
 		if (!selectedSomethin)
 		{
@@ -145,16 +135,8 @@ class MainMenuState extends MusicBeatState
 				{
 					if (FlxG.mouse.overlaps(spr))
 					{
-						if (spr.animation.curAnim.name != 'selected')
-						{
-							FlxG.camera.zoom += 0.03;
-							curSelected = spr.ID;
-
-							FlxG.sound.play(Paths.sound('scrollMenu'));
-							spr.animation.play('selected');
-
-							camFollow.setPosition(menuItems.members[curSelected].getGraphicMidpoint().x - getPosOffsetMenuItems());
-							spr.centerOffsets();
+						if (spr.animation.curAnim.name != 'selected') {
+							changeItem(spr.ID, true);
 						}
 
 						if (FlxG.mouse.pressed)
@@ -165,7 +147,7 @@ class MainMenuState extends MusicBeatState
 							processItems();
 						}
 					} 
-					else if (spr.animation.curAnim.name != 'idle')
+					else if (spr.animation.curAnim.name != 'idle' && !menuItems.any(function(spr:FlxSprite) {return spr.animation.curAnim.name == 'selected';}))
 					{
 						spr.animation.play('idle');
 						spr.updateHitbox();
@@ -203,9 +185,18 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
 		super.update(elapsed);
+
+		if (FlxG.mouse.deltaScreenX > 2 || FlxG.mouse.deltaScreenY > 2) FlxG.mouse.visible = true;
+		
+		if (controls.UI_LEFT || controls.UI_RIGHT) {
+			usingMouse = false;
+			FlxG.mouse.visible = false;
+		} else {
+			usingMouse = (menuItems.any(function(spr:FlxSprite) {return FlxG.mouse.overlaps(spr);}) && FlxG.mouse.visible);
+		}
 	}
 
-	function changeItem(huh:Int = 0)
+	function changeItem(huh:Int = 0, ?goTo:Bool = false)
 	{
 		FlxG.camera.zoom += 0.03;
 
@@ -213,7 +204,10 @@ class MainMenuState extends MusicBeatState
 		menuItems.members[curSelected].animation.play('idle');
 		menuItems.members[curSelected].updateHitbox();
 
-		curSelected += huh;
+		if (goTo)
+			curSelected = huh;
+		else
+			curSelected += huh;
 
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
@@ -224,7 +218,6 @@ class MainMenuState extends MusicBeatState
 		menuItems.members[curSelected].centerOffsets();
 
 		camFollow.setPosition(menuItems.members[curSelected].getGraphicMidpoint().x - getPosOffsetMenuItems());
-
 	}
 
 	private function processItems():Void

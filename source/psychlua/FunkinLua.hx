@@ -896,8 +896,8 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "cameraFlash", function(camera:String, color:String, duration:Float,forced:Bool) {
 			LuaUtils.cameraFromString(camera).flash(CoolUtil.colorFromString(color), duration, null,forced);
 		});
-		Lua_helper.add_callback(lua, "cameraFade", function(camera:String, color:String, duration:Float,forced:Bool) {
-			LuaUtils.cameraFromString(camera).fade(CoolUtil.colorFromString(color), duration, false,null,forced);
+		Lua_helper.add_callback(lua, "cameraFade", function(camera:String, color:String, duration:Float, fadeIn:Bool, forced:Bool) {
+			LuaUtils.cameraFromString(camera).fade(CoolUtil.colorFromString(color), duration, fadeIn, null, forced);
 		});
 		Lua_helper.add_callback(lua, "setRatingPercent", function(value:Float) {
 			game.ratingPercent = value;

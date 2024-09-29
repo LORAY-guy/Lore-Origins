@@ -177,7 +177,7 @@ class Main extends Sprite
 			}
 		}
 
-		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/LORAY-guy/Lore-Origins or contact LORAY directly on Discord (loray_man) or on Twitter (https://x.com/@LORAY_man)\n\n> Crash Handler written by: sqirra-rng";
+		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/LORAY-guy/Lore-Origins \nor contact LORAY directly on Discord (loray_man) or on Twitter (https://x.com/@LORAY_man)\n\n> Crash Handler written by: sqirra-rng";
 
 		if (!FileSystem.exists("./crash/"))
 			FileSystem.createDirectory("./crash/");
@@ -202,9 +202,9 @@ class Main extends Sprite
 		#elseif html5
 		js.Browser.window.close();
 		#elseif linux
-		Sys.command("pkill Lore Origins");
+		Sys.command('pkill "Lore Origins"');
 		#elseif mac
-		Sys.command("pkill -f Lore Origins");
+		Sys.command('pkill -f "Lore Origins"');
 		#end
 	}
 }

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Paypal.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="paypal0000" x="0" y="0" width="1179" height="1385" frameX="0" frameY="-1" frameWidth="1179" frameHeight="1388"/>
+	<SubTexture name="paypal0001" x="1179" y="0" width="1178" height="1385" frameX="0" frameY="0" frameWidth="1179" frameHeight="1388"/>
+	<SubTexture name="paypal0002" x="2357" y="0" width="1175" height="1388" frameX="-4" frameY="0" frameWidth="1179" frameHeight="1388"/>
+</TextureAtlas>

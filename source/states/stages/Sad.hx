@@ -5,7 +5,7 @@ import objects.HealthIcon;
 class Sad extends BaseStage 
 {
     public static var allowCountdown:Bool = false;
-    public static var firstOpening:Dynamic = false;
+    public static var firstOpening:Null<Bool> = false;
     public static var blocked:Bool = false;
     var isShaking:Bool = false;
 
@@ -71,6 +71,7 @@ class Sad extends BaseStage
         blackIntro = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK);
         blackIntro.screenCenter(XY);
         blackIntro.cameras = [camOther];
+        blackIntro.alpha = 0.9999; //Precachine purposes
         add(blackIntro);
 
         tutorialTxt = new FlxText(10, (ClientPrefs.data.downScroll) ? 65 : 640, 300, 'Press \'TAB\' to open the countdown', 26);
@@ -91,8 +92,6 @@ class Sad extends BaseStage
     {
         super.createPost();
 
-        FlxG.sound.play(Paths.sound('spotlight'), 0.01);
-
         if (!ClientPrefs.data.lowQuality) {
             curtains = new BGSprite("lore/curtain", -75, 135, 1.2, 1.2);
             curtains.setGraphicSize(Std.int(curtains.width * 1.2));
@@ -106,14 +105,10 @@ class Sad extends BaseStage
         var remainingTime = (targetDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24);
         var weeksRemaining = Std.int(remainingTime / 7);
         
-        var remainingTheories:String;
-        if (remainingTime < 0) {
-            remainingTheories = "FAREWELL, MATPAT!";
-        } else {
-            remainingTheories = "- " + weeksRemaining + " THEORIES REMAIN -";
-        }
+        //Since each theory came out every week (on average), this makes this mechanic much easier to make
+        var remainingTheories:String = (remainingTime < 0 ? 'FAREWELL, MATPAT!' : '- $weeksRemaining THEORIES REMAIN -');
 
-        timerBar = new FlxSprite(0, 420).makeGraphic(1280, 120); //hehe... 420...
+        timerBar = new FlxSprite(0, 420).makeGraphic(1280, 120);
         timerBar.screenCenter(X);
         timerBar.alpha = 0;
         sadStuff.add(timerBar);
@@ -158,7 +153,7 @@ class Sad extends BaseStage
         add(phoneIcon);
     }
 
-    override function update(elapsed:Float) 
+    override function update(elapsed:Float)
     {
         super.update(elapsed);
 
@@ -172,6 +167,11 @@ class Sad extends BaseStage
         if (firstOpening && tutorialTxt.alpha < 0.01) {
             tutorialTxt.destroy();
             firstOpening = null;
+        }
+
+        //So it doesn't show it through the whole song if the player doesn't care (kind of a useless mechanic now honestly, idk if i should actually remove it now, I think people already got the point)
+        if (firstOpening != null && Conductor.songPosition > 30000 && !firstOpening) {
+            firstOpening = true;
         }
 
 		if (isShaking) {
@@ -192,11 +192,6 @@ class Sad extends BaseStage
             }
 
             if (!firstOpening) firstOpening = true;
-        }
-
-        if (FlxG.keys.justPressed.B) {
-            PlayState.instance.clearNotesBefore(191000);
-            PlayState.instance.setSongTime(191000);
         }
     }
 

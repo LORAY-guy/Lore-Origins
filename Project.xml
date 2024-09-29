@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Lore Origins" file="Lore Origins" packageName="com.shadowmario.psychengine" package="com.shadowmario.psychengine" main="Main" version="1.7.0" company="LORAY" />
+	<app title="Lore Origins" file="Lore Origins" packageName="com.loray.loreorigins" package="com.lore.loreorigins" main="Main" version="2.0.0" company="LORAY" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -23,8 +23,8 @@
 	<define name="HSCRIPT_ALLOWED" if="desktop" />
 	<define name="LUA_ALLOWED" if="desktop"/>
 	<define name="CHECK_FOR_UPDATES"/>
-	<define name="DISCORD_ALLOWED" if="desktop" />
-	<define name="ACHIEVEMENTS_ALLOWED" if="desktop" />
+	<define name="DISCORD_ALLOWED" if="desktop" unless="linux"/>
+	<define name="ACHIEVEMENTS_ALLOWED" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -63,7 +63,9 @@
 	<assets path="assets/videos"        library="videos"        if="VIDEOS_ALLOWED" />
 	<assets path="assets/songs"         library="songs"         exclude="*.ogg" if="web" />
 	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web" />
-	<assets path="assets/minigame" />
+
+	<assets path="assets/minigame/linux" if="linux" unless="windows || html5" rename="assets/minigame" />
+	<assets path="assets/minigame/windows" if="windows" unless="linux || html5" rename="assets/minigame" />
 
 	<library name="videos"        preload="true" if="VIDEOS_ALLOWED" />
 	<library name="songs"         preload="true" />

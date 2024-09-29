@@ -259,7 +259,7 @@ class CreditsState extends MusicBeatState
 					['Serby', 				'serby', 			'Made ending custcene in \"I can, tho\"', 		 'https://x.com/SerbyAnimations',		'A848C6'],
 					//['bobz', 				'bobz', 			'Charted Lore AR mix',  	 'https://x.com/bobzforvever', 								'05F505'], They lowkey did basically nothing, I actually made 90% of the chart
 					['Ahloof',				'ahloof',			'Playtested \"I can, tho\"',					 'https://x.com/ahhhloof',			    '01FF8D'],
-					['PinkyMichael',		'pinky',			'Helped with Distractible song',				 'https://x.com/PinkyMichael76',		'FF63FF'],
+					['PinkyMichael',		'pinky',			'Helped with Distractible song / Playtested',	 'https://x.com/PinkyMichael76',		'FF63FF'],
 				];
 			case 'Composers':
 				defaultList = [

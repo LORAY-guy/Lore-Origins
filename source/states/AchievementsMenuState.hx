@@ -494,14 +494,13 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 		{
 			case 'lore_enjoyer':
 				ClientPrefs.data.songPlayed.set('Covers', []);
-
-			case 'ourple_lover':
+				ClientPrefs.data.songPlayed.set('Originals', []);
 				ClientPrefs.data.ourpleUsed = [];
 
 			case 'true_theorist':
-				ClientPrefs.data.songPlayed.set('Originals', []);
-				onConfirm(10); //also resets lore_enjoyer
-				onConfirm(11); //also resets ourple_lover
+				for (i in 0...11) {
+					onConfirm(i);
+				}
 		}
 	}
 }

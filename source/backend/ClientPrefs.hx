@@ -210,7 +210,8 @@ class ClientPrefs {
 
 		if(FlxG.save.data.framerate == null) {
 			final refreshRate:Int = FlxG.stage.application.window.displayMode.refreshRate;
-			data.framerate = Std.int(FlxMath.bound(refreshRate, 15, 240));
+			//Linux doesn't receive refresh rate, so it sets it to 15 which isn't good, here's a little workaround for our coding fellas
+			data.framerate = (refreshRate > 15 ? Std.int(FlxMath.bound(refreshRate, 15, 240)) : 60);
 		}
 		#end
 

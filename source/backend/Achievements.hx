@@ -35,8 +35,8 @@ class Achievements {
 		createAchievement('exploiter',				{name: "Exploiter", description: "Skip a song by using a FNAF game exploit."});
 		createAchievement('cheater',				{name: "Cheater", description: "Skip a song by using another FNAF game exploit."});
 		createAchievement('too_sad',				{name: "I'm too Sad for this...", description: "Don't press a single note in Lore Sad Mix.", hiddenDesc: true});
-		createAchievement('lore_enjoyer',			{name: "Lore Enjoyer", description: "Play all the Lore covers."});
-		createAchievement('ourple_lover',			{name: "Ourple Lover", description: "Finish Lore with all the Ourple variants."});
+		createAchievement('distracted',				{name: "Distracted", description: "Play Distractible.", hiddenDesc: true});
+		createAchievement('lore_enjoyer',			{name: "Lore Enjoyer", description: "Play all the Lore covers and originals."});
 		createAchievement('true_theorist',			{name: "True Theorist", description: "Play the entirety of Lore Origins."});
 
 		//dont delete this thing below
@@ -146,6 +146,10 @@ class Achievements {
 			_lastUnlock = time;
 		}
 
+		if (allUnlocked()) {
+			unlock('true_theorist');
+		}
+
 		Achievements.save();
 		FlxG.save.flush();
 
@@ -155,6 +159,9 @@ class Achievements {
 
 	inline public static function isUnlocked(name:String)
 		return achievementsUnlocked.contains(name);
+
+	inline public static function allUnlocked()
+		return achievementsUnlocked.length >= 12;
 
 	@:allow(objects.AchievementPopup)
 	private static var _popups:Array<AchievementPopup> = [];

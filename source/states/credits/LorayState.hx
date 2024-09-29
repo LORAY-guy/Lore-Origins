@@ -1,5 +1,6 @@
 package states.credits;
 
+import flixel.FlxObject;
 import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
@@ -13,13 +14,15 @@ class LorayState extends MusicBeatState
         @param Link String
     **/
     public static var appCats:Array<Array<Dynamic>> = [
-        ['Youtube', 0.45, 0,    'https://youtube.com/@LORAY_'],
-        ['Twitter', 0.45, 45,   'https://twitter.com/LORAY_man'], 
-        ['Discord', 0.45, 0,    'https://discord.com/invite/JnsQV8az8C']
+        ['Youtube', 0.45,  0,    'https://youtube.com/@LORAY_'],
+        ['Twitter', 0.45,  45,   'https://twitter.com/LORAY_man'],
+        ['Discord', 0.45,  0,    'https://discord.com/invite/JnsQV8az8C'],
+        ['Paypal',  0.16,  0,    'https://paypal.me/LORAYman']
     ];
 
     var menuItems:FlxTypedGroup<FlxSprite>;
     var lorays:FlxTypedGroup<Loray>;
+    var camFollow:FlxObject;
 
     public var appName:Alphabet;
     var bg:FlxSprite;
@@ -42,7 +45,11 @@ class LorayState extends MusicBeatState
 
         bg = new FlxSprite().loadGraphic(Paths.image('menuBGMagenta'));
         bg.screenCenter();
+        bg.scrollFactor.set();
         add(bg);
+
+        camFollow = new FlxObject(0, 0, 1, 1);
+		add(camFollow);
 
         var grid:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/grid'));
 		grid.scrollFactor.set(0, 0);
@@ -59,21 +66,18 @@ class LorayState extends MusicBeatState
 		for (i in 0...appCats.length)
         {
             var offset:Float = (Math.max(appCats.length, 4) - 4) * 75;
-            var appItem:FlxSprite = new FlxSprite((i * 410 - (i * 5)) + offset, 0);
+            var appItem:FlxSprite = new FlxSprite((i * 410 - (i * 5)) + offset, 120);
             var scaleItem:Float = appCats[i][1];
             appItem.x += 80 + appCats[i][2];
             appItem.frames = Paths.getSparrowAtlas('loray/loray_' + appCats[i][0].toLowerCase());
 			appItem.animation.addByPrefix('idle', appCats[i][0].toLowerCase(), 24);
 			appItem.animation.play('idle');
             appItem.scale.set(scaleItem, scaleItem);
-            appItem.screenCenter(Y);
+            appItem.updateHitbox();
 			appItem.ID = i;
 			menuItems.add(appItem);
-			var scr:Float = (appCats.length - 4) * 0.135;
-			if(appCats.length < 6) scr = 0;
-			appItem.scrollFactor.set(0, scr);
+			appItem.scrollFactor.set(1, 0);
 			appItem.antialiasing = ClientPrefs.data.antialiasing;
-			appItem.updateHitbox();
         }
 
         lorays.add(new Loray(180));
@@ -92,12 +96,15 @@ class LorayState extends MusicBeatState
 
         appName = new Alphabet(20, (FlxG.height / 2) + 220, appCats[curSelected][0].toLowerCase(), true);
 		appName.screenCenter(X);
+        appName.scrollFactor.set();
 		add(appName);
 
         add(new ExitButton('credits'));
 
         changeSelection(0, false, false);
         super.create();
+
+        FlxG.camera.follow(camFollow, null, 9);
 
         if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
     }
@@ -155,21 +162,20 @@ class LorayState extends MusicBeatState
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
-			spr.animation.play('idle');
 			if (spr.ID == curSelected) {
-                spr.scale.set(appCats[curSelected][1] + 0.1, appCats[curSelected][1] + 0.1);
-				spr.centerOffsets();
+                spr.scale.set(appCats[curSelected][1] * 1.2, appCats[curSelected][1] * 1.2);
 			} else {
                 spr.scale.set(appCats[spr.ID][1], appCats[spr.ID][1]);
-                spr.centerOffsets();
             }
+            spr.centerOffsets();
             spr.updateHitbox();
         });
 
-        appName.destroy();
-		appName = new Alphabet(20, (FlxG.height / 2) + 220, appCats[curSelected][0], true);
-		appName.screenCenter(X);
-		add(appName);
+        appName.clearLetters();
+        appName.text = appCats[curSelected][0];
+        appName.softReloadLetters();
+
+        camFollow.setPosition(menuItems.members[curSelected].getGraphicMidpoint().x - getPosOffsetMenuItems());
     }
 
     override public function beatHit()
@@ -178,6 +184,12 @@ class LorayState extends MusicBeatState
             spr.dance();
         });
     }
+
+    private function getPosOffsetMenuItems():Float {
+		var midIndex = menuItems.length / 2;
+		var offsetFactor = 120;
+		return (curSelected - midIndex) * offsetFactor;
+	}
 }
 
 class Loray extends FlxSprite
@@ -200,6 +212,7 @@ class Loray extends FlxSprite
         scale.y = 3;
         ID = lorays.length;
         flipX = (ID % 2 == 0) ? true : false;
+        scrollFactor.set();
         lorays.push(this);
 
         this.originX = x;

@@ -1,6 +1,5 @@
 package states.credits;
 
-import backend.Highscore;
 import backend.Song;
 
 import flixel.effects.FlxFlicker;
@@ -14,8 +13,10 @@ class CreditsSubgroupState extends MusicBeatState
 
 	public var subGroupsNames:FlxTypedGroup<Alphabet>;
 
+    #if !html5
 	var keypad:Keypad;
 	var cameraId:FlxSprite;
+    #end
 
     var exitButton:ExitButton;
 
@@ -42,7 +43,7 @@ class CreditsSubgroupState extends MusicBeatState
 		grid.alpha = 0.5;
 		add(grid);
 
-		#if desktop
+        #if !html5
 		keypad = new Keypad(40, FlxG.height - 500);
 		add(keypad);
 
@@ -50,7 +51,7 @@ class CreditsSubgroupState extends MusicBeatState
 		cameraId.setPosition(20, FlxG.height - cameraId.height * 2);
 		cameraId.alpha = 0.5;
 		add(cameraId);
-		#end
+        #end
 
         subGroupsNames = new FlxTypedGroup<Alphabet>();
         add(subGroupsNames);
@@ -79,7 +80,7 @@ class CreditsSubgroupState extends MusicBeatState
 
         changeSelection();
 		
-		#if desktop if (!FlxG.mouse.visible) FlxG.mouse.visible = true; #end
+		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
         super.create();
 
         exitButton = new ExitButton();
@@ -106,7 +107,7 @@ class CreditsSubgroupState extends MusicBeatState
 				FlxG.camera.zoom += 0.06;
 				exitState(new MainMenuState(true));
 			}
-			if (controls.ACCEPT_P || (!FlxG.mouse.overlaps(exitButton) && #if desktop !FlxG.mouse.overlaps(keypad) && #end FlxG.mouse.justPressed)) {
+			if (controls.ACCEPT_P || (!FlxG.mouse.overlaps(exitButton) && !FlxG.mouse.overlaps(keypad) && FlxG.mouse.justPressed)) {
 				selectedSomethin = true;
 				canClick = false;
 
@@ -128,19 +129,18 @@ class CreditsSubgroupState extends MusicBeatState
 		}
         curSubGroup = curSelected;
 		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
-
-		#if desktop
 		cameraId.alpha = FlxMath.lerp(0, cameraId.alpha, Math.exp(-elapsed * 2));
 
-		if (FlxG.mouse.justMoved) {
+        #if !html5
+		if (FlxG.mouse.deltaScreenX > 0 || FlxG.mouse.deltaScreenY > 0) {
 			cameraId.alpha += 0.05;
 		}
 
-		if (FlxG.mouse.overlaps(cameraId) && !keypad.playingAnimation) {
+		if ((FlxG.keys.justPressed.TAB || (FlxG.mouse.deltaScreenY > 2 && FlxG.mouse.overlaps(cameraId))) && !keypad.playingAnimation) {
 			if (keypad.opened) keypad.closeHandUnit();
 			else keypad.openHandUnit();
 		}
-		#end
+        #end
 
         super.update(elapsed);
     }
@@ -164,6 +164,7 @@ class CreditsSubgroupState extends MusicBeatState
 	}
 }
 
+#if !html5
 class Keypad extends FlxTypedGroup<FlxSprite>
 {
     public var handunit:FlxSprite;
@@ -307,13 +308,15 @@ class Keypad extends FlxTypedGroup<FlxSprite>
 
         switch (enteredCode)
         {
+            #if !html5
             case '395248':
                 CoolUtil.openMinigame();
+            #end
             case '555882':
                 trace('play secret Lua song');
             case '205777':
                 resetCode(false);
-                PlayState.SONG = Song.loadFromJson('distractible', 'distractible', PlayState.isCover);
+                PlayState.SONG = Song.loadFromJson('distractible', 'distractible', false);
                 PlayState.isStoryMode = false;
                 PlayState.storyDifficulty = 0;
 
@@ -371,3 +374,4 @@ class Keypad extends FlxTypedGroup<FlxSprite>
         if (FlxG.keys.justPressed.NUMPADNINE) onButtonClick(9);
     }
 }
+#end

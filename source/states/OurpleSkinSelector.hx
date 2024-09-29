@@ -2,16 +2,20 @@ package states;
 
 import flixel.addons.display.FlxBackdrop;
 
+/**
+ * I'm bad at menu design...
+ * Still WIP
+ */
 class OurpleSkinSelector extends MusicBeatState
 {
-    public var skinsData:Array<Dynamic> = [
+    public var skinsData:Array<Dynamic> = [ //TODO: Make this into a json file in the data folder so that everyone can add their own ourple to the mod
         ['Ourple', ['Normal', 'Staring', 'Mad']],
         ['Bloxxy', ['Normal']],
         ['Blink', ['Normal']],
         ['Cool', ['Normal']],
         ['Hrey', ['Normal']],
         ['Nuu', ['Normal', 'Mad']],
-        //['Vloo', ['Normal', 'Mad']],
+        //['Vloo', ['Normal', 'Mad']], Looks like i got cancelled for that
         ['Wink', ['Normal']]
     ];
 
@@ -48,7 +52,7 @@ class OurpleSkinSelector extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 
-        grid = createBackdrop('mainmenu/grid', 40, 40);
+        grid = createBackdrop('mainmenu/grid', 40, 40, XY);
 		grid.alpha = 0.5;
 		add(grid);
 
@@ -67,7 +71,7 @@ class OurpleSkinSelector extends MusicBeatState
         createArrow(false);
 
         createText(45, FlxG.height - 225, 400, "Press 'Enter' or 'Space' to save your selection!");
-        createText(FlxG.width - 515, FlxG.height - 225, 500, "Press 'CTRL' to enter the Character Selector Menu!");
+        createText(FlxG.width - 515, FlxG.height - 225, 500, "Press 'CTRL' to enter the Character Selector Menu!", true);
 
         selectOurpleTxt = new FlxText(FlxG.width - 450, 80, 400, 'Current Ourple: ?', 38);
         selectOurpleTxt.setFormat(Paths.font('ourple.ttf'), 38, 0xFFA04EBA, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.WHITE);
@@ -272,9 +276,9 @@ class OurpleSkinSelector extends MusicBeatState
         }
     }
 
-    private function createBackdrop(image:String, velocityX:Float = 0, velocityY:Float = 0):FlxBackdrop
+    private function createBackdrop(image:String, velocityX:Float = 0, velocityY:Float = 0, ?axes = flixel.util.FlxAxes.X):FlxBackdrop
     {
-        var backdrop = new FlxBackdrop(Paths.image(image), X);
+        var backdrop = new FlxBackdrop(Paths.image(image), axes);
         backdrop.scrollFactor.set(0, 0);
         backdrop.velocity.set(velocityX, velocityY);
         return backdrop;
@@ -296,20 +300,20 @@ class OurpleSkinSelector extends MusicBeatState
         return arrow;
     }
 
-    private function createText(x:Int, y:Int, width:Int, text:String):FlxText
+    private function createText(x:Int, y:Int, width:Int, text:String, ?reverseAngle:Bool = false):FlxText
     {
         var tutorialTxt = new FlxText(x, y, width, text, 38);
         tutorialTxt.setFormat(Paths.font('ourple.ttf'), 38, 0xFFA04EBA, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.WHITE);
         add(tutorialTxt);
-        FlxTween.tween(tutorialTxt, {angle: 10}, 2, {ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween) {
-            FlxTween.angle(tutorialTxt, 10, -10, 2, {ease: FlxEase.sineInOut, type: PINGPONG});
+        FlxTween.tween(tutorialTxt, {angle: 10 * (reverseAngle ? -1 : 1)}, 2, {ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween) {
+            FlxTween.angle(tutorialTxt, 10 * (reverseAngle ? -1 : 1), -10 * (reverseAngle ? -1 : 1), 2, {ease: FlxEase.sineInOut, type: PINGPONG});
         }});
         return tutorialTxt;
     }
 
     private function saveOurple():Void
     {
-        if (inSelectOurple) 
+        if (inSelectOurple)
             ClientPrefs.data.guy = curSelectedOurpleName;
         else
             ClientPrefs.data.ourpleData.set(curOurpleName, curSkinName);
@@ -321,12 +325,14 @@ class OurpleSkinSelector extends MusicBeatState
         add(saved);
         FlxTween.tween(saved, {y: saved.y + 75, alpha: 0}, 0.7, {ease: FlxEase.cubeOut, onComplete: function(twn:FlxTween) {
             saved.destroy();
+            saved = null;
         }});
     }
 
     override public function destroy():Void
     {
-        ClientPrefs.saveSettings();
+        saveOurple();
+        ClientPrefs.loadPrefs();
         super.destroy();
     }
 }
