@@ -121,115 +121,280 @@ class Apology extends BaseStage
         }
     }
 
-    override function stepHit()
+    override function stepHit() 
     {
         super.stepHit();
-    
-        if (curStep == 2) {
-            showSprites();
-        } else if (curStep == 12) {
+
+        if (curStep == 2) { //Adding a delay to the cutscene lets the game load the sprites. Would cause lag on transition if inserted in createPost
+            gtRoom.alpha = 1;
+            matpatIntro.alpha = 1;
+        }
+
+        if (curStep == 12) {
             matpatIntro.flipX = true;
-        } else if (curStep == 24 || curStep == 32 || curStep == 37 || curStep == 45) {
-            scaleSprites();
-        } else if (curStep == 64) {
-            cleanUpScene();
-        } else if (curStep == 182 || curStep == 304 || curStep == 464 || curStep == 592 || curStep == 854 || curStep == 1368 || curStep == 1878 || curStep == 2202 || curStep == 2454) {
-            zoomCamera(1.2);
-        } else if (curStep == 192 || curStep == 480 || curStep == 1376 || curStep == 1504 || curStep == 2016 || curStep == 2720 || curStep == 2848) {
-            zoomFlash(0.9, 1.2, 1.0);
-        } else if (curStep == 856 || curStep == 1632 || curStep == 1888 || curStep == 2208 || curStep == 2464 || curStep == 2976) {
-            zoomFlash(0.8, 1.2);
-        } else if (curStep == 330 || curStep == 334) {
-            gtLogoAnimToggle();
-        } else if (curStep == 336) {
-            fadeAndTween();
-        } else if (curStep == 352) {
-            cancelTweensAndFade();
-        } else if (curStep == 1616 || curStep == 2838 || curStep == 2960) {
-            zoomCamera(1.2);
-        } else if (curStep == 2992) {
-            hideCameras();
         }
-    }
-    
-    private function showSprites() 
-    {
-        gtRoom.alpha = 1;
-        matpatIntro.alpha = 1;
-    }
-    
-    private function scaleSprites() 
-    {
-        var scales = [1.5, 1.6, 1.7, 1.4];
-        var roomScales = [1.275, 1.325, 1.4, 1.2];
-        var index = curStep == 24 ? 0 : curStep == 32 ? 1 : curStep == 37 ? 2 : 3;
-        
-        matpatIntro.scale.set(scales[index], scales[index]);
-        matpatIntro.updateHitbox();
-        matpatIntro.screenCenter(X);
-        
-        gtRoom.scale.set(roomScales[index], roomScales[index]);
-        gtRoom.updateHitbox();
-        gtRoom.screenCenter();
-    }
-    
-    private function cleanUpScene() 
-    {
-        remove(gtRoom);
-        remove(matpatIntro);
-        camGame.flash(FlxColor.WHITE, 1.2);
-        cameraSpeed = 1000;
-    }
-    
-    private function zoomCamera(zoomValue:Float) 
-    {
-        defaultCamZoom = zoomValue;
-        camGame.zoom = zoomValue;
-    }
-    
-    private function zoomFlash(newZoom:Float, flashDuration:Float, initialZoom:Float = 0) 
-    {
-        defaultCamZoom = newZoom;
-        camGame.zoom = newZoom;
-        camGame.flash(FlxColor.WHITE, flashDuration);
-        if (initialZoom != 0) {
-            camHUD.zoom = initialZoom;
+
+        if (curStep == 24) {
+            matpatIntro.loadGraphic(Paths.image('daepicmatpatbuthap'));
+            matpatIntro.flipX = false;
+            matpatIntro.scale.set(1.5, 1.5);
+            matpatIntro.updateHitbox();
+            matpatIntro.screenCenter(X);
+            
+            gtRoom.scale.set(1.275, 1.275);
+            gtRoom.updateHitbox();
+            gtRoom.screenCenter();
         }
-    }
-    
-    private function gtLogoAnimToggle() {
-        gtLogoAnim(curStep == 330 || curStep == 336);
-    }
-    
-    private function fadeAndTween() 
-    {
-        camHUD.fade(FlxColor.BLACK, (Conductor.crochet / 1000) * 4, false, true);
-        FlxTween.tween(gtlogo, {angle: 360, x: -gtlogo.width}, (Conductor.crochet / 1000) * 4, {
-            ease: FlxEase.quadIn,
-            onComplete: function(twn:FlxTween) {
+
+        if (curStep == 32) {
+            matpatIntro.flipX = true;
+            matpatIntro.scale.set(1.6, 1.6);
+            matpatIntro.updateHitbox();
+            matpatIntro.screenCenter(X);
+
+            gtRoom.scale.set(1.325, 1.325);
+            gtRoom.updateHitbox();
+            gtRoom.screenCenter();
+        }
+
+        if (curStep == 37) {
+            matpatIntro.flipX = false;
+            matpatIntro.scale.set(1.7, 1.7);
+            matpatIntro.updateHitbox();
+            matpatIntro.screenCenter(X);
+
+            gtRoom.scale.set(1.4, 1.4);
+            gtRoom.updateHitbox();
+            gtRoom.screenCenter();
+        }
+
+        if (curStep == 45) {
+            matpatIntro.flipX = true;
+            matpatIntro.scale.set(1.4, 1.4);
+            matpatIntro.updateHitbox();
+            matpatIntro.screenCenter(X);
+
+            gtRoom.scale.set(1.2, 1.2);
+            gtRoom.updateHitbox();
+            gtRoom.screenCenter();
+        }
+
+        if (curStep == 64) {
+            remove(gtRoom);
+            remove(matpatIntro);
+            camGame.flash(FlxColor.WHITE, 1.2);
+            cameraSpeed = 1000;
+        }
+
+        if (curStep == 182) {
+            defaultCamZoom = 1.2;
+        }
+
+        if (curStep == 192) {
+            defaultCamZoom = 0.9;
+            camGame.zoom = 0.9;
+            camGame.flash(FlxColor.WHITE, 1.2);
+            cameraSpeed = 1;
+        }
+
+        if (curStep == 304) {
+            defaultCamZoom = 1.2;
+        }
+
+        if (curStep == 320) {
+            defaultCamZoom = 1;
+            camGame.zoom = 1;
+
+            camGame.zoom += 0.08;
+            camHUD.zoom += 0.08;
+            gtlogo.alpha = 1;
+            redbg.alpha = 1;
+
+            gtLogoAnim(false);
+        }
+
+        if (curStep == 324) {
+            gtLogoAnim(true);
+        }
+
+        if (curStep == 328) {
+            gtLogoAnim(false);
+        }
+
+        if (curStep == 330) {
+            gtLogoAnim(true);
+        }
+
+        if (curStep == 334) {
+            gtLogoAnim(false);
+        }
+
+        if (curStep == 336) {
+            camHUD.fade(FlxColor.BLACK, (Conductor.crochet / 1000) * 4, false, true);
+            FlxTween.tween(gtlogo, {angle: 360, x: -gtlogo.width}, (Conductor.crochet / 1000) * 4, {ease: FlxEase.quadIn, onComplete: function(twn:FlxTween) {
                 remove(gtlogo);
                 remove(redbg);
-            }
-        });
-        FlxTween.tween(camGame, {zoom: 5}, (Conductor.crochet / 1000) * 4, {ease: FlxEase.expoIn});
-        strumBye();
-    }
-    
-    private function cancelTweensAndFade() 
-    {
-        FlxTween.cancelTweensOf(camGame);
-        defaultCamZoom = 1;
-        camGame.zoom = 1;
-        camHUD.fade(FlxColor.BLACK, 0, true, true);
-        camGame.fade(FlxColor.BLACK, (Conductor.crochet / 1000) * 64, true, true);
-        camHUD.visible = false;
-        cameraSpeed = 1000;
-    }
-    
-    private function hideCameras() 
-    {
-        camGame.visible = false;
-        camHUD.visible = false;
+            }});
+            FlxTween.tween(gtlogo, {x: -gtlogo.width}, (Conductor.crochet / 1000) * 4, {ease: FlxEase.quadIn});
+            FlxTween.tween(camGame, {zoom: 5}, (Conductor.crochet / 1000) * 4, {ease: FlxEase.expoIn});
+            strumBye();
+        }
+
+        if (curStep == 352) {
+            FlxTween.cancelTweensOf(camGame);
+            defaultCamZoom = 1;
+            camGame.zoom = 1;
+            camHUD.fade(FlxColor.BLACK, 0, true, true);
+            camGame.fade(FlxColor.BLACK, (Conductor.crochet / 1000) * 64, true, true);
+            camHUD.visible = false;
+            cameraSpeed = 1000;
+        }
+
+        if (curStep == 464) {
+            defaultCamZoom = 1.2;
+            camGame.zoom = 1.2;
+        }
+
+        if (curStep == 480) {
+            strumHello();
+            defaultCamZoom = 1;
+            camGame.zoom = 1;
+            camGame.flash(FlxColor.WHITE, 1.2);
+            camHUD.visible = true;
+        }
+
+        if (curStep == 592) {
+            defaultCamZoom = 1.2;
+            camGame.zoom = 1.2;
+        }
+
+        if (curStep == 608) {
+            defaultCamZoom = 0.8;
+            camGame.zoom = 0.8;
+        }
+
+        if (curStep == 854) {
+            defaultCamZoom = 1.2;
+            camGame.zoom = 1.2;
+        }
+
+        if (curStep == 856) {
+            defaultCamZoom = 0.9;
+        }
+
+        if (curStep == 1368) {
+            defaultCamZoom = 1.2;
+            camGame.zoom = 1.2;
+        }
+
+        if (curStep == 1376) {
+            defaultCamZoom = 0.9;
+            camGame.zoom = 0.9;
+            camGame.flash(FlxColor.WHITE, 1.2);
+        }
+
+        if (curStep == 1494) {
+            defaultCamZoom = 1.2;
+        }
+        
+        if (curStep == 1504) {
+            defaultCamZoom = 0.9;
+            camGame.zoom = 0.9;
+        }
+
+        if (curStep == 1616) {
+            defaultCamZoom = 1.2;
+            camGame.zoom = 1.2;
+        }
+
+        if (curStep == 1632) {
+            defaultCamZoom = 0.8;
+            camGame.zoom = 0.8;
+        }
+
+        if (curStep == 1878) {
+            defaultCamZoom = 1.2;
+            camGame.zoom = 1.2;
+        }
+
+        if (curStep == 1888) {
+            defaultCamZoom = 0.8;
+            camGame.zoom = 0.8;
+        }
+
+        if (curStep == 2016) {
+            camGame.zoom += 0.02;
+            camHUD.zoom += 0.02;
+            camGame.flash(FlxColor.WHITE, 1.2);
+            defaultCamZoom = 1;
+            camGame.zoom = 1;
+        }
+
+        if (curStep == 2202) {
+            defaultCamZoom = 1.2;
+            camGame.zoom = 1.2;
+        }
+
+        if (curStep == 2208) {
+            defaultCamZoom = 0.8;
+            camGame.zoom = 0.8;
+            camGame.flash(FlxColor.WHITE, 1.2);
+        }
+
+        if (curStep == 2454) {
+            defaultCamZoom = 1.3;
+            camGame.zoom = 1.3;
+        }
+
+        if (curStep == 2464) {
+            defaultCamZoom = 0.8;
+            camGame.zoom = 0.8;
+            camGame.flash(FlxColor.WHITE, 1.2);
+        }
+
+        if (curStep == 2712) {
+            defaultCamZoom = 1.2;
+            camGame.zoom = 1.2;
+        }
+
+        if (curStep == 2720) {
+            defaultCamZoom = 0.9;
+            camGame.zoom = 0.9;
+            camGame.flash(FlxColor.WHITE, 1.2);
+        }
+
+        if (curStep == 2838) {
+            defaultCamZoom = 1.2;
+        }
+
+        if (curStep == 2848) {
+            defaultCamZoom = 0.9;
+            camGame.zoom = 0.9;
+            camGame.flash(FlxColor.WHITE, 1.2);
+        }
+
+        if (curStep == 2960) {
+            defaultCamZoom = 1.2;
+            camGame.zoom = 1.2;
+        }
+
+        if (curStep == 2976) {
+            defaultCamZoom = 0.8;
+            camGame.zoom = 0.8;
+            camGame.zoom += 0.04;
+            camHUD.zoom += 0.04;
+
+            PlayState.instance.camFollow.setPosition(gf.getMidpoint().x, gf.getMidpoint().y);
+            PlayState.instance.camFollow.x += gf.cameraPosition[0] + PlayState.instance.girlfriendCameraOffset[0];
+            PlayState.instance.camFollow.y += gf.cameraPosition[1] + PlayState.instance.girlfriendCameraOffset[1];
+
+            cameraSpeed = 0;
+        }
+
+        if (curStep == 2992) {
+            camGame.visible = false;
+            camHUD.visible = false;
+        }
     }
 
     override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float) 
