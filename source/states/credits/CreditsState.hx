@@ -251,13 +251,14 @@ class CreditsState extends MusicBeatState
 					['Lore Origins by'],
 					['LORAY',				'loray',			'Lore man',										 'https://www.youtube.com/@LORAY_',		'00FF55'],
 					[''],
-					['Helpers'],
+					['Contributers'],
+					['Serby', 				'serby', 			'Made ending custcene in \"I can, tho\"', 		 'https://x.com/SerbyAnimations',		'A848C6'],
+					//Add Ech0 here
 					['Whitey',				'whitey',			'Art',									 		 'https://x.com/Whitemungus',			'BBBBBB'],
 					['Who',					'who',				'Made Lore Sad Mix art cover',					 'https://x.com/agustheartist',			'919191'],
 					['Loopy',				'loopy',			'Made Skins banner art',						 'https://x.com/ExeWiglett',			'EB7A34'],
 					['TimNail',				'tim',				'Playtesting',									 'https://x.com/FnfTimothy',			'BBBBBB'],
-					['Serby', 				'serby', 			'Made ending custcene in \"I can, tho\"', 		 'https://x.com/SerbyAnimations',		'A848C6'],
-					//['bobz', 				'bobz', 			'Charted Lore AR mix',  	 'https://x.com/bobzforvever', 								'05F505'], They lowkey did basically nothing, I actually made 90% of the chart
+					//['bobz', 				'bobz', 			'Charted Lore AR mix',  	 'https://x.com/bobzforvever', 								'05F505'], They lowkey did basically nothing, I actually made ~90% of the chart
 					['Ahloof',				'ahloof',			'Playtested \"I can, tho\"',					 'https://x.com/ahhhloof',			    '01FF8D'],
 					['PinkyMichael',		'pinky',			'Helped with Distractible song / Playtested',	 'https://x.com/PinkyMichael76',		'FF63FF'],
 				];
@@ -270,9 +271,8 @@ class CreditsState extends MusicBeatState
 					['RandoHorn',			'rando',			'Made Lore Ryan Mix',								 		 'https://x.com/RandoHorn',		'AAAAAA'],
 					['PinkyMichael',		'pinky',			'Made Lore Apology Mix',								     'https://x.com/PinkyMichael76','FF63FF'],
 					['RixFX',				'rix',				'Made Lore Awesomix Mix',								     'https://x.com/rixfx_',			'AAAAAA'],
-					['KOSE',				'kose',				'Made Fever, Chronology, Detective',						 'https://www.youtube.com/@kosejumpscare','CC31C9'],
+					['KOSE',				'kose',				'Made Chronology, Detective',						 'https://www.youtube.com/@kosejumpscare','CC31C9'],
 					['smily',				'smily',			'Made Chronology',								 		 	 'https://x.com/boi_smily',		'AAAAAA'],
-					['Ari the when',	    'ari',				'Made Lore Style Mix',								 		 'https://x.com/Ari_the_when',	'AAAAAA'],
 					['EthanTheDoodler',		'ethan',			'Made Live',								 		 		 'https://x.com/D00dlerEthan',	'AAAAAA'],
 					['Clas25',				'clas',				'Made Lore Horse Mix',								 		 'https://www.youtube.com/@clasytpmv',	'AAAAAA'],
 					['Ahloof',				'ahloof',			'Made Detective',								 		 	 'https://x.com/ahhhloof',		'01FF8D'],

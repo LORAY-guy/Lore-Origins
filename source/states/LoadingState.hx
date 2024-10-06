@@ -24,6 +24,8 @@ class LoadingState extends MusicBeatState
 	// I'd recommend doing it on both actually lol
 	
 	// TO DO: Make this easier
+
+	//LORAY here... WHAT DOES THIS DO EXACTLY??
 	
 	var target:FlxState;
 	var stopMusic = false;

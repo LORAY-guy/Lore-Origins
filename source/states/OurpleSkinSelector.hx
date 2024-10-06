@@ -5,16 +5,15 @@ import flixel.addons.display.FlxBackdrop;
 /**
  * I'm bad at menu design...
  * Still WIP
+ *
+ * TODO : MAKE THIS SHIT LOOK COOL, CUZ ITS TERRIBLE
  */
 class OurpleSkinSelector extends MusicBeatState
 {
     public var skinsData:Array<Dynamic> = [ //TODO: Make this into a json file in the data folder so that everyone can add their own ourple to the mod
         ['Ourple', ['Normal', 'Staring', 'Mad']],
         ['Bloxxy', ['Normal']],
-        ['Blink', ['Normal']],
-        ['Cool', ['Normal']],
         ['Hrey', ['Normal']],
-        ['Nuu', ['Normal', 'Mad']],
         //['Vloo', ['Normal', 'Mad']], Looks like i got cancelled for that
         ['Wink', ['Normal']]
     ];

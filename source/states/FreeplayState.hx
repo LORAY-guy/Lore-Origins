@@ -561,9 +561,7 @@ class FreeplayState extends MusicBeatState
 					addWeek(
 						[
 							'lore-apology',
-							'fever',
 							'chronology', 
-							'lore-style',
 							'live', 
 							'horse-lore',
 							'detective',

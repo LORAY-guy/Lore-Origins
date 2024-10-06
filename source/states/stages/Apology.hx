@@ -435,7 +435,7 @@ class Apology extends BaseStage
         gtlogo.screenCenter();
     }
 
-    function strumBye()
+    function strumBye() 
     {
         for (i in 0...8)
         {
