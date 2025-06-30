@@ -46,12 +46,11 @@ class LoadingState extends MusicBeatState
 
 	var uselessTipsList:Array<String> = [
 		"If you don\'t hit a note, you will miss!",
-		"There is multiple songs named \'Lore\'!",
-		"If you look at the songs in Freeplay, you will find Matpat!",
+		"There are multiple songs named \'Lore\'!",
 		"If you click the \'X\' in windowed mode, you close the mod!",
 		"You can navigate the menu using the controls!",
 		"You can change your settings in settings!",
-		"If you have 0 HP, then you die!",
+		"If you have 0 HP, then you'll die!",
 		"[Insert tip with obscure lore here]",
 		"Look at the tip screen for more helpful tips!",
 		"Hit notes to increase your combo!",
@@ -67,7 +66,7 @@ class LoadingState extends MusicBeatState
 		"If you set the bar low enough, you have nowhere to go but up.",
 		"The meaning of life is to find your gift.\nThe purpose of life is to give that gift to others.",
 		"Ohh, look at that thick layer of cream, I want that thickness inside my body...",
-		"You do realize that lunch is the most important meal of the day...",
+		"You do realize that breakfast is the most important meal of the day...",
 		"Hello everybody, my name is Matpat.",
 		"WAS THAT THE LOADING OF 87?!!",
 		"Oh, Hi! welcome to my schooooooool house...",
@@ -79,7 +78,9 @@ class LoadingState extends MusicBeatState
 	override function create()
 	{
 		funkay = new FlxSprite().loadGraphic(Paths.image('loading/whitey'));
-		funkay.setGraphicSize(funkay.width * (1/6));
+		var scaleMultiplier:Float = FlxG.width / 1280;
+		var finalScale:Float = (1/6) * scaleMultiplier;
+		funkay.setGraphicSize(funkay.width * finalScale);
 		funkay.updateHitbox();
 		add(funkay);
 		funkay.antialiasing = ClientPrefs.data.antialiasing;

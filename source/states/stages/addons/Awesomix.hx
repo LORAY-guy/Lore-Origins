@@ -88,7 +88,7 @@ class Awesomix extends BaseStage
         add(finger);
 
         mapa = new FlxSprite(-375, 210);
-        mapa.frames = Paths.getSparrowAtlas('characters/matpat2');
+        mapa.frames = Paths.getSparrowAtlas('characters/matpat');
         mapa.animation.addByPrefix('lol', 'mat idle dance', 24, false, false, false);
         mapa.animation.play('lol', false, false, 0);
         mapa.scale.set(1.2, 1.2);

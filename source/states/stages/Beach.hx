@@ -80,10 +80,13 @@ class Beach extends BaseStage
         }
     }
 
-    override function stepHit() {
+    override function stepHit()
+    {
         super.stepHit();
         
         if (curStep == 3872) {
+            camGame.visible = false;
+            camHUD.visible = false;
             brubMoment = false;
         }
     }

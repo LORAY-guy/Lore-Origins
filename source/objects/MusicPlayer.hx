@@ -1,5 +1,6 @@
 package objects;
 
+#if !mobile
 import flixel.group.FlxGroup;
 import flixel.ui.FlxBar;
 import flixel.util.FlxStringUtil;
@@ -364,3 +365,4 @@ class MusicPlayer extends FlxGroup
 		return playbackRate = value;
 	}
 }
+#end

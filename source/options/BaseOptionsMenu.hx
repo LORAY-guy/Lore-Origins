@@ -32,6 +32,10 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	public var bg:FlxSprite;
 	public var exitButton:ExitButton;
 
+	#if mobile
+	private var mobileControls:MobileControls;
+	#end
+
 	public function new()
 	{
 		super();
@@ -44,7 +48,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		#end
 
 		var bg = new FlxSprite().loadGraphic(Paths.image('options/bg'));
-		bg.setGraphicSize(1280);
+		bg.setGraphicSize(FlxG.width);
 		bg.updateHitbox();
 		add(bg);
 		spikes = new FlxSpriteGroup();
@@ -90,6 +94,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 		descText = new FlxText(50, 600, 1180, "", 28);
 		descText.setFormat(Paths.font("options.ttf"), 28, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.screenCenter(X);
 		descText.scrollFactor.set();
 		add(descText);
 
@@ -127,6 +132,13 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 		exitButton = new ExitButton('options');
 		add(exitButton);
+
+		#if mobile
+        mobileControls = new MobileControls();
+        add(mobileControls);
+
+        Controls.mobileControls = mobileControls;
+        #end
 	}
 
 	public function addOption(option:OurpleOption) {
@@ -146,8 +158,6 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	var bindingText2:Alphabet;
 	override function update(elapsed:Float)
 	{
-		super.update(elapsed);
-
 		if(bindingKey)
 		{
 			bindingKeyUpdate(elapsed);
@@ -309,6 +319,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		if(nextAccept > 0) {
 			nextAccept -= 1;
 		}
+
+		super.update(elapsed);
 	}
 
 	function bindingKeyUpdate(elapsed:Float)
@@ -480,7 +492,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			curSelected = 0;
 
 		descText.text = optionsArray[curSelected].description;
-		descText.screenCenter(Y);
+		descText.screenCenter(XY);
 		descText.y += 270;
 
 		var bullShit:Int = 0;

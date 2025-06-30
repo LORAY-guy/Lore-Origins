@@ -1,6 +1,7 @@
 package states.stages;
 
-class Style extends BaseStage {
+class Style extends BaseStage
+{
     var back:FlxSprite;
     var floor:FlxSprite;
     var chairs:FlxSprite;

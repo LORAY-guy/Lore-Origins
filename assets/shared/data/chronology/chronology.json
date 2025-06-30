@@ -83,7 +83,7 @@
 				]
 			]
 		],
-		"gfVersion": "phonedb",
+		"gfVersion": "phone-hanging",
 		"notes": [
 			{
 				"sectionNotes": [],
@@ -17529,7 +17529,7 @@
 				"bpm": 200
 			}
 		],
-		"player2": "matpat2",
+		"player2": "matpat",
 		"player3": null,
 		"disableNoteRGB": true,
 		"song": "chronology",

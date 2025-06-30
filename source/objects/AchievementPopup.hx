@@ -6,6 +6,9 @@ import openfl.geom.Matrix;
 import flash.display.BitmapData;
 import flixel.graphics.FlxGraphic;
 
+/**
+ * WHY IS IT NOT RENDERING THE F*CKING IMAGE??!
+ */
 class AchievementPopup extends openfl.display.Sprite {
 	public var onFinish:Void->Void = null;
 	var alphaTween:FlxTween;
@@ -14,33 +17,47 @@ class AchievementPopup extends openfl.display.Sprite {
 	{
 		super();
 
+		var achievement:Achievement = null;
+		if(Achievements.exists(achieve)) achievement = Achievements.get(achieve);
+		else return; // Why would we reward the player if they won an achievement that doesn't exist?
+
 		// bg
 		graphics.beginFill(FlxColor.BLACK);
 		graphics.drawRoundRect(0, 0, 420, 130, 16, 16);
+		graphics.endFill();
 
 		// achievement icon
-		var graphic:FlxGraphic = Paths.image('achievements/unlocked');
-		
-		var achievement:Achievement = null;
-		if(Achievements.exists(achieve)) achievement = Achievements.get(achieve);
+		var graphic:FlxGraphic = Paths.image('achievements/' + ((achievement.name == "True Theorist") ? 'goldenAchievement' : 'unlocked'));
 
 		#if MODS_ALLOWED
 		var lastMod = Mods.currentModDirectory;
 		if(achievement != null) Mods.currentModDirectory = achievement.mod != null ? achievement.mod : '';
-		#end
 
-		#if MODS_ALLOWED
 		Mods.currentModDirectory = lastMod;
 		#end
 
+		var iconSprite = new openfl.display.Sprite();
 		var sizeX = 100;
 		var sizeY = 100;
-
 		var imgX = 15;
 		var imgY = 15;
+		
 		var image:openfl.display.BitmapData = graphic.bitmap.clone();
-		graphics.beginBitmapFill(image, new Matrix(sizeX / image.width, 0, 0, sizeY / image.height, imgX, imgY), false, false);
-		graphics.drawRect(imgX, imgY, sizeX + 10, sizeY + 10);
+		bitmaps.push(image);
+		
+		var scaleX = sizeX / image.width;
+		var scaleY = sizeY / image.height;
+		var matrix = new Matrix();
+		matrix.scale(scaleX, scaleY);
+		
+		iconSprite.graphics.beginBitmapFill(image, matrix, false, false);
+		iconSprite.graphics.drawRect(0, 0, sizeX, sizeY);
+		iconSprite.graphics.endFill();
+		
+		iconSprite.x = imgX;
+		iconSprite.y = imgY;
+		
+		addChild(iconSprite);
 
 		// achievement name/description
 		var name:String = 'Unknown';
@@ -58,7 +75,6 @@ class AchievementPopup extends openfl.display.Sprite {
 		text.setFormat(Paths.font("ourple.ttf"), 16, FlxColor.WHITE, LEFT);
 		drawTextAt(text, name, textX, textY);
 		drawTextAt(text, desc, textX, textY + 30);
-		graphics.endFill();
 
 		text.graphic.bitmap.dispose();
 		text.graphic.bitmap.disposeImage();
@@ -89,6 +105,7 @@ class AchievementPopup extends openfl.display.Sprite {
 		bitmaps.push(clonedBitmap);
 		graphics.beginBitmapFill(clonedBitmap, new Matrix(1, 0, 0, 1, textX, textY), false, false);
 		graphics.drawRect(textX, textY, text.width + textX, text.height + textY);
+		graphics.endFill();
 	}
 	
 	var lerpTime:Float = 0;

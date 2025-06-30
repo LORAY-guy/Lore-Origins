@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-1,
+				-186
+			],
+			"loop": false,
+			"fps": 30,
+			"anim": "idle",
+			"indices": [],
+			"name": "shaggy_idle"
+		},
+		{
+			"offsets": [
+				97,
+				-295
+			],
+			"loop": false,
+			"fps": 30,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "shaggy_down"
+		},
+		{
+			"offsets": [
+				-34,
+				-129
+			],
+			"loop": false,
+			"fps": 30,
+			"anim": "singUP",
+			"indices": [],
+			"name": "shaggy_up"
+		},
+		{
+			"offsets": [
+				130,
+				-173
+			],
+			"loop": false,
+			"fps": 30,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "shaggy_right"
+		},
+		{
+			"offsets": [
+				-34,
+				-235
+			],
+			"loop": false,
+			"fps": 30,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "shaggy_left"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/LORAY",
+	"position": [
+		100,
+		-160
+	],
+	"healthicon": "loray",
+	"flip_x": false,
+	"healthbar_colors": [
+		153,
+		255,
+		0
+	],
+	"camera_position": [
+		50,
+		240
+	],
+	"sing_duration": 6.1,
+	"scale": 0.95
+}

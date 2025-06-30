@@ -59,7 +59,7 @@ class MarioTennis extends BaseStage {
                         defaultCamZoom = 0.85;
                     case 1920:
                         defaultCamZoom = 0.75;
-                        cameraSpeed = 0.75;
+                        cameraSpeed = 1.75;
                     case 2432:
                         camGame.zoom = 0.85;
                         defaultCamZoom = 0.85;
@@ -81,8 +81,8 @@ class MarioTennis extends BaseStage {
                 camGame.zoom = 0.8;
                 cameraSpeed = 1000;
             case 2688:
-                camGame.zoom = 0.75;
-                defaultCamZoom = 0.75;
+                camGame.zoom = 0.85;
+                defaultCamZoom = 0.85;
                 camOther.flash(FlxColor.WHITE, 1.2);
             case 2696:
                 camHUD.visible = false;

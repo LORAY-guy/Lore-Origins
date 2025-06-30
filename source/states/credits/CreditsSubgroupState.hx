@@ -1,6 +1,8 @@
 package states.credits;
 
+#if (!html5 && !android)
 import backend.Song;
+#end
 
 import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxBackdrop;
@@ -13,7 +15,7 @@ class CreditsSubgroupState extends MusicBeatState
 
 	public var subGroupsNames:FlxTypedGroup<Alphabet>;
 
-    #if !html5
+    #if (!html5 && !android)
 	var keypad:Keypad;
 	var cameraId:FlxSprite;
     #end
@@ -33,6 +35,8 @@ class CreditsSubgroupState extends MusicBeatState
         persistentUpdate = persistentDraw = true;
 
         var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGMagenta'));
+        var scaleMultiplier:Float = FlxG.width / 1280;
+		bg.setGraphicSize(Std.int(bg.width * scaleMultiplier));
 		bg.updateHitbox();
 		bg.screenCenter();
 		add(bg);
@@ -43,7 +47,7 @@ class CreditsSubgroupState extends MusicBeatState
 		grid.alpha = 0.5;
 		add(grid);
 
-        #if !html5
+        #if (!html5 && !android)
 		keypad = new Keypad(40, FlxG.height - 500);
 		add(keypad);
 
@@ -102,12 +106,31 @@ class CreditsSubgroupState extends MusicBeatState
 			if (FlxG.mouse.wheel != 0) {
 				changeSelection(-FlxG.mouse.wheel);
 			}
+			
+			// Check for mouse hover selection
+			checkMouseSelection();
+			
 			if (controls.BACK_P) {
 				selectedSomethin = true;
 				FlxG.camera.zoom += 0.06;
 				exitState(new MainMenuState(true));
 			}
-			if (controls.ACCEPT_P || (!FlxG.mouse.overlaps(exitButton) && !FlxG.mouse.overlaps(keypad) && FlxG.mouse.justPressed)) {
+			
+			// Only confirm if mouse is over the currently selected element
+			var mouseOverSelected:Bool = false;
+			subGroupsNames.forEach(function(spr:Alphabet) {
+				if (spr.ID == curSelected) {
+					// Check if mouse overlaps any letter in the selected alphabet sprite
+					for (letter in spr.letters) {
+						if (FlxG.mouse.overlaps(letter)) {
+							mouseOverSelected = true;
+							break;
+						}
+					}
+				}
+			});
+			
+			if (controls.ACCEPT_P || (FlxG.mouse.justPressed && mouseOverSelected && !FlxG.mouse.overlaps(exitButton) #if (!html5 && !android) && !FlxG.mouse.overlaps(keypad) #end)) {
 				selectedSomethin = true;
 				canClick = false;
 
@@ -129,9 +152,9 @@ class CreditsSubgroupState extends MusicBeatState
 		}
         curSubGroup = curSelected;
 		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
-		cameraId.alpha = FlxMath.lerp(0, cameraId.alpha, Math.exp(-elapsed * 2));
 
-        #if !html5
+        #if (!html5 && !android)
+        cameraId.alpha = FlxMath.lerp(0, cameraId.alpha, Math.exp(-elapsed * 2));
 		if (FlxG.mouse.deltaScreenX > 0 || FlxG.mouse.deltaScreenY > 0) {
 			cameraId.alpha += 0.05;
 		}
@@ -144,6 +167,24 @@ class CreditsSubgroupState extends MusicBeatState
 
         super.update(elapsed);
     }
+	
+	function checkMouseSelection()
+	{
+		subGroupsNames.forEach(function(spr:Alphabet) {
+			// Check if mouse overlaps any letter in the alphabet sprite
+			var mouseOverAlphabet:Bool = false;
+			for (letter in spr.letters) {
+				if (FlxG.mouse.overlaps(letter)) {
+					mouseOverAlphabet = true;
+					break;
+				}
+			}
+			
+			if (mouseOverAlphabet && spr.ID != curSelected) {
+				changeSelection(spr.ID - curSelected);
+			}
+		});
+	}
 
     function changeSelection(change:Int = 0) 
 	{
@@ -164,7 +205,7 @@ class CreditsSubgroupState extends MusicBeatState
 	}
 }
 
-#if !html5
+#if (!html5 && !android)
 class Keypad extends FlxTypedGroup<FlxSprite>
 {
     public var handunit:FlxSprite;
@@ -195,7 +236,7 @@ class Keypad extends FlxTypedGroup<FlxSprite>
         super();
         startX = x;
         startY = y;
-        buttonSize = 50;
+        buttonSize = 48;
         padding = 10;
 
         createHandunit();
@@ -267,7 +308,7 @@ class Keypad extends FlxTypedGroup<FlxSprite>
                 buttonY = startY + Math.floor(i / 3) * (buttonSize + padding);
             }
 
-            var btn:FlxSprite = new FlxSprite(buttonX + 200, buttonY + 165).loadGraphic(Paths.image('credits/keypad/' + buttonImages[i]));
+            var btn:FlxSprite = new FlxSprite(buttonX + 206, buttonY + 168).loadGraphic(Paths.image('credits/keypad/' + buttonImages[i]));
             btn.setGraphicSize(buttonSize, buttonSize);
             btn.updateHitbox();
             btn.ID = i;
@@ -299,6 +340,11 @@ class Keypad extends FlxTypedGroup<FlxSprite>
 
     private function onButtonClick(number:Int):Void 
     {
+        var credits:CreditsSubgroupState = cast FlxG.state;
+
+        if (credits.selectedSomethin || !credits.canClick)
+            return;
+
         if (enteredCode.length < dotSprites.length) {
             enteredCode += Std.string(number);
             dotSprites[enteredCode.length - 1].alpha = 1;
@@ -313,14 +359,28 @@ class Keypad extends FlxTypedGroup<FlxSprite>
                 CoolUtil.openMinigame();
             #end
             case '555882':
-                trace('play secret Lua song');
+                resetCode(false);
+                PlayState.SONG = Song.loadFromJson('lua', 'lua', false);
+                PlayState.isStoryMode = false;
+                PlayState.isCover = false;
+                PlayState.storyDifficulty = 0;
+
+                FlxG.camera.zoom += 0.06;
+                FlxG.mouse.visible = false;
+                FlxTween.tween(FlxG.camera, {y: Lib.application.window.height}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
+                    LoadingState.loadAndSwitchState(new PlayState());
+                }});
+
+                FlxG.sound.music.fadeOut(1.2, 0, function(twn:FlxTween) {FlxG.sound.music.stop();});
             case '205777':
                 resetCode(false);
                 PlayState.SONG = Song.loadFromJson('distractible', 'distractible', false);
                 PlayState.isStoryMode = false;
+                PlayState.isCover = false;
                 PlayState.storyDifficulty = 0;
 
                 FlxG.camera.zoom += 0.06;
+                FlxG.mouse.visible = false;
                 FlxTween.tween(FlxG.camera, {y: Lib.application.window.height}, 1.2, {ease: FlxEase.expoInOut, onComplete: function(twn:FlxTween) {
                     LoadingState.loadAndSwitchState(new PlayState());
                 }});
@@ -362,6 +422,11 @@ class Keypad extends FlxTypedGroup<FlxSprite>
 
     public function updateInput():Void
     {
+        var credits:CreditsSubgroupState = cast FlxG.state;
+
+        if (credits.selectedSomethin)
+            return;
+
         if (FlxG.keys.justPressed.NUMPADZERO) onButtonClick(0);
         if (FlxG.keys.justPressed.NUMPADONE) onButtonClick(1);
         if (FlxG.keys.justPressed.NUMPADTWO) onButtonClick(2);

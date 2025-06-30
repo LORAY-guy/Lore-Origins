@@ -9,7 +9,7 @@ import flixel.addons.transition.FlxTransitionableState;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Controls', 'Adjust Delay', 'Graphics', 'Visuals and UI', 'Gameplay', 'Lore Origins Options'];
+	var options:Array<String> = [#if !mobile 'Controls', #end 'Adjust Delay', 'Graphics', 'Visuals and UI', 'Gameplay', 'Lore Origins Options'];
 	private var grpOptions:FlxTypedGroup<FlxText>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -17,6 +17,10 @@ class OptionsState extends MusicBeatState
 
 	public static var spikes:FlxSpriteGroup;
 	public static var exitButton:ExitButton;
+
+	#if mobile
+	public static var mobileControls:MobileControls;
+	#end
 	
 	function openSelectedSubstate(label:String) {
 		switch(label) {
@@ -46,7 +50,7 @@ class OptionsState extends MusicBeatState
 		#end
 
 		var bg = new FlxSprite().loadGraphic(Paths.image('options/bg'));
-		bg.setGraphicSize(1280);
+		bg.setGraphicSize(FlxG.width);
 		bg.updateHitbox();
 		add(bg);
 
@@ -94,17 +98,27 @@ class OptionsState extends MusicBeatState
 		exitButton = (onPlayState ? new ExitButton('playstate') : new ExitButton());
 		add(exitButton);
 
+		#if mobile
+        mobileControls = new MobileControls();
+        add(mobileControls);
+
+        Controls.mobileControls = mobileControls;
+        #end
+
 		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
 	}
 
-	override function closeSubState() {
+	override public function closeSubState():Void
+	{
 		super.closeSubState();
+		#if mobile
+        Controls.mobileControls = mobileControls;
+        #end
 		ClientPrefs.saveSettings();
 	}
 
-	override function update(elapsed:Float) {
-		super.update(elapsed);
-
+	override function update(elapsed:Float)
+	{
 		if (controls.UI_UP_P) {
 			changeSelection(-1);
 		}
@@ -122,6 +136,8 @@ class OptionsState extends MusicBeatState
 			else exitState(new MainMenuState(true));
 		}
 		else if (controls.ACCEPT_P) openSelectedSubstate(options[curSelected]);
+
+		super.update(elapsed);
 	}
 	
 	function changeSelection(change:Int = 0) {
@@ -145,6 +161,9 @@ class OptionsState extends MusicBeatState
 	override function destroy()
 	{
 		ClientPrefs.loadPrefs();
+		#if mobile
+        Controls.mobileControls = null;
+        #end
 		super.destroy();
 	}
 }

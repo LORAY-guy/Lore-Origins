@@ -2,7 +2,9 @@ package substates;
 
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.util.FlxStringUtil;
+import flixel.math.FlxRect;
 
+import states.credits.CreditsSubgroupState;
 import states.FreeplayState;
 import options.OptionsState;
 
@@ -21,6 +23,15 @@ class PauseSubState extends MusicBeatSubstate
 	var curTime:Float = Math.max(0, Conductor.songPosition);
 
 	var pauseChars:Array<String> = ['dismantle', 'dismantle1', 'guy1', 'lore'];
+
+	var mouseWasVisible:Bool = FlxG.mouse.visible;
+	
+	// Mouse selection variables
+	public var usingMouse:Bool = false;
+	public var canClick:Bool = true;
+
+	// Custom bounds for each menu item
+	var menuItemBounds:Array<FlxRect> = [];
 
 	public static var songName:String = null;
 
@@ -79,13 +90,13 @@ class PauseSubState extends MusicBeatSubstate
 		pmbg.scrollFactor.set();
 		add(pmbg);
 
-		var levelInfo:FlxText = new FlxText(20, 15, 0, "Lore", 32);
+		var levelInfo:FlxText = new FlxText(20, 15, 0, (PlayState.isCover ? 'Lore' : CoolUtil.removeSymbol(PlayState.SONG.song, "lore-")), 32);
 		levelInfo.scrollFactor.set();
 		levelInfo.setFormat(Paths.font("ourple.ttf"), 32);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
-		var blueballedTxt:FlxText = new FlxText(20, 15 + 32, 0, "Lored: " + PlayState.deathCounter, 32);
+		var blueballedTxt:FlxText = new FlxText(20, 15 + 32, 0, ((PlayState.SONG.song.toLowerCase() == 'lua') ? "Blueballed: " : "Lored: ") + PlayState.deathCounter, 32);
 		blueballedTxt.scrollFactor.set();
 		blueballedTxt.setFormat(Paths.font('ourple.ttf'), 32);
 		blueballedTxt.updateHitbox();
@@ -125,6 +136,7 @@ class PauseSubState extends MusicBeatSubstate
 		regenMenu();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
+		FlxG.mouse.visible = true;
 		super.create();
 	}
 	
@@ -147,13 +159,44 @@ class PauseSubState extends MusicBeatSubstate
 
 		super.update(elapsed);
 
-		if(controls.BACK_P)
+		if(controls.BACK_P && cantUnpause <= 0.0)
 		{
 			close();
 			return;
 		}
 
 		updateSkipTextStuff();
+
+		if (FlxG.mouse.deltaScreenX > 2 || FlxG.mouse.deltaScreenY > 2) FlxG.mouse.visible = true;
+
+		if (controls.UI_UP || controls.UI_DOWN) {
+			usingMouse = false;
+			FlxG.mouse.visible = false;
+		} else {
+			usingMouse = (checkMouseOverBounds() && FlxG.mouse.visible);
+		}
+
+		if (usingMouse && canClick)
+		{
+			for (i in 0...menuItemBounds.length)
+			{
+				var bounds = menuItemBounds[i];
+				if (bounds != null && FlxG.mouse.x >= bounds.x && FlxG.mouse.x <= bounds.right && 
+					FlxG.mouse.y >= bounds.y && FlxG.mouse.y <= bounds.bottom)
+				{
+					if (grpMenuShit.members[i].animation.curAnim.name != 'selected') {
+						changeSelection(i - curSelected);
+					}
+
+					if (FlxG.mouse.justPressed && cantUnpause <= 0)
+					{
+						canClick = false;
+						selectItem();
+					}
+					break;
+				}
+			}
+		}
 
 		if (controls.UI_UP_P)
 		{
@@ -197,69 +240,115 @@ class PauseSubState extends MusicBeatSubstate
 
 		if (controls.ACCEPT_P && (cantUnpause <= 0 || !controls.controllerMode))
 		{
-			switch (daSelected)
-			{
-				case "resume":
-					close();
-				case 'Toggle Practice Mode':
-					PlayState.instance.practiceMode = !PlayState.instance.practiceMode;
-					PlayState.changedDifficulty = true;
-					practiceText.visible = PlayState.instance.practiceMode;
-				case "restart":
-					restartSong();
-				case "Leave Charting Mode":
-					PlayState.chartingMode = false;
-					restartSong();
-				case 'Skip Time':
-					if(curTime < Conductor.songPosition)
-					{
-						PlayState.startOnTime = curTime;
-						restartSong(true);
-					}
-					else
-					{
-						if (curTime != Conductor.songPosition)
-						{
-							PlayState.instance.clearNotesBefore(curTime);
-							PlayState.instance.setSongTime(curTime);
-						}
-						close();
-					}
-				case 'End Song':
-					close();
-					PlayState.instance.notes.clear();
-					PlayState.instance.unspawnNotes = [];
-					PlayState.instance.finishSong(true);
-				case 'Toggle Botplay':
-					PlayState.instance.cpuControlled = !PlayState.instance.cpuControlled;
-					PlayState.changedDifficulty = true;
-					PlayState.instance.botplayTxt.visible = PlayState.instance.cpuControlled;
-					PlayState.instance.botplayTxt.alpha = 1;
-					PlayState.instance.botplaySine = 0;
-				case 'options':
-					PlayState.instance.paused = true; // For lua
-					PlayState.instance.vocals.volume = 0;
-					MusicBeatState.switchState(new OptionsState());
-					if(ClientPrefs.data.pauseMusic != 'None')
-					{
-						FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic)), pauseMusic.volume);
-						FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.8);
-						FlxG.sound.music.time = pauseMusic.time;
-					}
-					OptionsState.onPlayState = true;
-				case "exit":
-					#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
-					PlayState.deathCounter = 0;
-					PlayState.seenCutscene = false;
+			selectItem();
+		}
+	}
 
-					Mods.loadTopMod();
-					MusicBeatState.switchState(new FreeplayState(true));
+	function checkMouseOverBounds():Bool
+	{
+		for (bounds in menuItemBounds)
+		{
+			if (bounds != null && FlxG.mouse.x >= bounds.x && FlxG.mouse.x <= bounds.right && 
+				FlxG.mouse.y >= bounds.y && FlxG.mouse.y <= bounds.bottom)
+				return true;
+		}
+		return false;
+	}
 
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
-					PlayState.changedDifficulty = false;
-					PlayState.chartingMode = false;
-					FlxG.camera.followLerp = 0;
-			}
+	function createCustomBounds(sprite:FlxSprite, itemName:String):FlxRect
+	{
+		var bounds = new FlxRect();
+
+		switch (itemName.toLowerCase())
+		{
+			case 'resume':
+				bounds.set(-170, -32, 288, 248);
+				
+			case 'options':
+				bounds.set(-155, 225, 312, 158);
+				
+			case 'restart':
+				bounds.set(-140, 420, 330, 137);
+				
+			case 'exit':
+				bounds.set(-130, 565, 341, 131);
+		}
+		return bounds;
+	}
+
+	function selectItem():Void
+	{
+		var daSelected:String = menuItems[curSelected];
+		switch (daSelected)
+		{
+			case "resume":
+				FlxG.mouse.visible = mouseWasVisible;
+				close();
+			case 'Toggle Practice Mode':
+				PlayState.instance.practiceMode = !PlayState.instance.practiceMode;
+				PlayState.changedDifficulty = true;
+				practiceText.visible = PlayState.instance.practiceMode;
+			case "restart":
+				restartSong();
+			case "Leave Charting Mode":
+				PlayState.chartingMode = false;
+				restartSong();
+			case 'Skip Time':
+				if(curTime < Conductor.songPosition)
+				{
+					PlayState.startOnTime = curTime;
+					restartSong(true);
+				}
+				else
+				{
+					if (curTime != Conductor.songPosition)
+					{
+						PlayState.instance.clearNotesBefore(curTime);
+						PlayState.instance.setSongTime(curTime);
+					}
+					close();
+				}
+			case 'End Song':
+				close();
+				FlxG.mouse.visible = false;
+				PlayState.instance.notes.clear();
+				PlayState.instance.unspawnNotes = [];
+				PlayState.instance.finishSong(true);
+			case 'Toggle Botplay':
+				PlayState.instance.cpuControlled = !PlayState.instance.cpuControlled;
+				PlayState.changedDifficulty = true;
+				PlayState.instance.botplayTxt.visible = PlayState.instance.cpuControlled;
+				PlayState.instance.botplayTxt.alpha = 1;
+				PlayState.instance.botplaySine = 0;
+			case 'options':
+				PlayState.instance.paused = true; // For lua
+				PlayState.instance.vocals.volume = 0;
+				FlxG.mouse.visible = true;
+				MusicBeatState.switchState(new OptionsState());
+				if(ClientPrefs.data.pauseMusic != 'None')
+				{
+					FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic)), pauseMusic.volume);
+					FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.8);
+					FlxG.sound.music.time = pauseMusic.time;
+				}
+				OptionsState.onPlayState = true;
+			case "exit":
+				#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
+				PlayState.deathCounter = 0;
+				PlayState.seenCutscene = false;
+
+				switch (PlayState.SONG.song.toLowerCase()) {
+					case 'distractible', 'lua':
+						MusicBeatState.switchState(new CreditsSubgroupState(true));
+					default:
+						Mods.loadTopMod();
+						MusicBeatState.switchState(new FreeplayState(true));		
+				}
+
+				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				PlayState.changedDifficulty = false;
+				PlayState.chartingMode = false;
+				FlxG.camera.followLerp = 0;
 		}
 	}
 
@@ -286,19 +375,28 @@ class PauseSubState extends MusicBeatSubstate
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
 		}
+		FlxG.mouse.visible = false;
 		MusicBeatState.resetState();
 	}
 
 	override function destroy()
 	{
 		pauseMusic.destroy();
+		
+		// Clean up bounds array
+		for (bounds in menuItemBounds)
+		{
+			if (bounds != null) bounds.destroy();
+		}
+		menuItemBounds = [];
 
 		super.destroy();
 	}
 
 	function changeSelection(change:Int = 0):Void
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		if (change != 0)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		grpMenuShit.members[curSelected].animation.play('idle');
 		grpMenuShit.members[curSelected].updateHitbox();
@@ -321,6 +419,13 @@ class PauseSubState extends MusicBeatSubstate
 			grpMenuShit.remove(spr, true);
 			spr.destroy();
 		}
+
+		for (bounds in menuItemBounds)
+		{
+			if (bounds != null)
+				bounds.destroy();
+		}
+		menuItemBounds = [];
 
 		for (i in 0...menuItems.length) {
 			var menuItem:FlxSprite = new FlxSprite(50, 1000);
@@ -352,7 +457,18 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			spr.alpha = 0;
 			FlxTween.tween(spr, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut, startDelay: spr.ID * 0.1});
-			FlxTween.tween(spr, {y: -25}, 0.4, {ease: FlxEase.backOut, startDelay: spr.ID * 0.1});
+			FlxTween.tween(spr, {y: -25}, 0.4, {ease: FlxEase.backOut, startDelay: spr.ID * 0.1, 
+				onComplete: function(tween:FlxTween) {
+					if (spr.ID < menuItemBounds.length) {
+						if (menuItemBounds[spr.ID] != null) menuItemBounds[spr.ID].destroy();
+					}
+					// Ensure the bounds array is large enough
+					while (menuItemBounds.length <= spr.ID) {
+						menuItemBounds.push(null);
+					}
+					menuItemBounds[spr.ID] = createCustomBounds(spr, menuItems[spr.ID]);
+				}
+			});
 		});
 
 		curSelected = 0;

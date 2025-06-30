@@ -84,7 +84,8 @@ class Field extends BaseStage {
         super.create();
     }
 
-    override function createPost() {
+    override function createPost()
+    {
         gf.visible = false;
 
         super.createPost();

@@ -5,7 +5,6 @@ import openfl.display.DisplayObject;
 import openfl.display.Stage;
 import openfl.display.StageDisplayState;
 import openfl.net.URLRequest;
-import flixel.effects.postprocess.PostProcess;
 import flixel.math.FlxMath;
 import flixel.math.FlxRandom;
 import flixel.math.FlxRect;
@@ -39,7 +38,7 @@ import flixel.input.mouse.FlxMouse;
 #if FLX_GAMEPAD
 import flixel.input.gamepad.FlxGamepadManager;
 #end
-#if android
+#if mobile
 import flixel.input.android.FlxAndroidKeys;
 #end
 #if FLX_ACCELEROMETER
@@ -247,7 +246,7 @@ class FlxG
 	public static var gamepads(default, null):FlxGamepadManager;
 	#end
 
-	#if android
+	#if mobile
 	/**
 	 * Useful for tracking Back, Home buttons etc on Android devices.
 	 */
@@ -512,62 +511,6 @@ class FlxG
 		return child;
 	}
 
-	public static function addPostProcess(postProcess:PostProcess):PostProcess
-	{
-		#if FLX_POST_PROCESS
-		if (OpenGLView.isSupported)
-		{
-			var postProcesses = game.postProcesses;
-
-			// chaining
-			var length = postProcesses.length;
-			if (length > 0)
-			{
-				postProcesses[length - 1].to = postProcess;
-			}
-
-			game.postProcessLayer.addChild(postProcess);
-			postProcesses.push(postProcess);
-		}
-		else
-		{
-			FlxG.log.error("Shaders are not supported on this platform.");
-		}
-		#end
-
-		return postProcess;
-	}
-
-	public static function removePostProcess(postProcess:PostProcess):Void
-	{
-		#if FLX_POST_PROCESS
-		var postProcesses = game.postProcesses;
-		if (postProcesses.remove(postProcess))
-		{
-			chainPostProcesses();
-			postProcess.to = null;
-
-			FlxDestroyUtil.removeChild(game.postProcessLayer, postProcess);
-		}
-		#end
-	}
-
-	#if FLX_POST_PROCESS
-	static function chainPostProcesses():Void
-	{
-		var postProcesses = game.postProcesses;
-
-		if (postProcesses.length > 0)
-		{
-			for (i in 0...postProcesses.length - 1)
-			{
-				postProcesses[i].to = postProcesses[i + 1];
-			}
-			postProcesses.last().to = null;
-		}
-	}
-	#end
-
 	/**
 	 * Opens a web page, by default a new tab or window. If the URL does not
 	 * already start with `"http://"` or `"https://"`, it gets added automatically.
@@ -622,7 +565,7 @@ class FlxG
 		gamepads = inputs.add(new FlxGamepadManager());
 		#end
 
-		#if android
+		#if mobile
 		android = inputs.add(new FlxAndroidKeys());
 		#end
 

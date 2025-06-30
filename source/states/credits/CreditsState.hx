@@ -41,6 +41,9 @@ class CreditsState extends MusicBeatState
 
 		persistentUpdate = true;
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		var scaleMultiplier:Float = FlxG.width / 1280;
+		bg.setGraphicSize(Std.int(bg.width * scaleMultiplier));
+		bg.updateHitbox();
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 		bg.screenCenter();
@@ -53,7 +56,7 @@ class CreditsState extends MusicBeatState
 		var verttabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/verttabox2'), Y, 0, 0);
 		verttabox2.scrollFactor.set(0, 0);
 		verttabox2.velocity.set(0, -40);
-		verttabox2.x = 1195;
+		verttabox2.x = FlxG.width - verttabox2.width;
 		add(verttabox2);
 		
 		grpOptions = new FlxTypedGroup<Alphabet>();
@@ -76,6 +79,7 @@ class CreditsState extends MusicBeatState
 		descText.setFormat(Paths.font("ourple.ttf"), 36, FlxColor.WHITE, CENTER/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
 		descText.scrollFactor.set();
 		//descText.borderSize = 2.4;
+		descText.screenCenter(X);
 		descBox.sprTracker = descText;
 		add(descText);
 
@@ -228,6 +232,7 @@ class CreditsState extends MusicBeatState
 		}
 
 		descText.text = creditsStuff[curSelected][2];
+		descText.screenCenter(X);
 		descText.y = FlxG.height - descText.height + offsetThing - 60;
 
 		if(moveTween != null) moveTween.cancel();

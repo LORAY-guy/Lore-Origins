@@ -46,18 +46,25 @@ class FreeplayState extends MusicBeatState
 	var missingTextBG:FlxSprite;
 	var missingText:FlxText;
 
+	#if !mobile
 	var bottomString:String;
 	var bottomText:FlxText;
 	var bottomBG:FlxSprite;
 
 	var player:MusicPlayer;
+	#end
+
 	var exitButton:ExitButton;
+
+	#if mobile
+	public var mobileControls:MobileControls;
+	#end
 
 	override function create()
 	{
 		Paths.clearUnusedMemory();
 
-		createOurpleWeek(); //Added the week creation as a function for better readability
+		createOurpleWeek();
 		
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
@@ -95,10 +102,13 @@ class FreeplayState extends MusicBeatState
 		Mods.loadTopMod();
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		var scaleMultiplier:Float = FlxG.width / 1280;
+		bg.setGraphicSize(Std.int(bg.width * scaleMultiplier));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
-		bg.color = (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase() == 'originals' ? 0xff00c3ff : 0xff00ff00);
-		add(bg);
+		bg.color = (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase() == 'originals' ? 0xff00c3ff : 0xffa357ab);
+		bg.updateHitbox();
 		bg.screenCenter();
+		add(bg);
 
 		var grid:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/grid'));
 		grid.scrollFactor.set(0, 0);
@@ -170,7 +180,7 @@ class FreeplayState extends MusicBeatState
 		intendedColor = bg.color;
 		lerpSelected = curSelected;
 
-		randomizer = new FlxText(690, 200, 550, "PRESS \'R\' OR CLICK ON ME TO PLAY A RANDOM LORE", 36);
+		randomizer = new FlxText(FlxG.width - 590, 200, 550, "PRESS \'R\' OR CLICK ON ME TO PLAY A RANDOM LORE", 36);
 		randomizer.setFormat(Paths.font("ourple.ttf"), 36, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		randomizer.borderSize = 1.25;
 		randomizer.antialiasing = false;
@@ -179,6 +189,7 @@ class FreeplayState extends MusicBeatState
 			FlxTween.angle(randomizer, 10, -10, 2, {ease: FlxEase.sineInOut, type: PINGPONG});
 		}});
 
+		#if !mobile
 		bottomBG = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
 		bottomBG.alpha = 0.6;
 		add(bottomBG);
@@ -190,24 +201,42 @@ class FreeplayState extends MusicBeatState
 		bottomText.setFormat(Paths.font("ourple.ttf"), size, FlxColor.WHITE, CENTER);
 		bottomText.scrollFactor.set();
 		add(bottomText);
-		
+
 		player = new MusicPlayer(this);
 		add(player);
+		#end
 		
 		changeSelection();
 		updateTexts();
 		
-		#if desktop if (!FlxG.mouse.visible) FlxG.mouse.visible = true; #end
+		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
 		super.create();
 
 		exitButton = new ExitButton('freeplayselect');
 		add(exitButton);
+
+		#if mobile
+        mobileControls = new MobileControls(true);
+        add(mobileControls);
+
+        Controls.mobileControls = mobileControls;
+		#end
 	}
 
-	override function closeSubState() {
+	override public function closeSubState()
+	{
 		changeSelection(0, false);
 		persistentUpdate = true;
+		if (exitButton != null)
+			exitButton.active = true;
 		super.closeSubState();
+	}
+
+	override public function openSubState(SubState:flixel.FlxSubState):Void
+	{
+		if (exitButton != null)
+			exitButton.active = false;
+		super.openSubState(SubState);
 	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
@@ -253,8 +282,10 @@ class FreeplayState extends MusicBeatState
 
 		if (!inSubstate)
 		{
+			#if !mobile
 			if (!player.playingMusic)
 			{
+			#end
 				scoreText.text = 'PERSONAL BEST: ' + lerpScore + ' (' + ratingSplit.join('.') + '%)';
 				positionHighscore();
 				
@@ -305,10 +336,13 @@ class FreeplayState extends MusicBeatState
 						changeSelection(-shiftMult * FlxG.mouse.wheel, false);
 					}
 				}
+			#if !mobile
 			}
+			#end
 	
 			if (controls.BACK_P)
 			{
+				#if !mobile
 				if (player.playingMusic)
 				{
 					FlxG.sound.music.stop();
@@ -324,13 +358,17 @@ class FreeplayState extends MusicBeatState
 				}
 				else 
 				{
+				#end
 					if(colorTween != null) {
 						colorTween.cancel();
 					}
 					exitState(new states.FreeplaySelectState(true));
+				#if !mobile
 				}
+				#end
 			}
 	
+			#if !mobile
 			if(FlxG.keys.justPressed.CONTROL && !player.playingMusic)
 			{
 				inSubstate = true;
@@ -378,8 +416,9 @@ class FreeplayState extends MusicBeatState
 					player.pauseOrResume(player.paused);
 				}
 			}
-	
-			else if ((!player.playingMusic) && ((FlxG.keys.justPressed.R) || (usingMouse && canClick && FlxG.mouse.justPressed && FlxG.mouse.overlaps(randomizer))))
+			#end
+
+			else if (#if !mobile !player.playingMusic && #end ((FlxG.keys.justPressed.R) || (usingMouse && canClick && FlxG.mouse.justPressed && FlxG.mouse.overlaps(randomizer))))
 			{
 				canClick = false;
 				persistentUpdate = false;
@@ -402,7 +441,7 @@ class FreeplayState extends MusicBeatState
 				destroyFreeplayVocals();
 			}
 	
-			else if (!player.playingMusic && !FlxG.mouse.overlaps(exitButton) && ((controls.ACCEPT_P) || (usingMouse && canClick && FlxG.mouse.justPressed && ((FlxG.mouse.overlaps(grpSongs) || FlxG.mouse.overlaps(iconArray))))))
+			else if (#if !mobile !player.playingMusic && #end !FlxG.mouse.overlaps(exitButton) && ((controls.ACCEPT_P) || (usingMouse && canClick && FlxG.mouse.justPressed && ((FlxG.mouse.overlaps(grpSongs) || FlxG.mouse.overlaps(iconArray))))))
 			{
 				var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
 
@@ -414,7 +453,7 @@ class FreeplayState extends MusicBeatState
 					processSong(songLowercase);
 				}
 			}
-			else if(controls.RESET_P && !player.playingMusic)
+			else if(controls.RESET_P #if !mobile && !player.playingMusic #end)
 			{
 				inSubstate = true;
 				openSubState(new ResetScoreSubState(songs[curSelected].songName, 1, songs[curSelected].songCharacter));
@@ -422,12 +461,14 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
+		randomizer.color = FlxG.mouse.overlaps(randomizer) ? 0xFFa357ab : 0xFFFFFFFF;
 		updateTexts(elapsed);
 		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
 		super.update(elapsed);
 	}
 
-	public static function destroyFreeplayVocals() {
+	public static function destroyFreeplayVocals()
+	{
 		if(vocals != null) {
 			vocals.stop();
 			vocals.destroy();
@@ -437,8 +478,10 @@ class FreeplayState extends MusicBeatState
 
 	function changeSelection(change:Int = 0, playSound:Bool = true)
 	{
+		#if !mobile
 		if (player.playingMusic)
 			return;
+		#end
 
 		if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
@@ -570,7 +613,7 @@ class FreeplayState extends MusicBeatState
 							'repugnant'
 						], 
 						0, 
-						0xFF00ff00);
+						0xffa357ab);
 				}
 				PlayState.isCover = true;
 			case 'originals':
@@ -613,8 +656,11 @@ class FreeplayState extends MusicBeatState
 
 	override function destroy():Void
 	{
-		super.destroy();
+		#if mobile
+		Controls.mobileControls = null;
+		#end
 
+		super.destroy();
 		FlxG.autoPause = ClientPrefs.data.autoPause;
 	}
 }
@@ -647,7 +693,11 @@ class SelectSunkDifficulty extends MusicBeatSubstate //Basically copied the Rese
 	var markText:Alphabet;
 	var captainText:Alphabet;
 	var freeplay:FreeplayState = cast FlxG.state;
-	var enterReleased:Bool = false; //Would just always be false cuz it would instantly select on open
+	var enterReleased:Bool = #if mobile true #else false #end; //Would just always be false cuz it would instantly select on open
+
+	#if mobile
+	private var mobileControls:MobileControls;
+	#end
 
 	public function new()
 	{
@@ -673,6 +723,15 @@ class SelectSunkDifficulty extends MusicBeatSubstate //Basically copied the Rese
 		captainText.screenCenter(X);
 		captainText.x += 215;
 		add(captainText);
+
+		add(new ExitButton('freeplay'));
+
+		#if mobile
+		mobileControls = new MobileControls(true);
+		add(mobileControls);
+
+		Controls.mobileControls = mobileControls;
+		#end
 
 		updateOptions();
 	}
@@ -723,5 +782,16 @@ class SelectSunkDifficulty extends MusicBeatSubstate //Basically copied the Rese
 		markText.scale.set(scales[confirmInt], scales[confirmInt]);
 		captainText.alpha = alphas[1 - confirmInt];
 		captainText.scale.set(scales[1 - confirmInt], scales[1 - confirmInt]);
+	}
+
+	override public function close():Void
+	{
+		#if mobile
+		if (freeplay.mobileControls != null)
+			Controls.mobileControls = freeplay.mobileControls;
+		else
+			Controls.mobileControls = null;
+		#end
+		super.close();
 	}
 }

@@ -1,7 +1,7 @@
 {
 	"song": {
 		"player1": "playguy",
-		"player2": "matpat2",
+		"player2": "matpat",
 		"events": [
 			[
 				182608.695652174,
@@ -13607,7 +13607,7 @@
 				"bpm": 230
 			}
 		],
-		"gfVersion": "phonedb",
+		"gfVersion": "phone-hanging",
 		"disableNoteRGB": true,
 		"splashSkin": "noteSplashes",
 		"song": "live",

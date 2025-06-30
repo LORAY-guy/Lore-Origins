@@ -77,11 +77,11 @@ class AchievementsMenuState extends MusicBeatState
 			spr.scrollFactor.x = 0;
 			spr.ID = grpOptions.members.length;
 			spr.screenCenter(X);
-			if (spr.ID != 12) 
-				spr.x += 180 * ((grpOptions.members.length % MAX_PER_ROW) - MAX_PER_ROW/2) + spr.width / 2 + 15;
-			else {
-				spr.x = ((grpOptions.width + 60) - (grpOptions.width / 4)) - 12.5;
+			spr.x += 180 * ((grpOptions.members.length % MAX_PER_ROW) - MAX_PER_ROW/2) + spr.width / 2 + 15;
+			if (spr.ID == 12) {
 				spr.y -= 10;
+				if (option.unlocked)
+					spr.loadGraphic(Paths.image('achievements/goldenAchievement'));
 			}
 			spr.alpha = 0.6;
 			grpOptions.add(spr);
@@ -93,6 +93,9 @@ class AchievementsMenuState extends MusicBeatState
 		box.scrollFactor.x = 0;
 		box.screenCenter(X);
 		add(box);
+		// Special final achievement (basically unlocks when you got all the other achievements, cuz its cool)
+		if (grpOptions.members[12] != null) // Let's keep some good practice up in here.
+			grpOptions.members[12].x = (box.x + box.width / 2) - (grpOptions.members[12].width / 2);
 		add(grpOptions);
 
 		if (unlockedAchievements == options.length)
@@ -178,7 +181,13 @@ class AchievementsMenuState extends MusicBeatState
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.ID, Obj2.ID);
 
 	var goingBack:Bool = false;
-	override function update(elapsed:Float) {
+	override function update(elapsed:Float)
+	{
+		if (!goingBack && controls.BACK) {
+			exitState(new MainMenuState(true));
+			goingBack = true;
+		}
+
 		if(!goingBack && !inCutscene && options.length > 1)
 		{
 			var add:Int = 0;
@@ -236,9 +245,11 @@ class AchievementsMenuState extends MusicBeatState
                 }
             });
 
-			if (ourpleFella != null && !CoolUtil.isGolden && FlxG.mouse.overlaps(ourpleFella) && FlxG.mouse.justPressed) {
+			if (ourpleFella != null && !ClientPrefs.data.goldenMouse && FlxG.mouse.overlaps(ourpleFella) && FlxG.mouse.justPressed) {
 				FlxG.sound.play(Paths.sound('goldenHum'));
 				CoolUtil.reloadOurpleCursor(true);
+				ClientPrefs.saveSettings(false);
+				ClientPrefs.loadPrefs();
 			}
 			
 			if(controls.RESET && (options[curSelected].unlocked || options[curSelected].curProgress > 0))
@@ -247,10 +258,6 @@ class AchievementsMenuState extends MusicBeatState
 			}
 		}
 
-		if (controls.BACK) {
-			exitState(new MainMenuState(true));
-			goingBack = true;
-		}
 		super.update(elapsed);
 
 		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
@@ -306,7 +313,7 @@ class AchievementsMenuState extends MusicBeatState
 	function createGoldenFella()
 	{
 		ourpleFella = new FlxSprite();
-		ourpleFella.frames = Paths.getSparrowAtlas('goldenFella');
+		ourpleFella.frames = Paths.getSparrowAtlas('achievements/goldenFella');
 		ourpleFella.animation.addByPrefix('idle', 'idle', 20, true);
 		ourpleFella.animation.play('idle');
 		ourpleFella.scrollFactor.set();
@@ -413,14 +420,14 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-		if(controls.BACK)
+		super.update(elapsed);
+
+		if (controls.BACK)
 		{
 			close();
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			return;
 		}
-
-		super.update(elapsed);
 
 		if(controls.UI_LEFT_P || controls.UI_RIGHT_P) {
 			onYes = !onYes;
@@ -495,7 +502,6 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 			case 'lore_enjoyer':
 				ClientPrefs.data.songPlayed.set('Covers', []);
 				ClientPrefs.data.songPlayed.set('Originals', []);
-				ClientPrefs.data.ourpleUsed = [];
 
 			case 'true_theorist':
 				for (i in 0...11) {

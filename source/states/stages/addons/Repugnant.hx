@@ -149,7 +149,7 @@ class Repugnant extends BaseStage
                 cameraSpeed = 1000;
                 lockCam(true);
 
-            case 574, 592, 704, 720, 1856, 1872, 1984, 2000:
+            case 576, 592, 704, 720, 1856, 1872, 1984, 2000:
                 defaultCamZoom += 0.15;
 
             case 608, 736, 1888, 2016:
