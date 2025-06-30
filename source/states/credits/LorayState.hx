@@ -27,7 +27,7 @@ class LorayState extends MusicBeatState
     public var appName:Alphabet;
     var bg:FlxSprite;
 
-	var curSelected:Int = 0;
+	public static var curSelected:Int = 0;
     
     override function create()
     {
@@ -41,15 +41,16 @@ class LorayState extends MusicBeatState
         FlxTransitionableState.skipNextTransIn = true;
 		FlxTransitionableState.skipNextTransOut = true;
 
-        persistentUpdate = true;
+        camFollow = new FlxObject(0, 0, 1, 1);
+		add(camFollow);
 
         bg = new FlxSprite().loadGraphic(Paths.image('menuBGMagenta'));
+        var scaleMultiplier:Float = FlxG.width / 1280;
+		bg.setGraphicSize(Std.int(bg.width * scaleMultiplier));
+		bg.updateHitbox();
         bg.screenCenter();
         bg.scrollFactor.set();
         add(bg);
-
-        camFollow = new FlxObject(0, 0, 1, 1);
-		add(camFollow);
 
         var grid:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/grid'));
 		grid.scrollFactor.set(0, 0);
@@ -73,15 +74,15 @@ class LorayState extends MusicBeatState
 			appItem.animation.addByPrefix('idle', appCats[i][0].toLowerCase(), 24);
 			appItem.animation.play('idle');
             appItem.scale.set(scaleItem, scaleItem);
-            appItem.updateHitbox();
 			appItem.ID = i;
 			menuItems.add(appItem);
 			appItem.scrollFactor.set(1, 0);
+            appItem.updateHitbox();
 			appItem.antialiasing = ClientPrefs.data.antialiasing;
         }
 
-        lorays.add(new Loray(180));
-        lorays.add(new Loray(935));
+        lorays.add(new Loray(false));
+        lorays.add(new Loray(true));
 
 		var lettabox1:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox1.scrollFactor.set(0, 0);
@@ -100,25 +101,34 @@ class LorayState extends MusicBeatState
 		add(appName);
 
         add(new ExitButton('credits'));
-
-        changeSelection(0, false, false);
+        
         super.create();
 
-        FlxG.camera.follow(camFollow, null, 9);
-
+        FlxG.camera.follow(camFollow, LOCKON, 9);
+        camFollow.screenCenter(X);
+        cameraTargetX = camFollow.x;
+        changeSelection(0, false, false);
+    
         if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
     }
 
     var canClick:Bool = true;
     var usingMouse:Bool = false;
     var quitting:Bool = false;
-    override public function update(elapsed:Float) {
+    var cameraTargetX:Float = 0;
+    override public function update(elapsed:Float)
+    {
+        super.update(elapsed);
+
         if (controls.UI_UP_P || controls.UI_DOWN_P)
             usingMouse = false;
         else if (FlxG.mouse.overlaps(menuItems) || FlxG.mouse.overlaps(lorays))
             usingMouse = true;
 
-        menuItems.forEachAlive(function(spr:FlxSprite){if (usingMouse && FlxG.mouse.overlaps(spr) && curSelected != spr.ID) changeSelection(spr.ID, true);});
+        menuItems.forEachAlive(function(spr:FlxSprite) {
+            if (usingMouse && FlxG.mouse.overlaps(spr) && curSelected != spr.ID)
+                changeSelection(spr.ID, true);
+        });
 
         if (controls.UI_LEFT_P) {
             changeSelection(-1);
@@ -145,37 +155,38 @@ class LorayState extends MusicBeatState
                 spr.beHappy(true);
         });
 
-        if (FlxG.sound.music != null) Conductor.songPosition = FlxG.sound.music.time;
+        camFollow.x = cameraTargetX;
+        if (FlxG.sound.music != null)
+            Conductor.songPosition = FlxG.sound.music.time;
         FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
-        super.update(elapsed);
     }
 
-    function changeSelection(change:Int = 0, ?goTo:Bool = false, ?playSound:Bool = true) {
+    function changeSelection(change:Int = 0, ?goTo:Bool = false, ?playSound:Bool = true)
+    {
         FlxG.camera.zoom += 0.03;
         if (!goTo) curSelected += change; else curSelected = change;
         if (playSound) FlxG.sound.play(Paths.sound('scrollMenu'));
 
-		if (curSelected >= menuItems.length)
-			curSelected = 0;
-		if (curSelected < 0)
-			curSelected = menuItems.length - 1;
+        if (curSelected >= menuItems.length)
+            curSelected = 0;
+        if (curSelected < 0)
+            curSelected = menuItems.length - 1;
 
-		menuItems.forEach(function(spr:FlxSprite)
-		{
-			if (spr.ID == curSelected) {
+        menuItems.forEach(function(spr:FlxSprite) {
+            if (spr.ID == curSelected) {
                 spr.scale.set(appCats[curSelected][1] * 1.2, appCats[curSelected][1] * 1.2);
-			} else {
+                spr.updateHitbox();
+                cameraTargetX = spr.x + (spr.width * 0.5);
+            } else {
                 spr.scale.set(appCats[spr.ID][1], appCats[spr.ID][1]);
+                spr.updateHitbox();
             }
-            spr.centerOffsets();
-            spr.updateHitbox();
         });
 
         appName.clearLetters();
         appName.text = appCats[curSelected][0];
+        appName.screenCenter(X);
         appName.softReloadLetters();
-
-        camFollow.setPosition(menuItems.members[curSelected].getGraphicMidpoint().x - getPosOffsetMenuItems());
     }
 
     override public function beatHit()
@@ -184,12 +195,6 @@ class LorayState extends MusicBeatState
             spr.dance();
         });
     }
-
-    private function getPosOffsetMenuItems():Float {
-		var midIndex = menuItems.length / 2;
-		var offsetFactor = 120;
-		return (curSelected - midIndex) * offsetFactor;
-	}
 }
 
 class Loray extends FlxSprite
@@ -198,11 +203,11 @@ class Loray extends FlxSprite
 
     public var happy:Bool = false;
     public var originX:Float = 0;
-    public var originY:Float = 460;
+    public var originY:Float = 0;
 
-    public function new(x:Float = 0)
+    public function new(rightSide:Bool = false)
     {
-        super(x, originY);
+        super(0, 0);
         
         frames = Paths.getSparrowAtlas('loray/OURPLE_LORAAAAAAAAAAY');
         animation.addByPrefix('idle', 'Idle', 24, false, false, false);
@@ -210,12 +215,21 @@ class Loray extends FlxSprite
         animation.play('idle', false, false, 0);
         scale.x = 3;
         scale.y = 3;
+        scrollFactor.set();
         ID = lorays.length;
         flipX = (ID % 2 == 0) ? true : false;
-        scrollFactor.set();
-        lorays.push(this);
+        updateHitbox();
 
-        this.originX = x;
+        var offsetFromEdge:Float = FlxG.width / 20;
+        
+        if (rightSide)
+            this.originX = x = FlxG.width - offsetFromEdge - width;
+        else
+            this.originX = x = offsetFromEdge;
+
+        this.originY = y = FlxG.height - height + (height / 4);
+        
+        lorays.push(this);
     }
 
     public function beHappy(?unlockAchievement:Bool = false) 
@@ -226,14 +240,14 @@ class Loray extends FlxSprite
         FlxTween.cancelTweensOf(this, ['y']);
         animation.play('happy', true, false, 0);
         x = originX - 45;
-        y = 380;
+        y = originY - 80; // Use originY as reference instead of subtracting from current y
         flipX = (ID % 2 == 0) ? false : true;
         new FlxTimer().start(0.7, function(tmr:FlxTimer)
         {
             happy = false;
             x = originX;
             y = originY;
-            flipX = (ID % 2 == 0) ? false : true;
+            flipX = (ID % 2 == 0) ? true : false; // Fix: should match the original flipX logic
             dance();
         });
         if (unlockAchievement) Achievements.unlock('loray_hater');
@@ -244,7 +258,7 @@ class Loray extends FlxSprite
         if (!happy)
         {
             animation.play('idle', true, false, 0);
-            y = (y + 20);
+            y = originY + 20; // Use originY as reference for consistent positioning
             flipX = !flipX;
             FlxTween.tween(this, {y: originY}, 0.15, {ease: FlxEase.cubeOut});
         }

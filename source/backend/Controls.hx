@@ -5,6 +5,8 @@ import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.gamepad.mappings.FlxGamepadMapping;
 import flixel.input.keyboard.FlxKey;
 
+import backend.MobileControls;
+
 class Controls
 {
 	//Keeping same use cases on stuff for it to be easier to understand/use
@@ -100,6 +102,10 @@ class Controls
 	private function get_PAUSE_R() return justReleased('pause');
 	private function get_RESET_R() return justReleased('reset');
 
+	#if mobile
+	public static var mobileControls:MobileControls;
+	#end
+
 	//Gamepad & Keyboard stuff
 	public var keyboardBinds:Map<String, Array<FlxKey>>;
 	public var gamepadBinds:Map<String, Array<FlxGamepadInputID>>;
@@ -108,7 +114,19 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadJustPressed(gamepadBinds[key]) == true;
+		var gamepadResult:Bool = _myGamepadJustPressed(gamepadBinds[key]) == true;
+		
+		#if mobile
+		var mobileResult:Bool = false;
+		if (mobileControls != null)
+		{
+			mobileResult = mobileControls.checkJustPressed(key);
+			if (mobileResult) controllerMode = false;
+		}
+		return result || gamepadResult || mobileResult;
+		#else
+		return result || gamepadResult;
+		#end
 	}
 
 	public function pressed(key:String)
@@ -116,7 +134,19 @@ class Controls
 		var result:Bool = (FlxG.keys.anyPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadPressed(gamepadBinds[key]) == true;
+		var gamepadResult:Bool = _myGamepadPressed(gamepadBinds[key]) == true;
+		
+		#if mobile
+		var mobileResult:Bool = false;
+		if (mobileControls != null)
+		{
+			mobileResult = mobileControls.checkPressed(key);
+			if (mobileResult) controllerMode = false;
+		}
+		return result || gamepadResult || mobileResult;
+		#else
+		return result || gamepadResult;
+		#end
 	}
 
 	public function justReleased(key:String)
@@ -124,7 +154,19 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustReleased(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadJustReleased(gamepadBinds[key]) == true;
+		var gamepadResult:Bool = _myGamepadJustReleased(gamepadBinds[key]) == true;
+		
+		#if mobile
+		var mobileResult:Bool = false;
+		if (mobileControls != null)
+		{
+			mobileResult = mobileControls.checkJustReleased(key);
+			if (mobileResult) controllerMode = false;
+		}
+		return result || gamepadResult || mobileResult;
+		#else
+		return result || gamepadResult;
+		#end
 	}
 
 	public var controllerMode:Bool = false;

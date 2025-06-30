@@ -1,5 +1,7 @@
 package backend;
 
+import states.credits.CreditsSubgroupState;
+import substates.PauseSubState;
 import flixel.addons.ui.FlxUIState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxState;
@@ -162,7 +164,11 @@ class MusicBeatState extends FlxUIState
 			resetState();
 			return;
 		}
-
+		
+		if (PlayState.SONG != null && PlayState.SONG.song.toLowerCase() == 'lua' && Type.getClassName(Type.getClass(nextState)).toLowerCase().contains("playstate")) {
+			FlxTransitionableState.skipNextTransIn = true;
+			FlxTransitionableState.skipNextTransOut = true;
+		}
 		if(FlxTransitionableState.skipNextTransIn) FlxG.switchState(nextState);
 		else startTransition(nextState);
 		FlxTransitionableState.skipNextTransIn = false;

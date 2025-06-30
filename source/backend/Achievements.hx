@@ -32,10 +32,10 @@ class Achievements {
 		createAchievement('lolbit',					{name: "Please, Stand By!", description: "Encounter and Beat Lolbit.", hiddenDesc: true});
 		createAchievement('bonnet',					{name: "Well, hello again!", description: "Encounter and Beat Bonnet.", hiddenDesc: true});
 		createAchievement('trash_gang',				{name: "Psst! I have something to tell you...", description: "Encounter one of the members of Trash and the Gang.", hiddenDesc: true});
-		createAchievement('exploiter',				{name: "Exploiter", description: "Skip a song by using a FNAF game exploit."});
-		createAchievement('cheater',				{name: "Cheater", description: "Skip a song by using another FNAF game exploit."});
+		createAchievement('cheater',				{name: "Cheater", description: "Skip a song by using a FNAF game exploit."});
 		createAchievement('too_sad',				{name: "I'm too Sad for this...", description: "Don't press a single note in Lore Sad Mix.", hiddenDesc: true});
 		createAchievement('distracted',				{name: "Distracted", description: "Play Distractible.", hiddenDesc: true});
+		createAchievement('lua',					{name: "Theorical love", description: "Play the LUA song.", hiddenDesc: true});
 		createAchievement('lore_enjoyer',			{name: "Lore Enjoyer", description: "Play all the Lore covers and originals."});
 		createAchievement('true_theorist',			{name: "True Theorist", description: "Play the entirety of Lore Origins."});
 
@@ -127,13 +127,10 @@ class Achievements {
 	static var _lastUnlock:Int = -999;
 	public static function unlock(name:String, autoStartPopup:Bool = true):String {
 		if(!achievements.exists(name))
-		{
-			FlxG.log.error('Achievement "$name" does not exists!');
-			throw new Exception('Achievement "$name" does not exists!');
 			return null;
-		}
 
-		if(Achievements.isUnlocked(name)) return null;
+		if(Achievements.isUnlocked(name))
+			return null;
 
 		trace('Completed achievement "$name"');
 		achievementsUnlocked.push(name);

@@ -1,10 +1,15 @@
-matpat2
+matpat
 matpat-sunk
-matpat-sunk-alt
+matpat-sunk mad
+matpat-png
+matpat-rtx
+matpat-sad
 playguy
+playguy-rtx
 playguy-mad
 playguy-staring
 phone
+phone-rtx
 goldenphone
 mark
 mark-webcam
@@ -12,3 +17,7 @@ prange
 prangealt
 lixian
 shaghorn
+lua
+lua-playable
+LORAY
+LORAY-playable

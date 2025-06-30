@@ -15,7 +15,7 @@ class OurpleSkinSelector extends MusicBeatState
         ['Cool', ['Normal']],
         ['Hrey', ['Normal']],
         ['Nuu', ['Normal', 'Mad']],
-        //['Vloo', ['Normal', 'Mad']], Looks like i got cancelled for that
+        ['Vloo', ['Normal', 'Mad']], //Looks like i got cancelled for that
         ['Wink', ['Normal']]
     ];
 
@@ -45,9 +45,12 @@ class OurpleSkinSelector extends MusicBeatState
 		DiscordClient.changePresence("Ourple Skin Selector (WIP)", null);
 		#end
 
-        bg = new FlxSprite(-10).loadGraphic(Paths.image('mainmenu/bg'));
-		bg.scrollFactor.set(0, 0);
-		bg.setGraphicSize(Std.int(bg.width * 1.7));
+		bg = new FlxSprite(-10).loadGraphic(Paths.image('mainmenu/bg'));
+		var scaleMultiplier:Float = FlxG.width / 1280;
+		var finalScale:Float = 1.7 * scaleMultiplier;
+		finalScale = Math.max(finalScale, 1.0);
+		finalScale = Math.min(finalScale, 2.5);
+		bg.setGraphicSize(Std.int(bg.width * finalScale));
 		bg.updateHitbox();
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
@@ -73,7 +76,7 @@ class OurpleSkinSelector extends MusicBeatState
         createText(45, FlxG.height - 225, 400, "Press 'Enter' or 'Space' to save your selection!");
         createText(FlxG.width - 515, FlxG.height - 225, 500, "Press 'CTRL' to enter the Character Selector Menu!", true);
 
-        selectOurpleTxt = new FlxText(FlxG.width - 450, 80, 400, 'Current Ourple: ?', 38);
+        selectOurpleTxt = new FlxText(FlxG.width - 450, 80, 400, 'Current Ourple: < ? >', 38);
         selectOurpleTxt.setFormat(Paths.font('ourple.ttf'), 38, 0xFFA04EBA, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.WHITE);
         selectOurpleTxt.visible = false;
         add(selectOurpleTxt);
@@ -129,8 +132,8 @@ class OurpleSkinSelector extends MusicBeatState
         if (controls.UI_RIGHT_R)
             arrows.members[1].animation.play('i');
 
-        if (controls.ACCEPT_P)
-            saveOurple();
+        // if (controls.ACCEPT_P)
+        //     saveOurple();
 
         if (FlxG.keys.justPressed.CONTROL)
         {
@@ -156,7 +159,7 @@ class OurpleSkinSelector extends MusicBeatState
         if (controls.BACK_P || FlxG.keys.justPressed.CONTROL) 
         {
             FlxG.sound.play(Paths.sound('cancelMenu'));
-            saveOurple();
+            // saveOurple();
             inSelectOurple = false;
             arrows.visible = true;
             selectOurpleTxt.visible = false;
@@ -217,7 +220,7 @@ class OurpleSkinSelector extends MusicBeatState
             curSelectedOurple = skinsData.length - 1;
 
         curSelectedOurpleName = skinsData[curSelectedOurple][0];
-        selectOurpleTxt.text = 'Current Ourple: ' + curSelectedOurpleName;
+        selectOurpleTxt.text = 'Current Ourple: < ' + curSelectedOurpleName + ' >';
     }
 
     private function reloadOurple(change:Int = 0, fromTop:Bool = false):Void
@@ -311,27 +314,27 @@ class OurpleSkinSelector extends MusicBeatState
         return tutorialTxt;
     }
 
-    private function saveOurple():Void
-    {
-        if (inSelectOurple)
-            ClientPrefs.data.guy = curSelectedOurpleName;
-        else
-            ClientPrefs.data.ourpleData.set(curOurpleName, curSkinName);
+    // private function saveOurple():Void
+    // {
+    //     if (inSelectOurple)
+    //         ClientPrefs.data.guy = curSelectedOurpleName;
+    //     else
+    //         ClientPrefs.data.ourpleData.set(curOurpleName, curSkinName);
 
-        ClientPrefs.saveSettings();
-        CoolUtil.reloadOurpleCursor();
+    //     ClientPrefs.saveSettings();
+    //     CoolUtil.reloadOurpleCursor();
 
-        var saved:Alphabet = new Alphabet(FlxG.width - 375, 40, 'SAVED !', true);
-        add(saved);
-        FlxTween.tween(saved, {y: saved.y + 75, alpha: 0}, 0.7, {ease: FlxEase.cubeOut, onComplete: function(twn:FlxTween) {
-            saved.destroy();
-            saved = null;
-        }});
-    }
+    //     var saved:Alphabet = new Alphabet(FlxG.width - 375, 40, 'SAVED !', true);
+    //     add(saved);
+    //     FlxTween.tween(saved, {y: saved.y + 75, alpha: 0}, 0.7, {ease: FlxEase.cubeOut, onComplete: function(twn:FlxTween) {
+    //         saved.destroy();
+    //         saved = null;
+    //     }});
+    // }
 
     override public function destroy():Void
     {
-        saveOurple();
+        // saveOurple();
         ClientPrefs.loadPrefs();
         super.destroy();
     }

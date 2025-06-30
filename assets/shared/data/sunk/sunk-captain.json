@@ -10576,7 +10576,7 @@
 					[
 						"Change Character",
 						"dad",
-						"matpat-sunk-alt"
+						"matpat_iron_lung_mad"
 					]
 				]
 			],
@@ -10681,7 +10681,7 @@
 					[
 						"Change Character",
 						"dad",
-						"matpat-sunk"
+						"matpat_iron_lung"
 					]
 				]
 			],
@@ -10736,7 +10736,7 @@
 				]
 			]
 		],
-		"player2": "matpat-sunk",
+		"player2": "matpat_iron_lung",
 		"player4": "mark-webcam",
 		"disableNoteRGB": true,
 		"splashSkin": "",

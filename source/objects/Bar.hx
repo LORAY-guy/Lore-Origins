@@ -28,7 +28,7 @@ class Bar extends FlxSpriteGroup
 		bg = new FlxSprite().loadGraphic(Paths.image(image));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 
-		if (image == 'OurpleHUD/lore') {
+		if (image == 'OurpleHUD/loreTimeBar' || image == 'OurpleHUD/timeBar') {
 			barWidth = Std.int((bg.width - 10) - 6);
 			barHeight = Std.int((bg.height / 2 - 14) - 3);
 			barOffset = new FlxPoint(9, 44);

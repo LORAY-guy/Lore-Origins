@@ -34,6 +34,12 @@ class NoteOffsetState extends MusicBeatState
 	var controllerPointer:FlxSprite;
 	var _lastControllerMode:Bool = false;
 
+	var exitButton:ExitButton;
+
+	#if mobile
+	private var mobileControls:MobileControls;
+	#end
+
 	override public function create()
 	{
 		#if DISCORD_ALLOWED
@@ -73,13 +79,13 @@ class NoteOffsetState extends MusicBeatState
 		}
 
 		// Characters
-		gf = new Character(400, 130, 'phone');
+		var phoneSubSpriteName:String = (ClientPrefs.data.phoneGuySkin == 'Normal' ? '' : '-' + ClientPrefs.data.phoneGuySkin).toLowerCase();
+		gf = new Character(400, 130, 'phone' + phoneSubSpriteName);
 		gf.x += gf.positionArray[0];
 		gf.y += gf.positionArray[1];
 		gf.scrollFactor.set(0.95, 0.95);
-		var spriteName:String = (ClientPrefs.data.guy == 'Ourple' ? 'playguy' : ClientPrefs.data.guy.toLowerCase());
-		var subSpriteName:String = (ClientPrefs.data.ourpleData.get(ClientPrefs.data.guy) == 'Normal' ? '' : '-' + ClientPrefs.data.ourpleData.get(ClientPrefs.data.guy)).toLowerCase();
-		boyfriend = new Character(770, 100, spriteName + subSpriteName, true);
+		var ourpleSubSpriteName:String = (ClientPrefs.data.ourpleSkin == 'Normal' ? '' : '-' + ClientPrefs.data.ourpleSkin).toLowerCase();
+		boyfriend = new Character(770, 100, 'playguy' + ourpleSubSpriteName, true);
 		boyfriend.x += boyfriend.positionArray[0];
 		boyfriend.y += boyfriend.positionArray[1];
 		add(gf);
@@ -144,6 +150,18 @@ class NoteOffsetState extends MusicBeatState
 		super.create();
 
 		originY = boyfriend.y;
+
+		exitButton = new ExitButton('options');
+		exitButton.cameras = [camOther];
+		add(exitButton);
+
+		#if mobile
+		mobileControls = new MobileControls(true);
+		mobileControls.cameras = [camOther];
+		add(mobileControls);
+
+		Controls.mobileControls = mobileControls;
+		#end
 	}
 
 	var holdTime:Float = 0;
@@ -298,5 +316,13 @@ class NoteOffsetState extends MusicBeatState
 	{
 		ClientPrefs.data.noteOffset = Math.round(barPercent);
 		timeTxt.text = 'Current offset: ' + Math.floor(barPercent) + ' ms';
+	}
+
+	override public function destroy():Void
+	{
+		#if mobile
+		Controls.mobileControls = null;
+		#end
+		super.destroy();
 	}
 }

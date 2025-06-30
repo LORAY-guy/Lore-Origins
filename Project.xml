@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Lore Origins" file="Lore Origins" packageName="com.loray.loreorigins" package="com.lore.loreorigins" main="Main" version="2.0.0" company="LORAY" />
+	<app title="Lore Origins" file="Lore Origins" packageName="com.loray.loreorigins" package="com.loray.loreorigins" main="Main" version="2.5.0" company="LORAY" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />

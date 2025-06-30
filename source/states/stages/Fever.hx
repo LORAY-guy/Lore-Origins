@@ -13,7 +13,8 @@ class Fever extends BaseStage
 
     var blackstuff:FlxSprite;
 
-    override function create() {
+    override function create()
+    {
         back = new BGSprite('fever/stageback', -660, -400, 1, 1);
         back.setGraphicSize(Std.int(back.width * 1.1));
         back.updateHitbox();
@@ -46,7 +47,7 @@ class Fever extends BaseStage
         blackstuff = new FlxSprite().makeGraphic(2000, 2000, FlxColor.BLACK);
         blackstuff.scrollFactor.set(0, 0);
         blackstuff.screenCenter(XY);
-        blackstuff.alpha = 0.5;
+        blackstuff.alpha = 0.4;
         add(blackstuff);
 
         thingsToBW = [boyfriend, dad, gf];
@@ -54,8 +55,9 @@ class Fever extends BaseStage
         super.createPost();
     }
 
-    override function stepHit() {
-        if (curStep == 192 || curStep == 256 || curStep == 320 || curStep == 388 || curStep == 448 || curStep == 512 || curStep == 768 || curStep == 904 || curStep == 1024 || curStep == 1118 || curStep == 1280 || curStep == 1472 || curStep == 1536 || curStep == 1668 || curStep == 1728 || curStep == 2048 || curStep == 2176) {
+    override function stepHit()
+    {
+        if (curStep == 192 || curStep == 256 || curStep == 320 || curStep == 388 || curStep == 448 || curStep == 512 || curStep == 768 || curStep == 904 || curStep == 1024 || curStep == 1118 || curStep == 1152 || curStep == 1280 || curStep == 1409 || curStep == 1472 || curStep == 1536 || curStep == 1668 || curStep == 1728 || curStep == 2048 || curStep == 2176) {
             camGame.flash(FlxColor.WHITE, 0.9);
         }
         
@@ -63,30 +65,28 @@ class Fever extends BaseStage
             camZooming = false;
         }
         
-        if (curStep == 176 || curStep == 1248 || curStep == 1456 || curStep == 1520 || curStep == 2016 || curStep == 2160 || curStep == 2032 || curStep == 2800) {
-            camZooming = false;
-        } else if (curStep == 192 || curStep == 320 || curStep == 388 || curStep == 448 || curStep == 512 || curStep == 1280 || curStep == 1472 || curStep == 1532 || curStep == 1732 || curStep == 2048 || curStep == 2176 || curStep == 2808) {
-            camZooming = true;
-        }
-        
         if (curStep == 240 || curStep == 384 || curStep == 496 || curStep == 896 || curStep == 1016 || curStep == 1096 || curStep == 1520 || curStep == 1648 || curStep == 1776 || curStep == 1920 || curStep == 2800 || curStep == 2492 || curStep == 2512) {
-            defaultCamZoom = 1.2;
-            camGame.zoom = 1.2;
+            defaultCamZoom = 1.1;
+            camGame.zoom = 1.1;
         } else if (curStep == 256 || curStep == 388 || curStep == 512 || curStep == 904 || curStep == 1024 || curStep == 1118 || curStep == 1536 || curStep == 1668 || curStep == 1792 || curStep == 2016 || curStep == 2816 || curStep == 2496 || curStep == 2528) {
             defaultCamZoom = 0.75;
             cameraSpeed = 1;
         }
+
+        if (curStep == 176 || curStep == 1248 || curStep == 2016 || curStep == 2160 || curStep == 2032 || curStep == 2800) {
+            camZooming = false;
+        } else if (curStep == 192 || curStep == 320 || curStep == 388 || curStep == 448 || curStep == 512 || curStep == 1280 || curStep == 1532 || curStep == 1732 || curStep == 2048 || curStep == 2176 || curStep == 2808) {
+            camZooming = true;
+        }
         
-        if ((curStep >= 256 && curStep < 512) || (curStep >= 1110 && curStep < 1118) || (curStep >= 1536 && curStep < 1776) || (curStep >= 2016 && curStep < 2048) || (curStep >= 2622 && curStep < 2657) || curStep >= 2752) {
+        if ((curStep >= 256 && curStep < 512) || curStep == 896 || (curStep >= 1110 && curStep < 1118) || (curStep >= 1536 && curStep < 1776) || (curStep >= 2016 && curStep < 2048) || (curStep >= 2622 && curStep < 2657) || curStep >= 2752)
             cameraSpeed = 100;
-        }
-        
-        if (curStep == 1118) {
+
+        if (curStep == 1118)
             cameraSpeed = 1;
-        }
         
         if (curStep == 760) {
-            defaultCamZoom = 1.2;
+            defaultCamZoom = 1.1;
         } else if (curStep == 768) {
             defaultCamZoom = 0.75;
             cameraSpeed = 100;
@@ -95,21 +95,27 @@ class Fever extends BaseStage
         if (curStep == 768 || curStep == 2432) {
             blackstuff.alpha += 0.2;
             for (i in 0...thingsToBW.length)
-                FlxTween.color(thingsToBW[i], 0.01, thingsToBW[i].color, FlxColor.fromRGB(235, 235, 235));
+                FlxTween.color(thingsToBW[i], 0.01, thingsToBW[i].color, FlxColor.fromRGB(245, 245, 245));
             defaultCamZoom = 0.75;
             cameraSpeed = 1;
         }
         
         if (curStep == 786) {
-            FlxTween.tween(camGame, {zoom: 1.1}, 6, {ease: FlxEase.cubeInOut});
-        }
-
-        if (curStep == 1118) {
-            PlayState.instance.moveCamera(false);
+            FlxTween.tween(camGame, {zoom: 1.0}, 6, {ease: FlxEase.cubeInOut});
         }
         
+        if (curStep == 1096) {
+            cameraSpeed = 1000;
+            camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+            camFollow.x -= boyfriend.cameraPosition[0] - PlayState.instance.boyfriendCameraOffset[0];
+            camFollow.y += boyfriend.cameraPosition[1] + PlayState.instance.boyfriendCameraOffset[1];
+        }
+
+        if (curStep == 1098)
+            cameraSpeed = 1;
+
         if (curStep == 1808) {
-            FlxTween.tween(camGame, {zoom: 1.1}, (Conductor.stepCrochet / 1000) * (16 * 7), {ease: FlxEase.cubeInOut});
+            FlxTween.tween(camGame, {zoom: 1.05}, (Conductor.stepCrochet / 1000) * (16 * 7), {ease: FlxEase.cubeInOut});
         }
 
         if (curStep == 2416 || curStep == 2544) {
@@ -122,6 +128,15 @@ class Fever extends BaseStage
             blackstuff.alpha -= 0.2;
             for (i in 0...thingsToBW.length)
                 FlxTween.color(thingsToBW[i], 0.01, thingsToBW[i].color, FlxColor.WHITE);
+        }
+
+        if (curStep == 1916) {
+            defaultCamZoom = 0.9;
+            camGame.zoom = 0.9;
+            cameraSpeed = 1000;
+			camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
+			camFollow.x += dad.cameraPosition[0] + PlayState.instance.opponentCameraOffset[0];
+			camFollow.y += dad.cameraPosition[1] + PlayState.instance.opponentCameraOffset[1];
         }
         
         if (curStep == 2846) {
@@ -149,7 +164,8 @@ class Fever extends BaseStage
         super.stepHit();
     }
 
-    override function beatHit() {
+    override function beatHit()
+    {
         super.beatHit();
 
         if ((curBeat >= 64 && curBeat < 76) || 

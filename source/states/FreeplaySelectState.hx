@@ -3,9 +3,6 @@ package states;
 import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxBackdrop;
 
-import openfl.ui.Keyboard;
-import openfl.events.KeyboardEvent;
-
 class FreeplaySelectState extends MusicBeatState
 {
     public static var freeplayCats:Array<String> = ['Covers', 'Originals'];
@@ -18,6 +15,10 @@ class FreeplaySelectState extends MusicBeatState
     var categoryIcon:FlxSprite;
 
 	var matpat:FlxSprite;
+
+	#if mobile
+	private var mobileControls:MobileControls;
+	#end
     
     override function create()
 	{
@@ -29,9 +30,12 @@ class FreeplaySelectState extends MusicBeatState
 		Paths.clearUnusedMemory();
 
         bg = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
+		var scaleMultiplier:Float = FlxG.width / 1280;
+		bg.setGraphicSize(Std.int(bg.width * scaleMultiplier));
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.color = 0xFF00c2ff;
+		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 	
 		backend.Conductor.bpm = 130;
@@ -76,10 +80,17 @@ class FreeplaySelectState extends MusicBeatState
 
         changeSelection();
 		
-		#if desktop if (!FlxG.mouse.visible) FlxG.mouse.visible = true; #end
+		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
         super.create();
 
 		add(new ExitButton());
+
+		#if mobile
+		mobileControls = new MobileControls(true);
+		add(mobileControls);
+
+		Controls.mobileControls = mobileControls;
+		#end
     }
 
 	public var selectedSomethin:Bool = false;
@@ -116,7 +127,7 @@ class FreeplaySelectState extends MusicBeatState
 				{
 					MusicBeatState.switchState(new FreeplayState(true));
 				});
-			} else if (FlxG.mouse.overlaps(matpat) && FlxG.mouse.justPressed) {
+			} else if (FlxG.mouse.overlaps(matpat) #if mobile && !FlxG.mouse.overlaps(mobileControls) #end && FlxG.mouse.justPressed) {
 				FlxG.sound.play(Paths.sound('helloInternet'));
 				matpat.setGraphicSize(Std.int(matpat.width * 1.1));
 				#if ACHIEVEMENTS_ALLOWED
@@ -153,5 +164,13 @@ class FreeplaySelectState extends MusicBeatState
         categoryIcon.screenCenter();
 		categoryIcon.x -= 240;
 		FlxG.sound.play(Paths.sound('scrollMenu'));
+	}
+
+	override public function destroy():Void
+	{
+		super.destroy();
+		#if mobile
+		Controls.mobileControls = null;
+		#end
 	}
 }

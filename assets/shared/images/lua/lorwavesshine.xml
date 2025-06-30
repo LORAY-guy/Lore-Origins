@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="lorwavesshine.png">
+	<!-- Created with Adobe Animate version 22.0.3.179 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="elfects instance 10000" x="5" y="5" width="1408" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10001" x="5" y="5" width="1408" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10002" x="1423" y="5" width="1407" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10003" x="1423" y="5" width="1407" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10004" x="2840" y="5" width="1406" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10005" x="4256" y="5" width="1405" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10006" x="5671" y="5" width="1403" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10007" x="5" y="316" width="1402" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10008" x="1417" y="316" width="1400" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10009" x="2827" y="316" width="1397" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10010" x="4234" y="316" width="1395" height="300" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10011" x="5639" y="316" width="1392" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10012" x="5" y="627" width="1389" height="301" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10013" x="1404" y="627" width="1386" height="300" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10014" x="2800" y="627" width="1382" height="300" frameX="-25" frameY="0" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10015" x="4192" y="627" width="1378" height="300" frameX="-25" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10016" x="5580" y="627" width="1374" height="300" frameX="-25" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10017" x="5" y="938" width="1370" height="300" frameX="-25" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10018" x="1385" y="938" width="1365" height="300" frameX="-25" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10019" x="2760" y="938" width="1372" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10020" x="4142" y="938" width="1367" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10021" x="5519" y="938" width="1363" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10022" x="5" y="1248" width="1358" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10023" x="1373" y="1248" width="1354" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10024" x="2737" y="1248" width="1350" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10025" x="4097" y="1248" width="1347" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10026" x="5454" y="1248" width="1343" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10027" x="6807" y="1248" width="1340" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10028" x="5" y="1558" width="1337" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10029" x="1352" y="1558" width="1335" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10030" x="2697" y="1558" width="1332" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10031" x="4039" y="1558" width="1330" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10032" x="5379" y="1558" width="1328" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10033" x="6717" y="1558" width="1326" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10034" x="5" y="1868" width="1325" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10035" x="5" y="1868" width="1325" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10036" x="1340" y="1868" width="1323" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10037" x="2673" y="1868" width="1322" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10038" x="4005" y="1868" width="1322" height="300" frameX="-13" frameY="-1" frameWidth="1433" frameHeight="301"/>
+	<SubTexture name="elfects instance 10039" x="4005" y="1868" width="1322" height="300" frameX="0" frameY="-1" frameWidth="1433" frameHeight="301"/>
+</TextureAtlas>

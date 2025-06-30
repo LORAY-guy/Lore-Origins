@@ -7,7 +7,7 @@ import flixel.addons.display.FlxBackdrop;
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.7.3'; // This is used for Discord RPC
-	public static var loreVersion:String = '2.0'; //This is also used for Discord RPC
+	public static var loreVersion:String = '2.5.0'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 	public static var playedIntro:Bool = false;
 
@@ -44,7 +44,11 @@ class MainMenuState extends MusicBeatState
 		if (xScroll < 0) xScroll = 0;
 		var bg:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.image('mainmenu/bg'));
 		bg.scrollFactor.set(xScroll, 0);
-		bg.setGraphicSize(Std.int(bg.width * 1.7));
+		var scaleMultiplier:Float = FlxG.width / 1280;
+		var finalScale:Float = 1.7 * scaleMultiplier;
+		finalScale = Math.max(finalScale, 1.0);
+		finalScale = Math.min(finalScale, 2.5);
+		bg.setGraphicSize(Std.int(bg.width * finalScale));
 		bg.updateHitbox();
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
@@ -139,7 +143,7 @@ class MainMenuState extends MusicBeatState
 							changeItem(spr.ID, true);
 						}
 
-						if (FlxG.mouse.pressed)
+						if (FlxG.mouse.justPressed)
 						{
 							selectedSomethin = true;
 							canClick = false;
@@ -251,7 +255,7 @@ class MainMenuState extends MusicBeatState
 							options.OptionsState.onPlayState = false;
 							MusicBeatState.switchState(new options.OptionsState(true));
 						case 'skins':
-							MusicBeatState.switchState(new states.OurpleSkinSelector(true));
+							MusicBeatState.switchState(new states.SkinSelectorState(true));
 						case 'achievements':
 							MusicBeatState.switchState(new states.AchievementsMenuState(true));
 						case 'credits':

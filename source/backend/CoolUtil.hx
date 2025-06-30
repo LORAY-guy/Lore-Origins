@@ -1,12 +1,9 @@
 package backend;
 
-import cpp.NativeProcess;
 import openfl.utils.Assets;
 
 class CoolUtil
 {
-	public static var isGolden:Bool = false;
-
 	inline public static function quantize(f:Float, snap:Float){
 		// changed so this actually works lol
 		var m:Float = Math.fround(f * snap);
@@ -141,15 +138,12 @@ class CoolUtil
 			Sys.setCwd(minigameDir);
 
 			#if (linux || mac)
-			Sys.command("chmod", ["+x", "./minigame"]);
-			Sys.command("/bin/sh", ["-c", "nohup ./minigame >/dev/null 2>&1 &"]);
+			Sys.command('(./I\\ can,\\ tho -skipmenu &) && pkill -f Lore\\ Origins');
 			#elseif windows
-			var process = new Process("I can, tho.exe", [], false);
+			var process:Process = new Process("I can, tho.exe", ["-skipmenu"], false);
 			#end
 
 			Sys.setCwd(currentDir);
-
-			Main.exitGame();
 			#else
 			trace("This function is only supported on native targets.");
 			#end
@@ -196,10 +190,11 @@ class CoolUtil
 		return input.split(symbol).join(" ");
     }
 
-	public static function reloadOurpleCursor(golden:Bool = false)
+	public static function reloadOurpleCursor(golden:Bool = false, ?forceChange:Bool = false)
 	{
-		isGolden = golden;
-		var curGuy:String = (golden ? 'golden-' : '') + ClientPrefs.data.guy.toLowerCase();
-        FlxG.mouse.load('assets/shared/images/cursors/$curGuy-cursor.png', 1, -5, -5);
+		if (!ClientPrefs.data.goldenMouse || forceChange)
+			ClientPrefs.data.goldenMouse = golden;
+	   	var curGuy:String = (ClientPrefs.data.goldenMouse ? 'golden-' : '') + ClientPrefs.data.guy.toLowerCase();
+    	FlxG.mouse.load('assets/shared/images/cursors/$curGuy-cursor.png', #if mobile 2 #else 1 #end, -5, -5);
 	}
 }

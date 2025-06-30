@@ -12,7 +12,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 	{
 		title = 'Graphics';
 
-		boyfriend = new Character(1050, 420, 'playguy', true);
+		boyfriend = new Character(FlxG.width - 230, 420, 'playguy', true);
 		boyfriend.setGraphicSize(Std.int(boyfriend.width * 0.3));
 		boyfriend.updateHitbox();
 		boyfriend.dance();
@@ -40,13 +40,13 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			'bool');
 		addOption(option);
 
+		#if (!android && !html5) //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
 		var option:OurpleOption = new OurpleOption('GPU Caching', //Name
 			"If checked, allows the GPU to be used for caching textures, decreasing RAM usage.\nDon't turn this on if you have a shitty Graphics Card.", //Description
 			'cacheOnGPU',
 			'bool');
 		addOption(option);
 
-		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
 		var option:OurpleOption = new OurpleOption('Framerate',
 			"Pretty self explanatory, isn't it?",
 			'framerate',

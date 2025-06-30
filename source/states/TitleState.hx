@@ -83,6 +83,34 @@ class TitleState extends MusicBeatState
 		#if CHECK_FOR_UPDATES
 		if(ClientPrefs.data.checkForUpdates && !closedState) {
 			trace('checking for update');
+			
+			#if mobile
+			var loader = new flash.net.URLLoader();
+			var request = new flash.net.URLRequest("https://raw.githubusercontent.com/LORAY-guy/Lore-Origins/main/gitVersion.txt");
+			
+			loader.addEventListener(flash.events.Event.COMPLETE, function(e) {
+				var data:String = loader.data;
+				if(data != null && data.length > 0) {
+					updateVersion = data.split('\n')[0].trim();
+					var curVersion:String = MainMenuState.loreVersion.trim();
+					trace('version online: ' + updateVersion + ', your version: ' + curVersion);
+					if(updateVersion != curVersion) {
+						trace('versions arent matching!');
+						mustUpdate = true;
+					}
+				}
+			});
+			
+			loader.addEventListener(flash.events.IOErrorEvent.IO_ERROR, function(e) {
+				trace('IO Error: ' + e.text);
+			});
+			
+			try {
+				loader.load(request);
+			} catch(e:Dynamic) {
+				trace('Exception: $e');
+			}
+			#else
 			var http = new haxe.Http("https://raw.githubusercontent.com/LORAY-guy/Lore-Origins/main/gitVersion.txt");
 
 			http.onData = function (data:String)
@@ -101,6 +129,7 @@ class TitleState extends MusicBeatState
 			}
 
 			http.request();
+			#end
 		}
 		#end
 
@@ -156,7 +185,7 @@ class TitleState extends MusicBeatState
 	{
 		if (!initialized)
 		{
-			if(FlxG.sound.music == null) {
+			if (FlxG.sound.music == null) {
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 			}
 		}
@@ -187,7 +216,9 @@ class TitleState extends MusicBeatState
 		add(gameTheoryLogo);
 		gameTheoryLogo.shader = swagShader.shader;
 
-		titleText = new FlxSprite(140, 610);
+		titleText = new FlxSprite(FlxG.width / 9, 610);
+		if (FlxG.width - 1280 != 0)
+			titleText.x += (FlxG.width - 1280) / 3;
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
 		var animFrames:Array<FlxFrame> = [];
 		@:privateAccess {
@@ -210,7 +241,6 @@ class TitleState extends MusicBeatState
 		
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
-		// titleText.screenCenter(X);
 		add(titleText);
 
 		credGroup = new FlxGroup();
@@ -337,6 +367,8 @@ class TitleState extends MusicBeatState
 				{
 					#if !html5
 					if (mustUpdate) {
+						FlxTransitionableState.skipNextTransIn = false;
+						FlxTransitionableState.skipNextTransOut = false;
 						MusicBeatState.switchState(new OutdatedState());
 					} else {
 						MusicBeatState.switchState(new MainMenuState(true));

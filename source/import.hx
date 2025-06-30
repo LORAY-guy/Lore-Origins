@@ -34,11 +34,16 @@ import backend.Difficulty;
 import backend.Mods;
 import backend.ExitButton;
 
+#if mobile
+import backend.MobileControls;
+#end
+
 import objects.Alphabet;
 import objects.BGSprite;
 
 import states.PlayState;
 import states.LoadingState;
+import states.FreeplayState;
 
 #if (flxanimate && !html5)
 import flxanimate.*;

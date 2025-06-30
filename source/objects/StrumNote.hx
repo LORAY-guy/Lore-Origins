@@ -2,7 +2,6 @@ package objects;
 
 import backend.animation.PsychAnimationController;
 
-import shaders.RGBPalette;
 import shaders.RGBPalette.RGBShaderReference;
 
 class StrumNote extends FlxSprite
@@ -179,11 +178,17 @@ class StrumNote extends FlxSprite
 		}
 	}
 
-	public function postAddedToGroup() {
+	public function postAddedToGroup()
+	{
 		playAnim('static');
-		x += Note.swagWidth * noteData;
-		x += 50;
-		x += ((FlxG.width / 2) * player);
+	
+		var playerNotesWidth:Float = Note.swagWidth * 4;
+		var playerHalfWidth:Float = FlxG.width / 2;
+		var startX:Float = (playerHalfWidth - playerNotesWidth) / 2;
+		var localNoteData:Int = noteData % 4;
+
+		x = startX + (Note.swagWidth * localNoteData);
+		x += (playerHalfWidth * player);
 		ID = noteData;
 	}
 

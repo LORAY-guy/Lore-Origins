@@ -48,7 +48,7 @@ class Song
 	public var speed:Float = 1;
 	public var stage:String;
 	public var player1:String = 'playguy';
-	public var player2:String = 'matpat2';
+	public var player2:String = 'matpat';
 	public var player4:String = 'mark-webcam';
 	public var gfVersion:String = 'phone';
 

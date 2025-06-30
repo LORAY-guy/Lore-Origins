@@ -38,10 +38,10 @@
 				53,
 				42
 			],
-			"indices": [],
+			"loop": false,
 			"fps": 24,
 			"anim": "singLEFT",
-			"loop": false,
+			"indices": [],
 			"name": "Right"
 		},
 		{
@@ -49,18 +49,19 @@
 				57,
 				12
 			],
-			"indices": [],
+			"loop": false,
 			"fps": 24,
 			"anim": "singRIGHT",
-			"loop": false,
+			"indices": [],
 			"name": "Left"
 		}
 	],
+	"vocals_file": "",
 	"no_antialiasing": false,
 	"image": "characters/matpat_iron_lung",
 	"position": [
-		-660,
-		-440
+		-570,
+		-480
 	],
 	"healthicon": "mat-sunk",
 	"flip_x": true,
@@ -70,9 +71,10 @@
 		129
 	],
 	"camera_position": [
-		390,
-		310
+		480,
+		440
 	],
 	"sing_duration": 6.1,
-	"scale": 0.6
+	"scale": 0.5,
+	"_editor_isPlayer": false
 }

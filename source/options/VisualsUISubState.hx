@@ -17,6 +17,23 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.decimals = 1;
 		addOption(option);
 
+		#if mobile
+		var option:OurpleOption = new OurpleOption('Mobile UI Opacity',
+			'How much transparent should the mobile UI be.',
+			'mobileUIAlpha',
+			'percent');
+		option.scrollSpeed = 1.6;
+		option.minValue = 0.3;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		option.onChange = function() {
+			mobileControls.setAlpha(ClientPrefs.data.mobileUIAlpha);
+			options.OptionsState.mobileControls.setAlpha(ClientPrefs.data.mobileUIAlpha);
+		};
+		addOption(option);
+		#end
+
 		var option:OurpleOption = new OurpleOption('Hide HUD',
 			'If checked, hides most HUD elements.',
 			'hideHud',
@@ -58,7 +75,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		option.decimals = 1;
 		addOption(option);
-		
+
 		#if !mobile
 		var option:OurpleOption = new OurpleOption('FPS Counter',
 			'If unchecked, hides FPS Counter.',

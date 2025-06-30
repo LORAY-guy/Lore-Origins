@@ -1,5 +1,7 @@
 package backend;
 
+import options.NoteOffsetState;
+
 class ExitButton extends FlxSprite
 {
     public var prevState:Dynamic;
@@ -29,7 +31,19 @@ class ExitButton extends FlxSprite
     }
 
     override function update(elapsed:Float):Void
-    {    
+    {
+        #if mobile
+        if (!visible && animation.curAnim.name != 'in')
+        {
+            visible = true;
+            animation.play('in', true);
+        }
+
+        elapsedSinceMouseLeft = 0.0;
+
+        if (FlxG.mouse.overlaps(this) && !clicked && FlxG.mouse.justPressed)
+            handleButtonClick();
+        #else
         if (FlxG.mouse.overlaps(this))
         {
             if (!visible)
@@ -43,7 +57,7 @@ class ExitButton extends FlxSprite
             }
     
             elapsedSinceMouseLeft = 0.0;
-        } 
+        }
         else if (visible) 
         {
             elapsedSinceMouseLeft += elapsed;
@@ -51,6 +65,7 @@ class ExitButton extends FlxSprite
             if (!clicked && elapsedSinceMouseLeft >= delayDuration && this.animation.curAnim.name != 'in')
                 animation.play('in', false, true);
         }
+        #end
     
         handleAnimationEnd();
 
@@ -70,9 +85,24 @@ class ExitButton extends FlxSprite
         switch (this.prevStateString)
         {
             case 'options':
-                MusicBeatSubstate.getSubState().close();
+                if (Std.isOfType(FlxG.state, NoteOffsetState)) {
+                    MusicBeatState.switchState(new options.OptionsState(true));
+                    if(options.OptionsState.onPlayState)
+                    {
+                        if(ClientPrefs.data.pauseMusic != 'None')
+                            FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic)));
+                        else
+                            FlxG.sound.music.volume = 0;
+                    }
+                    else FlxG.sound.playMusic(Paths.music('freakyMenu'));
+                    FlxG.mouse.visible = false;
+                }
+                else MusicBeatSubstate.getSubState().close();
             case 'credits':
                 MusicBeatState.switchState(this.prevState);
+            case 'freeplay':
+                FreeplayState.inSubstate = false;
+			    MusicBeatSubstate.getSubState().close();
             default:
                 FlxTween.tween(FlxG.camera, {y: Lib.application.window.height}, 1.2, {
                     ease: FlxEase.expoInOut, 

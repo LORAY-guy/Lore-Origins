@@ -464,7 +464,7 @@ class PlayState extends MusicBeatState
 			case 'mariotennis': new states.stages.MarioTennis(); //Time for the Ourple pixel measurement everyone has been waiting for...
 
 			/*ORIGINALS*/
-			case 'beach': new states.stages.Beach(); //Da Beach (fun fact: the bg was AI generated... yep... I hate myself)
+			case 'beach': new states.stages.Beach(); //Da Beach (fun fact: the bg was AI generated... yep... I hate myself... I could've just used any PNG ever but nope... Too lazy to change it now)
 			case 'sad': new states.stages.Sad(); //This was a sad day for gamers...
 			case 'sunk': new states.stages.Sunk(); //Funny Iron Lung remix
 			case 'ar': new states.stages.AR(); //Why was this game taken down?
@@ -476,7 +476,7 @@ class PlayState extends MusicBeatState
 			case 'detective': new states.stages.addons.Detective(); //Detective Matpat, at your service.
 			case 'action': new states.stages.addons.Action(); //But, y'know... it's just a theory...
 			case 'repugnant': new states.stages.addons.Repugnant(); //Phone guy's in love with foxy, Rule34 is in shambles
-			case 'lore-og': new states.stages.addons.LoreOG(); //The REAL lore (but without the og ourple).
+			case 'lore-og': new states.stages.addons.LoreOG(); //This was made for the Ourple Variants, so this is basically scrapped now
 		}
 
 		if(isPixelStage) {
@@ -523,7 +523,11 @@ class PlayState extends MusicBeatState
 		if (!stageData.hide_girlfriend)
 		{
 			if(SONG.gfVersion == null || SONG.gfVersion.length < 1) SONG.gfVersion = 'gf'; //Fix for the Chart Editor
-			gf = new Character(0, 0, SONG.gfVersion);
+			if (ClientPrefs.data.phoneGuySkin != 'Normal' && SONG.gfVersion.toLowerCase() == 'phone' && PlayState.isCover && (SONG.song != 'Fever' || SONG.song != 'Live' || SONG.song != 'horse-lore' || SONG.song != 'chronology')) {
+				var subSpriteName:String = (ClientPrefs.data.phoneGuySkin == 'Normal' ? '' : '-' + ClientPrefs.data.phoneGuySkin).toLowerCase();
+				gf = new Character(0, 0, 'phone' + subSpriteName);
+			} else
+				gf = new Character(0, 0, SONG.gfVersion);
 			startCharacterPos(gf);
 			gf.scrollFactor.set(0.95, 0.95);
 			gfGroup.add(gf);
@@ -558,15 +562,18 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		dad = new Character(0, 0, SONG.player2);
+		if ((ClientPrefs.data.matpatSkin != 'Normal' && SONG.player2.toLowerCase() == 'matpat') && (SONG.song != 'Fever' || PlayState.isCover)) {
+			var subSpriteName:String = (ClientPrefs.data.matpatSkin == 'Normal' ? '' : '-' + ClientPrefs.data.matpatSkin).toLowerCase();
+			dad = new Character(0, 0, 'matpat' + subSpriteName);
+		} else
+			dad = new Character(0, 0, SONG.player2);
 		startCharacterPos(dad, true);
 		dadGroup.add(dad);
 		startCharacterScripts(dad.curCharacter);
 
-		if ((((SONG.song.toLowerCase() == 'lore-og') && ClientPrefs.data.guy != 'Ourple') || ClientPrefs.data.guy == 'Ourple') && SONG.player1 == 'playguy') { // Pretty linear condition but I'll fix that on the future update, for now, idk how to set every song to be Ourple Variant compatible or not.
-			var spriteName:String = (ClientPrefs.data.guy == 'Ourple' ? 'playguy' : ClientPrefs.data.guy.toLowerCase());
-			var subSpriteName:String = (ClientPrefs.data.ourpleData.get(ClientPrefs.data.guy) == 'Normal' ? '' : '-' + ClientPrefs.data.ourpleData.get(ClientPrefs.data.guy)).toLowerCase();
-			boyfriend = new Character(0, 0, spriteName + subSpriteName, true);
+		if ((ClientPrefs.data.ourpleSkin != 'Normal' && SONG.player1.toLowerCase() == 'playguy') && (SONG.song != 'Fever' || PlayState.isCover)) {
+			var subSpriteName:String = (ClientPrefs.data.ourpleSkin == 'Normal' ? '' : '-' + ClientPrefs.data.ourpleSkin).toLowerCase();
+			boyfriend = new Character(0, 0, 'playguy' + subSpriteName, true);
 		} else {
 			boyfriend = new Character(0, 0, SONG.player1, true);
 		}
@@ -616,7 +623,11 @@ class PlayState extends MusicBeatState
 		if(ClientPrefs.data.timeBarType == 'Song Name') timeTxt.text = CoolUtil.removeSymbol(SONG.song, 'lore-');
 		updateTime = showTime;
 
-		timeBar = new Bar(0, (ClientPrefs.data.downScroll ? 640 : -15), 'OurpleHUD/lore', function() return songPercent, 0, 1);
+		var barImage:String = 'loreTimeBar';
+		if (SONG.song.toLowerCase() == 'distractible' || SONG.song.toLowerCase() == 'lua')
+			barImage = 'timeBar';
+
+		timeBar = new Bar(0, (ClientPrefs.data.downScroll ? 640 : -15), 'OurpleHUD/${barImage}', function() return songPercent, 0, 1);
 		timeBar.scrollFactor.set();
 		timeBar.screenCenter(X);
 		timeBar.alpha = 0;
@@ -794,7 +805,7 @@ class PlayState extends MusicBeatState
 
 		switch (SONG.song.toLowerCase())
 		{
-			case 'lore-sad', 'lore-awesomix', 'chronology', 'action', 'lore-apology':
+			case 'lore-sad', 'lore-awesomix', 'chronology', 'action', 'lore-apology', 'lua':
 				skipCountdown = true;
 		}
 
@@ -909,6 +920,9 @@ class PlayState extends MusicBeatState
 		iconP2.scale.set(1.2, 1.2);
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
+
+		if (SONG.song.toLowerCase().contains('sad'))
+			iconP2.animation.curAnim.curFrame = 1;
 
 		if (gf != null) 
 		{
@@ -2084,9 +2098,9 @@ class PlayState extends MusicBeatState
 			babyArrow.downScroll = ClientPrefs.data.downScroll;
 			if (!isStoryMode && !skipArrowStartTween)
 			{
-				//babyArrow.y -= 10;
+				babyArrow.y -= 10;
 				babyArrow.alpha = 0;
-				FlxTween.tween(babyArrow, {/*y: babyArrow.y + 10,*/ alpha: targetAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: targetAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 			else
 				babyArrow.alpha = targetAlpha;
@@ -2256,23 +2270,23 @@ class PlayState extends MusicBeatState
 		}
 		callOnScripts('onUpdate', [elapsed]);
 
-		if (healthBar.percent < 20) {
+		if (healthBar.percent < 20 && (SONG.player1.contains("playguy") && !SONG.player1.contains("afton"))) {
 			iconP1.angle = FlxG.random.float(-5, 5);
 		} else {
 			iconP1.angle = 0;
 		}
 
-		if (ClientPrefs.data.lorayWatermark)
+		if (ClientPrefs.data.lorayWatermark && loraySign != null)
 		{
-			if (loraySign != null)
+			if (FlxG.mouse.overlaps(loraySign, camHUD)) //Doesn't work with FlxTexts, so here's a workaround ig
 			{
-				if (FlxG.mouse.overlaps(loraySign, camHUD)) //Doesn't work with FlxTexts, so here's a workaround ig
-				{
-					lorayTxt.color = 0x3fe780;
-					if (FlxG.mouse.justPressed)
-						CoolUtil.browserLoad('https://youtube.com/@LORAY_');
-				} else {
-					lorayTxt.color = 0xFFFFFF;
+				lorayTxt.color = 0x3fe780;
+				if (FlxG.mouse.justPressed) {
+					var ret:Dynamic = callOnScripts('onPause', null, true);
+					if(ret != LuaUtils.Function_Stop) {
+						openPauseMenu();
+					}
+					CoolUtil.browserLoad('https://youtube.com/@LORAY_');
 				}
 			} else {
 				lorayTxt.color = 0xFFFFFF;
@@ -2292,7 +2306,7 @@ class PlayState extends MusicBeatState
 			botplayTxt.alpha = 1 - Math.sin((Math.PI * botplaySine) / 180);
 		}
 
-		if (controls.PAUSE_P && startedCountdown && canPause)
+		if (controls.PAUSE_P #if mobile || controls.BACK_P #end && startedCountdown && canPause)
 		{
 			var ret:Dynamic = callOnScripts('onPause', null, true);
 			if(ret != LuaUtils.Function_Stop) {
@@ -2502,21 +2516,11 @@ class PlayState extends MusicBeatState
 			if (scaredTime >= 60) Achievements.unlock('u_scawy');
 		}
 
-		if (!endingSong && !startingSong && FlxG.sound.muted && FlxG.sound.isCheater)
+		if ((FlxG.keys.pressed.C && FlxG.keys.pressed.D && (FlxG.keys.justPressed.NUMPADPLUS || FlxG.keys.justPressed.PLUS)) ||
+			(!endingSong && !startingSong && FlxG.sound.muted && FlxG.sound.isCheater))
 		{
+			skippedSong = true;
 			Achievements.unlock('cheater');
-			skippedSong = true;
-			clearNotesBefore(FlxG.sound.music.length - 10);
-			setSongTime(FlxG.sound.music.length - 10);
-			endSong();
-			vocals.volume = 0;
-			opponentVocals.volume = 0;
-		}
-
-		if (FlxG.keys.pressed.C && FlxG.keys.pressed.D && (FlxG.keys.justPressed.NUMPADPLUS || FlxG.keys.justPressed.PLUS))
-		{
-			skippedSong = true;
-			Achievements.unlock('exploiter');
 			KillNotes();
 			endSong();
 			vocals.volume = 0;
@@ -2587,66 +2591,113 @@ class PlayState extends MusicBeatState
 		var newPercent:Null<Float> = FlxMath.remapToRange(FlxMath.bound(healthBar.valueFunction(), healthBar.bounds.min, healthBar.bounds.max), healthBar.bounds.min, healthBar.bounds.max, 0, 100);
 		healthBar.percent = (newPercent != null ? newPercent : 0);
 
-		if (iconP1.isCool)
-		{
-			if (healthBar.percent < 20) {
-				iconP1.animation.curAnim.curFrame = 1;
-			} else if (healthBar.percent >= 20 && healthBar.percent <= 80) {
-				iconP1.animation.curAnim.curFrame = 0;
-			} else if (healthBar.percent > 80) {
-				iconP1.animation.curAnim.curFrame = 2;
-			}
-		}
-		else 
-		{
-			if (healthBar.percent < 20) {
-				iconP1.animation.curAnim.curFrame = 1;
-			} else {
-				iconP1.animation.curAnim.curFrame = 0;
-			}
-		}
+		handleIconsAnims();
+		return health;
+	}
 
-		if (iconP2.isCool)
-		{
-			if (healthBar.percent < 20) {
-				iconP2.animation.curAnim.curFrame = 2;
-			} else if (healthBar.percent >= 20 && healthBar.percent <= 80) {
-				iconP2.animation.curAnim.curFrame = 0;
-			} else if (healthBar.percent > 80) {
-				iconP2.animation.curAnim.curFrame = 1;
-			}
-		}
-		else
-		{
-			if (healthBar.percent > 80) {
-				iconP2.animation.curAnim.curFrame = 1;
-			} else {
-				iconP2.animation.curAnim.curFrame = 0;
-			}
-		}
-
-		if (gf != null)
-		{
-			if (iconP3.isCool)
+	private function handleIconsAnims():Void
+	{
+		if (SONG.song.toLowerCase() != 'lua') { // Basically, they prefer seeying their lover win rather than themselves, true love if you will
+			if (iconP1.isCool)
 			{
 				if (healthBar.percent < 20) {
-					iconP3.animation.curAnim.curFrame = 2;
+					iconP1.animation.curAnim.curFrame = 1;
 				} else if (healthBar.percent >= 20 && healthBar.percent <= 80) {
-					iconP3.animation.curAnim.curFrame = 0;
+					iconP1.animation.curAnim.curFrame = 0;
 				} else if (healthBar.percent > 80) {
-					iconP3.animation.curAnim.curFrame = 1;
+					iconP1.animation.curAnim.curFrame = 2;
+				}
+			}
+			else 
+			{
+				if (healthBar.percent < 20) {
+					iconP1.animation.curAnim.curFrame = 1;
+				} else {
+					iconP1.animation.curAnim.curFrame = 0;
+				}
+			}
+
+			if (!SONG.song.toLowerCase().contains('sad')) {
+				if (iconP2.isCool)
+				{
+					if (healthBar.percent < 20) {
+						iconP2.animation.curAnim.curFrame = 2;
+					} else if (healthBar.percent >= 20 && healthBar.percent <= 80) {
+						iconP2.animation.curAnim.curFrame = 0;
+					} else if (healthBar.percent > 80) {
+						iconP2.animation.curAnim.curFrame = 1;
+					}
+				}
+				else
+				{
+					if (healthBar.percent > 80) {
+						iconP2.animation.curAnim.curFrame = 1;
+					} else {
+						iconP2.animation.curAnim.curFrame = 0;
+					}
+				}
+			}
+
+			if (gf != null)
+			{
+				if (iconP3.isCool)
+				{
+					if (healthBar.percent < 20) {
+						iconP3.animation.curAnim.curFrame = 2;
+					} else if (healthBar.percent >= 20 && healthBar.percent <= 80) {
+						iconP3.animation.curAnim.curFrame = 0;
+					} else if (healthBar.percent > 80) {
+						iconP3.animation.curAnim.curFrame = 1;
+					}
+				}
+				else
+				{
+					if (healthBar.percent > 80) {
+						iconP3.animation.curAnim.curFrame = 1;
+					} else {
+						iconP3.animation.curAnim.curFrame = 0;
+					}
+				}
+			}
+		} else {
+			if (iconP1.isCool)
+			{
+				if (healthBar.percent < 20) {
+					iconP1.animation.curAnim.curFrame = 2;
+				} else if (healthBar.percent >= 20 && healthBar.percent <= 80) {
+					iconP1.animation.curAnim.curFrame = 0;
+				} else if (healthBar.percent > 80) {
+					iconP1.animation.curAnim.curFrame = 1;
 				}
 			}
 			else
 			{
 				if (healthBar.percent > 80) {
-					iconP3.animation.curAnim.curFrame = 1;
+					iconP1.animation.curAnim.curFrame = 1;
 				} else {
-					iconP3.animation.curAnim.curFrame = 0;
+					iconP1.animation.curAnim.curFrame = 0;
+				}
+			}
+
+			if (iconP2.isCool)
+			{
+				if (healthBar.percent < 20) {
+					iconP2.animation.curAnim.curFrame = 1;
+				} else if (healthBar.percent >= 20 && healthBar.percent <= 80) {
+					iconP2.animation.curAnim.curFrame = 0;
+				} else if (healthBar.percent > 80) {
+					iconP2.animation.curAnim.curFrame = 2;
+				}
+			}
+			else 
+			{
+				if (healthBar.percent < 20) {
+					iconP2.animation.curAnim.curFrame = 1;
+				} else {
+					iconP2.animation.curAnim.curFrame = 0;
 				}
 			}
 		}
-		return health;
 	}
 
 	function openPauseMenu()
@@ -3050,7 +3101,7 @@ class PlayState extends MusicBeatState
 				FlxG.sound.play(Paths.sound(value1), flValue2);
 		}
 
-		if (boyfriend.curCharacter.startsWith('playguy')) {
+		if (boyfriend.curCharacter.startsWith('playguy') && (!boyfriend.curCharacter.toLowerCase().contains('rtx') || !boyfriend.curCharacter.toLowerCase().contains('afton'))) {
 			if (eventName == 'Play Animation' && (value2 == 'bf' || flValue2 == 0)) {
 				if (eventTweensManager.exists('raise')) eventTweensManager.get('raise').cancel();
 				boyfriend.y = boyfriend.defaultY;
@@ -3254,10 +3305,15 @@ class PlayState extends MusicBeatState
 			else
 			{
 				trace('WENT BACK TO FREEPLAY??');
-				Mods.loadTopMod();
 				#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
 
-				MusicBeatState.switchState(new FreeplayState(true));
+				switch (PlayState.SONG.song.toLowerCase()) {
+					case 'distractible', 'lua':
+						MusicBeatState.switchState(new states.credits.CreditsSubgroupState(true));
+					default:
+						Mods.loadTopMod();
+						MusicBeatState.switchState(new FreeplayState(true));		
+				}
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				changedDifficulty = false;
 			}
@@ -4126,7 +4182,7 @@ class PlayState extends MusicBeatState
 		setOnScripts('curStep', curStep);
 		callOnScripts('onStepHit');
 
-		if (boyfriend.curCharacter.startsWith('playguy') && !boyfriend.curCharacter.contains('mad'))
+		if (boyfriend.curCharacter.startsWith('playguy') && !boyfriend.curCharacter.contains('mad') && !boyfriend.curCharacter.contains('afton'))
 		{
 			if (healthBar.percent < 20 && curStep % 2 == 0)
 			{
@@ -4197,69 +4253,6 @@ class PlayState extends MusicBeatState
 					case 1788, 1790, 1791:
 						gf.playAnim('singUP', true);
 				}
-			
-			case 'measure-up':
-				switch (curStep) {
-					case 128, 384, 640, 896, 1152, 1280, 1408, 1664, 1792, 2304, 2560:
-						camGame.flash(FlxColor.WHITE, 1.2);
-				
-					case 240, 760, 1016, 1264, 2416, 2672:
-						cameraSpeed = 1000;
-						camGame.zoom = 1;
-						defaultCamZoom = 1;
-				
-					case 256, 768:
-						camGame.flash(FlxColor.WHITE, 1.2);
-						cameraSpeed = 1.75;
-						defaultCamZoom = 0.75;
-				
-					case 512, 1536, 2176:
-						if (curStep == 512 || curStep == 2176) camGame.flash(FlxColor.WHITE, 1.2);
-						if (curStep == 1536) {
-							eventTweensManager.set("camGame", eventTweens.tween(camGame, { zoom: 1.1 }, Std.int((Conductor.crochet / 1000) * 32), { ease: FlxEase.sineInOut, onComplete: function(twn: FlxTween) {
-								eventTweensManager.remove("camGame");
-							} }));
-						}
-						defaultCamZoom = 0.85;
-						cameraSpeed = 1000;
-				
-					case 1024:
-						camGame.flash(FlxColor.WHITE, 1.2);
-						cameraSpeed = 1.75;
-						defaultCamZoom = 0.85;
-				
-					case 1660:
-						camLock(true);
-				
-					case 1668:
-						camLock();
-						cameraSpeed = 1.75;
-						camGame.zoom = 0.85;
-						defaultCamZoom = 0.85;
-				
-					case 1904:
-						camGame.zoom = 0.8;
-						defaultCamZoom = 0.8;
-						cameraSpeed = 1000;
-				
-					case 1920:
-						camGame.flash(FlxColor.WHITE, 1.2);
-						defaultCamZoom = 0.75;
-						cameraSpeed = 1.75;
-				
-					case 2432, 2688:
-						camGame.zoom = 0.85;
-						defaultCamZoom = 0.85;
-						cameraSpeed = 1000;
-						if (curStep == 2688)
-							camOther.flash(FlxColor.WHITE, 1.2);
-						else
-							camGame.flash(FlxColor.WHITE, 1.2);
-
-					case 2696:
-						camGame.visible = false;
-						camHUD.visible = false;
-				}
 
 			case 'lore-tropical':
 				switch(curStep)
@@ -4270,10 +4263,6 @@ class PlayState extends MusicBeatState
 						eventTweensManager.set('gfDrop', eventTweens.tween(gf, {y: 450}, 1, {ease:FlxEase.bounceOut, onComplete: function(twn:FlxTween) {
 							eventTweensManager.remove('gfDrop');
 						}}));
-					
-					case 3872:
-						camGame.visible = false;
-						camHUD.visible = false;
 				}
 			
 			case 'lore-sad':
@@ -4404,7 +4393,7 @@ class PlayState extends MusicBeatState
 		super.beatHit();
 		lastBeatHit = curBeat;
 
-		if (boyfriend.curCharacter.startsWith('playguy')) {
+		if (boyfriend.curCharacter.startsWith('playguy') && !boyfriend.curCharacter.contains('afton')) {
 			if (healthBar.percent > 20) {
 				boyfriend.flipped = !boyfriend.flipped;
 				iconP1.flipX = boyfriend.flipped;
@@ -4853,12 +4842,12 @@ class PlayState extends MusicBeatState
 
 		new FlxTimer().start(4, function(tmr:FlxTimer)
 		{
-			FlxG.mouse.visible = false;
 			FlxTween.tween(lorayTxt, {x: (-lorayTxt.width + 95)}, Conductor.crochet / 250, {ease: FlxEase.quadIn});
 			FlxTween.tween(loraySign, {x: -loraySign.width}, Conductor.crochet / 250, {
 				ease: FlxEase.quadIn,
 				onComplete: function(twn:FlxTween)
 				{
+					FlxG.mouse.visible = false;
 					loraySign.kill();
 					lorayTxt.kill();
 				}
@@ -4882,11 +4871,7 @@ class PlayState extends MusicBeatState
 				ClientPrefs.data.songPlayed.get('Originals').push(SONG.song);
 			}
 
-			if (ClientPrefs.data.guy != 'Ourple' && !ClientPrefs.data.ourpleUsed.contains(ClientPrefs.data.guy)) {
-				ClientPrefs.data.ourpleUsed.push(ClientPrefs.data.guy); //Keeping this just in case
-			}
-
-			if (SONG.song.toLowerCase() == 'distractible') Achievements.unlock('distracted');
+			Achievements.unlock(SONG.song.toLowerCase());
 		}
 
 		for (name in achievesToCheck) {
