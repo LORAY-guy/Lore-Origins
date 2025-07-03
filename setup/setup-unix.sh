@@ -12,7 +12,7 @@ haxelib install flixel-tools
 haxelib install SScript
 haxelib install hxCodec 3.0.2
 haxelib install tjson 1.0.4
-haxelib install hscript-iris 1.1.3
+haxelib install hscript-iris 1.0.2
 haxelib install hxvlc 2.2.1
 haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
 haxelib git linc_luajit https://github.com/superpowers04/linc_luajit

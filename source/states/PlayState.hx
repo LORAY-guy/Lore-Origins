@@ -2511,7 +2511,7 @@ class PlayState extends MusicBeatState
 		}
 
 		#if ACHIEVEMENTS_ALLOWED
-		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible')
+		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && SONG.song.toLowerCase() != 'lua')
 		{
 			if (bonnet.visible && FlxG.mouse.overlaps(bonnet, camOther) && FlxG.mouse.justPressed)
 			{

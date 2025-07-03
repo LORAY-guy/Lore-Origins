@@ -57,7 +57,7 @@ class FreeplaySelectState extends MusicBeatState
 		var lettabox1:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox1.scrollFactor.set(0, 0);
 		lettabox1.velocity.set(40, 0);
-		lettabox1.y = 635;
+		lettabox1.y = FlxG.height - lettabox1.height;
 		add(lettabox1);
 
 		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox2'), X, 0, 0);

@@ -38,7 +38,7 @@ import flixel.input.mouse.FlxMouse;
 #if FLX_GAMEPAD
 import flixel.input.gamepad.FlxGamepadManager;
 #end
-#if mobile
+#if android
 import flixel.input.android.FlxAndroidKeys;
 #end
 #if FLX_ACCELEROMETER
@@ -246,7 +246,7 @@ class FlxG
 	public static var gamepads(default, null):FlxGamepadManager;
 	#end
 
-	#if mobile
+	#if android
 	/**
 	 * Useful for tracking Back, Home buttons etc on Android devices.
 	 */
@@ -565,7 +565,7 @@ class FlxG
 		gamepads = inputs.add(new FlxGamepadManager());
 		#end
 
-		#if mobile
+		#if android
 		android = inputs.add(new FlxAndroidKeys());
 		#end
 

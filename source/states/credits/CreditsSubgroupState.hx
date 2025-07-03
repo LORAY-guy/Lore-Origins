@@ -1,6 +1,6 @@
 package states.credits;
 
-#if (!html5 && !android)
+#if (!html5 && !mobile)
 import backend.Song;
 #end
 
@@ -16,7 +16,7 @@ class CreditsSubgroupState extends MusicBeatState
 
 	public var subGroupsNames:FlxTypedGroup<Alphabet>;
 
-    #if (!html5 && !android)
+    #if (!html5 && !mobile)
 	var keypad:Keypad;
 	var cameraId:FlxSprite;
     #end
@@ -49,7 +49,7 @@ class CreditsSubgroupState extends MusicBeatState
 		grid.alpha = 0.5;
 		add(grid);
 
-        #if (!html5 && !android)
+        #if (!html5 && !mobile)
 		keypad = new Keypad(40, FlxG.height - 500);
 		add(keypad);
 
@@ -129,7 +129,7 @@ class CreditsSubgroupState extends MusicBeatState
 				}
 			});
 			
-			if (controls.ACCEPT_P || (FlxG.mouse.justPressed && mouseOverSelected && !FlxG.mouse.overlaps(exitButton) #if (!html5 && !android) && !FlxG.mouse.overlaps(keypad) #end)) {
+			if (controls.ACCEPT_P || (FlxG.mouse.justPressed && mouseOverSelected && !FlxG.mouse.overlaps(exitButton) #if (!html5 && !mobile) && !FlxG.mouse.overlaps(keypad) #end)) {
 				selectedSomethin = true;
 				canClick = false;
 
@@ -152,7 +152,7 @@ class CreditsSubgroupState extends MusicBeatState
         curSubGroup = curSelected;
 		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
 
-        #if (!html5 && !android)
+        #if (!html5 && !mobile)
         cameraId.alpha = FlxMath.lerp(0, cameraId.alpha, Math.exp(-elapsed * 2));
 		if (FlxG.mouse.deltaScreenX > 0 || FlxG.mouse.deltaScreenY > 0) {
 			cameraId.alpha += 0.05;
@@ -203,7 +203,7 @@ class CreditsSubgroupState extends MusicBeatState
 	}
 }
 
-#if (!html5 && !android)
+#if (!html5 && !mobile)
 class Keypad extends FlxTypedGroup<FlxSprite>
 {
     public var handunit:FlxSprite;
