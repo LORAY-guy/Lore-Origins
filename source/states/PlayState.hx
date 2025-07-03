@@ -296,7 +296,6 @@ class PlayState extends MusicBeatState
 
 	#if ACHIEVEMENTS_ALLOWED
 	/**Achievement shit**/
-	private var inputBuffer:String = "";
 	var skippedSong:Bool = false; //Avoid people farming achievements
 
 	//U scawy Achievement
@@ -307,6 +306,11 @@ class PlayState extends MusicBeatState
     var lolBitWarning:FlxSprite;
 	var lolBitSound:FlxSound;
 	var lolBitLuck:Float = 0.15 * ClientPrefs.data.miscEvents;
+	#if mobile
+	private var lolBitCounter:Int = 0;
+	#else
+	private var inputBuffer:String = "";
+	#end
 
 	//Bonnet Achievement
 	var bonnet:FlxSprite;
@@ -1232,17 +1236,17 @@ class PlayState extends MusicBeatState
 	#if ACHIEVEMENTS_ALLOWED
 	function cacheAchievementsStuff()
 	{
-		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible')
+		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && SONG.song.toLowerCase() != 'lua')
 		{
 			Paths.sound('lolbit');
 			Paths.sound('nosepush');
 			Paths.sound('boom');
 
 			lolBitWarning = new FlxSprite().loadGraphic(Paths.image('miscEvents/lolbit'));
-			lolBitWarning.cameras = [camHUD];
 			lolBitWarning.scale.set(0.75, 0.75);
 			lolBitWarning.updateHitbox();
 			lolBitWarning.screenCenter(XY);
+			lolBitWarning.cameras = [camHUD];
 			add(lolBitWarning);
 			lolBitWarning.visible = false;
 	
@@ -2138,7 +2142,7 @@ class PlayState extends MusicBeatState
 			eventTimers.active = false;
 
 			#if ACHIEVEMENTS_ALLOWED
-			if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible') {
+			if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && SONG.song.toLowerCase() != 'lua') {
 				if (whisper.playing) whisper.pause();
 				if (lolBitState) lolBitSound.pause();
 			} 
@@ -2178,7 +2182,7 @@ class PlayState extends MusicBeatState
 			eventTimers.active = true;
 
 			#if ACHIEVEMENTS_ALLOWED
-			if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible') {
+			if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && SONG.song.toLowerCase() != 'lua') {
 				if (no1crate.visible) whisper.resume();
 				if (lolBitState) lolBitSound.resume();
 			}
@@ -2199,6 +2203,7 @@ class PlayState extends MusicBeatState
 	override public function onFocus():Void
 	{
 		if (health > 0 && !paused) resetRPC(Conductor.songPosition > 0.0);
+
 		super.onFocus();
 	}
 
@@ -2206,6 +2211,15 @@ class PlayState extends MusicBeatState
 	{
 		#if DISCORD_ALLOWED
 		if (health > 0 && !paused && autoUpdateRPC) DiscordClient.changePresence(detailsPausedText, SONG.song, iconP2.getCharacter());
+		#end
+		
+		#if mobile
+		if (!paused) {
+			var ret:Dynamic = callOnScripts('onPause', null, true);
+			if (ret != LuaUtils.Function_Stop) {
+				openPauseMenu();
+			}
+		}
 		#end
 
 		super.onFocusLost();
@@ -2273,6 +2287,19 @@ class PlayState extends MusicBeatState
 		} else {
 			iconP1.angle = 0;
 		}
+
+		#if (ACHIEVEMENTS_ALLOWED && mobile)
+		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && SONG.song.toLowerCase() != 'lua') {
+			if (lolBitState && lolBitCounter < 3 && FlxG.mouse.justPressed) {
+				camHUD.zoom += 0.1;
+				FlxG.sound.play(Paths.sound('cameraBlip'), 1);
+				lolBitCounter++;
+				if (lolBitCounter == 3) { // We never know...
+					closeLolBitState();
+				}
+			}
+		}
+		#end
 
 		if (ClientPrefs.data.lorayWatermark && loraySign != null)
 		{
@@ -2595,7 +2622,7 @@ class PlayState extends MusicBeatState
 
 	private function handleIconsAnims():Void
 	{
-		if (SONG.song.toLowerCase() != 'lua') { // Basically, they prefer seeying their lover win rather than themselves, true love if you will
+		if (SONG.song.toLowerCase() != 'lua') {
 			if (iconP1.isCool)
 			{
 				if (healthBar.percent < 20) {
@@ -2655,44 +2682,6 @@ class PlayState extends MusicBeatState
 					} else {
 						iconP3.animation.curAnim.curFrame = 0;
 					}
-				}
-			}
-		} else {
-			if (iconP1.isCool)
-			{
-				if (healthBar.percent < 20) {
-					iconP1.animation.curAnim.curFrame = 2;
-				} else if (healthBar.percent >= 20 && healthBar.percent <= 80) {
-					iconP1.animation.curAnim.curFrame = 0;
-				} else if (healthBar.percent > 80) {
-					iconP1.animation.curAnim.curFrame = 1;
-				}
-			}
-			else
-			{
-				if (healthBar.percent > 80) {
-					iconP1.animation.curAnim.curFrame = 1;
-				} else {
-					iconP1.animation.curAnim.curFrame = 0;
-				}
-			}
-
-			if (iconP2.isCool)
-			{
-				if (healthBar.percent < 20) {
-					iconP2.animation.curAnim.curFrame = 1;
-				} else if (healthBar.percent >= 20 && healthBar.percent <= 80) {
-					iconP2.animation.curAnim.curFrame = 0;
-				} else if (healthBar.percent > 80) {
-					iconP2.animation.curAnim.curFrame = 2;
-				}
-			}
-			else 
-			{
-				if (healthBar.percent < 20) {
-					iconP2.animation.curAnim.curFrame = 1;
-				} else {
-					iconP2.animation.curAnim.curFrame = 0;
 				}
 			}
 		}
@@ -2781,20 +2770,22 @@ class PlayState extends MusicBeatState
 				#end
 
 				#if ACHIEVEMENTS_ALLOWED
-				if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible')
+				if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && SONG.song.toLowerCase() != 'lua')
 				{
 					if (lolBitState) {
 						lolBitWarning.destroy();
 						lolBitSound.destroy();
+						#if mobile
+						lolBitCounter = 0;
+						#else
 						inputBuffer = "";
+						#end
 						lolBitState = false;
 					}
 					boomNoise.destroy();
 					whisper.destroy();
 				}
-				#end
 
-				#if ACHIEVEMENTS_ALLOWED
 				if (SONG.song.toLowerCase() == 'lore-sad' && songHits == 0 && canReset)
 					Achievements.unlock('too_sad');
 				#end
@@ -3225,7 +3216,7 @@ class PlayState extends MusicBeatState
 		seenCutscene = false;
 
 		#if ACHIEVEMENTS_ALLOWED
-		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible')
+		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && SONG.song.toLowerCase() != 'lua')
 		{
 			if (lolBitState) closeLolBitState(false);
 			if (no1crate.visible) {
@@ -3538,14 +3529,14 @@ class PlayState extends MusicBeatState
 
 		var char:String = String.fromCharCode(event.charCode).toLowerCase();
 
-		#if ACHIEVEMENTS_ALLOWED
+		#if (ACHIEVEMENTS_ALLOWED && !mobile)
 		if (key == -1 || authorizedKeys.contains(char)) //Runs if the key pressed isn't part of the player's controls
 		{
 			inputBuffer += char;
 	
-			if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && lolBitState)
+			if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && SONG.song.toLowerCase() != 'lua' && lolBitState)
 			{
-				if (char == 'l' || char == 'o') 
+				if (authorizedKeys.contains(char)) 
 					FlxG.sound.play(Paths.sound('cameraBlip'), 1);
 				else
 					inputBuffer = "";
@@ -3554,7 +3545,7 @@ class PlayState extends MusicBeatState
 			switch (inputBuffer)
 			{
 				case "lol":
-					if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && lolBitState) 
+					if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && SONG.song.toLowerCase() != 'lua' && lolBitState) 
 						closeLolBitState();
 					else
 						inputBuffer = "";
@@ -3740,23 +3731,6 @@ class PlayState extends MusicBeatState
 				if (boyfriend.curCharacter.contains('staring')) boyfriend.x = boyfriend.defaultX;
 				boyfriend.flipX = true;
 			}
-		}
-
-		if (boyfriend.curCharacter.startsWith('bloxxy')) FlxG.sound.play(Paths.sound('OOF')); //Funni mechanic ig
-
-		if (!ClientPrefs.data.lowQuality && boyfriend.curCharacter.startsWith('hrey')) {
-			var splash:FlxSprite = new FlxSprite().loadGraphic(Paths.imageRandom('ink/ink', 1, 4));
-			splash.angle = FlxG.random.int(-15, 15);
-			splash.scale.set(FlxG.random.float(0.4, 0.7), FlxG.random.float(0.4, 0.7));
-			splash.cameras = [camOther];
-			splash.setPosition(FlxG.random.float(-FlxG.width / 2, FlxG.width / 2), FlxG.random.float(-FlxG.height / 2, FlxG.height / 2));
-			add(splash);
-			FlxG.sound.play(Paths.sound('splash'), 0.5);
-			new FlxTimer().start(0.5, function(tmr:FlxTimer) {
-				FlxTween.tween(splash, {y: splash.y + 75, alpha: 0}, 0.4, {ease: FlxEase.cubeOut, onComplete: function(twn:FlxTween) {
-					splash.destroy();
-				}});
-			});
 		}
 
 		var result:Dynamic = callOnLuas('noteMiss', [notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote]);
@@ -4132,7 +4106,7 @@ class PlayState extends MusicBeatState
 			hscriptArray.pop();
 		#end
 
-		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible')
+		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && SONG.song.toLowerCase() != 'lua')
 		{
 			if (lolBitState) {
 				closeLolBitState(false);
@@ -4511,15 +4485,20 @@ class PlayState extends MusicBeatState
 		}
 
 		#if ACHIEVEMENTS_ALLOWED
-		//Lolbit Achievement Shit
-		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && !skippedSong && !inLoreCutscene)
+		//Lore Origins Achievement Shit
+		if (ClientPrefs.data.miscEvents > 0 && SONG.song.toLowerCase() != 'distractible' && SONG.song.toLowerCase() != 'lua' && !skippedSong && !inLoreCutscene)
 		{
 			if (!lolBitState && FlxG.random.bool(lolBitLuck))
 			{
 				lolBitState = true;
 				boyfriend.stunned = true;
-				inputBuffer = '';
-	
+				#if mobile
+				FlxG.mouse.visible = true;
+				lolBitCounter = 0;
+				#else
+				inputBuffer = "";
+				#end
+
 				lolBitWarning.visible = true;
 				lolBitSound.volume = 0.75;
 			}
@@ -4629,7 +4608,6 @@ class PlayState extends MusicBeatState
 	#end
 
 	public function callOnScripts(funcToCall:String, args:Array<Dynamic> = null, ignoreStops = false, exclusions:Array<String> = null, excludeValues:Array<Dynamic> = null):Dynamic {
-		var returnVal:Dynamic = LuaUtils.Function_Continue;
 		if(args == null) args = [];
 		if(exclusions == null) exclusions = [];
 		if(excludeValues == null) excludeValues = [LuaUtils.Function_Continue];
@@ -4896,8 +4874,18 @@ class PlayState extends MusicBeatState
 		boyfriend.stunned = false;
 		lolBitWarning.visible = false;
 		lolBitSound.volume = 0;
-		if (unlock) Achievements.unlock('lolbit');
+		if (unlock) {
+			// I know Achievements.unlock() checks if its already unlocked or not.
+			// It's to check if the song ended before the player resolved the lolBit achievement
+			// (basically, avoid giving the player the achievement for free if they get really lucky).
+			Achievements.unlock('lolbit');	
+		}
+		#if mobile
+		lolBitCounter = 0;
+		FlxG.mouse.visible = false;
+		#else
 		inputBuffer = "";
+		#end
 		lolBitState = false;
 	}
 	#end

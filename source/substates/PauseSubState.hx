@@ -1,8 +1,8 @@
 package substates;
 
+import flixel.addons.effects.chainable.FlxOutlineEffect.FlxOutlineMode;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.util.FlxStringUtil;
-import flixel.math.FlxRect;
 
 import states.credits.CreditsSubgroupState;
 import states.FreeplayState;
@@ -25,13 +25,10 @@ class PauseSubState extends MusicBeatSubstate
 	var pauseChars:Array<String> = ['dismantle', 'dismantle1', 'guy1', 'lore'];
 
 	var mouseWasVisible:Bool = FlxG.mouse.visible;
-	
-	// Mouse selection variables
-	public var usingMouse:Bool = false;
-	public var canClick:Bool = true;
 
-	// Custom bounds for each menu item
-	var menuItemBounds:Array<FlxRect> = [];
+	#if mobile
+	private var mobileControls:MobileUIControls;
+	#end
 
 	public static var songName:String = null;
 
@@ -52,6 +49,8 @@ class PauseSubState extends MusicBeatSubstate
 			menuItemsOG.insert(5 + num, 'Toggle Botplay');
 		}*/
 		menuItems = menuItemsOG;
+
+		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
 		pauseMusic = new FlxSound();
 		try
@@ -134,12 +133,18 @@ class PauseSubState extends MusicBeatSubstate
 		add(grpMenuShit);
 
 		regenMenu();
-		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+
+		#if mobile
+		mobileControls = new MobileUIControls(true);
+		add(mobileControls);
+
+		Controls.mobileControls = mobileControls;
+		#end
 
 		FlxG.mouse.visible = true;
 		super.create();
 	}
-	
+
 	function getPauseSong()
 	{
 		var formattedSongName:String = (songName != null ? Paths.formatToSongPath(songName) : '');
@@ -166,37 +171,6 @@ class PauseSubState extends MusicBeatSubstate
 		}
 
 		updateSkipTextStuff();
-
-		if (FlxG.mouse.deltaScreenX > 2 || FlxG.mouse.deltaScreenY > 2) FlxG.mouse.visible = true;
-
-		if (controls.UI_UP || controls.UI_DOWN) {
-			usingMouse = false;
-			FlxG.mouse.visible = false;
-		} else {
-			usingMouse = (checkMouseOverBounds() && FlxG.mouse.visible);
-		}
-
-		if (usingMouse && canClick)
-		{
-			for (i in 0...menuItemBounds.length)
-			{
-				var bounds = menuItemBounds[i];
-				if (bounds != null && FlxG.mouse.x >= bounds.x && FlxG.mouse.x <= bounds.right && 
-					FlxG.mouse.y >= bounds.y && FlxG.mouse.y <= bounds.bottom)
-				{
-					if (grpMenuShit.members[i].animation.curAnim.name != 'selected') {
-						changeSelection(i - curSelected);
-					}
-
-					if (FlxG.mouse.justPressed && cantUnpause <= 0)
-					{
-						canClick = false;
-						selectItem();
-					}
-					break;
-				}
-			}
-		}
 
 		if (controls.UI_UP_P)
 		{
@@ -242,38 +216,6 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			selectItem();
 		}
-	}
-
-	function checkMouseOverBounds():Bool
-	{
-		for (bounds in menuItemBounds)
-		{
-			if (bounds != null && FlxG.mouse.x >= bounds.x && FlxG.mouse.x <= bounds.right && 
-				FlxG.mouse.y >= bounds.y && FlxG.mouse.y <= bounds.bottom)
-				return true;
-		}
-		return false;
-	}
-
-	function createCustomBounds(sprite:FlxSprite, itemName:String):FlxRect
-	{
-		var bounds = new FlxRect();
-
-		switch (itemName.toLowerCase())
-		{
-			case 'resume':
-				bounds.set(-170, -32, 288, 248);
-				
-			case 'options':
-				bounds.set(-155, 225, 312, 158);
-				
-			case 'restart':
-				bounds.set(-140, 420, 330, 137);
-				
-			case 'exit':
-				bounds.set(-130, 565, 341, 131);
-		}
-		return bounds;
 	}
 
 	function selectItem():Void
@@ -382,13 +324,10 @@ class PauseSubState extends MusicBeatSubstate
 	override function destroy()
 	{
 		pauseMusic.destroy();
-		
-		// Clean up bounds array
-		for (bounds in menuItemBounds)
-		{
-			if (bounds != null) bounds.destroy();
-		}
-		menuItemBounds = [];
+
+		#if mobile
+		Controls.mobileControls = null;
+		#end
 
 		super.destroy();
 	}
@@ -420,13 +359,6 @@ class PauseSubState extends MusicBeatSubstate
 			spr.destroy();
 		}
 
-		for (bounds in menuItemBounds)
-		{
-			if (bounds != null)
-				bounds.destroy();
-		}
-		menuItemBounds = [];
-
 		for (i in 0...menuItems.length) {
 			var menuItem:FlxSprite = new FlxSprite(50, 1000);
 			menuItem.frames = Paths.getSparrowAtlas('pausemenu/' + menuItems[i]);
@@ -457,18 +389,7 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			spr.alpha = 0;
 			FlxTween.tween(spr, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut, startDelay: spr.ID * 0.1});
-			FlxTween.tween(spr, {y: -25}, 0.4, {ease: FlxEase.backOut, startDelay: spr.ID * 0.1, 
-				onComplete: function(tween:FlxTween) {
-					if (spr.ID < menuItemBounds.length) {
-						if (menuItemBounds[spr.ID] != null) menuItemBounds[spr.ID].destroy();
-					}
-					// Ensure the bounds array is large enough
-					while (menuItemBounds.length <= spr.ID) {
-						menuItemBounds.push(null);
-					}
-					menuItemBounds[spr.ID] = createCustomBounds(spr, menuItems[spr.ID]);
-				}
-			});
+			FlxTween.tween(spr, {y: -25}, 0.4, {ease: FlxEase.backOut, startDelay: spr.ID * 0.1});
 		});
 
 		curSelected = 0;

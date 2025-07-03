@@ -25,7 +25,7 @@ class Sunk extends BaseStage
 			markBg.cameras = [camHUD];
 		}
 
-		end = new FlxSprite(0, 0).makeGraphic(1280, 720, 0xFF000000);
+		end = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
 		end.scrollFactor.set();
 		add(end);
 		end.cameras = [camOther];

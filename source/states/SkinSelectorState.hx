@@ -65,7 +65,7 @@ class SkinSelectorState extends MusicBeatState
     private var exitButton:ExitButton;
 
     #if mobile
-    private var mobileControls:MobileControls;
+    private var mobileControls:MobileUIControls;
     #end
 
     override public function create():Void
@@ -106,7 +106,7 @@ class SkinSelectorState extends MusicBeatState
         add(exitButton);
 
         #if mobile
-        mobileControls = new MobileControls();
+        mobileControls = new MobileUIControls();
         add(mobileControls);
 
         Controls.mobileControls = mobileControls;

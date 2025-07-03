@@ -37,7 +37,7 @@ class NoteOffsetState extends MusicBeatState
 	var exitButton:ExitButton;
 
 	#if mobile
-	private var mobileControls:MobileControls;
+	private var mobileControls:MobileUIControls;
 	#end
 
 	override public function create()
@@ -156,7 +156,7 @@ class NoteOffsetState extends MusicBeatState
 		add(exitButton);
 
 		#if mobile
-		mobileControls = new MobileControls(true);
+		mobileControls = new MobileUIControls(true);
 		mobileControls.cameras = [camOther];
 		add(mobileControls);
 

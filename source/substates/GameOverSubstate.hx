@@ -98,7 +98,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		PlayState.instance.callOnScripts('onUpdate', [elapsed]);
 
-		if (controls.ACCEPT_P)
+		if (controls.ACCEPT_P #if mobile || FlxG.mouse.justPressed #end)
 			endBullshit();
 
 		if (controls.BACK_P)

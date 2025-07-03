@@ -19,7 +19,7 @@ class OptionsState extends MusicBeatState
 	public static var exitButton:ExitButton;
 
 	#if mobile
-	public static var mobileControls:MobileControls;
+	public static var mobileControls:MobileUIControls;
 	#end
 	
 	function openSelectedSubstate(label:String) {
@@ -99,7 +99,7 @@ class OptionsState extends MusicBeatState
 		add(exitButton);
 
 		#if mobile
-        mobileControls = new MobileControls();
+        mobileControls = new MobileUIControls();
         add(mobileControls);
 
         Controls.mobileControls = mobileControls;

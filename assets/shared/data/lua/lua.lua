@@ -16,6 +16,7 @@ function onCreatePost()
     setProperty("gfGroup.alpha", 0)
     setProperty("dadGroup.visible", false)
     setProperty("gfGroup.x", getProperty("gfGroup.x") + 1200)
+    setProperty("iconP2.visible", false)
 end
 
 function onSongStart()
@@ -35,29 +36,31 @@ function onStepHit()
     end
 
     if curStep == 256 then
-        setProperty('defaultCamZoom', 0.225)
+        setProperty('defaultCamZoom', 0.25)
         doTweenAlpha("luaIllusionAppear", "gfGroup", 0.2, (stepCrochet / 1000) * 16, "fadeIn")
         triggerEvent("Camera Follow Pos", getProperty("camFollow.x") + 250, getProperty("camFollow.y"))
     end
 
     if curStep == 384 then
         triggerEvent("Camera Follow Pos", "", "")
-        setProperty('defaultCamZoom', 0.25)
+        setProperty('defaultCamZoom', 0.4)
     end
 
     if curStep == 448 then
         triggerEvent("Camera Follow Pos", getProperty("camFollow.x") + 250, getProperty("camFollow.y"))
-        setProperty('defaultCamZoom', 0.255)
+        setProperty('defaultCamZoom', 0.5)
     end
 
     if curStep == 480 then
-        setProperty('defaultCamZoom', 0.3)
+        setProperty('defaultCamZoom', 0.7)
     end
 
     if curStep == 496 then
         triggerEvent("Camera Follow Pos", "", "")
         setProperty("cameraSpeed", 2)
         setProperty("dadGroup.visible", true)
+        setProperty("iconP2.visible", true)
+        setProperty("luaRTX.visible", true)
         doTweenAlpha("luaIllusionDisappear", "gfGroup", 0, (stepCrochet / 1000) * 8, "fadeOut")
     end
 
@@ -68,15 +71,15 @@ function onStepHit()
     end
 
     if curStep == 784 then
-        doTweenZoom("luaFocusZoomIn", "camGame", 0.25, (stepCrochet / 1000) * 96, "sineInOut")
+        doTweenZoom("luaFocusZoomIn", "camGame", 0.7, (stepCrochet / 1000) * 96, "sineInOut")
     end
 
     if curStep == 880 then
-        setProperty("defaultCamZoom", 0.2)
+        setProperty("defaultCamZoom", 0.5)
     end
 
     if curStep == 1136 then
-        setProperty("defaultCamZoom", 0.25)
+        setProperty("defaultCamZoom", 0.6)
     end
 
     if curStep == 1152 then
@@ -88,7 +91,7 @@ function onStepHit()
     end
 
     if curStep == 1248 then
-        setProperty("defaultCamZoom", 0.2)
+        setProperty("defaultCamZoom", 0.225)
         setProperty("cameraSpeed", 2)
     end
 
@@ -149,8 +152,14 @@ function onStepHit()
     end
 
     if curStep == 2336 then
-        setProperty("defaultCamZoom", 0.4)
+        setProperty("defaultCamZoom", 0.175)
         triggerEvent("Camera Follow Pos", getProperty("camFollow.x") + 235, getProperty("camFollow.y"))
+        setProperty("isCameraOnForcedPos", true)
+        doTweenAlpha("camHUDAlphaOut", "camHUD", 0, (stepCrochet / 1000) * 16, "linear")
+    end
+
+    if curStep == 2344 then
+        doTweenY("up", "camFollow", getProperty("camFollow.y") - 3750, (stepCrochet / 1000) * 16, "sineInOut")
     end
 
     if curStep == 2368 then

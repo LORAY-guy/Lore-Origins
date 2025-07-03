@@ -68,10 +68,10 @@ class Sad extends BaseStage
         spotlightPhoneGuy.visible = false;
         insert(6, spotlightPhoneGuy);
 
-        blackIntro = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK);
+        blackIntro = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         blackIntro.screenCenter(XY);
         blackIntro.cameras = [camOther];
-        blackIntro.alpha = 0.9999; //Precachine purposes
+        blackIntro.alpha = 0.9999; //Precaching purposes
         add(blackIntro);
 
         tutorialTxt = new FlxText(10, (ClientPrefs.data.downScroll) ? 65 : 640, 300, 'Press \'TAB\' to open the countdown', 26);

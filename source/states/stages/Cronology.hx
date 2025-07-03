@@ -249,11 +249,6 @@ class Cronology extends BaseStage
     {
         super.update(elapsed);
 
-        if (FlxG.keys.justPressed.B) {
-            PlayState.instance.clearNotesBefore(250000);
-            PlayState.instance.setSongTime(250000);
-        }
-
         if (!fnafLogo.visible)
             return;
         fnafLogo.velocity.x += 0.5 * mult;
@@ -311,11 +306,10 @@ class Cronology extends BaseStage
 
         for (i in 0...puzzleNames.length)
         {
-            var spr:FlxSprite = new FlxSprite(250 * i).loadGraphic(Paths.image('introStuff/' + puzzleNames[i]));
+            var spr:FlxSprite = new FlxSprite((FlxG.width / 5) * (i - 1)).loadGraphic(Paths.image('introStuff/' + puzzleNames[i]));
             spr.cameras = [camOther];
             spr.scale.set(0.34, 0.34);
             spr.screenCenter(Y);
-            spr.x -= 250;
             spr.y += 750 * multPuzz;
             puzzPieces.add(spr);
             multPuzz = -multPuzz;
@@ -360,7 +354,7 @@ class Cronology extends BaseStage
         timeline.alpha = 0;
         insert(PlayState.instance.members.indexOf(vintage) - 1, timeline);
 
-        epicTexts = [the, ultimate, fnaf, timeline];
+        epicTexts = [the, ultimate, fnaf, timeline]; // kinda epik
     }
 
     function bringThePiecesIn(spr:FlxSprite)
@@ -374,8 +368,8 @@ class Cronology extends BaseStage
             thingyY = -1;
 
         FlxTween.tween(spr, {
-            x: (spr.x + (20 * thingyX)), 
-            y: (spr.y - (540 * thingyY)), 
+            x: (spr.x + (20 * thingyX)),
+            y: (spr.y - (540 * thingyY)),
             angle: FlxG.random.int(-15, 15)
         }, 1.2, {ease: FlxEase.quadOut});
     }

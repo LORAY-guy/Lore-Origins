@@ -6,7 +6,7 @@ class LoreOG extends BaseStage
 
     override function create() 
     {
-        black = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK);
+        black = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         black.cameras = [camHUD];
         black.visible = false;
         add(black);

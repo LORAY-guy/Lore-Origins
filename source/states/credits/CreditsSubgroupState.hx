@@ -6,6 +6,7 @@ import backend.Song;
 
 import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxBackdrop;
+import flixel.input.keyboard.FlxKey;
 
 class CreditsSubgroupState extends MusicBeatState
 {
@@ -30,7 +31,8 @@ class CreditsSubgroupState extends MusicBeatState
 		#end
 
 		Paths.clearUnusedMemory();
-        if (FlxG.camera.visible == false) FlxG.camera.visible = true;
+        if (!FlxG.camera.visible)
+            FlxG.camera.visible = true;
 
         persistentUpdate = persistentDraw = true;
 
@@ -106,8 +108,7 @@ class CreditsSubgroupState extends MusicBeatState
 			if (FlxG.mouse.wheel != 0) {
 				changeSelection(-FlxG.mouse.wheel);
 			}
-			
-			// Check for mouse hover selection
+
 			checkMouseSelection();
 			
 			if (controls.BACK_P) {
@@ -115,12 +116,10 @@ class CreditsSubgroupState extends MusicBeatState
 				FlxG.camera.zoom += 0.06;
 				exitState(new MainMenuState(true));
 			}
-			
-			// Only confirm if mouse is over the currently selected element
+
 			var mouseOverSelected:Bool = false;
 			subGroupsNames.forEach(function(spr:Alphabet) {
 				if (spr.ID == curSelected) {
-					// Check if mouse overlaps any letter in the selected alphabet sprite
 					for (letter in spr.letters) {
 						if (FlxG.mouse.overlaps(letter)) {
 							mouseOverSelected = true;
@@ -171,7 +170,6 @@ class CreditsSubgroupState extends MusicBeatState
 	function checkMouseSelection()
 	{
 		subGroupsNames.forEach(function(spr:Alphabet) {
-			// Check if mouse overlaps any letter in the alphabet sprite
 			var mouseOverAlphabet:Bool = false;
 			for (letter in spr.letters) {
 				if (FlxG.mouse.overlaps(letter)) {
@@ -303,7 +301,7 @@ class Keypad extends FlxTypedGroup<FlxSprite>
             if (i == 9) { // Place '0' button
                 buttonX = startX + buttonSize + padding;
                 buttonY = startY + 3 * (buttonSize + padding);
-            } else { // Place other buttons
+            } else {
                 buttonX = startX + (i % 3) * (buttonSize + padding);
                 buttonY = startY + Math.floor(i / 3) * (buttonSize + padding);
             }
@@ -354,7 +352,7 @@ class Keypad extends FlxTypedGroup<FlxSprite>
 
         switch (enteredCode)
         {
-            #if !html5
+            #if desktop
             case '395248':
                 CoolUtil.openMinigame();
             #end
@@ -427,16 +425,16 @@ class Keypad extends FlxTypedGroup<FlxSprite>
         if (credits.selectedSomethin)
             return;
 
-        if (FlxG.keys.justPressed.NUMPADZERO) onButtonClick(0);
-        if (FlxG.keys.justPressed.NUMPADONE) onButtonClick(1);
-        if (FlxG.keys.justPressed.NUMPADTWO) onButtonClick(2);
-        if (FlxG.keys.justPressed.NUMPADTHREE) onButtonClick(3);
-        if (FlxG.keys.justPressed.NUMPADFOUR) onButtonClick(4);
-        if (FlxG.keys.justPressed.NUMPADFIVE) onButtonClick(5);
-        if (FlxG.keys.justPressed.NUMPADSIX) onButtonClick(6);
-        if (FlxG.keys.justPressed.NUMPADSEVEN) onButtonClick(7);
-        if (FlxG.keys.justPressed.NUMPADEIGHT) onButtonClick(8);
-        if (FlxG.keys.justPressed.NUMPADNINE) onButtonClick(9);
+        if (FlxG.keys.anyJustPressed([FlxKey.NUMPADZERO, FlxKey.ZERO])) onButtonClick(0);
+        if (FlxG.keys.anyJustPressed([FlxKey.NUMPADONE, FlxKey.ONE])) onButtonClick(1);
+        if (FlxG.keys.anyJustPressed([FlxKey.NUMPADTWO, FlxKey.TWO])) onButtonClick(2);
+        if (FlxG.keys.anyJustPressed([FlxKey.NUMPADTHREE, FlxKey.THREE])) onButtonClick(3);
+        if (FlxG.keys.anyJustPressed([FlxKey.NUMPADFOUR, FlxKey.FOUR])) onButtonClick(4);
+        if (FlxG.keys.anyJustPressed([FlxKey.NUMPADFIVE, FlxKey.FIVE])) onButtonClick(5);
+        if (FlxG.keys.anyJustPressed([FlxKey.NUMPADSIX, FlxKey.SIX])) onButtonClick(6);
+        if (FlxG.keys.anyJustPressed([FlxKey.NUMPADSEVEN, FlxKey.SEVEN])) onButtonClick(7);
+        if (FlxG.keys.anyJustPressed([FlxKey.NUMPADEIGHT, FlxKey.EIGHT])) onButtonClick(8);
+        if (FlxG.keys.anyJustPressed([FlxKey.NUMPADNINE, FlxKey.NINE])) onButtonClick(9);
     }
 }
 #end

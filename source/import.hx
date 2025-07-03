@@ -35,7 +35,7 @@ import backend.Mods;
 import backend.ExitButton;
 
 #if mobile
-import backend.MobileControls;
+import backend.MobileUIControls;
 #end
 
 import objects.Alphabet;

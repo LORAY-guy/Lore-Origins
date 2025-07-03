@@ -11,7 +11,7 @@ class Detective extends BaseStage
     {
         coolfilter = new FlxSprite().loadGraphic(Paths.image('coolfilter'));
         coolfilter.cameras = [camHUD];
-        coolfilter.scale.set(1.8, 1.8);
+        coolfilter.setGraphicSize(FlxG.width, FlxG.height);
         coolfilter.updateHitbox();
         coolfilter.screenCenter(XY);
         add(coolfilter);

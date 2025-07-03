@@ -1,0 +1,17 @@
+{
+	"song": {
+		"player1": "playguy",
+		"player2": "matpat",
+		"events": [],
+		"notes": [],
+		"gfVersion": "phone",
+		"disableNoteRGB": true,
+		"splashSkin": "noteSplashes",
+		"song": "presidency",
+		"arrowSkin": "",
+		"stage": "presidency",
+		"needsVoices": true,
+		"bpm": 187,
+		"speed": 3.1
+	}
+}

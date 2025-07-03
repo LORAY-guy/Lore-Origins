@@ -96,7 +96,7 @@ class Awesomix extends BaseStage
         mapa.cameras = [camOther];
         add(mapa);
 
-        whiteStuff = new FlxSprite().makeGraphic(1280, 720, FlxColor.WHITE, false);
+        whiteStuff = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE, false);
         whiteStuff.antialiasing = false;
         whiteStuff.alpha = 0;
         whiteStuff.cameras = [camOther];

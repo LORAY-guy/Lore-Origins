@@ -66,7 +66,7 @@ class Style extends BaseStage
 
         if (ClientPrefs.data.flashing)
         {
-            redAlarm = new FlxSprite().makeGraphic(1280, 720, FlxColor.RED);
+            redAlarm = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.RED);
             redAlarm.cameras = [camHUD];
             redAlarm.screenCenter(XY);
             redAlarm.alpha = 0;

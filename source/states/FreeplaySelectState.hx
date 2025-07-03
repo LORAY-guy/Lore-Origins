@@ -17,7 +17,7 @@ class FreeplaySelectState extends MusicBeatState
 	var matpat:FlxSprite;
 
 	#if mobile
-	private var mobileControls:MobileControls;
+	private var mobileControls:MobileUIControls;
 	#end
     
     override function create()
@@ -86,7 +86,7 @@ class FreeplaySelectState extends MusicBeatState
 		add(new ExitButton());
 
 		#if mobile
-		mobileControls = new MobileControls(true);
+		mobileControls = new MobileUIControls(true);
 		add(mobileControls);
 
 		Controls.mobileControls = mobileControls;

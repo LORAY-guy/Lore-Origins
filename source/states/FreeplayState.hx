@@ -57,7 +57,7 @@ class FreeplayState extends MusicBeatState
 	var exitButton:ExitButton;
 
 	#if mobile
-	public var mobileControls:MobileControls;
+	public var mobileControls:MobileUIControls;
 	#end
 
 	override function create()
@@ -216,7 +216,7 @@ class FreeplayState extends MusicBeatState
 		add(exitButton);
 
 		#if mobile
-        mobileControls = new MobileControls(true);
+        mobileControls = new MobileUIControls(true);
         add(mobileControls);
 
         Controls.mobileControls = mobileControls;
@@ -622,7 +622,8 @@ class FreeplayState extends MusicBeatState
 					'lore-tropical',
 					'lore-sad',
 					'sunk',
-					'lore-ar'
+					'lore-ar',
+					'presidency'
 				],
 				0,
 				0xff00c3ff);
@@ -696,7 +697,7 @@ class SelectSunkDifficulty extends MusicBeatSubstate //Basically copied the Rese
 	var enterReleased:Bool = #if mobile true #else false #end; //Would just always be false cuz it would instantly select on open
 
 	#if mobile
-	private var mobileControls:MobileControls;
+	private var mobileControls:MobileUIControls;
 	#end
 
 	public function new()
@@ -727,7 +728,7 @@ class SelectSunkDifficulty extends MusicBeatSubstate //Basically copied the Rese
 		add(new ExitButton('freeplay'));
 
 		#if mobile
-		mobileControls = new MobileControls(true);
+		mobileControls = new MobileUIControls(true);
 		add(mobileControls);
 
 		Controls.mobileControls = mobileControls;

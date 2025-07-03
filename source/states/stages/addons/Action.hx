@@ -69,7 +69,7 @@ class Action extends BaseStage
         coolfilter.visible = false;
         add(coolfilter);
 
-        bOverlay = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK);
+        bOverlay = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         bOverlay.cameras = [camOther];
         add(bOverlay);
 

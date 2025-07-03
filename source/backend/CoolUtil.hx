@@ -138,6 +138,7 @@ class CoolUtil
 			Sys.setCwd(minigameDir);
 
 			#if (linux || mac)
+			Sys.command('chmod +x ./I\\ can,\\ tho');
 			Sys.command('(./I\\ can,\\ tho -skipmenu &) && pkill -f Lore\\ Origins');
 			#elseif windows
 			var process:Process = new Process("I can, tho.exe", ["-skipmenu"], false);

@@ -25,14 +25,14 @@ class Repugnant extends BaseStage
             add(cutsceneElts);
     
             redbg = new FlxSprite().loadGraphic(Paths.image('gtbg'));
-            redbg.scale.set((2/3), (2/3));
+            redbg.scale.set((2/3) * (FlxG.width / 1280), (2/3) * (FlxG.height / 720));
             redbg.updateHitbox();
             cutsceneElts.add(redbg);
             redbg.screenCenter(XY);
             redbg.visible = false;
     
             gtlogo = new FlxSprite().loadGraphic(Paths.image('gtLogo'));
-            gtlogo.scale.set((1/3), (1/3));
+            gtlogo.scale.set((1/3) * (FlxG.width / 1280), (1/3) * (FlxG.height / 720));
             gtlogo.updateHitbox();
             cutsceneElts.add(gtlogo);
             gtlogo.screenCenter(XY);

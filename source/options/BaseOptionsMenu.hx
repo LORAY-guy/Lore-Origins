@@ -33,7 +33,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	public var exitButton:ExitButton;
 
 	#if mobile
-	private var mobileControls:MobileControls;
+	private var mobileControls:MobileUIControls;
 	#end
 
 	public function new()
@@ -134,7 +134,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		add(exitButton);
 
 		#if mobile
-        mobileControls = new MobileControls();
+        mobileControls = new MobileUIControls();
         add(mobileControls);
 
         Controls.mobileControls = mobileControls;

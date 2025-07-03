@@ -64,47 +64,6 @@ function onCreate()
     scaleObject("hazerays", 3.5, 3.5, false) 
 	setScrollFactor("hazerays", 0.75, 0.75)
     setBlendMode('hazerays', 'mutiply')
-    setProperty("hazerays.alpha", 0.75)
+    setProperty("hazerays.alpha", 0.5)
     addLuaSprite("hazerays", true)
-
-    makeLuaSprite("lense1", 'lua/lensefirst', -100 , -75)
-    setObjectCamera("lense1", "camHUD")
-    scaleObject("lense1", 0.5, 0.5, false)
-    setScrollFactor("lense1", 0.25, 0.25)
-    setBlendMode('lense1', 'add')
-    addLuaSprite("lense1", true)
-
-    makeLuaSprite("lense2", 'lua/lensesecond', -225 , -50)
-    setObjectCamera("lense2", "camHUD")
-    scaleObject("lense2", 0.5, 0.5, false)
-    setScrollFactor("lense2", 0.5, 0.5)
-    setBlendMode('lense2', 'add')
-    addLuaSprite("lense2", true)
-
-    makeLuaSprite("lense", 'lua/lenselast', -325 , -20)
-    setObjectCamera("lense", "camHUD")
-    scaleObject("lense", 0.5, 0.5, false)
-    setScrollFactor("lense", 0.75, 0.75)
-    setBlendMode('lense', 'add')
-    addLuaSprite("lense", true)
-end
-
-function onCreatePost()
-    setProperty('hazerays.alpha', 0.5)
-
-    setProperty('lense.alpha', 0)
-    setProperty('lense1.alpha', 0)
-    setProperty('lense2.alpha', 0)
-end
-
-function onSectionHit()
-    if not mustHitSection then
-        doTweenAlpha('lense','lense', 0.75, 0.25, smoothstepout)
-        doTweenAlpha('lense1','lense1', 0.75, 0.25, smoothstepout)
-        doTweenAlpha('lense2','lense2', 0.75, 0.25, smoothstepout)
-    else
-        doTweenAlpha('lense','lense', 0, 0.25, smoothstepout)
-        doTweenAlpha('lense1','lense1', 0, 0.25, smoothstepout)
-        doTweenAlpha('lense2','lense2', 0, 0.25, smoothstepout)
-    end
 end
