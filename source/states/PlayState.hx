@@ -88,7 +88,7 @@ class PlayState extends MusicBeatState
 	];
 
 	//event variables
-	private var isCameraOnForcedPos:Bool = false;
+	public var isCameraOnForcedPos:Bool = false;
 
 	public var boyfriendMap:Map<String, Character> = new Map<String, Character>();
 	public var dadMap:Map<String, Character> = new Map<String, Character>();
@@ -457,28 +457,34 @@ class PlayState extends MusicBeatState
 		switch (curStage)
 		{
 			/*COVERS*/
-			case 'lore': new states.stages.Lore(); //LOOOOOOOOOORE
-			case 'apology': new states.stages.Apology(); //PinkyMicheal would be so proud...
-			case 'cronology': new states.stages.Cronology(); //The ultimate lore
-			case 'chronology': new states.stages.Chronology(); //The new bg (for the vloo guy stuff (before it was cancelled that is))
-			case 'field': new states.stages.Field(); //He could eat a horse... for real...
-			case 'live': new states.stages.Live(); //So what is going on Internet, Game Theory back again...
-			case 'mariotennis': new states.stages.MarioTennis(); //Time for the Ourple pixel measurement everyone has been waiting for...
+			case 'lore': new states.stages.Lore(); // LOOOOOOOOOORE
+			case 'apology': new states.stages.Apology(); // PinkyMicheal would be so proud...
+			case 'cronology': new states.stages.Cronology(); // The ultimate lore
+			case 'chronology': new states.stages.Chronology(); // The new bg (for the vloo guy stuff (before it was cancelled that is))
+			case 'field': new states.stages.Field(); // He could eat a horse... for real...
+			case 'live': new states.stages.Live(); // So what is going on Internet, Game Theory back again...
+			case 'mariotennis': new states.stages.MarioTennis(); // Time for the Ourple pixel measurement everyone has been waiting for...
 
 			/*ORIGINALS*/
-			case 'beach': new states.stages.Beach(); //Da Beach (fun fact: the bg was AI generated... yep... I hate myself... I could've just used any PNG ever but nope... Too lazy to change it now)
-			case 'sad': new states.stages.Sad(); //This was a sad day for gamers...
-			case 'sunk': new states.stages.Sunk(); //Funny Iron Lung remix
-			case 'ar': new states.stages.AR(); //Why was this game taken down?
-		}
+			case 'beach': new states.stages.Beach(); // Da Beach (fun fact: the bg was AI generated... yep... I hate myself... I could've just used any PNG ever but nope... Too lazy to change it now)
+			case 'sad': new states.stages.Sad(); // This was a sad day for gamers...
+			case 'sunk': new states.stages.Sunk(); // Funny Iron Lung remix
+			case 'ar': new states.stages.AR(); // Why was this game taken down?
+		
+			/*SECRETS*/
+			case 'distractible': new states.stages.Distractible(); // The podcast that will make your penis and/or vagina bigger (that's what people want, right?)
+			case 'lua': new states.stages.Lua();
 
-		switch (SONG.song.toLowerCase())
-		{
-			case 'lore-awesomix': new states.stages.addons.Awesomix(); //Don't you tell how much lore I need, bitch!
-			case 'detective': new states.stages.addons.Detective(); //Detective Matpat, at your service.
-			case 'action': new states.stages.addons.Action(); //But, y'know... it's just a theory...
-			case 'repugnant': new states.stages.addons.Repugnant(); //Phone guy's in love with foxy, Rule34 is in shambles
-			case 'lore-og': new states.stages.addons.LoreOG(); //This was made for the Ourple Variants, so this is basically scrapped now
+			/*ADD-ONS*/
+			default:
+				switch (SONG.song.toLowerCase())
+				{
+					case 'lore-awesomix': new states.stages.addons.Awesomix(); // Don't you tell how much lore I need, bitch!
+					case 'detective': new states.stages.addons.Detective(); // Detective Matpat, at your service.
+					case 'action': new states.stages.addons.Action(); // But, y'know... it's just a theory...
+					case 'repugnant': new states.stages.addons.Repugnant(); // Phone guy's in love with foxy, Rule34 is in shambles
+					case 'lore-og': new states.stages.addons.LoreOG(); // This was made for the Ourple Variants, so this is basically scrapped now
+				}
 		}
 
 		if(isPixelStage) {
@@ -596,7 +602,6 @@ class PlayState extends MusicBeatState
 			if(gf != null)
 				gf.visible = false;
 		}
-		stagesFunc(function(stage:BaseStage) stage.createPost());
 
 		comboGroup = new FlxSpriteGroup();
 		add(comboGroup);
@@ -872,6 +877,7 @@ class PlayState extends MusicBeatState
 
 		resetRPC();
 
+		stagesFunc(function(stage:BaseStage) stage.createPost());
 		callOnScripts('onCreatePost');
 		if (boyfriend.curCharacter.startsWith('playguy')) boyfriend.defaultY = boyfriend.y;
 		if (boyfriend.curCharacter.contains('staring')) boyfriend.defaultX = boyfriend.x;
@@ -1774,6 +1780,7 @@ class PlayState extends MusicBeatState
 		if(autoUpdateRPC) DiscordClient.changePresence(detailsText, SONG.song, iconP2.getCharacter(), true, songLength);
 		#end
 		setOnScripts('songLength', songLength);
+		stagesFunc(function(stage:BaseStage) stage.songStart());
 		callOnScripts('onSongStart');
 
 		switch (SONG.song.toLowerCase())
@@ -2267,7 +2274,7 @@ class PlayState extends MusicBeatState
 	public var paused:Bool = false;
 	public var canReset:Bool = true;
 	var startedCountdown:Bool = false;
-	var canPause:Bool = true;
+	public var canPause:Bool = true;
 	var freezeCamera:Bool = false;
 	var allowDebugKeys:Bool = true;
 	var angleOfs:Float = 0;
@@ -2556,6 +2563,7 @@ class PlayState extends MusicBeatState
 		setOnScripts('cameraX', camFollow.x);
 		setOnScripts('cameraY', camFollow.y);
 		setOnScripts('botPlay', cpuControlled);
+		stagesFunc(function(stage:BaseStage) stage.updatePost(elapsed));
 		callOnScripts('onUpdatePost', [elapsed]);
 
 		switch (SONG.song.toLowerCase())
@@ -3230,6 +3238,11 @@ class PlayState extends MusicBeatState
 
 		if (!skippedSong) checkForAchievement(['frame_by_frame', 'lore_enjoyer', 'true_theorist']);
 		#end
+
+		if (SONG.song.toLowerCase() == 'lua') {
+			ClientPrefs.data.luaPlayed = true;
+			ClientPrefs.saveSettings(false);
+		}
 
 		var ret:Dynamic = callOnScripts('onEndSong', null, true);
 		if(ret != LuaUtils.Function_Stop && !transitioning)
@@ -4425,7 +4438,7 @@ class PlayState extends MusicBeatState
 		super.sectionHit();
 
 		if (SONG.notes[curSection] != null && gf != null) { //If your still charting the song and didn't finish it all, The game would crash. Well, not anymore with this.
-			var gfColor = FlxColor.fromRGB(gf.healthColorArray[0], gf.healthColorArray[1], gf.healthColorArray[2]); //Remaking it if the character got changed mid-song
+			var gfColor = FlxColor.fromRGB(gf.healthColorArray[0], gf.healthColorArray[1], gf.healthColorArray[2]); //Remaking it in case the character got changed mid-song
 			if (!SONG.notes[curSection].gfSection)
 			{
 				if (!SONG.notes[curSection].mustHitSection) {
@@ -4482,6 +4495,9 @@ class PlayState extends MusicBeatState
 				iconP1.visible = true;
 				gfIsSinging = false;
 			}
+
+			if (ClientPrefs.data.hideHud) // Just noticed the icons would still show up with my new icons mechanics, too lazy to painfully remake the entire logic for this setting.
+				iconP1.visible = iconP2.visible = iconP3.visible = false; // I'm sorry, i just wanna finish this project once and for all (I hope)
 		}
 
 		#if ACHIEVEMENTS_ALLOWED

@@ -1,8 +1,6 @@
 package states.credits;
 
-#if (!html5 && !mobile)
 import backend.Song;
-#end
 
 import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxBackdrop;
@@ -16,10 +14,8 @@ class CreditsSubgroupState extends MusicBeatState
 
 	public var subGroupsNames:FlxTypedGroup<Alphabet>;
 
-    #if (!html5 && !mobile)
 	var keypad:Keypad;
 	var cameraId:FlxSprite;
-    #end
 
     var exitButton:ExitButton;
 
@@ -49,7 +45,6 @@ class CreditsSubgroupState extends MusicBeatState
 		grid.alpha = 0.5;
 		add(grid);
 
-        #if (!html5 && !mobile)
 		keypad = new Keypad(40, FlxG.height - 500);
 		add(keypad);
 
@@ -57,7 +52,6 @@ class CreditsSubgroupState extends MusicBeatState
 		cameraId.setPosition(20, FlxG.height - cameraId.height * 2);
 		cameraId.alpha = 0.5;
 		add(cameraId);
-        #end
 
         subGroupsNames = new FlxTypedGroup<Alphabet>();
         add(subGroupsNames);
@@ -152,7 +146,6 @@ class CreditsSubgroupState extends MusicBeatState
         curSubGroup = curSelected;
 		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
 
-        #if (!html5 && !mobile)
         cameraId.alpha = FlxMath.lerp(0, cameraId.alpha, Math.exp(-elapsed * 2));
 		if (FlxG.mouse.deltaScreenX > 0 || FlxG.mouse.deltaScreenY > 0) {
 			cameraId.alpha += 0.05;
@@ -162,7 +155,6 @@ class CreditsSubgroupState extends MusicBeatState
 			if (keypad.opened) keypad.closeHandUnit();
 			else keypad.openHandUnit();
 		}
-        #end
 
         super.update(elapsed);
     }
@@ -203,7 +195,6 @@ class CreditsSubgroupState extends MusicBeatState
 	}
 }
 
-#if (!html5 && !mobile)
 class Keypad extends FlxTypedGroup<FlxSprite>
 {
     public var handunit:FlxSprite;
@@ -422,7 +413,7 @@ class Keypad extends FlxTypedGroup<FlxSprite>
     {
         var credits:CreditsSubgroupState = cast FlxG.state;
 
-        if (credits.selectedSomethin)
+        if (credits.selectedSomethin || !opened)
             return;
 
         if (FlxG.keys.anyJustPressed([FlxKey.NUMPADZERO, FlxKey.ZERO])) onButtonClick(0);
@@ -437,4 +428,3 @@ class Keypad extends FlxTypedGroup<FlxSprite>
         if (FlxG.keys.anyJustPressed([FlxKey.NUMPADNINE, FlxKey.NINE])) onButtonClick(9);
     }
 }
-#end

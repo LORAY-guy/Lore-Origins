@@ -6,6 +6,7 @@ import flixel.FlxSubState;
 import backend.MusicBeatState;
 
 import objects.Note.EventNote;
+import objects.HealthIcon;
 import objects.Character;
 
 enum Countdown
@@ -37,6 +38,10 @@ class BaseStage extends FlxBasic
 	public var boyfriendGroup(get, never):FlxSpriteGroup;
 	public var dadGroup(get, never):FlxSpriteGroup;
 	public var gfGroup(get, never):FlxSpriteGroup;
+
+	public var iconP1(get, never):HealthIcon;
+	public var iconP2(get, never):HealthIcon;
+	public var iconP3(get, never):HealthIcon;
 	
 	public var camGame(get, never):FlxCamera;
 	public var camHUD(get, never):FlxCamera;
@@ -47,6 +52,7 @@ class BaseStage extends FlxBasic
 	public var camZooming(get, set):Bool;
 	public var defaultCamZoom(get, set):Float;
 	public var camFollow(get, never):FlxObject;
+	public var isCameraOnForcedPos:Bool;
 
 	public var defaultPlayerStrumX(get, never):Array<Float>;
 	public var defaultPlayerStrumY(get, never):Array<Float>;
@@ -73,7 +79,9 @@ class BaseStage extends FlxBasic
 	public function create() {}
 	public function createPost() {}
 	//public function update(elapsed:Float) {}
+	public function updatePost(elapsed:Float) {}
 	public function countdownTick(count:Countdown, num:Int) {}
+	public function songStart() {}
 
 	// FNF steps, beats and sections
 	public var curBeat:Int = 0;
@@ -161,6 +169,10 @@ class BaseStage extends FlxBasic
 	inline private function get_dadGroup():FlxSpriteGroup return game.dadGroup;
 	inline private function get_gfGroup():FlxSpriteGroup return game.gfGroup;
 	
+	inline private function get_iconP1():HealthIcon return game.iconP1;
+	inline private function get_iconP2():HealthIcon return game.iconP2;
+	inline private function get_iconP3():HealthIcon return game.iconP3;
+
 	inline private function get_camGame():FlxCamera return game.camGame;
 	inline private function get_camHUD():FlxCamera return game.camHUD;
 	inline private function get_phoneCam():FlxCamera return game.phoneCam;
@@ -185,6 +197,13 @@ class BaseStage extends FlxBasic
 		return game.camZooming;
 	}
 	inline private function get_camFollow():FlxObject return game.camFollow;
+
+	inline private function get_isCameraOnForcedPos():Bool return game.isCameraOnForcedPos;
+	inline private function set_isCameraOnForcedPos(value:Bool):Bool
+	{
+		game.isCameraOnForcedPos = value;
+		return game.isCameraOnForcedPos;
+	}
 
 	inline private function get_defaultPlayerStrumX():Array<Float> return game.defaultPlayerStrumX;
 	inline private function get_defaultPlayerStrumY():Array<Float> return game.defaultPlayerStrumY;

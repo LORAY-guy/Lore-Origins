@@ -109,6 +109,7 @@ import states.TitleState;
 	// public var ourpleUsed:Array<String> = [];
 	public var goldenMouse:Bool = false;
 	public var unlockedEverything:Bool = false;
+	public var luaPlayed:Bool = false;
 }
 
 class ClientPrefs {
