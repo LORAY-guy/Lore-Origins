@@ -36,6 +36,7 @@ import backend.ExitButton;
 
 #if mobile
 import backend.MobileUIControls;
+import backend.MobileControls;
 #end
 
 import objects.Alphabet;

@@ -5,7 +5,10 @@ import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.gamepad.mappings.FlxGamepadMapping;
 import flixel.input.keyboard.FlxKey;
 
+#if mobile
 import backend.MobileUIControls;
+import backend.MobileControls;
+#end
 
 class Controls
 {
@@ -103,7 +106,7 @@ class Controls
 	private function get_RESET_R() return justReleased('reset');
 
 	#if mobile
-	public static var mobileControls:MobileUIControls;
+	public static var mobileControls:Dynamic;
 	#end
 
 	//Gamepad & Keyboard stuff

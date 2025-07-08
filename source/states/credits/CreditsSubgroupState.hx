@@ -19,7 +19,7 @@ class CreditsSubgroupState extends MusicBeatState
 
     var exitButton:ExitButton;
 
-    override function create()
+    override public function create():Void
 	{
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
@@ -89,7 +89,7 @@ class CreditsSubgroupState extends MusicBeatState
 
 	public var selectedSomethin:Bool = false;
 	public var canClick:Bool = true;
-    override public function update(elapsed:Float)
+    override public function update(elapsed:Float):Void
 	{
 		if (!selectedSomethin)
 		{
@@ -159,7 +159,7 @@ class CreditsSubgroupState extends MusicBeatState
         super.update(elapsed);
     }
 	
-	function checkMouseSelection()
+	private function checkMouseSelection():Void
 	{
 		subGroupsNames.forEach(function(spr:Alphabet) {
 			var mouseOverAlphabet:Bool = false;
@@ -176,7 +176,7 @@ class CreditsSubgroupState extends MusicBeatState
 		});
 	}
 
-    function changeSelection(change:Int = 0) 
+    private function changeSelection(change:Int = 0):Void
 	{
 		FlxG.camera.zoom += 0.03;
 
@@ -281,7 +281,8 @@ class Keypad extends FlxTypedGroup<FlxSprite>
         opened = false;
     }
 
-    private function createButtons():Void {
+    private function createButtons():Void
+    {
         buttonSprites = [];
 
         // Keypad layout: 1-3 on first row, 4-6 on second row, 7-9 on third row, 0 on fourth row centered

@@ -10,7 +10,7 @@ class LorayState extends MusicBeatState
     /**
         @param App_Name String
         @param Scale Float
-        @param X_Offset Int/Float
+        @param X_Offset Float
         @param Link String
     **/
     public static var appCats:Array<Array<Dynamic>> = [

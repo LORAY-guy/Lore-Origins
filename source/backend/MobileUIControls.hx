@@ -3,15 +3,14 @@ package backend;
 #if mobile
 import flixel.group.FlxGroup;
 
-class MobileUIControls extends FlxGroup
+class MobileUIControls extends FlxGroup // I think using a FlxGroup might be stupid, a FlxBasic should be enough, but it's done now, so too lazy to change it
 {
-    public var upButton:MobileButton;
-    public var downButton:MobileButton;
-    public var leftButton:MobileButton;
-    public var rightButton:MobileButton;
-    public var acceptButton:MobileButton;
-    
-    // Virtual input states
+    public var upButton:MobileUIButton;
+    public var downButton:MobileUIButton;
+    public var leftButton:MobileUIButton;
+    public var rightButton:MobileUIButton;
+    public var acceptButton:MobileUIButton;
+
     public var virtualInputs:Map<String, Bool> = new Map<String, Bool>();
     public var virtualJustPressed:Map<String, Bool> = new Map<String, Bool>();
     public var virtualJustReleased:Map<String, Bool> = new Map<String, Bool>();
@@ -29,29 +28,29 @@ class MobileUIControls extends FlxGroup
         var centerY:Float = FlxG.height - ((buttonSize * 3) - 100);
         var buttonSpacing:Float = buttonSize * 1.05;
 
-        upButton = new MobileButton("ui_up", centerX - buttonSize/2, centerY - buttonSpacing - buttonSize/2, buttonSize, buttonSize);
+        upButton = new MobileUIButton("ui_up", centerX - buttonSize/2, centerY - buttonSpacing - buttonSize/2, buttonSize, buttonSize);
         upButton.onPressed = function() { setVirtualInput("ui_up", true); };
         upButton.onReleased = function() { setVirtualInput("ui_up", false); };
         add(upButton);
 
-        downButton = new MobileButton("ui_down", centerX - buttonSize/2, centerY + buttonSpacing - buttonSize/2, buttonSize, buttonSize);
+        downButton = new MobileUIButton("ui_down", centerX - buttonSize/2, centerY + buttonSpacing - buttonSize/2, buttonSize, buttonSize);
         downButton.onPressed = function() { setVirtualInput("ui_down", true); };
         downButton.onReleased = function() { setVirtualInput("ui_down", false); };
         add(downButton);
 
-        leftButton = new MobileButton("ui_left", centerX - buttonSpacing - buttonSize/2, centerY - buttonSize/2, buttonSize, buttonSize);
+        leftButton = new MobileUIButton("ui_left", centerX - buttonSpacing - buttonSize/2, centerY - buttonSize/2, buttonSize, buttonSize);
         leftButton.onPressed = function() { setVirtualInput("ui_left", true); };
         leftButton.onReleased = function() { setVirtualInput("ui_left", false); };
         leftButton.scrollFactor.set();
         add(leftButton);
 
-        rightButton = new MobileButton("ui_right", centerX + buttonSpacing - buttonSize/2, centerY - buttonSize/2, buttonSize, buttonSize);
+        rightButton = new MobileUIButton("ui_right", centerX + buttonSpacing - buttonSize/2, centerY - buttonSize/2, buttonSize, buttonSize);
         rightButton.onPressed = function() { setVirtualInput("ui_right", true); };
         rightButton.onReleased = function() { setVirtualInput("ui_right", false); };
         add(rightButton);
 
         var acceptButtonSize:Float = buttonSize * 0.75;
-        acceptButton = new MobileButton("ui_accept", centerX - acceptButtonSize/2, centerY - acceptButtonSize/2, acceptButtonSize, acceptButtonSize);
+        acceptButton = new MobileUIButton("ui_accept", centerX - acceptButtonSize/2, centerY - acceptButtonSize/2, acceptButtonSize, acceptButtonSize);
         acceptButton.onPressed = function() { setVirtualInput("accept", true); };
         acceptButton.onReleased = function() { setVirtualInput("accept", false); };
         add(acceptButton);
@@ -153,7 +152,7 @@ class MobileUIControls extends FlxGroup
     }
 }
 
-class MobileButton extends FlxSprite
+class MobileUIButton extends FlxSprite
 {
     public var name:String;
 

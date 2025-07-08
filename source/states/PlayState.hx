@@ -167,6 +167,10 @@ class PlayState extends MusicBeatState
 	public var playerStrums:FlxTypedGroup<StrumNote>;
 	public var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
+	#if mobile
+	public var mobileControls:MobileControls;
+	#end
+
 	//added that cuz useful
 	public var defaultPlayerStrumX:Array<Float> = [];
 	public var defaultPlayerStrumY:Array<Float> = [];
@@ -662,6 +666,14 @@ class PlayState extends MusicBeatState
 		generateSong(SONG.song);
 
 		noteGroup.add(grpNoteSplashes);
+
+		#if mobile
+		mobileControls = new MobileControls();
+		mobileControls.setCameras([camOther]);
+		add(mobileControls);
+
+		Controls.mobileControls = mobileControls;
+		#end
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 		camFollow.setPosition(camPos.x, camPos.y);
@@ -3684,6 +3696,12 @@ class PlayState extends MusicBeatState
 		for (key in keysArray)
 		{
 			holdArray.push(controls.pressed(key));
+
+			#if mobile
+			pressArray.push(controls.justPressed(key));
+			releaseArray.push(controls.justReleased(key));
+			#end
+
 			if(controls.controllerMode)
 			{
 				pressArray.push(controls.justPressed(key));
@@ -3692,7 +3710,9 @@ class PlayState extends MusicBeatState
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
+		#if !mobile
 		if(controls.controllerMode && pressArray.contains(true))
+		#end
 			for (i in 0...pressArray.length)
 				if(pressArray[i] && strumsBlocked[i] != true)
 					keyPressed(i);
@@ -3721,7 +3741,9 @@ class PlayState extends MusicBeatState
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
+		#if !mobile
 		if((controls.controllerMode || strumsBlocked.contains(true)) && releaseArray.contains(true))
+		#end
 			for (i in 0...releaseArray.length)
 				if(releaseArray[i] || strumsBlocked[i] == true)
 					keyReleased(i);
@@ -4136,6 +4158,9 @@ class PlayState extends MusicBeatState
 		#if FLX_PITCH FlxG.sound.music.pitch = 1; #end
 		Note.globalRgbShaders = [];
 		backend.NoteTypesConfig.clearNoteTypesData();
+		#if mobile
+		Controls.mobileControls = null;
+		#end
 		instance = null;
 		super.destroy();
 	}
