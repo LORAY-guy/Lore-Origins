@@ -105,6 +105,16 @@ class Style extends BaseStage
 
         super.createPost();
     }
+
+    override public function songStart():Void
+    {
+        super.songStart();
+
+        camGame.flash(FlxColor.WHITE, 0.9);
+        blackIntro.destroy();
+        light.visible = true;
+    }
+
     override function beatHit() {
         super.beatHit();
 

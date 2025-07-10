@@ -3,7 +3,6 @@ apology
 ar
 beach
 chronology
-cronology
 fever
 field
 live

@@ -108,7 +108,7 @@ class Sad extends BaseStage
         //Since each theory came out every week (on average), this makes this mechanic much easier to make
         var remainingTheories:String = (remainingTime < 0 ? 'FAREWELL, MATPAT!' : '- $weeksRemaining THEORIES REMAIN -');
 
-        timerBar = new FlxSprite(0, 420).makeGraphic(1280, 120);
+        timerBar = new FlxSprite(0, 420).makeGraphic(FlxG.width, 120);
         timerBar.screenCenter(X);
         timerBar.alpha = 0;
         sadStuff.add(timerBar);
@@ -124,7 +124,7 @@ class Sad extends BaseStage
         couchBg.color = 0xFF555555;
         couchBg.cameras = [camHUD];
         couchBg.screenCenter();
-        couchBg.scrollFactor.set(0.75, 0.75);
+        couchBg.scrollFactor.set(0.75 * (FlxG.width / 1280), 0.75 * (FlxG.width / 1280));
         couchBg.visible = false;
         add(couchBg);
 
@@ -151,6 +151,27 @@ class Sad extends BaseStage
         
         phoneIcon.updateHitbox();
         add(phoneIcon);
+
+        gf.visible = false;
+        camHUD.visible = false;
+        defaultCamZoom = 0.9;
+        cameraSpeed = 100;
+
+        FlxTween.color(boyfriend, 0.01, boyfriend.color, FlxColor.fromRGB(44, 44, 44));
+        FlxTween.color(dad, 0.01, dad.color, FlxColor.fromRGB(44, 44, 44));
+        FlxTween.color(gf, 0.01, gf.color, FlxColor.fromRGB(44, 44, 44));
+    }
+
+    override public function songStart():Void
+    {
+        super.songStart();
+
+        camHUD.visible = true;
+        FlxTween.color(dad, 0.01, dad.color, FlxColor.WHITE);
+        spotlightMatpat.visible = true;
+        FlxG.sound.play(Paths.sound('spotlight'));
+        cameraSpeed = 1;
+        lockCam(true);
     }
 
     override function update(elapsed:Float)

@@ -4,7 +4,6 @@ import backend.StageData;
 
 import states.MainMenuState;
 
-import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 
 class OptionsState extends MusicBeatState

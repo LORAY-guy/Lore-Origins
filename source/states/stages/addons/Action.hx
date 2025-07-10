@@ -123,6 +123,17 @@ class Action extends BaseStage
         super.createPost();
     }
 
+    override public function songStart():Void
+    {
+        super.songStart();
+
+        FlxTween.tween(bOverlay, {alpha: 0}, Std.int((Conductor.crochet / 1000) * 32), {startDelay: 0.7, ease: FlxEase.sineInOut});
+        FlxTween.tween(camGame, {zoom: 1}, Std.int((Conductor.crochet / 1000) * 28), {startDelay: 0.7, ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween) {
+            camZooming = true;
+            defaultCamZoom = 0.8;
+        }});
+    }
+
     override function stepHit()
     {
         /** ------Camera Flashes------ **/

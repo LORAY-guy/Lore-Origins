@@ -3,7 +3,6 @@ package states.credits;
 import backend.Song;
 
 import flixel.effects.FlxFlicker;
-import flixel.addons.display.FlxBackdrop;
 import flixel.input.keyboard.FlxKey;
 
 class CreditsSubgroupState extends MusicBeatState

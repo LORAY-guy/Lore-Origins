@@ -5,13 +5,15 @@ import backend.Highscore;
 import backend.Song;
 
 import objects.HealthIcon;
-import objects.MusicPlayer;
 
+#if !mobile
+import objects.MusicPlayer;
 import substates.GameplayChangersSubstate;
+#end
+
 import substates.ResetScoreSubState;
 
 import flixel.math.FlxMath;
-import flixel.addons.display.FlxBackdrop;
 
 class FreeplayState extends MusicBeatState
 {
@@ -30,8 +32,6 @@ class FreeplayState extends MusicBeatState
 	var intendedScore:Int = 0;
 	var intendedRating:Float = 0;
 	public static var inSubstate:Bool = false;
-
-	var curCategory:FlxText;
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
@@ -55,6 +55,7 @@ class FreeplayState extends MusicBeatState
 	#end
 
 	var exitButton:ExitButton;
+	var freeplayCategory:String = FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase();
 
 	#if mobile
 	public var mobileControls:MobileUIControls;
@@ -105,7 +106,7 @@ class FreeplayState extends MusicBeatState
 		var scaleMultiplier:Float = FlxG.width / 1280;
 		bg.setGraphicSize(Std.int(bg.width * scaleMultiplier));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
-		bg.color = (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase() == 'originals' ? 0xff00c3ff : 0xffa357ab);
+		bg.color = (freeplayCategory == 'originals' ? 0xff00c3ff : 0xffa357ab);
 		bg.updateHitbox();
 		bg.screenCenter();
 		add(bg);
@@ -124,7 +125,7 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(90, 320, FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase() == 'originals' ? CoolUtil.removeSymbol(songs[i].songName, "lore-") : 'Lore', true);
+			var songText:Alphabet = new Alphabet(90, 320, freeplayCategory == 'originals' ? CoolUtil.removeSymbol(songs[i].songName, "lore-") : 'Lore', true);
 			songText.targetY = i;
 			grpSongs.add(songText);
 
@@ -159,10 +160,6 @@ class FreeplayState extends MusicBeatState
 		add(diffText);
 
 		add(scoreText);
-
-		curCategory = new FlxText(0, scoreText.y, 0, FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory], 32);
-		curCategory.font = scoreText.font;
-		curCategory.screenCenter(X);
 
 		missingTextBG = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		missingTextBG.alpha = 0.6;
@@ -384,7 +381,7 @@ class FreeplayState extends MusicBeatState
 	
 					Mods.currentModDirectory = songs[curSelected].folder;
 					var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), 0);
-					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase(), (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory] == 'Covers'));
+					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase(), (freeplayCategory == 'covers'));
 					if (PlayState.SONG.needsVoices)
 					{
 						vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
@@ -428,7 +425,7 @@ class FreeplayState extends MusicBeatState
 				var poop:String = Highscore.formatSong(songLowercase, 0);
 				trace(poop);
 	
-				PlayState.SONG = Song.loadFromJson(poop, songLowercase, (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory] == 'Covers'));
+				PlayState.SONG = Song.loadFromJson(poop, songLowercase, (freeplayCategory == 'Covers'));
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = 1;
 				if (songLowercase == 'sunk') PlayState.sunkMark = FlxG.random.getObject(['Mark', 'Captain']);
@@ -579,7 +576,7 @@ class FreeplayState extends MusicBeatState
 
 	private function createOurpleWeek():Void 
 	{
-		switch (FreeplaySelectState.freeplayCats[FreeplaySelectState.curCategory].toLowerCase())
+		switch (freeplayCategory)
 		{
 			case 'covers':
 				if (!ClientPrefs.data.hideOldCovers && ClientPrefs.data.guy == 'Ourple')
@@ -604,8 +601,10 @@ class FreeplayState extends MusicBeatState
 					addWeek(
 						[
 							'lore-apology',
-							'chronology', 
-							'live', 
+							'fever',
+							'chronology',
+							'lore-style',
+							'live',
 							'horse-lore',
 							'detective',
 							'measure-up',

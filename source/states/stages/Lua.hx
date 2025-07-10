@@ -39,11 +39,11 @@ class Lua extends BaseStage
         sky.blend = SCREEN;
         add(sky);
 
-        moon = new BGSprite("lua/moon", 2500, -1750, 0.037, 0.2);
+        moon = new BGSprite("lua/moon", 2500, -1625, 0.037, 0.2);
         moon.blend = LIGHTEN;
         add(moon);
 
-        sun = new BGSprite("lua/thesun", -1000, -2250, 0.05, 0.2);
+        sun = new BGSprite("lua/thesun", -1000, -2125, 0.05, 0.2);
         sun.scale.set(1.5, 1.5);
         sun.blend = LIGHTEN;
         add(sun);
@@ -104,20 +104,21 @@ class Lua extends BaseStage
             luaRTX.visible = false;
             insert(PlayState.instance.members.indexOf(platform) - 1, luaRTX);
 
-            haze = new BGSprite("lua/hazemain", -5500, -5200, 1, 1);
-            haze.scale.set(4.5, 4.5);
+            haze = new BGSprite("lua/hazemain", -5500, -5850, 1, 1);
+            haze.scale.set(4.75, 4.75);
             haze.updateHitbox();
             add(haze);
 
-            hazerays = new BGSprite("lua/hazegodrays", 0, 600, 0.75, 0.75);
-            hazerays.scale.set(3.5, 3.5);
-            hazerays.blend = MULTIPLY;
+            hazerays = new BGSprite("lua/hazegodrays", -300, -100, 0.75, 0.75);
+            hazerays.scale.set(3, 3);
+            hazerays.blend = ALPHA;
+            hazerays.alpha = 0.5;
             add(hazerays);
         }
 
         camHUD.alpha = 0;
         cameraSpeed = 1000;
-        camFollow.y -= 3750;
+        camFollow.y -= 4250;
         defaultCamZoom = 0.3;
         camGame.zoom = 0.3;
 
@@ -133,7 +134,7 @@ class Lua extends BaseStage
         super.songStart();
 
         PlayState.instance.isCameraOnForcedPos = true;
-        FlxTween.tween(camGame, {zoom: 0.175}, 9, {ease: FlxEase.quadInOut});
+        FlxTween.tween(camGame, {zoom: 0.2}, 9, {ease: FlxEase.quadInOut});
         cameraSpeed = 1;
         camGame.flash(FlxColor.WHITE, 2, null, true);
     }
@@ -251,17 +252,17 @@ class Lua extends BaseStage
         }
 
         if (curStep == 2080)
-            defaultCamZoom = 0.2;
+            defaultCamZoom = 0.25;
 
         if (curStep == 2336) {
-            defaultCamZoom = 0.175;
+            defaultCamZoom = 0.2;
             FlxTween.tween(camHUD, {alpha: 0}, 1.5, {ease: FlxEase.linear});
             PlayState.instance.triggerEvent("Camera Follow Pos", '${camFollow.x + 235}', '${camFollow.y}', Conductor.songPosition);
             PlayState.instance.isCameraOnForcedPos = true;
         }
 
         if (curStep == 2344)
-            FlxTween.tween(camFollow, {y: camFollow.y - 3750}, 1.5, {ease: FlxEase.sineInOut});
+            FlxTween.tween(camFollow, {y: camFollow.y - 4250}, 1.5, {ease: FlxEase.sineInOut});
 
         if (curStep == 2368) {
             camGame.visible = false;

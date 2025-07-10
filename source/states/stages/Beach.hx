@@ -64,6 +64,18 @@ class Beach extends BaseStage
         gf.visible = false;
 
         super.createPost();
+
+        PlayState.instance.isCameraOnForcedPos = true;
+        cameraSpeed = 1000;
+        camFollow.x = 1046;
+        camFollow.y = 562.8;
+    }
+
+    override public function songStart():Void
+    {
+        super.songStart();
+
+        cameraSpeed = 1;
     }
 
     override function update(elapsed:Float) 
@@ -89,17 +101,18 @@ class Beach extends BaseStage
             camHUD.visible = false;
             brubMoment = false;
         }
+
+        if (curStep % 8 == 0 || curBeat % 2 == 0)
+            bonus = 1000;
+        else
+            bonus = 100;
     }
 
     override function beatHit() {
         super.beatHit();
 
-        if (curBeat == 156 || curBeat == 158 || curBeat == 540 || curBeat == 542 || curBeat == 732 || curBeat == 734) doFunnyTaunt();
-        
-        if (curBeat % 2 == 0)
-            bonus = 1000;
-        else
-            bonus = 100;
+        if (curBeat == 156 || curBeat == 158 || curBeat == 540 || curBeat == 542 || curBeat == 732 || curBeat == 734)
+            doFunnyTaunt();
     }
 
     function doFunnyTaunt()

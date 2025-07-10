@@ -1,8 +1,10 @@
 package options;
 
 import backend.StageData;
+
 import objects.Character;
 import objects.Bar;
+
 import flixel.addons.display.shapes.FlxShapeCircle;
 
 class NoteOffsetState extends MusicBeatState
@@ -57,7 +59,11 @@ class NoteOffsetState extends MusicBeatState
 		camOther.bgColor.alpha = 0;
 		FlxG.cameras.add(camOther, false);
 
-		FlxG.camera.scroll.set(120, 130);
+		var resolutionDiff:Float = (FlxG.width - 1280);
+		if (resolutionDiff != 0)
+			FlxG.camera.scroll.set(120 - (resolutionDiff / 2), 130);
+		else
+			FlxG.camera.scroll.set(120, 130);
 
 		persistentUpdate = true;
 		FlxG.sound.pause();

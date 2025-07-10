@@ -1,7 +1,6 @@
 package states;
 
 import flixel.effects.FlxFlicker;
-import flixel.addons.display.FlxBackdrop;
 
 class FreeplaySelectState extends MusicBeatState
 {

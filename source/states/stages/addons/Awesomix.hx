@@ -125,6 +125,14 @@ class Awesomix extends BaseStage
         super.createPost();
     }
 
+    override public function songStart():Void
+    {
+        super.songStart();
+
+        PlayState.instance.inLoreCutscene = true;
+		FlxTween.tween(prange, {x: (FlxG.width / 2) - 210, angle: 0}, 1.5, {ease: FlxEase.cubeOut});
+    }
+
     override function stepHit() {
         switch (curStep) 
         {

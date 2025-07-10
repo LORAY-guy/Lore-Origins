@@ -5,11 +5,6 @@ import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.gamepad.mappings.FlxGamepadMapping;
 import flixel.input.keyboard.FlxKey;
 
-#if mobile
-import backend.MobileUIControls;
-import backend.MobileControls;
-#end
-
 class Controls
 {
 	//Keeping same use cases on stuff for it to be easier to understand/use

@@ -2,7 +2,6 @@ package states;
 
 import flixel.FlxObject;
 import flixel.effects.FlxFlicker;
-import flixel.addons.display.FlxBackdrop;
 
 class MainMenuState extends MusicBeatState
 {

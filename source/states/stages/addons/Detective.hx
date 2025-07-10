@@ -50,6 +50,14 @@ class Detective extends BaseStage
         super.createPost();
     }
 
+    override public function songStart():Void
+    {
+        super.songStart();
+
+        camGame.flash(FlxColor.WHITE, 0.9);
+        defaultCamZoom = 1;
+    }
+
     override function stepHit() {
         switch (curStep)
         {

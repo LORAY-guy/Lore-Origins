@@ -14,6 +14,8 @@ class AR extends BaseStage
     var warningDensity:Int = 0;
     var warningSound:FlxSound;
 
+    var resolution:Float = (FlxG.width / 1280);
+
     override function create():Void
     {
         phone = new FlxSprite();
@@ -32,7 +34,7 @@ class AR extends BaseStage
         phoneCam.height = Std.int(869 * 0.5);
 
         bg = new BGSprite('couchUnblurred', 0, 0, 1, 1);
-        bg.scale.set(1.25, 1.25);
+        bg.scale.set(1.25 * resolution, 1.25 * resolution);
         bg.updateHitbox();
         bg.cameras = [phoneCam];
         bg.screenCenter();
@@ -50,7 +52,7 @@ class AR extends BaseStage
         super.createPost();
 
         bgBlur = new BGSprite('couch', 0, 0, 0, 0);
-        bgBlur.scale.set(1.25, 1.25);
+        bgBlur.scale.set(1.25 * resolution, 1.25 * resolution);
         bgBlur.updateHitbox();
         bgBlur.screenCenter();
         add(bgBlur);
@@ -77,13 +79,16 @@ class AR extends BaseStage
         warning.antialiasing = false;
         warning.visible = false;
         add(warning);
+
+        isCameraOnForcedPos = true;
+		cameraSpeed = 0;
     }
 
     private function moveOurple():Void
     {
         FlxTween.tween(boyfriend, {alpha: 0}, 1.5, {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween) {
-            var xPos:Float = FlxG.random.float(0, 1050);
-            var yPos:Float = FlxG.random.float(0, 420);
+            var xPos:Float = FlxG.random.float(0, FlxG.width - boyfriend.width);
+            var yPos:Float = FlxG.random.float(0, FlxG.height - boyfriend.height);
             boyfriend.defaultX = xPos;
             boyfriend.defaultY = yPos;
             boyfriend.setPosition(xPos, yPos);

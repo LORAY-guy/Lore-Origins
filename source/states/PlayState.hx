@@ -461,10 +461,10 @@ class PlayState extends MusicBeatState
 		switch (curStage)
 		{
 			/*COVERS*/
-			case 'lore': new states.stages.Lore(); // LOOOOOOOOOORE
 			case 'apology': new states.stages.Apology(); // PinkyMicheal would be so proud...
-			case 'cronology': new states.stages.Cronology(); // The ultimate lore
-			case 'chronology': new states.stages.Chronology(); // The new bg (for the vloo guy stuff (before it was cancelled that is))
+			case 'fever': new states.stages.Fever(); //I have a bad case of lore fever v2
+			case 'chronology': new states.stages.Chronology(); // The ultimate lore
+			case 'style': new states.stages.Style(); //He was already handsome as is... but now I'm doubting my sexuality...
 			case 'field': new states.stages.Field(); // He could eat a horse... for real...
 			case 'live': new states.stages.Live(); // So what is going on Internet, Game Theory back again...
 			case 'mariotennis': new states.stages.MarioTennis(); // Time for the Ourple pixel measurement everyone has been waiting for...
@@ -480,7 +480,8 @@ class PlayState extends MusicBeatState
 			case 'lua': new states.stages.Lua();
 
 			/*ADD-ONS*/
-			default:
+			case 'lore':
+				new states.stages.Lore(); // LOOOOOOOOOORE
 				switch (SONG.song.toLowerCase())
 				{
 					case 'lore-awesomix': new states.stages.addons.Awesomix(); // Don't you tell how much lore I need, bitch!
@@ -490,6 +491,8 @@ class PlayState extends MusicBeatState
 					case 'lore-og': new states.stages.addons.LoreOG(); // This was made for the Ourple Variants, so this is basically scrapped now
 				}
 		}
+
+
 
 		if(isPixelStage) {
 			introSoundsSuffix = '-pixel';
@@ -706,22 +709,10 @@ class PlayState extends MusicBeatState
 		if (pizzaSpr == null) pizzaSpr = Paths.image('OurpleHUD/pizzas/pizza');
 		var leftPizza:FlxSprite = new FlxSprite(healthBar.bg.getGraphicMidpoint().x - (152 / 2.2) - (healthBar.bg.width / 2), healthBar.bg.getGraphicMidpoint().y - (142 / 1.85)).loadGraphic(pizzaSpr);
 		leftPizza.scrollFactor.set();
-		switch (ClientPrefs.data.guy)
-		{
-			case 'Vloo':
-				leftPizza.y -= 10;
-				leftPizza.x -= 30;
-		}
 		leftPizza.updateHitbox();
 		
 		var rightPizza:FlxSprite = new FlxSprite(healthBar.bg.getGraphicMidpoint().x - (152 / 1.8) + (healthBar.bg.width / 2), healthBar.bg.getGraphicMidpoint().y - (142 / 1.85)).loadGraphic(pizzaSpr);
 		rightPizza.scrollFactor.set();
-		switch (ClientPrefs.data.guy)
-		{
-			case 'Vloo':
-				rightPizza.flipX = true;
-				rightPizza.y -= 10;
-		}
 		rightPizza.updateHitbox();
 
 		stars.cameras = [camHUD];
@@ -803,7 +794,7 @@ class PlayState extends MusicBeatState
 
 		if (ClientPrefs.data.lorayWatermark)
 		{
-			loraySign = new FlxSprite(0, 207).loadGraphic(Paths.image('OurpleHUD/'+ (SONG.song.toLowerCase() == 'lore-sad' ? 'sadLoraySign' : 'loraySign')));
+			loraySign = new FlxSprite(0, 207).loadGraphic(Paths.image('OurpleHUD/' + (SONG.song.toLowerCase().contains('sad') ? 'sadLoraySign' : 'loraySign')));
 			loraySign.scrollFactor.set();
 			loraySign.scale.set(0.7, 0.7);
 			loraySign.updateHitbox();
@@ -893,48 +884,6 @@ class PlayState extends MusicBeatState
 		callOnScripts('onCreatePost');
 		if (boyfriend.curCharacter.startsWith('playguy')) boyfriend.defaultY = boyfriend.y;
 		if (boyfriend.curCharacter.contains('staring')) boyfriend.defaultX = boyfriend.x;
-
-		switch (SONG.song.toLowerCase())
-		{
-			case 'chronology':
-				gf.visible = false;
-				vocals.volume = 0;
-				FlxG.sound.music.volume = 0;
-				inLoreCutscene = true;
-
-			case 'lore-apology':
-				inLoreCutscene = true;
-			
-			case 'lore-sad':
-				gf.visible = false;
-				camHUD.visible = false;
-				defaultCamZoom = 0.9;
-				cameraSpeed = 100;
-
-				FlxTween.color(boyfriend, 0.01, boyfriend.color, FlxColor.fromRGB(44, 44, 44));
-				FlxTween.color(dad, 0.01, dad.color, FlxColor.fromRGB(44, 44, 44));
-				FlxTween.color(gf, 0.01, gf.color, FlxColor.fromRGB(44, 44, 44));
-
-			case 'lore-tropical':
-				isCameraOnForcedPos = true;
-				camFollow.x = 1046;
-				camFollow.y = 562.8;
-
-			case 'lore-ar':
-				isCameraOnForcedPos = true;
-				cameraSpeed = 0;
-			
-			case 'sunk':
-				cameraSpeed = 100;
-				isCameraOnForcedPos = true;
-				camFollow.x = 197.5;
-				camFollow.y = 171;
-
-			case 'distractible':
-				isCameraOnForcedPos = true;
-				camFollow.x = 0;
-				camFollow.y = 0;
-		}
 
 		iconP1.scale.set(1.2, 1.2); //i feel so schizo for doing this BUT it fixes the icons being incorrect spot at the beginning of a song
 		iconP2.scale.set(1.2, 1.2);
@@ -1794,70 +1743,6 @@ class PlayState extends MusicBeatState
 		setOnScripts('songLength', songLength);
 		stagesFunc(function(stage:BaseStage) stage.songStart());
 		callOnScripts('onSongStart');
-
-		switch (SONG.song.toLowerCase())
-		{
-			case 'lore-awesomix':
-				inLoreCutscene = true;
-				FlxTween.tween(states.stages.addons.Awesomix.prange, {x: (FlxG.width / 2) - 210, angle: 0}, 1.5, {ease: FlxEase.cubeOut});
-
-			case 'chronology':
-				camOther.flash(FlxColor.WHITE, 1.7);
-				vocals.volume = 0.85;
-				opponentVocals.volume = 0.85;
-				FlxG.sound.music.volume = 1;
-				FlxTween.tween(states.stages.Cronology.fnafLogo.scale, {x: 0.225, y: 0.225}, 3, {ease: FlxEase.linear});
-
-			case 'lore-style':
-				camGame.flash(FlxColor.WHITE, 0.9);
-				states.stages.Style.blackIntro.destroy();
-				states.stages.Style.light.visible = true;
-
-			case 'live':
-				camGame.visible = true;
-				camHUD.flash(FlxColor.WHITE, 0.9);
-				cameraSpeed = 100;
-				defaultCamZoom = 1;
-				camGame.zoom = 1;
-				camLock(true);
-
-			case 'detective':
-				camGame.flash(FlxColor.WHITE, 0.9);
-				defaultCamZoom = 1;
-
-			case 'measure-up':
-				camGame.flash(FlxColor.WHITE, 0.9);
-
-			case 'action':
-				FlxTween.tween(states.stages.addons.Action.bOverlay, {alpha: 0}, Std.int((Conductor.crochet / 1000) * 32), {startDelay: 0.7, ease: FlxEase.sineInOut});
-				FlxTween.tween(camGame, {zoom: 1}, Std.int((Conductor.crochet / 1000) * 28), {startDelay: 0.7, ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween) {
-					camZooming = true;
-					defaultCamZoom = 0.8;
-				}});
-
-			case 'repugnant':
-				cameraSpeed = 1000;
-				defaultCamZoom = 1;
-
-			case 'lore-sad':
-				camHUD.visible = true;
-				FlxTween.color(dad, 0.01, dad.color, FlxColor.WHITE);
-				states.stages.Sad.spotlightMatpat.visible = true;
-				FlxG.sound.play(Paths.sound('spotlight'));
-				cameraSpeed = 1;
-				camLock(true);
-
-			case 'lore-og':
-				camGame.alpha = 1;
-				cameraSpeed = 1000;
-				camGame.flash(FlxColor.WHITE, 0.7);
-				camGame.zoom = 1.1;
-				defaultCamZoom = 1.1;
-
-			case 'distractible':
-				camGame.alpha = 1;
-				camGame.flash(FlxColor.WHITE, 1.2);
-		}
 	}
 
 	var debugNum:Int = 0;
@@ -2313,9 +2198,8 @@ class PlayState extends MusicBeatState
 				camHUD.zoom += 0.1;
 				FlxG.sound.play(Paths.sound('cameraBlip'), 1);
 				lolBitCounter++;
-				if (lolBitCounter == 3) { // We never know...
+				if (lolBitCounter == 3)
 					closeLolBitState();
-				}
 			}
 		}
 		#end
@@ -3910,14 +3794,18 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (ClientPrefs.data.lowQuality && SONG.song.toLowerCase() == 'repugnant')
+		if (SONG.song.toLowerCase() == 'repugnant' && note.noteType == 'Matpat Talking')
 		{
-			if (note.noteType == 'Matpat Talking') {
-				dad.animation.play(singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, note.noteData)))], true);
+			if (ClientPrefs.data.lowQuality) {
+				var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, note.noteData)))];
+				dad.playAnim(animToPlay, true);
 				dad.holdTimer = 0;
 			} else {
 				var matpat:FlxSprite = states.stages.addons.Repugnant.matpat;
-				matpat.scale.set(matpat.scale.x + 0.1, matpat.scale.y + 0.1);
+				if (matpat != null) {
+					matpat.scale.set(matpat.scale.x + 0.05, matpat.scale.y + 0.05);
+					matpat.updateHitbox();
+				}
 			}
 		}
 
@@ -5040,6 +4928,7 @@ class PlayState extends MusicBeatState
 		return 'Misses: ';
 	}
 
+	// Too lazy to fix this shit
 	function markTransitionStart()
 	{
 		for (i in 4...8) {
@@ -5052,7 +4941,7 @@ class PlayState extends MusicBeatState
 		FlxTween.tween(mark, {y: -429}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(timeBar, {x: timeBar.x - 326}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(timeTxt, {x: timeTxt.x - 326}, 0.75, {ease: FlxEase.bounceOut});
-		boyfriend.animation.play('scared', false, false, 0);
+		boyfriend.playAnim('scared', true);
 		FlxTween.tween(boyfriend, {y: boyfriend.y + 950}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(boyfriend, {angle: -90}, 0.45, {ease: FlxEase.linear});
 		new FlxTimer().start(0.3, function(tmr:FlxTimer) {

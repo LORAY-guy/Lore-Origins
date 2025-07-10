@@ -21,14 +21,15 @@ class Field extends BaseStage
     var luck:Float = 0.2;
     var phoneFollow:Bool = true;
 
-    override function create() {
+    override function create()
+    {
         obj1 = new BGSprite('field', -920, -787, 1, 1);
         obj1.setGraphicSize(Std.int(obj1.width * 1.5));
         obj1.updateHitbox();
         insert(0, obj1);
 
         obj2 = new BGSprite('bushes', -1048, -312, 1, 1);
-        obj2.setGraphicSize(Std.int(obj2.width * 1.1));
+        obj2.setGraphicSize(Std.int(obj2.width * 1.1) );
         obj2.updateHitbox();
         insert(20, obj2);
 
@@ -88,6 +89,9 @@ class Field extends BaseStage
     override function createPost()
     {
         gf.visible = false;
+
+        defaultCamZoom *= (FlxG.width / 1280);
+        camGame.zoom = defaultCamZoom;
 
         super.createPost();
     }

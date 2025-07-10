@@ -35,7 +35,6 @@ import backend.Mods;
 import backend.ExitButton;
 
 #if mobile
-import backend.MobileUIControls;
 import backend.MobileControls;
 #end
 
@@ -64,6 +63,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.addons.display.FlxBackdrop;
 
 //OpenFL
 import openfl.Lib;

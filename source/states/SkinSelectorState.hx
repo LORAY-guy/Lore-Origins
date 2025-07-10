@@ -1,7 +1,5 @@
 package states;
 
-import flixel.addons.display.FlxBackdrop;
-
 typedef CharacterData = {
     name: String,
     skins: Array<SkinData>

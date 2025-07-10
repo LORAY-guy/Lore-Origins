@@ -2,7 +2,6 @@ package states.credits;
 
 import objects.AttachedSprite;
 
-import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 
 class CreditsState extends MusicBeatState

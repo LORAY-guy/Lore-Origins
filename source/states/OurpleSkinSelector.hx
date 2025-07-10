@@ -1,9 +1,6 @@
 package states;
 
-import flixel.addons.display.FlxBackdrop;
-
 /**
- * I'm bad at menu design...
  * Still WIP
  *
  * TODO : MAKE THIS SHIT LOOK COOL, CUZ ITS TERRIBLE

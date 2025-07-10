@@ -2,7 +2,6 @@ package states.credits;
 
 import flixel.FlxObject;
 import flixel.effects.FlxFlicker;
-import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 
 class LorayState extends MusicBeatState

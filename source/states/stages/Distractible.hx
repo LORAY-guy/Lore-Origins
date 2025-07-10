@@ -68,6 +68,10 @@ class Distractible extends BaseStage
         camGame.alpha = 0.0000001;
 
         resetCharacters();
+
+        isCameraOnForcedPos = true;
+        camFollow.x = 0;
+        camFollow.y = 0;
     }
 
     override public function songStart():Void

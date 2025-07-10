@@ -21,8 +21,9 @@ class Sunk extends BaseStage
 			markBg.scale.x = 0.55;
 			markBg.scale.y = 0.45;
 			markBg.updateHitbox();
-			add(markBg);
+			markBg.x = FlxG.width - markBg.width;
 			markBg.cameras = [camHUD];
+			add(markBg);
 		}
 
 		end = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
@@ -33,15 +34,24 @@ class Sunk extends BaseStage
 		end.alpha = 0;
 	}
 
-	override function createPost() {
+	override function createPost()
+	{
+		super.createPost();
+
 		if (PlayState.sunkMark == 'Mark')
 		{
 			markBgOverlay = new BGSprite('office-overlay', 730, -350, 1, 1);
 			markBgOverlay.scale.x = 0.55;
 			markBgOverlay.scale.y = 0.45;
 			markBgOverlay.updateHitbox();
+			markBgOverlay.x = FlxG.width - markBgOverlay.width;
 			markBgOverlay.cameras = [camHUD];
-			add(markBgOverlay);
+			insert(PlayState.instance.members.indexOf(PlayState.instance.scoreTxt) - 1 ,markBgOverlay);
 		}
+
+		cameraSpeed = 100;
+		isCameraOnForcedPos = true;
+		camFollow.x = 197.5;
+		camFollow.y = 171;
 	}
 }

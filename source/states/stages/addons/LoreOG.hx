@@ -20,6 +20,17 @@ class LoreOG extends BaseStage
         super.createPost();
     }
 
+    override public function songStart():Void
+    {
+        super.songStart();
+
+        camGame.alpha = 1;
+        cameraSpeed = 1000;
+        camGame.flash(FlxColor.WHITE, 0.7);
+        camGame.zoom = 1.1;
+        defaultCamZoom = 1.1;
+    }
+
     override function stepHit() {
         switch (curStep)
         {

@@ -14,6 +14,8 @@ class Apology extends BaseStage
     var gtRoom:FlxSprite;
     var matpatIntro:FlxSprite;
 
+    var resolution:Float = (FlxG.width / 1280);
+
     override function create()
     {   
         stageback = new FlxSprite(-600, -300).loadGraphic(Paths.image('apology/stageback'));
@@ -60,7 +62,7 @@ class Apology extends BaseStage
     {
         redbg = new FlxSprite().loadGraphic(Paths.image('gtbg'));
         redbg.scrollFactor.set();
-        redbg.scale.set((2/3), (2/3));
+        redbg.setGraphicSize(FlxG.width, FlxG.height);
         redbg.updateHitbox();
         redbg.screenCenter();
         redbg.antialiasing = ClientPrefs.data.antialiasing;
@@ -77,7 +79,7 @@ class Apology extends BaseStage
         gtlogo.alpha = 0.0001;
 
         gtRoom = new FlxSprite().loadGraphic(Paths.image('couch'));
-        gtRoom.scale.set(1.2, 1.2);
+        gtRoom.scale.set(1.2 * resolution, 1.2 * resolution);
         gtRoom.updateHitbox();
         gtRoom.cameras = [camOther];
         gtRoom.screenCenter();
@@ -94,6 +96,8 @@ class Apology extends BaseStage
         matpatIntro.antialiasing = ClientPrefs.data.antialiasing;
         add(matpatIntro);
         matpatIntro.alpha = 0.001;
+
+        PlayState.instance.inLoreCutscene = true;
 
         super.createPost();
     }
@@ -125,7 +129,7 @@ class Apology extends BaseStage
     {
         super.stepHit();
 
-        if (curStep == 2) { //Adding a delay to the cutscene lets the game load the sprites. Would cause lag on transition if inserted in createPost
+        if (curStep >= 1 && curStep <= 6) { //Adding a delay to the cutscene lets the game load the sprites. Would cause lag on transition if inserted in createPost
             gtRoom.alpha = 1;
             matpatIntro.alpha = 1;
         }
@@ -141,7 +145,7 @@ class Apology extends BaseStage
             matpatIntro.updateHitbox();
             matpatIntro.screenCenter(X);
             
-            gtRoom.scale.set(1.275, 1.275);
+            gtRoom.scale.set(1.275 * resolution, 1.275 * resolution);
             gtRoom.updateHitbox();
             gtRoom.screenCenter();
         }
@@ -152,7 +156,7 @@ class Apology extends BaseStage
             matpatIntro.updateHitbox();
             matpatIntro.screenCenter(X);
 
-            gtRoom.scale.set(1.325, 1.325);
+            gtRoom.scale.set(1.325 * resolution, 1.325 * resolution);
             gtRoom.updateHitbox();
             gtRoom.screenCenter();
         }
@@ -163,7 +167,7 @@ class Apology extends BaseStage
             matpatIntro.updateHitbox();
             matpatIntro.screenCenter(X);
 
-            gtRoom.scale.set(1.4, 1.4);
+            gtRoom.scale.set(1.4 * resolution, 1.4 * resolution);
             gtRoom.updateHitbox();
             gtRoom.screenCenter();
         }
@@ -174,7 +178,7 @@ class Apology extends BaseStage
             matpatIntro.updateHitbox();
             matpatIntro.screenCenter(X);
 
-            gtRoom.scale.set(1.2, 1.2);
+            gtRoom.scale.set(1.2 * resolution, 1.2 * resolution);
             gtRoom.updateHitbox();
             gtRoom.screenCenter();
         }

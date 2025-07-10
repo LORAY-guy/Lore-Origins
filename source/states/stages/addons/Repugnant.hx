@@ -17,6 +17,8 @@ class Repugnant extends BaseStage
     
     public static var matpat:FlxSprite;
 
+    var resolution:Float = (FlxG.width / 1280);
+
     override function create() {
         if (!ClientPrefs.data.lowQuality)
         {
@@ -25,14 +27,14 @@ class Repugnant extends BaseStage
             add(cutsceneElts);
     
             redbg = new FlxSprite().loadGraphic(Paths.image('gtbg'));
-            redbg.scale.set((2/3) * (FlxG.width / 1280), (2/3) * (FlxG.height / 720));
+            redbg.scale.set((2/3) * resolution, (2/3) * resolution);
             redbg.updateHitbox();
             cutsceneElts.add(redbg);
             redbg.screenCenter(XY);
             redbg.visible = false;
     
             gtlogo = new FlxSprite().loadGraphic(Paths.image('gtLogo'));
-            gtlogo.scale.set((1/3) * (FlxG.width / 1280), (1/3) * (FlxG.height / 720));
+            gtlogo.scale.set((1/3), (1/3));
             gtlogo.updateHitbox();
             cutsceneElts.add(gtlogo);
             gtlogo.screenCenter(XY);
@@ -48,7 +50,7 @@ class Repugnant extends BaseStage
             fnaf2theory.visible = false;
     
             gogogo = new FlxSprite().loadGraphic(Paths.image('repugnant/gogogo'));
-            gogogo.scale.set((2/3), (2/3));
+            gogogo.scale.set((2/3) * resolution, (2/3) * resolution);
             gogogo.updateHitbox();
             cutsceneElts.add(gogogo);
             gogogo.screenCenter(XY);
@@ -58,10 +60,12 @@ class Repugnant extends BaseStage
     
             fnaf2 = new FlxSprite().loadGraphic(Paths.image('repugnant/fnaf2'));
             cutsceneElts.add(fnaf2);
+            fnaf2.scale.set(resolution, resolution);
+            fnaf2.updateHitbox();
             fnaf2.screenCenter(XY);
             fnaf2.y = -FlxG.height - fnaf2.height;
             fnaf2.visible = false;
-    
+
             foxy = new FlxSprite(0, 270).loadGraphic(Paths.image('repugnant/foxy'));
             cutsceneElts.add(foxy);
             foxy.scale.set(2.2, 2.2);
@@ -108,15 +112,17 @@ class Repugnant extends BaseStage
         super.create();
     }
 
-    override function createPost() 
+    override public function songStart():Void
     {
-        cameraSpeed = 1.75; //Default camSpeed for this song, putting it there to remember
-        super.createPost();
+        super.songStart();
+
+        cameraSpeed = 1000;
+        defaultCamZoom = 1;
     }
 
     override function sectionHit() 
     {
-        if (ClientPrefs.data.lowQuality)
+        if (!ClientPrefs.data.lowQuality)
         {
             if ((curSection >= 96 && curSection <= 109) && curSection % 2 == 0)
                 camHUD.shake(0.002, (Conductor.crochet / 1000) * 5);
@@ -177,82 +183,105 @@ class Repugnant extends BaseStage
 
             case 1536:
                 camGame.flash(FlxColor.WHITE, 1);
-                if (ClientPrefs.data.lowQuality)
+                if (ClientPrefs.data.lowQuality) {
                     FlxTween.tween(camHUD, {alpha: 0}, 1, {ease: FlxEase.sineInOut});
-                else
+                } else {
                     PlayState.instance.inLoreCutscene = true;
                     showGTLogo();
+                }
 
             case 1580:
-                fnaf2theory.visible = true;
-                FlxTween.tween(fnaf2theory, {x: 600}, 1, {ease: FlxEase.sineOut});
-                FlxTween.tween(fnaf2theory, {angle: FlxG.random.int(15, 25)}, 1, {ease: FlxEase.sineInOut});
+                if (!ClientPrefs.data.lowQuality) {
+                    fnaf2theory.visible = true;
+                    FlxTween.tween(fnaf2theory, {x: 600 * resolution}, 1, {ease: FlxEase.sineOut});
+                    FlxTween.tween(fnaf2theory, {angle: FlxG.random.int(15, 25)}, 1, {ease: FlxEase.sineInOut});
+                }
 
             case 1600:
-                gogogo.visible = true;
-                ourpleman.visible = true;
-                FlxTween.tween(ourpleman, {x: 460}, 1, {ease: FlxEase.sineOut});
-                FlxTween.tween(gogogo, {y: 0}, 1, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
-                    gtlogo.destroy();
-                    redbg.destroy();
-                }});
+                if (!ClientPrefs.data.lowQuality) {
+                    gogogo.visible = true;
+                    ourpleman.visible = true;
+                    FlxTween.tween(ourpleman, {x: 460}, 1, {ease: FlxEase.sineOut});
+                    FlxTween.tween(gogogo, {y: 0}, 1, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
+                        gtlogo.destroy();
+                        redbg.destroy();
+                    }});
+                }
 
             case 1604:
-                matpat.flipX = true;
+                if (!ClientPrefs.data.lowQuality)
+                    matpat.flipX = true;
 
             case 1622:
-                foxy.visible = true;
-                FlxTween.tween(foxy, {x: 900}, 0.5, {ease: FlxEase.sineOut});
+                if (!ClientPrefs.data.lowQuality) {
+                    foxy.visible = true;
+                    FlxTween.tween(foxy, {x: 900}, 0.5, {ease: FlxEase.sineOut});
+                } else {
+                    FlxTween.tween(camHUD, {alpha: 0}, 1, {ease: FlxEase.sineInOut});
+                }
 
             case 1640:
-                FlxTween.tween(ourpleman.scale, {x: 3.2, y: 3.2}, 0.5, {ease: FlxEase.sineInOut});
-                FlxTween.tween(gogogo.scale, {x: 0.85, y: 0.85}, 0.5, {ease: FlxEase.sineInOut});
-                FlxTween.tween(ourpleman, {x: 650}, 0.5, {ease: FlxEase.sineOut});
-                FlxTween.tween(foxy, {x: 1400}, 0.5, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
-                    foxy.destroy();
-                }});
+                if (!ClientPrefs.data.lowQuality) {
+                    FlxTween.tween(ourpleman.scale, {x: 3.2, y: 3.2}, 0.5, {ease: FlxEase.sineInOut});
+                    FlxTween.tween(gogogo.scale, {x: 0.85, y: 0.85}, 0.5, {ease: FlxEase.sineInOut});
+                    FlxTween.tween(ourpleman, {x: 650}, 0.5, {ease: FlxEase.sineOut});
+                    FlxTween.tween(foxy, {x: 1400}, 0.5, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
+                        foxy.destroy();
+                    }});
+                }
 
             case 1651:
-                finger.visible = true;
-                finger.angle = 11;
-                FlxTween.tween(finger, {x: 847, y: 230}, 0.5, {ease: FlxEase.sineOut});
+                if (!ClientPrefs.data.lowQuality) {
+                    finger.visible = true;
+                    finger.angle = 11;
+                    FlxTween.tween(finger, {x: 847, y: 230}, 0.5, {ease: FlxEase.sineOut});
+                }
 
             case 1704:
-                FlxTween.tween(finger, {y: 1000}, 0.5, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
-                    finger.destroy();
-                }});
-                fnaf2.visible = true;
-                FlxTween.tween(fnaf2, {y: 0}, 0.5, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
-                    gogogo.destroy();
-                }});
-                FlxTween.tween(ourpleman.scale, {x: 2.6, y: 2.6}, 0.5, {ease: FlxEase.sineInOut});
-                FlxTween.tween(ourpleman, {x: 460}, 0.5, {ease: FlxEase.sineOut});
+                if (!ClientPrefs.data.lowQuality) {
+                    FlxTween.tween(finger, {y: 1000}, 0.5, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
+                        finger.destroy();
+                    }});
+                    fnaf2.visible = true;
+                    FlxTween.tween(fnaf2, {y: 0}, 0.5, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
+                        gogogo.destroy();
+                    }});
+                    FlxTween.tween(ourpleman.scale, {x: 2.6, y: 2.6}, 0.5, {ease: FlxEase.sineInOut});
+                    FlxTween.tween(ourpleman, {x: 460}, 0.5, {ease: FlxEase.sineOut});
+                }
 
             case 1706:
-                matpat.flipX = false;
+                if (!ClientPrefs.data.lowQuality)
+                    matpat.flipX = false;
 
             case 1712:
-                puppet.visible = true;
-                FlxTween.tween(puppet, {x: 840}, 1, {ease: FlxEase.sineOut});
+                if (!ClientPrefs.data.lowQuality) {
+                    puppet.visible = true;
+                    FlxTween.tween(puppet, {x: 840}, 1, {ease: FlxEase.sineOut});
+                }
 
             case 1745:
-                matSize = 1.5;
-                FlxTween.tween(matpat.scale, {x: 1.5, y: 1.5}, 0.5, {ease: FlxEase.sineInOut});
-                FlxTween.tween(matpat, {x: 385, y: 80}, 0.5, {ease: FlxEase.sineInOut});
-                FlxTween.tween(puppet, {x: (FlxG.width + puppet.width)}, 1, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
-                    puppet.destroy();
-                }});
-                FlxTween.tween(ourpleman, {x: (-ourpleman.width)}, 0.5, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
-                    ourpleman.destroy();
-                }});
+                if (!ClientPrefs.data.lowQuality) {
+                    matSize = 1.5;
+                    FlxTween.tween(matpat.scale, {x: 1.5, y: 1.5}, 0.5, {ease: FlxEase.sineInOut});
+                    FlxTween.tween(matpat, {x: (FlxG.width - matpat.width) / 2, y: 80}, 0.5, {ease: FlxEase.sineInOut});
+                    FlxTween.tween(puppet, {x: (FlxG.width + puppet.width)}, 1, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
+                        puppet.destroy();
+                    }});
+                    FlxTween.tween(ourpleman, {x: (-ourpleman.width)}, 0.5, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween) {
+                        ourpleman.destroy();
+                    }});
+                }
 
             case 1760:
                 defaultCamZoom = 1.2;
                 camGame.zoom = 1.2;
                 camGame.flash();
                 cameraSpeed = 1000;
-                matpat = null;
-                cutsceneElts.destroy();
+                if (!ClientPrefs.data.lowQuality) {
+                    cutsceneElts.destroy();
+                    matpat = null;
+                }
                 PlayState.instance.inLoreCutscene = false;
 
             case 1792:
@@ -295,7 +324,7 @@ class Repugnant extends BaseStage
     function showGTLogo()
     {
         camHUD.flash(FlxColor.WHITE, 1.2);
-        FlxTween.tween(gtlogo, {x: 363}, 2, {ease: FlxEase.cubeOut});
+        FlxTween.tween(gtlogo, {x: (FlxG.width - gtlogo.width) / 2}, 2, {ease: FlxEase.cubeOut});
         FlxTween.tween(gtlogo, {angle: 360}, 2, {ease: FlxEase.cubeInOut});
         gtlogo.visible = true;
         redbg.visible = true;

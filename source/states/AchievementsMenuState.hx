@@ -2,7 +2,6 @@ package states;
 
 import flixel.FlxObject;
 import flixel.util.FlxSort;
-import flixel.addons.display.FlxBackdrop;
 
 import objects.Bar;
 
@@ -97,6 +96,7 @@ class AchievementsMenuState extends MusicBeatState
 		if (grpOptions.members[12] != null) // Let's keep some good practice up in here.
 			grpOptions.members[12].x = (box.x + box.width / 2) - (grpOptions.members[12].width / 2);
 		add(grpOptions);
+		
 
 		if (unlockedAchievements == options.length)
 		{
@@ -143,7 +143,7 @@ class AchievementsMenuState extends MusicBeatState
         var lettabox1:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox1.scrollFactor.set(0, 0);
 		lettabox1.velocity.set(40, 0);
-		lettabox1.y = 635;
+		lettabox1.y = FlxG.height - lettabox1.height;
 		add(lettabox1);
 
 		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox2'), X, 0, 0);
@@ -153,6 +153,8 @@ class AchievementsMenuState extends MusicBeatState
 		
 		_changeSelection();
 		super.create();
+
+		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
 
         add(new ExitButton());
 		
@@ -323,9 +325,11 @@ class AchievementsMenuState extends MusicBeatState
 		ourpleFella.y = (FlxG.height - ourpleFella.height) + 100;
 
 		if (!inCutscene) {
+			var resolution:Float = (FlxG.width / 1280);
+
 			ourpleFella.x = (FlxG.width - ourpleFella.width) + 100;
-			box.x = 50;
-			grpOptions.x = -215;
+			box.x = 50 * resolution;
+			grpOptions.x = -((FlxG.width - box.width) / 2) + box.x;
 		} else {
 			ourpleFella.x = (FlxG.width + ourpleFella.width) - 225;
 		}
@@ -336,6 +340,7 @@ class AchievementsMenuState extends MusicBeatState
 		inCutscene = true;
 		createGoldenFella();
 		var curVol:Float = FlxG.sound.music.volume;
+		var resolution:Float = (FlxG.width / 1280);
 		FlxG.sound.music.fadeOut(0.25, 0, function(twn:FlxTween) {FlxG.sound.music.pause();});
 
 		var happyText:FlxSprite = new FlxSprite();
@@ -362,8 +367,8 @@ class AchievementsMenuState extends MusicBeatState
 		FlxG.sound.play(Paths.sound('fanfare'), 1, false, function() {
 			happyText.destroy();
 			FlxG.sound.play(Paths.sound('thatfuckingrock'));
-			FlxTween.tween(box, {x: 50}, 0.4, {ease: FlxEase.smootherStepInOut});
-			FlxTween.tween(grpOptions, {x: -215}, 0.4, {ease: FlxEase.smootherStepInOut});
+			FlxTween.tween(box, {x: 50 * resolution}, 0.4, {ease: FlxEase.smootherStepInOut});
+			FlxTween.tween(grpOptions, {x: -((FlxG.width - box.width) / 2) + (50 * resolution)}, 0.4, {ease: FlxEase.smootherStepInOut});
 			FlxTween.tween(ourpleFella, {x: (FlxG.width - ourpleFella.width) + 100}, 8, {ease: FlxEase.smootherStepInOut, onComplete: function(twn:FlxTween) {
 				confetti.destroy();
 				FlxG.sound.music.resume();

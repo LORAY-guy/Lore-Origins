@@ -25,6 +25,13 @@ class MarioTennis extends BaseStage {
 
         super.createPost();
     }
+
+    override public function songStart():Void
+    {
+        super.songStart();
+
+        camGame.flash(FlxColor.WHITE, 0.9);
+    }
     
     override function beatHit() {
         super.beatHit();
@@ -57,6 +64,11 @@ class MarioTennis extends BaseStage {
                     case 1024:
                         cameraSpeed = 1.75;
                         defaultCamZoom = 0.85;
+                    case 1664:
+                        lockCam();
+                        cameraSpeed = 1.75;
+                        camGame.zoom = 0.85;
+                        defaultCamZoom = 0.85;
                     case 1920:
                         defaultCamZoom = 0.75;
                         cameraSpeed = 1.75;
@@ -71,11 +83,6 @@ class MarioTennis extends BaseStage {
                 defaultCamZoom = 1;
             case 1660:
                 lockCam(true);
-            case 1668:
-                lockCam();
-                cameraSpeed = 1.75;
-                camGame.zoom = 0.85;
-                defaultCamZoom = 0.85;
             case 1904:
                 defaultCamZoom = 0.8;
                 camGame.zoom = 0.8;

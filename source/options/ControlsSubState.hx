@@ -7,7 +7,6 @@ import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.gamepad.FlxGamepadManager;
-import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
 
 class ControlsSubState extends MusicBeatSubstate
