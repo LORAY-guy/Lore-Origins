@@ -152,14 +152,14 @@ class CreditsState extends MusicBeatState
 						CoolUtil.browserLoad(creditsStuff[curSelected][3]);
 				}
 
-				if (controls.BACK_P)
+				if (controls.BACK_P && !quitting)
 				{
 					if(colorTween != null)
 						colorTween.cancel();
 					FlxG.camera.zoom += 0.06;
 					canClick = false;
-					exitState(new CreditsSubgroupState(true));
 					quitting = true;
+					exitState(new CreditsSubgroupState(true));
 				}
 			}
 		}

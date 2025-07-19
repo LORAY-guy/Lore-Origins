@@ -226,6 +226,11 @@ class Sad extends BaseStage
             case 132:
                 spotlightOurpleGuy.visible = true;
                 FlxG.sound.play(Paths.sound('spotlight'));
+                boyfriend.color = FlxColor.WHITE;
+                PlayState.instance.camLock(false);
+
+            case 144:
+                PlayState.instance.camLock();
 
             case 496, 2032:
                 defaultCamZoom = 1.1;
@@ -264,6 +269,8 @@ class Sad extends BaseStage
                 couchBg.visible = true;
             
             case 2816:
+                gf.visible = true;
+                gf.color = FlxColor.WHITE;
                 spotlightPhoneGuy.visible = true;
                 FlxG.sound.play(Paths.sound('spotlight'));
                 camGame.visible = true;
@@ -287,6 +294,10 @@ class Sad extends BaseStage
             case 3072:
                 camGame.flash();
                 defaultCamZoom = 1.1;
+
+            case 3840:
+                FlxTween.tween(camGame, {alpha: 0}, 2.5, {ease:FlxEase.quadInOut});
+                FlxTween.tween(camGame, {zoom: 1.4}, 2.5, {ease:FlxEase.quadInOut});
         }
 
         if (curStep == 2316) {

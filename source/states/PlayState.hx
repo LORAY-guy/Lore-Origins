@@ -468,18 +468,6 @@ class PlayState extends MusicBeatState
 			case 'field': new states.stages.Field(); // He could eat a horse... for real...
 			case 'live': new states.stages.Live(); // So what is going on Internet, Game Theory back again...
 			case 'mariotennis': new states.stages.MarioTennis(); // Time for the Ourple pixel measurement everyone has been waiting for...
-
-			/*ORIGINALS*/
-			case 'beach': new states.stages.Beach(); // Da Beach (fun fact: the bg was AI generated... yep... I hate myself... I could've just used any PNG ever but nope... Too lazy to change it now)
-			case 'sad': new states.stages.Sad(); // This was a sad day for gamers...
-			case 'sunk': new states.stages.Sunk(); // Funny Iron Lung remix
-			case 'ar': new states.stages.AR(); // Why was this game taken down?
-		
-			/*SECRETS*/
-			case 'distractible': new states.stages.Distractible(); // The podcast that will make your penis and/or vagina bigger (that's what people want, right?)
-			case 'lua': new states.stages.Lua();
-
-			/*ADD-ONS*/
 			case 'lore':
 				new states.stages.Lore(); // LOOOOOOOOOORE
 				switch (SONG.song.toLowerCase())
@@ -490,9 +478,18 @@ class PlayState extends MusicBeatState
 					case 'repugnant': new states.stages.addons.Repugnant(); // Phone guy's in love with foxy, Rule34 is in shambles
 					case 'lore-og': new states.stages.addons.LoreOG(); // This was made for the Ourple Variants, so this is basically scrapped now
 				}
+
+			/*ORIGINALS*/
+			case 'beach': new states.stages.Beach(); // Da Beach (fun fact: the bg was AI generated... yep... I hate myself... I could've just used any PNG ever but nope... Too lazy to change it now)
+			case 'sad': new states.stages.Sad(); // This was a sad day for gamers...
+			case 'sunk': new states.stages.Sunk(); // Funny Iron Lung remix
+			case 'ar': new states.stages.AR(); // Why was this game taken down?
+			case 'presidency': new states.stages.Presidency(); // He would not only save America, but the entire world...
+
+			/*SECRETS*/
+			case 'distractible': new states.stages.Distractible(); // The podcast that will make your penis and/or vagina bigger (that's what people want, right?)
+			case 'lua': new states.stages.Lua();
 		}
-
-
 
 		if(isPixelStage) {
 			introSoundsSuffix = '-pixel';
@@ -3813,6 +3810,7 @@ class PlayState extends MusicBeatState
 		strumPlayAnim(true, Std.int(Math.abs(note.noteData)), Conductor.stepCrochet * 1.25 / 1000 / playbackRate);
 		note.hitByOpponent = true;
 		
+		stagesFunc(function(stage:BaseStage) stage.opponentNoteHit(notes.members.indexOf(note), Std.int(Math.abs(note.noteData)), note.noteType, note.isSustainNote));
 		var result:Dynamic = callOnLuas('opponentNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
 		if(result != LuaUtils.Function_Stop && result != LuaUtils.Function_StopHScript && result != LuaUtils.Function_StopAll) callOnHScript('opponentNoteHit', [note]);
 
@@ -3942,6 +3940,14 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		if (note.noteType == 'Ring Note') {
+			iconP3.angle = FlxG.random.int(-5, 5, [0]);
+			camGame.shake(0.02, 0.075);
+		} else if (iconP3.angle != 0) {
+			iconP3.angle = 0;
+		}
+
+		stagesFunc(function(stage:BaseStage) stage.goodNoteHit(notes.members.indexOf(note), leData, leType, isSus));
 		var result:Dynamic = callOnLuas('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
 		if(result != LuaUtils.Function_Stop && result != LuaUtils.Function_StopHScript && result != LuaUtils.Function_StopAll) callOnHScript('goodNoteHit', [note]);
 
@@ -3966,7 +3972,7 @@ class PlayState extends MusicBeatState
 			ghost.scrollFactor.set(ghost.scrollFactor.x, ghost.scrollFactor.y);
 			ghost.antialiasing = !char.noAntialiasing;
 			ghost.flipX = char.flipX;
-			ghost.color = char.color; //For Detective
+			ghost.color = char.color; // For Detective
 			ghost.alpha = char.alpha;
 			FlxTween.tween(ghost, {alpha: 0}, 0.4, {ease: FlxEase.linear, onComplete: function(twn:FlxTween) {
 				ghost.destroy();
@@ -4061,11 +4067,9 @@ class PlayState extends MusicBeatState
 			var timeSub:Float = Conductor.songPosition - Conductor.offset;
 			var syncTime:Float = 20 * playbackRate;
 			if (Math.abs(FlxG.sound.music.time - timeSub) > syncTime ||
-			(vocals.length > 0 && Math.abs(vocals.time - timeSub) > syncTime) ||
-			(opponentVocals.length > 0 && Math.abs(opponentVocals.time - timeSub) > syncTime))
-			{
+				(vocals.length > 0 && Math.abs(vocals.time - timeSub) > syncTime) ||
+				(opponentVocals.length > 0 && Math.abs(opponentVocals.time - timeSub) > syncTime))
 				resyncVocals();
-			}
 		}
 
 		super.stepHit();
@@ -4092,7 +4096,7 @@ class PlayState extends MusicBeatState
 				boyfriend.flippedIdle = !boyfriend.flippedIdle;
 				boyfriend.flipX = boyfriend.flippedIdle;
 				if (boyfriend.curCharacter.contains('staring')) boyfriend.x = (boyfriend.flipX ? boyfriend.defaultX + 32 : boyfriend.defaultX - 32);
-				boyfriend.y = boyfriend.defaultY; //Just to be sure...
+				boyfriend.y = boyfriend.defaultY; // Just to be sure...
 				boyfriend.animation.play('idle', true, false, 0);
 				boyfriend.y -= 20;
 				eventTweensManager.set('raise', eventTweens.tween(boyfriend, {y: boyfriend.y + 20}, 0.15, {ease: FlxEase.cubeOut, onComplete: function(twn:FlxTween) {
@@ -4152,99 +4156,9 @@ class PlayState extends MusicBeatState
 						gf.playAnim('singUP', true);
 				}
 
-			case 'lore-tropical':
-				switch(curStep)
-				{
-					case 2792:
-						gf.y = -500;
-						gf.visible = true;
-						eventTweensManager.set('gfDrop', eventTweens.tween(gf, {y: 450}, 1, {ease:FlxEase.bounceOut, onComplete: function(twn:FlxTween) {
-							eventTweensManager.remove('gfDrop');
-						}}));
-				}
-			
-			case 'lore-sad':
-				switch (curStep) {
-					case 132:
-						eventTweensManager.set("idkColorThingy", eventTweens.color(boyfriend, 0.01, boyfriend.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
-							eventTweensManager.remove("idkColorThingy");
-						}}));
-						camLock(false);
-					
-					case 144:
-						camLock();
-					
-					/*case 236,1516,2800:
-						defaultCamZoom = 1.2;
-					
-					case 256,1536:
-						camGame.flash(FlxColor.WHITE, 1.2);
-						defaultCamZoom = 0.7;
-					
-					case 1024:
-						defaultCamZoom = 1;
-					
-					case 368,512,1648:
-						defaultCamZoom = 0.9;
-					
-					case 768:
-						defaultCamZoom = 0.8;
-				
-					case 384,1664:
-						defaultCamZoom = 0.7;
-					
-					case 1280,2560:
-						cameraSpeed = 1000;
-						defaultCamZoom = 0.9;
-						camGame.flash(FlxColor.WHITE, 1.2);
-
-					case 1920:
-						cameraSpeed = 1000;
-						defaultCamZoom = 1;
-						camGame.flash(FlxColor.WHITE, 1.2);
-				
-					case 1344,1984,2624:
-						cameraSpeed = 1;
-					
-					case 1792:
-						camGame.flash(FlxColor.WHITE, 1.2);
-						cameraSpeed = 1000;
-						defaultCamZoom = 0.9;
-						eventTweensManager.set('zoomInLmao', eventTweens.tween(camGame, {zoom: 1.3}, (Std.int(Conductor.crochet)/1000) * 32, {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween) {
-							eventTweensManager.remove('zoomInLmao');
-						}}));
-
-					case 2032:
-						camFollow.x += gf.cameraPosition[0] + girlfriendCameraOffset[0];
-						camFollow.y += gf.cameraPosition[1] + girlfriendCameraOffset[1];*/
-					
-					case 2816:
-						eventTweensManager.set("idkColorThingy", eventTweens.color(gf, 0.01, gf.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
-							eventTweensManager.remove("idkColorThingy");
-						}}));
-						gf.visible = true;
-					
-					/*case 2688:
-						camGame.flash(FlxColor.WHITE, 1.2);
-
-					case 2816:
-						defaultCamZoom = 0.7;
-						camGame.zoom = 0.7;*/
-					
-					case 3840:
-						eventTweensManager.set('finalAlphaIn', eventTweens.tween(camGame, {alpha: 0}, 2.5, {ease:FlxEase.quadInOut, onComplete: function(twn:FlxTween) {
-							eventTweensManager.remove('finalAlphaIn');
-						}}));
-						eventTweensManager.set('finalZoomIn', eventTweens.tween(camGame, {zoom: 1.4}, 2.5, {ease:FlxEase.quadInOut, onComplete: function(twn:FlxTween) {
-							eventTweensManager.remove('finalZoomIn');
-						}}));
-				}
-
 			case 'sunk':
 				switch (curStep)
 				{
-					case 1:
-						cameraSpeed = 0;		
 					case 2292:
 						if (sunkMark == 'Mark') markTransitionStart();
 					case 2816:

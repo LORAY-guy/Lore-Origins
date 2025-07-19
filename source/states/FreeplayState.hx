@@ -52,6 +52,7 @@ class FreeplayState extends MusicBeatState
 	var bottomBG:FlxSprite;
 
 	var player:MusicPlayer;
+	var songName:String;
 	#end
 
 	var exitButton:ExitButton;
@@ -177,7 +178,11 @@ class FreeplayState extends MusicBeatState
 		intendedColor = bg.color;
 		lerpSelected = curSelected;
 
+		#if (desktop || html5)
 		randomizer = new FlxText(FlxG.width - 590, 200, 550, "PRESS \'R\' OR CLICK ON ME TO PLAY A RANDOM LORE", 36);
+		#else
+		randomizer = new FlxText(FlxG.width - 590, 200, 550, "CLICK ON ME TO PLAY A RANDOM LORE", 36);
+		#end
 		randomizer.setFormat(Paths.font("ourple.ttf"), 36, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		randomizer.borderSize = 1.25;
 		randomizer.antialiasing = false;
@@ -372,38 +377,51 @@ class FreeplayState extends MusicBeatState
 				openSubState(new GameplayChangersSubstate());
 			}
 	
-			else if(FlxG.keys.justPressed.SPACE)
+			else if (FlxG.keys.justPressed.SPACE)
 			{
 				if(instPlaying != curSelected && !player.playingMusic)
 				{
 					destroyFreeplayVocals();
 					FlxG.sound.music.volume = 0;
-	
+
 					Mods.currentModDirectory = songs[curSelected].folder;
-					var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), 0);
-					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase(), (freeplayCategory == 'covers'));
+
+					songName = songs[curSelected].songName.toLowerCase();
+
+					var poop:String = Highscore.formatSong(songName, 0);
+					PlayState.SONG = Song.loadFromJson(poop, songName, (freeplayCategory == 'covers'));
+					
 					if (PlayState.SONG.needsVoices)
 					{
-						vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
-						FlxG.sound.list.add(vocals);
-						vocals.persist = true;
-						vocals.looped = true;
+						try
+						{
+							vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
+							if (vocals != null && vocals.length > 0) // ACTUALLY checking if the sound has loaded correctly, otherwise, the songs would have a weird crunchy glitch effect.
+							{
+								FlxG.sound.list.add(vocals);
+								vocals.persist = true;
+								vocals.looped = true;
+							}
+							else
+							{
+								destroyFreeplayVocals();
+							}
+						}
+						catch (e:Dynamic)
+						{
+							destroyFreeplayVocals();
+							trace("Failed to load vocals: " + e);
+						}
 					}
-					else if (vocals != null)
-					{
-						vocals.stop();
-						vocals.destroy();
-						vocals = null;
-					}
-	
+
 					FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 0.8);
-					if(vocals != null) //Sync vocals to Inst
+					if(vocals != null) // Sync vocals to Inst
 					{
 						vocals.play();
 						vocals.volume = 0.8;
 					}
 					instPlaying = curSelected;
-	
+
 					player.playingMusic = true;
 					player.curTime = 0;
 					player.switchPlayMusic();
@@ -467,6 +485,7 @@ class FreeplayState extends MusicBeatState
 	public static function destroyFreeplayVocals()
 	{
 		if(vocals != null) {
+			FlxG.sound.list.remove(vocals, true);
 			vocals.stop();
 			vocals.destroy();
 		}

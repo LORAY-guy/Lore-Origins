@@ -195,7 +195,7 @@ class Note extends FlxSprite
 				case 'No Animation':
 					noAnimation = true;
 					noMissAnimation = true;
-				case 'GF Sing':
+				case 'GF Sing', 'Ring Note':
 					gfNote = true;
 				case 'Matpat Talking':
 					if (ClientPrefs.data.lowQuality)
@@ -210,6 +210,8 @@ class Note extends FlxSprite
 				case 'Opponent Possesses BF':
 					noAnimation = true;
 					singWithBF = true;
+				case 'Boyfriend Sing on GF Section':
+					gfNote = false;
 			}
 			if (value != null && value.length > 1) NoteTypesConfig.applyNoteTypeData(this, value);
 			if (hitsound != 'hitsound' && ClientPrefs.data.hitsoundVolume > 0) Paths.sound(hitsound); //precache new sound for being idiot-proof

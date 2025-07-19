@@ -1,0 +1,459 @@
+{
+    "song": {
+        "events": [
+			[
+				133796.79144385,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				133877.005347593,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				135401.069518716,
+				[
+					[
+						"Play Animation",
+						"ringend",
+						"gf"
+					]
+				]
+			],
+			[
+				136363.636363636,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				136443.850267379,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				137967.914438502,
+				[
+					[
+						"Play Animation",
+						"ringend",
+						"gf"
+					]
+				]
+			],
+			[
+				138930.481283422,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				139010.695187166,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				140534.759358289,
+				[
+					[
+						"Play Animation",
+						"ringend",
+						"gf"
+					]
+				]
+			],
+			[
+				141497.326203208,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				141577.540106952,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				143101.604278075,
+				[
+					[
+						"Play Animation",
+						"ringend",
+						"gf"
+					]
+				]
+			],
+			[
+				144064.171122994,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				144144.385026738,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				145668.449197861,
+				[
+					[
+						"Play Animation",
+						"ringend",
+						"gf"
+					]
+				]
+			],
+			[
+				146631.01604278,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				146711.229946524,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				148235.294117647,
+				[
+					[
+						"Play Animation",
+						"ringend",
+						"gf"
+					]
+				]
+			],
+			[
+				149197.860962567,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				149278.07486631,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				150802.139037433,
+				[
+					[
+						"Play Animation",
+						"ringend",
+						"gf"
+					]
+				]
+			],
+			[
+				151764.705882353,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				151844.919786096,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				153368.983957219,
+				[
+					[
+						"Play Animation",
+						"ringend",
+						"gf"
+					]
+				]
+			],
+			[
+				154331.550802139,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				154411.764705882,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				155935.828877005,
+				[
+					[
+						"Play Animation",
+						"ringend",
+						"gf"
+					]
+				]
+			],
+			[
+				156898.395721925,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				156978.609625668,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				158502.673796791,
+				[
+					[
+						"Play Animation",
+						"ringend",
+						"gf"
+					]
+				]
+			],
+			[
+				159465.240641711,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				159545.454545454,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				161069.518716577,
+				[
+					[
+						"Play Animation",
+						"ringend",
+						"gf"
+					]
+				]
+			],
+			[
+				162032.085561497,
+				[
+					[
+						"Play Animation",
+						"ringstart",
+						"gf"
+					]
+				]
+			],
+			[
+				162112.29946524,
+				[
+					[
+						"Play Animation",
+						"ringloop",
+						"gf"
+					]
+				]
+			],
+			[
+				162994.652406417,
+				[
+					[
+						"Play Animation",
+						"singDOWN",
+						"gf"
+					]
+				],
+				null,
+				""
+			],
+			[
+				163074.86631016,
+				[
+					[
+						"Play Animation",
+						"singUP",
+						"gf"
+					]
+				]
+			],
+			[
+				163235.294117647,
+				[
+					[
+						"Play Animation",
+						"singRIGHT",
+						"gf"
+					]
+				]
+			],
+			[
+				163475.935828877,
+				[
+					[
+						"Play Animation",
+						"singDOWN",
+						"gf"
+					]
+				]
+			],
+			[
+				163636.363636363,
+				[
+					[
+						"Play Animation",
+						"singLEFT",
+						"gf"
+					]
+				]
+			],
+			[
+				163796.79144385,
+				[
+					[
+						"Play Animation",
+						"singDOWN",
+						"gf"
+					]
+				]
+			],
+			[
+				163957.219251337,
+				[
+					[
+						"Play Animation",
+						"singRIGHT",
+						"gf"
+					]
+				]
+			],
+			[
+				164037.43315508,
+				[
+					[
+						"Play Animation",
+						"singRIGHT",
+						"gf"
+					]
+				]
+			],
+			[
+				164117.647058823,
+				[
+					[
+						"Play Animation",
+						"singRIGHT",
+						"gf"
+					]
+				]
+			]
+		],
+        "player1": "playguy",
+        "player2": "matpat",
+        "gfVersion": "phone",
+		"disableNoteRGB": true,
+		"splashSkin": "noteSplashes",
+		"song": "presidency",
+		"needsVoices": true,
+		"stage": "presidency",
+		"arrowSkin": "",
+		"speed": 3.1,
+		"bpm": 187
+    }
+}

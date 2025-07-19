@@ -1,10 +1,9 @@
 package backend;
 
-import states.credits.CreditsSubgroupState;
-import substates.PauseSubState;
 import flixel.addons.ui.FlxUIState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxState;
+
 import backend.PsychCamera;
 
 class MusicBeatState extends FlxUIState
@@ -62,6 +61,7 @@ class MusicBeatState extends FlxUIState
 			//If the player set the height 1280x1080 for exemple, the screen will go down to 1080.
 			//If i used FlxG.height, it would stop midway (since it is set to 720 and doesn't update when the window is resized) and looked weird.
 			FlxG.camera.y = Lib.application.window.height;
+			FlxTween.cancelTweensOf(FlxG.camera, ['y']);
 			FlxTween.tween(FlxG.camera, {y: 0}, 1.2, {ease: FlxEase.expoInOut});
 		}
 	}

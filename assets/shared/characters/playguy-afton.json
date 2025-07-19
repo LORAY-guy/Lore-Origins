@@ -60,7 +60,7 @@
 	"no_antialiasing": true,
 	"image": "characters/afton",
 	"position": [
-		70,
+		28.15,
 		70
 	],
 	"healthicon": "afton-pixel",

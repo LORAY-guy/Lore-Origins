@@ -103,6 +103,10 @@ class BaseStage extends FlxBasic
 	public function eventPushed(event:EventNote) {}
 	public function eventPushedUnique(event:EventNote) {}
 
+	// Note presses
+	public function opponentNoteHit(id:Int, direction:Int, noteType:String, isSustainNote:Bool):Void {}
+	public function goodNoteHit(id:Int, direction:Int, noteType:String, isSustainNote:Bool):Void {}
+
 	// Things to replace FlxGroup stuff and inject sprites directly into the state
 	function add(object:FlxBasic) game.add(object);
 	function remove(object:FlxBasic) game.remove(object);

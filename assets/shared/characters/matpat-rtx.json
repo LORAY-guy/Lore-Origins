@@ -1,66 +1,66 @@
 {
 	"animations": [
 		{
-			"loop": false,
 			"offsets": [
 				0,
-				260
+				0
 			],
-			"anim": "idle",
+			"loop": false,
 			"fps": 24,
-			"name": "mat idle dance",
-			"indices": []
+			"anim": "idle",
+			"indices": [],
+			"name": "mat idle dance"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				223,
-				237
+				-13
 			],
-			"anim": "singLEFT",
+			"loop": false,
 			"fps": 24,
-			"name": "mat left note",
-			"indices": []
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "mat left note"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				260,
-				97
+				-163
 			],
-			"anim": "singDOWN",
+			"loop": false,
 			"fps": 24,
-			"name": "mat down note",
-			"indices": []
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "mat down note"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				20,
-				321
+				61
 			],
-			"anim": "singUP",
+			"loop": false,
 			"fps": 24,
-			"name": "mat up note",
-			"indices": []
+			"anim": "singUP",
+			"indices": [],
+			"name": "mat up note"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				121,
-				281
+				-9
 			],
-			"anim": "singRIGHT",
+			"loop": false,
 			"fps": 24,
-			"name": "mat right note",
-			"indices": []
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "mat right note"
 		}
 	],
 	"no_antialiasing": false,
 	"image": "characters/matpat-rtx",
 	"position": [
-		120,
-		290
+		140,
+		0
 	],
 	"healthicon": "mat2",
 	"flip_x": false,
@@ -70,8 +70,8 @@
 		129
 	],
 	"camera_position": [
-		-220,
-		-260
+		-170,
+		40
 	],
 	"sing_duration": 5.7,
 	"scale": 1

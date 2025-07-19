@@ -13,10 +13,11 @@ class LorayState extends MusicBeatState
         @param Link String
     **/
     public static var appCats:Array<Array<Dynamic>> = [
-        ['Youtube', 0.45,  0,    'https://youtube.com/@LORAY_'],
-        ['Twitter', 0.45,  45,   'https://twitter.com/LORAY_man'],
-        ['Discord', 0.45,  0,    'https://discord.com/invite/JnsQV8az8C'],
-        ['Paypal',  0.16,  0,    'https://paypal.me/LORAYman']
+        ['Youtube', 0.5,   20,      'https://youtube.com/@LORAY_'],
+        ['Twitter', 0.5,   0,       'https://twitter.com/LORAY_man'],
+        ['GitHub',  0.5,   -120,    'https://github.com/LORAY-guy'],
+        ['Ko-fi',   0.525, -80,     'https://ko-fi.com/loray'],
+        ['Paypal',  0.4,   -180,    'https://paypal.me/LORAYman']
     ];
 
     var menuItems:FlxTypedGroup<FlxSprite>;
@@ -69,15 +70,16 @@ class LorayState extends MusicBeatState
             var appItem:FlxSprite = new FlxSprite((i * 410 - (i * 5)) + offset, 120);
             var scaleItem:Float = appCats[i][1];
             appItem.x += 80 + appCats[i][2];
+            if (i > 0) appItem.x += appCats[i-1][2]; // Gets the offset of the previous element
             appItem.frames = Paths.getSparrowAtlas('loray/loray_' + appCats[i][0].toLowerCase());
-			appItem.animation.addByPrefix('idle', appCats[i][0].toLowerCase(), 24);
+			appItem.animation.addByPrefix('idle', appCats[i][0].toLowerCase(), 30);
 			appItem.animation.play('idle');
             appItem.scale.set(scaleItem, scaleItem);
 			appItem.ID = i;
 			menuItems.add(appItem);
 			appItem.scrollFactor.set(1, 0);
             appItem.updateHitbox();
-			appItem.antialiasing = ClientPrefs.data.antialiasing;
+			appItem.antialiasing = false;
         }
 
         lorays.add(new Loray(false));

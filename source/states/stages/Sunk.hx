@@ -54,4 +54,11 @@ class Sunk extends BaseStage
 		camFollow.x = 197.5;
 		camFollow.y = 171;
 	}
+
+	override public function songStart():Void
+	{
+		super.songStart();
+
+		cameraSpeed = 0;
+	}
 }

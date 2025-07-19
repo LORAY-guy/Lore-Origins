@@ -95,6 +95,12 @@ class Beach extends BaseStage
     override function stepHit()
     {
         super.stepHit();
+
+        if (curStep == 2792) {
+            gf.y = -500;
+            gf.visible = true;
+            FlxTween.tween(gf, {y: 450}, 1, {ease:FlxEase.bounceOut});
+        }
         
         if (curStep == 3872) {
             camGame.visible = false;

@@ -90,11 +90,6 @@ class MusicPlayer extends FlxGroup
 			return;
 		}
 
-		if (paused && !wasPlaying)
-			songTxt.text = 'PLAYING: Lore (PAUSED)';
-		else
-			songTxt.text = 'PLAYING: Lore';
-
 		positionSong();
 
 		if (instance.controls.UI_LEFT_P)
@@ -102,7 +97,7 @@ class MusicPlayer extends FlxGroup
 			if (playing)
 				wasPlaying = true;
 
-			pauseOrResume();
+			pauseOrResume(false, false);
 
 			curTime = FlxG.sound.music.time - 1000;
 			instance.holdTime = 0;
@@ -119,7 +114,7 @@ class MusicPlayer extends FlxGroup
 			if (playing)
 				wasPlaying = true;
 
-			pauseOrResume();
+			pauseOrResume(false, false);
 
 			curTime = FlxG.sound.music.time + 1000;
 			instance.holdTime = 0;
@@ -213,7 +208,7 @@ class MusicPlayer extends FlxGroup
 		}
 	}
 
-	public function pauseOrResume(resume:Bool = false) 
+	public function pauseOrResume(?resume:Bool = false, ?updateText:Bool = true) 
 	{
 		if (resume)
 		{
@@ -221,6 +216,9 @@ class MusicPlayer extends FlxGroup
 
 			if (FreeplayState.vocals != null)
 				FreeplayState.vocals.resume();
+
+			if (updateText)
+				songTxt.text = 'PLAYING: ${instance.freeplayCategory == 'originals' ? CoolUtil.removeSymbol(instance.songName, "lore-") : 'Lore'}';
 		}
 		else 
 		{
@@ -228,7 +226,10 @@ class MusicPlayer extends FlxGroup
 
 			if (FreeplayState.vocals != null)
 				FreeplayState.vocals.pause();
-		}
+
+			if (updateText)
+				songTxt.text = 'PLAYING: ${instance.freeplayCategory == 'originals' ? CoolUtil.removeSymbol(instance.songName, "lore-") : 'Lore'} (PAUSED)';
+		}	
 		positionSong();
 	}
 
@@ -236,6 +237,8 @@ class MusicPlayer extends FlxGroup
 	{
 		FlxG.autoPause = (!playingMusic && ClientPrefs.data.autoPause);
 		active = visible = playingMusic;
+
+		songTxt.text = 'PLAYING: ${instance.freeplayCategory == 'originals' ? CoolUtil.removeSymbol(instance.songName, "lore-") : 'Lore'}';
 
 		instance.scoreBG.visible = instance.diffText.visible = instance.scoreText.visible = !playingMusic; //Hide Freeplay texts and boxes if playingMusic is true
 		songTxt.visible = timeTxt.visible = songBG.visible = playbackTxt.visible = playbackBG.visible = progressBar.visible = playingMusic; //Show Music Player texts and boxes if playingMusic is true
@@ -358,6 +361,7 @@ class MusicPlayer extends FlxGroup
 	function set_playbackRate(value:Float):Float 
 	{
 		var value = FlxMath.roundDecimal(value, 2);
+
 		if (value > 3)
 			value = 3;
 		else if (value <= 0.25)
