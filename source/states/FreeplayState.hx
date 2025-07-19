@@ -256,6 +256,7 @@ class FreeplayState extends MusicBeatState
 	var holdTime:Float = 0;
 	public var usingMouse:Bool = false;
 	public var canClick:Bool = true;
+	var exiting:Bool = false;
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.7)
@@ -282,7 +283,7 @@ class FreeplayState extends MusicBeatState
 		var shiftMult:Int = 1;
 		if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
 
-		if (!inSubstate)
+		if (!inSubstate && !exiting)
 		{
 			#if !mobile
 			if (!player.playingMusic)
@@ -364,6 +365,7 @@ class FreeplayState extends MusicBeatState
 					if(colorTween != null) {
 						colorTween.cancel();
 					}
+					exiting = true;
 					exitState(new states.FreeplaySelectState(true));
 				#if !mobile
 				}
@@ -437,6 +439,7 @@ class FreeplayState extends MusicBeatState
 			{
 				canClick = false;
 				persistentUpdate = false;
+				exiting = true;
 				FlxG.mouse.visible = false;
 				var brub:Int = FlxG.random.int(0, songs.length-1);
 				var songLowercase:String = Paths.formatToSongPath(songs[brub].songName);

@@ -309,7 +309,7 @@ class PlayState extends MusicBeatState
 	var lolBitState:Bool = false;
     var lolBitWarning:FlxSprite;
 	var lolBitSound:FlxSound;
-	var lolBitLuck:Float = 0.15 * ClientPrefs.data.miscEvents;
+	var lolBitLuck:Float = 0.1 * ClientPrefs.data.miscEvents;
 	#if mobile
 	private var lolBitCounter:Int = 0;
 	#else
@@ -318,15 +318,15 @@ class PlayState extends MusicBeatState
 
 	//Bonnet Achievement
 	var bonnet:FlxSprite;
-	var bonnetLuck:Float = 0.25 * ClientPrefs.data.miscEvents;
+	var bonnetLuck:Float = 0.15 * ClientPrefs.data.miscEvents;
 	var bonnetSound:FlxSound;
 
 	//Trash and the Gang Achievement
 	var no1crate:FlxSprite;
 	var bucketBob:FlxSprite;
 	var no1crateReady:Bool = false;
-	var bucketBobLuck:Float = 0.15 * ClientPrefs.data.miscEvents;
-	var no1crateLuck:Float = 0.15 * ClientPrefs.data.miscEvents;
+	var bucketBobLuck:Float = 0.1 * ClientPrefs.data.miscEvents;
+	var no1crateLuck:Float = 0.1 * ClientPrefs.data.miscEvents;
 	var boomNoise:FlxSound;
 	var whisper:FlxSound;
 	var curWhisper:Int;
@@ -334,8 +334,6 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
-		Paths.clearUnusedMemory();
-
 		startCallback = startCountdown;
 		endCallback = endSong;
 
@@ -901,7 +899,6 @@ class PlayState extends MusicBeatState
 		#if ACHIEVEMENTS_ALLOWED cacheAchievementsStuff(); #end
 
 		super.create();
-		Paths.clearUnusedMemory();
 
 		if(eventNotes.length < 1) checkEventNote();
 	}
@@ -3940,11 +3937,13 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (note.noteType == 'Ring Note') {
-			iconP3.angle = FlxG.random.int(-5, 5, [0]);
-			camGame.shake(0.02, 0.075);
-		} else if (iconP3.angle != 0) {
-			iconP3.angle = 0;
+		if (gf != null && iconP3 != null) {
+			if (note.noteType == 'Ring Note') {
+				iconP3.angle = FlxG.random.int(-5, 5, [0]);
+				camGame.shake(0.02, 0.075);
+			} else if (iconP3.angle != 0) {
+				iconP3.angle = 0;
+			}
 		}
 
 		stagesFunc(function(stage:BaseStage) stage.goodNoteHit(notes.members.indexOf(note), leData, leType, isSus));
@@ -4691,6 +4690,9 @@ class PlayState extends MusicBeatState
 			}
 
 			Achievements.unlock(SONG.song.toLowerCase());
+
+			if (SONG.song.toLowerCase() == 'distractible')
+				Achievements.unlock('distracted');
 		}
 
 		for (name in achievesToCheck) {
@@ -4702,7 +4704,7 @@ class PlayState extends MusicBeatState
 				case 'frame_by_frame':
 					unlock = (ClientPrefs.data.framerate < 30 && !usedPractice);
 				case 'lore_enjoyer':
-					unlock = (ClientPrefs.data.songPlayed.get('Covers').length >= 10 && ClientPrefs.data.songPlayed.get('Originals').length >= 4);
+					unlock = (ClientPrefs.data.songPlayed.get('Covers').length >= 10 && ClientPrefs.data.songPlayed.get('Originals').length >= 5);
 				case 'true_theorist':
 					unlock = Achievements.allUnlocked();
 			}

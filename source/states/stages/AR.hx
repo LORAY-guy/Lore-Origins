@@ -87,11 +87,11 @@ class AR extends BaseStage
     private function moveOurple():Void
     {
         FlxTween.tween(boyfriend, {alpha: 0}, 1.5, {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween) {
-            var xPos:Float = FlxG.random.float(0, FlxG.width - boyfriend.width);
-            var yPos:Float = FlxG.random.float(0, FlxG.height - boyfriend.height);
-            boyfriend.defaultX = xPos;
-            boyfriend.defaultY = yPos;
+            var xPos:Float = FlxG.random.float(0, FlxG.width - boyfriend.width, [boyfriend.x]);
+            var yPos:Float = FlxG.random.float(0, FlxG.height - (boyfriend.height / 2), [boyfriend.y]);
             boyfriend.setPosition(xPos, yPos);
+            boyfriend.defaultX = boyfriend.x;
+            boyfriend.defaultY = boyfriend.y;
             FlxTween.tween(boyfriend, {alpha: 1}, 2, {ease: FlxEase.quadInOut});
         }});
     }

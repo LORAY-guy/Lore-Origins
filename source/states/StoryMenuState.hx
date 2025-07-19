@@ -43,7 +43,6 @@ class StoryMenuState extends MusicBeatState //Keeping it in case I do something 
 
 	override function create()
 	{
-		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 
 		PlayState.isStoryMode = true;
