@@ -298,7 +298,7 @@ class CreditsState extends MusicBeatState
 					['Vs Ourple Guy',		'guy',				'95% of the visuals/sounds assets come from this mod, please consider playing it!', 			'https://ourpleguy.neocities.org',									'A357AB'],
 					[''],
 					['Lua Sprites'],
-					['Nestoku',				'nestoku',			'Made the Lua Sprites (DarknessXM commisionned them)', 											'https://x.com/TheFeloxselUwU',										'222222'],
+					['Nestoku',				'nestoku',			'Made the Lua Sprites (Brightness commisionned them)', 											'https://x.com/TheFeloxselUwU',										'222222'],
 					[''],
 					['Additional Assets come from'],
 					['Scott Cawthon', 		'scott', 			'God himself at this point', 																	'https://www.youtube.com/channel/UC2Xp5JeeO9sP6bhc-9yD1xA', 		'328BA8'],
