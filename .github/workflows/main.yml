@@ -15,26 +15,20 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  linux-release:
-    # The type of runner that the job will run on
+  build:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      - uses: krdlab/setup-haxe@master
+      - uses: actions/checkout@v4
+      - uses: krdlab/setup-haxe@v1
         with:
-          haxe-version: 4.2.5
-      # Runs a set of commands using the runners shell
-      - name: Install and Setup Haxelib
-        run: |
+          haxe-version: 4.3.4
+      - run: |
+          haxe -version
+          haxelib install hxnodejs
           haxelib setup ~/haxelib
-      - name: Install hxcpp
+      - name: Install hxcpp 4.3.2
         run: |
-          haxelib install lime
+          haxelib install hxcpp 4.3.2
       - name: Install lime
         run: |
           haxelib install lime
@@ -83,12 +77,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2.3.0
-
-      - uses: krdlab/setup-haxe@master
+      - uses: actions/checkout@v4
+      - uses: krdlab/setup-haxe@v1
         with:
-          haxe-version: 4.2.5
+          haxe-version: 4.3.4
       # Runs a set of commands using the runners shell
       - name: Install and Setup Haxelib
         run: |
@@ -96,7 +88,7 @@ jobs:
         shell: cmd
       - name: Install hxcpp
         run: |
-          haxelib install lime
+          haxelib install hxcpp 4.3.2
         shell: cmd
       - name: Install lime
         run: |
@@ -156,19 +148,17 @@ jobs:
     runs-on: macos-15
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      - uses: krdlab/setup-haxe@master
+      - uses: actions/checkout@v4
+      - uses: krdlab/setup-haxe@v1
         with:
-          haxe-version: 4.2.5
+          haxe-version: 4.3.4
       # Runs a set of commands using the runners shell
       - name: Install and Setup Haxelib
         run: |
           haxelib setup ~/haxelib
       - name: Install hxcpp
         run: |
-          haxelib install lime
+          haxelib install hxcpp 4.3.2
       - name: Install lime
         run: |
           haxelib install lime
