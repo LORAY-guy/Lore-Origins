@@ -1,25 +1,19 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Lore Origins update
 
-# Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ main, wip ]
   pull_request:
     branches: [ main, wip ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: krdlab/setup-haxe@v1
+      - uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.4
       - run: |
@@ -44,6 +38,7 @@ jobs:
         run: |
           haxelib install flixel-tools
           haxelib install flixel-ui 2.6.3
+          haxelib set flixel-ui 2.6.3
           haxelib install flixel-addons
       - name: Install tjson
         run: |
@@ -78,10 +73,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: krdlab/setup-haxe@v1
+      - uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.4
-      # Runs a set of commands using the runners shell
       - name: Install and Setup Haxelib
         run: |
           haxelib setup ~/haxelib
@@ -108,6 +102,7 @@ jobs:
         run: |
           haxelib install flixel-tools
           haxelib install flixel-ui 2.6.3
+          haxelib set flixel-ui 2.6.3
           haxelib install flixel-addons
         shell: cmd
       - name: Install tjson
@@ -149,10 +144,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: krdlab/setup-haxe@v1
+      - uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.4
-      # Runs a set of commands using the runners shell
       - name: Install and Setup Haxelib
         run: |
           haxelib setup ~/haxelib
@@ -174,6 +168,7 @@ jobs:
         run: |
           haxelib install flixel-tools
           haxelib install flixel-ui 2.6.3
+          haxelib set flixel-ui 2.6.3
           haxelib install flixel-addons
       - name: Install tjson
         run: |
