@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  buildLinux:
+  linux-release:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -34,7 +34,7 @@ jobs:
           sudo apt-get install libvlc-dev
           sudo apt-get install libvlccore-dev
           haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null
+          haxelib install hxcpp
           haxelib install lime
           haxelib install openfl
           haxelib --never install flixel 5.5.0
@@ -50,6 +50,8 @@ jobs:
           haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
+      - name: List Installed Haxelibs
+        run: haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
@@ -59,7 +61,7 @@ jobs:
         with:
           name: linux-release
           path: 'export/release/linux/bin'
-  buildWindows:
+  windows-release:
     runs-on: windows-latest
 
     steps:
@@ -73,7 +75,7 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup C:/haxelib
-          haxelib install hxcpp > nul
+          haxelib install hxcpp
           haxelib install lime
           haxelib install openfl
           haxelib --never install flixel 5.5.0
@@ -90,6 +92,8 @@ jobs:
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
         shell: cmd
+      - name: List Installed Haxelibs
+        run: haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
@@ -99,8 +103,8 @@ jobs:
         with:
           name: windows-release
           path: export/release/windows/bin
-  buildMac:
-    runs-on: macos-latest
+  mac-release:
+    runs-on: macos-15
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -113,7 +117,7 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null
+          haxelib install hxcpp
           haxelib install lime
           haxelib install openfl
           haxelib --never install flixel 5.5.0
@@ -129,6 +133,8 @@ jobs:
           haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
+      - name: List Installed Haxelibs
+        run: haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
