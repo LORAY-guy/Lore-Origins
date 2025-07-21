@@ -1,14 +1,22 @@
-v2.0.4
+v2.5.0
 ======================================================================================================================================================================================
 
-- Removed Nuu from Skins.
-- Removed Cool Buddy from Skins.
-- Removed Blink Dude from Skins.
-- Removed Fever cover.
-- Removed Style Mix cover.
-- Removed unused files.
-
-Removals were requested by their owners.
+- NEW SKINS SELECTOR
+    -> Skins aren't only affecting Ourple Guy, but all three characters.
+    -> Ourple Guy variants were removed due to owners request (some of them did, but I decided to remove them all anyway).
+- ANDROID BUILD (made in less than a week, iOS is possible if i find a way to add it to the App Store).
+- NEW ORIGINAL MIX : Presidency
+- NEW SECRET SONG.
+- REPORTED ALL THE SONGS TO SOURCE.
+- SUPPORTS ANY SCREEN RESOLUTIONS (might release an ultra-wide screen build soon).
+- GAMEPLAY OVERHAUL for I can, tho minigame.
+- Removed Lore Style Mix Cover (Owner's request).
+- Removed Fever v2 (Owner's request).
+- Decreased default chances for distracting enemies to appear.
+- Fixed weird game state bug when playing the game for too long (yes, that was a thing apparently).
+- Fixed crash/glitchy music when using the music player in Freeplay.
+- Fixed Loading Screen tip text's positionning.
+- Many more bug fixes that I can't think of...
 
 v2.0
 ======================================================================================================================================================================================
@@ -20,7 +28,7 @@ v2.0
 - Added Sunk (Lore Iron Lung Mix) to the Originals.
 - Remixed Tropical Mix.
 - Remixed Lore Sad Mix.
-- Ported all the Lua codes to Source (better performance i think).
+- Ported some of the Lua codes to Source (better performance i think).
 - Added proper credits (with new Credits subgroups).
 - Added a Loading Screen (by whitemungus) with (useless) tips.
 - Added a Matpat art (by whitemungus again) in the Freeplay Select Menu (Tip: Click on him...multiple times...cuz funni).

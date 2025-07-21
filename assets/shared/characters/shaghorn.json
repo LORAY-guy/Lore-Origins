@@ -62,12 +62,12 @@
 		110,
 		70
 	],
-	"healthicon": "bf",
+	"healthicon": "phone",
 	"flip_x": false,
 	"healthbar_colors": [
-		161,
-		161,
-		161
+		212,
+		54,
+		60
 	],
 	"camera_position": [
 		20,

@@ -87,12 +87,12 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		add(descBox);
 
 		var titleText = new FlxText(25, 80, 0, title, 32);
-		titleText.setFormat(Paths.font("options.ttf"), 40, FlxColor.WHITE, CENTER,FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		titleText.setFormat(#if html5 Paths.font("ourple.ttf") #else Paths.font("options.ttf") #end, 40, FlxColor.WHITE, CENTER,FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		titleText.alpha = 0.6;
 		add(titleText);
 
 		descText = new FlxText(50, 600, 1180, "", 28);
-		descText.setFormat(Paths.font("options.ttf"), 28, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.setFormat(#if html5 Paths.font("ourple.ttf") #else Paths.font("options.ttf") #end, 28, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		descText.screenCenter(X);
 		descText.scrollFactor.set();
 		add(descText);
@@ -545,7 +545,7 @@ class AttachedFlxText extends FlxText
 	public function new(text:String = "", ?offsetX:Float = 0, ?offsetY:Float = 0,?size:Int = 40, ?bold = 1) {
 		super(0, 0, text, bold);
 
-		setFormat(Paths.font("options.ttf"), size, FlxColor.WHITE, CENTER,FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		setFormat(#if html5 Paths.font("ourple.ttf") #else Paths.font("options.ttf") #end, size, FlxColor.WHITE, CENTER,FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
@@ -571,7 +571,7 @@ class OptionFlxText extends FlxText { //im honestly so fucking lost as to why i 
 	public var startPosition:FlxPoint = new FlxPoint(0, 0); //for the calculations
 	public var snapPosOnly:Bool = false;
 
-	public function new(x:Float, y:Float, text:String = "", ?font:String = 'options.ttf',?size:Int = 40)
+	public function new(x:Float, y:Float, text:String = "", ?font:String = #if html5 'ourple.ttf' #else 'options.ttf' #end,?size:Int = 40)
 	{
 		super(x, y);
 		this.font = Paths.font(font);

@@ -22,7 +22,7 @@ class Beach extends BaseStage
 
     override function create() {
         beach = new BGSprite('beach', 400, 125, 1, 1);
-        beach.setGraphicSize(Std.int(beach.width * 0.3));
+        beach.setGraphicSize(Std.int(beach.width * (0.3 * (FlxG.width / 1280))));
         beach.updateHitbox();
         add(beach);
 

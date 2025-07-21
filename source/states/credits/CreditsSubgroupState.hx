@@ -11,7 +11,7 @@ class CreditsSubgroupState extends MusicBeatState
     public static var curSubGroup:Int = 0;
 	private static var curSelected:Int = 0;
 
-	public var subGroupsNames:FlxTypedGroup<Alphabet>;
+	public var subGroupsNames:FlxTypedGroup<FlxText>;
 
 	var keypad:Keypad;
 	var cameraId:FlxSprite;
@@ -52,17 +52,20 @@ class CreditsSubgroupState extends MusicBeatState
 		cameraId.alpha = 0.5;
 		add(cameraId);
 
-        subGroupsNames = new FlxTypedGroup<Alphabet>();
+        subGroupsNames = new FlxTypedGroup<FlxText>();
         add(subGroupsNames);
 
         for (i in 0...subGroups.length)
         {
             var offset:Float = (i * 140) + (48 * (subGroups.length - 4) * 0.135);
-            var subGroup:Alphabet = new Alphabet(0, offset + 75, subGroups[i], true);
+            var subGroup:FlxText = new FlxText(0, offset + 112, 0, subGroups[i].toUpperCase(), 72);
+            subGroup.setFormat(Paths.font("matpat.ttf"), 72, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+            subGroup.borderSize = 4;
             subGroup.scrollFactor.set(0, 1);
             subGroup.updateHitbox();
-            subGroup.screenCenter(X);
+            subGroup.x = FlxG.width - subGroup.width - (60 * (FlxG.width / 1280));
             subGroup.ID = i;
+            subGroup.antialiasing = ClientPrefs.data.antialiasing;
             subGroupsNames.add(subGroup);
         }
 
@@ -110,19 +113,7 @@ class CreditsSubgroupState extends MusicBeatState
 				exitState(new MainMenuState(true));
 			}
 
-			var mouseOverSelected:Bool = false;
-			subGroupsNames.forEach(function(spr:Alphabet) {
-				if (spr.ID == curSelected) {
-					for (letter in spr.letters) {
-						if (FlxG.mouse.overlaps(letter)) {
-							mouseOverSelected = true;
-							break;
-						}
-					}
-				}
-			});
-			
-			if (controls.ACCEPT_P || (FlxG.mouse.justPressed && mouseOverSelected && !FlxG.mouse.overlaps(exitButton) #if (!html5 && !mobile) && !FlxG.mouse.overlaps(keypad) #end)) {
+			if (controls.ACCEPT_P || (FlxG.mouse.justPressed && FlxG.mouse.overlaps(subGroupsNames.members[curSelected]) && !FlxG.mouse.overlaps(exitButton) #if (!html5 && !mobile) && !FlxG.mouse.overlaps(keypad) #end)) {
 				selectedSomethin = true;
 				canClick = false;
 
@@ -131,13 +122,13 @@ class CreditsSubgroupState extends MusicBeatState
 
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 				
-                subGroupsNames.forEach(function(spr:Alphabet) {
-                    if (spr.ID == curSelected) {
-                        FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker) {
+                subGroupsNames.forEach(function(txt:FlxText) {
+                    if (txt.ID == curSelected) {
+                        FlxFlicker.flicker(txt, 1, 0.06, false, false, function(flick:FlxFlicker) {
                             MusicBeatState.switchState(new CreditsState(true));
                         });
                     } else {
-                        FlxTween.tween(spr, {alpha: 0}, 0.4, {ease: FlxEase.quadOut, onComplete: function(twn:FlxTween){spr.destroy();}});
+                        FlxTween.tween(txt, {alpha: 0}, 0.4, {ease: FlxEase.quadOut, onComplete: function(twn:FlxTween){txt.destroy();}});
                     } 
                 });
 			}
@@ -160,18 +151,9 @@ class CreditsSubgroupState extends MusicBeatState
 	
 	private function checkMouseSelection():Void
 	{
-		subGroupsNames.forEach(function(spr:Alphabet) {
-			var mouseOverAlphabet:Bool = false;
-			for (letter in spr.letters) {
-				if (FlxG.mouse.overlaps(letter)) {
-					mouseOverAlphabet = true;
-					break;
-				}
-			}
-			
-			if (mouseOverAlphabet && spr.ID != curSelected) {
-				changeSelection(spr.ID - curSelected);
-			}
+		subGroupsNames.forEach(function(txt:FlxText) {
+			if (FlxG.mouse.overlaps(txt) && txt.ID != curSelected)
+				changeSelection(txt.ID - curSelected);
 		});
 	}
 
@@ -179,7 +161,7 @@ class CreditsSubgroupState extends MusicBeatState
 	{
 		FlxG.camera.zoom += 0.03;
 
-        for (letter in subGroupsNames.members[curSelected].letters) letter.color = 0xFFFFFFFF;
+        subGroupsNames.members[curSelected].color = 0xFFFFFFFF;
 
 		curSelected += change;
 
@@ -188,7 +170,7 @@ class CreditsSubgroupState extends MusicBeatState
 		if (curSelected < 0)
 			curSelected = subGroups.length - 1;
 
-        for (letter in subGroupsNames.members[curSelected].letters) letter.color = 0xFFA357AB;
+        subGroupsNames.members[curSelected].color = 0x3FE730;
         
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
@@ -349,6 +331,8 @@ class Keypad extends FlxTypedGroup<FlxSprite>
             #end
             case '555882':
                 resetCode(false);
+                credits.selectedSomethin = true;
+                credits.canClick = false;
                 PlayState.SONG = Song.loadFromJson('lua', 'lua', false);
                 PlayState.isStoryMode = false;
                 PlayState.isCover = false;
@@ -363,6 +347,8 @@ class Keypad extends FlxTypedGroup<FlxSprite>
                 FlxG.sound.music.fadeOut(1.2, 0, function(twn:FlxTween) {FlxG.sound.music.stop();});
             case '205777':
                 resetCode(false);
+                credits.selectedSomethin = true;
+                credits.canClick = false;
                 PlayState.SONG = Song.loadFromJson('distractible', 'distractible', false);
                 PlayState.isStoryMode = false;
                 PlayState.isCover = false;

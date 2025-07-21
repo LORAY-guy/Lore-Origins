@@ -1,14 +1,14 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Build
+name: Lore Origins update
 
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ main ]
+    branches: [ main, wip ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, wip ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -37,21 +37,19 @@ jobs:
           haxelib install hxcpp > /dev/null
           haxelib install lime
           haxelib install openfl
-          haxelib --never install flixel
+          haxelib --never install flixel 5.5.0
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
-          haxelib install flixel-ui
+          haxelib install flixel-ui 2.6.3
           haxelib install flixel-addons
-          haxelib install tjson
-          haxelib install hxjsonast
-          haxelib install hxCodec
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
-          haxelib install hscript
-          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib install hxcpp-debug-server
-          haxelib list
+          haxelib install tjson 1.0.4
+          haxelib install hscript-iris 1.0.2
+          haxelib install hxCodec 3.0.2
+          haxelib install hxvlc 2.2.1
+          haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
+          haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
+          haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
@@ -59,7 +57,7 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: linuxBuild
+          name: linux-release
           path: 'export/release/linux/bin'
   buildWindows:
     runs-on: windows-latest
@@ -78,21 +76,19 @@ jobs:
           haxelib install hxcpp > nul
           haxelib install lime
           haxelib install openfl
-          haxelib --never install flixel
+          haxelib --never install flixel 5.5.0
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
-          haxelib install flixel-ui
+          haxelib install flixel-ui 2.6.3
           haxelib install flixel-addons
-          haxelib install tjson
-          haxelib install hxjsonast
-          haxelib install hxCodec
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
-          haxelib install hscript
-          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib install hxcpp-debug-server
-          haxelib list
+          haxelib install tjson 1.0.4
+          haxelib install hscript-iris 1.0.2
+          haxelib install hxCodec 3.0.2
+          haxelib install hxvlc 2.2.1
+          haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
+          haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
+          haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
         shell: cmd
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
@@ -101,7 +97,7 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: windowsBuild
+          name: windows-release
           path: export/release/windows/bin
   buildMac:
     runs-on: macos-latest
@@ -120,21 +116,19 @@ jobs:
           haxelib install hxcpp > /dev/null
           haxelib install lime
           haxelib install openfl
-          haxelib --never install flixel
+          haxelib --never install flixel 5.5.0
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
-          haxelib install flixel-ui
+          haxelib install flixel-ui 2.6.3
           haxelib install flixel-addons
-          haxelib install tjson
-          haxelib install hxjsonast
-          haxelib install hxCodec
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
-          haxelib install hscript
-          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib install hxcpp-debug-server
-          haxelib list
+          haxelib install tjson 1.0.4
+          haxelib install hscript-iris 1.0.2
+          haxelib install hxCodec 3.0.2
+          haxelib install hxvlc 2.2.1
+          haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
+          haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
+          haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
@@ -142,5 +136,5 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: macBuild
+          name: mac-release
           path: export/release/macos/bin

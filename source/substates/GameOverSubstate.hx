@@ -1,5 +1,6 @@
 package substates;
 
+import lime.system.BackgroundWorker;
 import objects.Character;
 import flixel.FlxObject;
 
@@ -39,6 +40,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	var charX:Float = 0;
 	var charY:Float = 0;
+	var brokenHeart:FlxSprite;
 	override function create()
 	{
 		instance = this;
@@ -46,28 +48,84 @@ class GameOverSubstate extends MusicBeatSubstate
 		Conductor.songPosition = 0;
 
 		characterName = PlayState.instance.boyfriend.curCharacter;
-		if (characterName == 'lixian') characterName += '-dead';
-		else if (characterName != 'mark') characterName = 'playguy';
+		switch (PlayState.SONG.song.toLowerCase()) {
+			case 'sunk':
+				if (characterName == 'lixian') characterName += '-dead';
+				else if (characterName != 'mark') characterName = 'playguy';
+			case 'lua':
+				characterName = 'LORAY';
+			default:
+				characterName = PlayState.instance.boyfriend.curCharacter;
+		}
 
 		boyfriend = new Character(PlayState.instance.boyfriend.getScreenPosition().x, PlayState.instance.boyfriend.getScreenPosition().y, characterName, true);
 		boyfriend.x += boyfriend.positionArray[0] - PlayState.instance.boyfriend.positionArray[0];
 		boyfriend.y += boyfriend.positionArray[1] - PlayState.instance.boyfriend.positionArray[1];
 
-		switch (boyfriend.curCharacter) {
+		switch (characterName) {
 			case 'mark':
 				boyfriend.playAnim('singUP-alt');
 				deathSoundName = 'crush';
 				loopSoundName = 'gameOver';
 				endSoundName = 'happyKids';
 			case 'lixian-dead':
+				boyfriend.updateHitbox();
 				boyfriend.scrollFactor.set();
-				boyfriend.x = FlxG.width - boyfriend.width;
-				boyfriend.y = FlxG.height - boyfriend.height;
+				boyfriend.x = FlxG.width - boyfriend.width - 185;
+				boyfriend.y = FlxG.height - boyfriend.height - 20;
 				boyfriend.playAnim('firstDeath');
 				deathSoundName = 'crush';
 				loopSoundName = 'gameOver';
 				endSoundName = 'happyKids';
-			default: //Ourple Guy
+			case 'LORAY':
+				deathSoundName = '';
+				loopSoundName = '';
+				endSoundName = '';
+				boyfriend.visible = false;
+
+				brokenHeart = new FlxSprite();
+				brokenHeart.frames = Paths.getSparrowAtlas("lua/broken-heart");
+				brokenHeart.scale.set(12, 12);
+				brokenHeart.updateHitbox();
+				brokenHeart.animation.addByPrefix("breaking", "heart", 1, false);
+				brokenHeart.animation.play("breaking");
+				brokenHeart.animation.callback = function(name:String, frame:Int, frameIndex:Int) {
+					if (frame == 1)
+						FlxG.sound.play(Paths.sound("heart_break"));
+				};
+				brokenHeart.screenCenter();
+				add(brokenHeart);
+
+				new FlxTimer().start(2, function(tmr:FlxTimer) {
+					FlxG.sound.play(Paths.sound("heart_shattered"));
+
+					brokenHeart.visible = false;
+
+					for (i in 0...5) {
+						var shard:FlxSprite = new FlxSprite();
+						shard.frames = Paths.getSparrowAtlas("lua/heart-shard");
+						shard.scale.set(12, 12);
+						shard.updateHitbox();
+						shard.animation.addByPrefix("shard", "shard", 8, true);
+						shard.animation.play("shard");
+
+						var heartCenter = brokenHeart.getGraphicMidpoint();
+						shard.setPosition(heartCenter.x + (shard.width / 2), heartCenter.y + (shard.width / 2));
+
+						var angle = (i / 5) * Math.PI * 2 + FlxG.random.float(-0.5, 0.5);
+						var speed = FlxG.random.float(300, 500);
+						shard.velocity.set(Math.cos(angle) * speed, Math.sin(angle) * speed);
+
+						shard.acceleration.y = 900;
+						shard.drag.x = 100;
+						
+						new FlxTimer().start(1.75, function(tmr:FlxTimer) {
+							endBullshit();
+						});
+						add(shard);
+					}
+				}, 1);
+			default: // Ourple Guy
 				boyfriend.scrollFactor.set();
 				boyfriend.x = 850;
 				boyfriend.y = 500;
@@ -76,7 +134,8 @@ class GameOverSubstate extends MusicBeatSubstate
 		}
 		add(boyfriend);
 
-		FlxG.sound.play(Paths.sound(deathSoundName));
+		if (deathSoundName.length > 1)
+			FlxG.sound.play(Paths.sound(deathSoundName));
 		FlxG.camera.scroll.set();
 		FlxG.camera.target = null;
 
@@ -98,7 +157,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		PlayState.instance.callOnScripts('onUpdate', [elapsed]);
 
-		if (controls.ACCEPT_P #if mobile || FlxG.mouse.justPressed #end)
+		if ((controls.ACCEPT_P #if mobile || FlxG.mouse.justPressed #end) && PlayState.SONG.song.toLowerCase() != 'lua')
 			endBullshit();
 
 		if (controls.BACK_P)
@@ -148,7 +207,8 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	function coolStartDeath(?volume:Float = 1):Void
 	{
-		FlxG.sound.playMusic(Paths.music(loopSoundName), volume);
+		if (loopSoundName.length > 1)
+			FlxG.sound.playMusic(Paths.music(loopSoundName), volume);
 	}
 
 	function endBullshit():Void

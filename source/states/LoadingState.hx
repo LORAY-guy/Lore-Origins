@@ -40,7 +40,6 @@ class LoadingState extends MusicBeatState
 		this.directory = directory;
 	}
 
-	var funkay:FlxSprite;
 	var loadingText:FlxText;
     var dots:String = ".";
 
@@ -77,34 +76,96 @@ class LoadingState extends MusicBeatState
 
 	override function create()
 	{
-		funkay = new FlxSprite().loadGraphic(Paths.image('loading/whitey'));
-		var scaleMultiplier:Float = FlxG.width / 1280;
-		var finalScale:Float = (1/6) * scaleMultiplier;
-		funkay.setGraphicSize(funkay.width * finalScale);
-		funkay.updateHitbox();
-		add(funkay);
-		funkay.antialiasing = ClientPrefs.data.antialiasing;
-		funkay.scrollFactor.set();
-		funkay.screenCenter();
+		if (PlayState.SONG.song.toLowerCase() != 'distractible') {
+			var funkay:FlxSprite;
+			if (FlxG.random.bool(1)) {
+				funkay = new FlxSprite().loadGraphic(Paths.image('loading/cinema'));
+				funkay.setGraphicSize(FlxG.width, FlxG.height);
+				funkay.updateHitbox();
+			} else {
+				funkay = new FlxSprite().loadGraphic(Paths.image('loading/whitey'));
+				var finalScale:Float = (1/6) * (FlxG.width / 1280);
+				funkay.setGraphicSize(funkay.width * finalScale);
+				funkay.updateHitbox();
+			}
+			add(funkay);
+			funkay.antialiasing = ClientPrefs.data.antialiasing;
+			funkay.scrollFactor.set();
+			funkay.screenCenter();
+		} else {
+			var finalScale:Float = (2/3) * (FlxG.width / 1280);
+			var distractasky:FlxSprite = new FlxSprite().loadGraphic(Paths.image('loading/distractasky'));
+			distractasky.scale.set(finalScale, finalScale);
+			distractasky.updateHitbox();
+			distractasky.screenCenter();
+			distractasky.antialiasing = ClientPrefs.data.antialiasing;
+			add(distractasky);
 
-		loadingText = new FlxText(FlxG.width - 400, FlxG.height - 90, 720, "Loading", 76);
-        loadingText.setFormat(Paths.font('matpat.ttf'), 76, 0x3fe730, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		loadingText.borderSize = 4;
+			var distractaclouds:FlxBackdrop = new FlxBackdrop(Paths.image("loading/distractaclouds"), X);
+			distractaclouds.scale.set(finalScale, finalScale);
+			distractaclouds.updateHitbox();
+			distractaclouds.screenCenter();
+			distractaclouds.x += FlxG.random.float(-FlxG.width, FlxG.width);
+			distractaclouds.velocity.set(-12, 0);
+			distractaclouds.antialiasing = ClientPrefs.data.antialiasing;
+			add(distractaclouds);
+
+			var distractawall:FlxSprite = new FlxSprite().loadGraphic(Paths.image("loading/distractawall"));
+			distractawall.scale.set(finalScale, finalScale);
+			distractawall.updateHitbox();
+			distractawall.screenCenter();
+			distractawall.antialiasing = ClientPrefs.data.antialiasing;
+			add(distractawall);
+
+			var distractadudes:FlxSprite = new FlxSprite().loadGraphic(Paths.image("loading/distractadudes"));
+			distractadudes.scale.set(finalScale * 1.075, finalScale * 1.075);
+			distractadudes.updateHitbox();
+			distractadudes.screenCenter();
+			distractadudes.y += 40;
+			distractadudes.antialiasing = ClientPrefs.data.antialiasing;
+			add(distractadudes);
+
+			var distractaoverlay:FlxSprite = new FlxSprite().loadGraphic(Paths.image("loading/distractaoverlay"));
+			distractaoverlay.scale.set(finalScale, finalScale);
+			distractaoverlay.updateHitbox();
+			distractaoverlay.screenCenter();
+			distractaoverlay.antialiasing = ClientPrefs.data.antialiasing;
+			add(distractaoverlay);
+		}
+
+		loadingText = new FlxText(0, FlxG.height - 90, 0, "Loading...", 76);
+		if (PlayState.SONG.song.toLowerCase() == 'distractible') {
+			loadingText.setFormat(Paths.font('mark.ttf'), 76, 0xFFFFFF, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			loadingText.borderSize = 3;
+		} else {
+			loadingText.setFormat(Paths.font('matpat.ttf'), 76, 0x3fe730, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			loadingText.borderSize = 4;
+		}
+		loadingText.updateHitbox();
+		loadingText.x = FlxG.width - loadingText.width - 20;
+		loadingText.antialiasing = ClientPrefs.data.antialiasing;
         add(loadingText);
 
-		var uselessTip:FlxText = new FlxText(0, FlxG.height - 210, FlxG.width - (FlxG.width * (1/4)), '', 48);
-		uselessTip.setFormat(Paths.font('matpat.ttf'), 48, 0x3fe730, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		var uselessTip:FlxText = new FlxText(0, 0, FlxG.width - (FlxG.width * (1/4)), '', 48);
+		if (PlayState.SONG.song.toLowerCase() == 'distractible') {
+			uselessTip.setFormat(Paths.font('mark.ttf'), 48, 0xFFFFFF, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			uselessTip.borderSize = 3;
+		} else {
+			uselessTip.setFormat(Paths.font('matpat.ttf'), 48, 0x3fe730, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			uselessTip.borderSize = 4;
+		}
 
 		var tip:String = uselessTipsList[FlxG.random.int(0, uselessTipsList.length)];
 
 		if (tip == null)
 			tip = Std.string(FlxG.random.int(0, 255)) + '.' + Std.string(FlxG.random.int(0, 255)) + '.' + Std.string(FlxG.random.int(0, 255)) + '.' + Std.string(FlxG.random.int(0, 255)); // fake IP address generator ;)
-		else if (tip.length > 200)
-			uselessTip.y = 0;
 
 		uselessTip.text = 'TIP: ' + tip;
 		uselessTip.screenCenter(X);
-		uselessTip.borderSize = 4;
+		uselessTip.y = FlxG.height - uselessTip.height - 120;
+		if (uselessTip.y < 0)
+			uselessTip.y = 0;
+		uselessTip.antialiasing = ClientPrefs.data.antialiasing;
         add(uselessTip);
 
 		var timer = new FlxTimer();

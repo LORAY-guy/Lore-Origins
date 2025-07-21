@@ -81,7 +81,7 @@ class OptionsState extends MusicBeatState
 		for (i in 0...options.length)
 		{
 			var optionstxt = new FlxText(650,0,0,options[i]);
-			optionstxt.setFormat(Paths.font("options.ttf"), 40, FlxColor.WHITE, CENTER,FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			optionstxt.setFormat(#if html5 Paths.font("ourple.ttf") #else Paths.font("options.ttf") #end, 40, FlxColor.WHITE, CENTER,FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			optionstxt.screenCenter(Y);
 			optionstxt.y += (60 * (i - (options.length / 2))) + 50;
 			optionstxt.alpha = 0.8;

@@ -52,7 +52,7 @@ class FreeplayState extends MusicBeatState
 	var bottomBG:FlxSprite;
 
 	var player:MusicPlayer;
-	var songName:String;
+	var songName:String = 'Lore';
 	#end
 
 	var exitButton:ExitButton;
@@ -623,9 +623,7 @@ class FreeplayState extends MusicBeatState
 					addWeek(
 						[
 							'lore-apology',
-							'fever',
 							'chronology',
-							'lore-style',
 							'live',
 							'horse-lore',
 							'detective',

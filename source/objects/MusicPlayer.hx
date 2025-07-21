@@ -238,7 +238,8 @@ class MusicPlayer extends FlxGroup
 		FlxG.autoPause = (!playingMusic && ClientPrefs.data.autoPause);
 		active = visible = playingMusic;
 
-		songTxt.text = 'PLAYING: ${instance.freeplayCategory == 'originals' ? CoolUtil.removeSymbol(instance.songName, "lore-") : 'Lore'}';
+		if (instance.songName != null)
+			songTxt.text = 'PLAYING: ${instance.freeplayCategory == 'originals' ? CoolUtil.removeSymbol(instance.songName, "lore-") : 'Lore'}';
 
 		instance.scoreBG.visible = instance.diffText.visible = instance.scoreText.visible = !playingMusic; //Hide Freeplay texts and boxes if playingMusic is true
 		songTxt.visible = timeTxt.visible = songBG.visible = playbackTxt.visible = playbackBG.visible = progressBar.visible = playingMusic; //Show Music Player texts and boxes if playingMusic is true

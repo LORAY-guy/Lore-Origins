@@ -1,6 +1,5 @@
 package substates;
 
-import flixel.addons.effects.chainable.FlxOutlineEffect.FlxOutlineMode;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.util.FlxStringUtil;
 

@@ -22,8 +22,8 @@
 
 	<define name="HSCRIPT_ALLOWED" if="desktop" />
 	<define name="LUA_ALLOWED" if="desktop"/>
+	<!--hxdiscord_rpc is fucked for me, i don't really care enough to fix it-->
 	<define name="CHECK_FOR_UPDATES"/>
-	<define name="DISCORD_ALLOWED" if="windows"/> <!--not working on my Linux for some reason, just to be safe, i'll figure it out afterwards ig-->
 	<define name="ACHIEVEMENTS_ALLOWED" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->

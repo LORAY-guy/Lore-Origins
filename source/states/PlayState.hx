@@ -2237,7 +2237,7 @@ class PlayState extends MusicBeatState
 		}
 
 		//You ain't getting the editors, lol
-		#if !html5
+		#if (!html5 && debug)
 		if(!endingSong && !inCutscene && allowDebugKeys && startedCountdown)
 		{
 			if (controls.justPressed('debug_1'))

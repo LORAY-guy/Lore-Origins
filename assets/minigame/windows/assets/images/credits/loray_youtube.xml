@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="shaggers_youtube.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="youtube0000" x="10" y="10" width="640" height="449" frameX="-1" frameY="-4" frameWidth="645" frameHeight="453"/>
+	<SubTexture name="youtube0001" x="660" y="10" width="634" height="450" frameX="-1" frameY="-3" frameWidth="645" frameHeight="453"/>
+	<SubTexture name="youtube0002" x="1304" y="10" width="645" height="452" frameX="0" frameY="0" frameWidth="645" frameHeight="453"/>
+</TextureAtlas>
