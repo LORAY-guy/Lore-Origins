@@ -208,6 +208,11 @@ jobs:
           haxe-version: 4.3.4
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
         
       - run: |
           haxe -version
@@ -250,15 +255,36 @@ jobs:
           haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
+      - name: Setup Android paths for Lime
+        run: |
+          # Create lime config directory if it doesn't exist
+          mkdir -p ~/.lime
+          
+          # Create lime config with Android paths
+          cat > ~/.lime/config.xml << EOF
+          <?xml version="1.0" encoding="utf-8"?>
+          <xml>
+            <section name="environment">
+              <variable name="ANDROID_SDK" value="$ANDROID_SDK_ROOT" />
+              <variable name="ANDROID_NDK_ROOT" value="$ANDROID_NDK_ROOT" />
+              <variable name="JAVA_HOME" value="$JAVA_HOME" />
+            </section>
+          </xml>
+          EOF
+          
+          # Verify paths exist
+          echo "Android SDK: $ANDROID_SDK_ROOT"
+          echo "Android NDK: $ANDROID_NDK_ROOT" 
+          echo "Java Home: $JAVA_HOME"
+          
+          # Run lime setup android (should now use the config)
+          haxelib run lime setup android
       - name: List Installed Haxelibs
         run: haxelib list
-
       - name: Build Android APK
         run: haxelib run lime build android -release --app-version="4.0.0-${{ github.run_id }}"
-
       - name: Show APK Path
         run: find export/release/android -type f -name "*.apk"
-
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
