@@ -280,7 +280,10 @@ jobs:
           # Verify NDK installation
           ls -la $ANDROID_NDK_ROOT/
           
-          # Set up lime with proper environment variables
+          # Run lime setup android with automated input
+          printf '%s\n%s\n%s\n' "$ANDROID_SDK_ROOT" "$ANDROID_NDK_ROOT" "$JAVA_HOME" | haxelib run lime setup android
+          
+          # Also set the config values directly
           haxelib run lime config ANDROID_SDK $ANDROID_SDK_ROOT
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_ROOT
           haxelib run lime config JAVA_HOME $JAVA_HOME
