@@ -255,6 +255,8 @@ jobs:
           haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
+      - name: List Installed Haxelibs
+        run: haxelib list
       - name: Setup Android paths for Lime
         run: |
           # Create lime config directory if it doesn't exist
@@ -279,8 +281,15 @@ jobs:
           
           # Run lime setup android (should now use the config)
           haxelib run lime setup android
-      - name: List Installed Haxelibs
-        run: haxelib list
+      - name: Configure Lime Paths
+        run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
+          haxelib run lime config JAVA_HOME $JAVA_HOME
+        env:
+          ANDROID_HOME: /usr/local/lib/android/sdk
+          ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
+          JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.15-6/x64
       - name: Build Android APK
         run: haxelib run lime build android -release --app-version="4.0.0-${{ github.run_id }}"
       - name: Show APK Path
