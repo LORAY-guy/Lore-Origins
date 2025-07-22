@@ -206,6 +206,7 @@ jobs:
       - uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.4
+
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
       - name: Install specific NDK version
@@ -220,6 +221,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+
       - run: |
           haxe -version
           haxelib install hxnodejs
@@ -263,6 +265,7 @@ jobs:
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
       - name: List Installed Haxelibs
         run: haxelib list
+
       - name: Setup Android paths for Lime
         run: |
           # Install additional build tools
@@ -288,9 +291,10 @@ jobs:
           export NDK_ROOT=$ANDROID_NDK_ROOT
           
           # Build with verbose output to help debug issues
-          haxelib run lime build android -release --app-version="4.0.0-${{ github.run_id }}" -verbose
+          haxelib run lime build android -release --app-version="4.0.0-${{ github.run_id }}"
       - name: Show APK Path
         run: find export/release/android -type f -name "*.apk"
+
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
