@@ -36,6 +36,8 @@ class CreditsState extends MusicBeatState
 
 		Paths.clearUnusedMemory();
 
+		Conductor.bpm = 130; // Make the Ourple Guy shake in sync with the music
+
 		subGroup = CreditsSubgroupState.subGroups[CreditsSubgroupState.curSubGroup];
 
 		persistentUpdate = true;

@@ -37,7 +37,7 @@ class FreeplaySelectState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 	
-		backend.Conductor.bpm = 130;
+		Conductor.bpm = 130;
 		persistentUpdate = persistentDraw = true;
 
 		var grid:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/grid'));

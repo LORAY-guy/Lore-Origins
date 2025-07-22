@@ -36,6 +36,8 @@ class LorayState extends MusicBeatState
         DiscordClient.changePresence("LORAY UwU", null);
         #end
 
+        Conductor.bpm = 130; // Make the LORAYs in sync with the music
+
         Paths.clearUnusedMemory();
 
         FlxTransitionableState.skipNextTransIn = true;

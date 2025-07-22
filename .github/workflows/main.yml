@@ -1,4 +1,4 @@
-name: Lore Origins update
+name: Lore Origins - Auto-export Action
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  linux-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -198,3 +198,69 @@ jobs:
         with:
           name: mac-release
           path: export/release/macos/bin
+
+  android-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: krdlab/setup-haxe@v2
+        with:
+          haxe-version: 4.3.4
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        
+      - run: |
+          haxe -version
+          haxelib install hxnodejs
+          haxelib setup ~/haxelib
+      - name: Install hxcpp 4.3.2
+        run: |
+          haxelib install hxcpp 4.3.2
+      - name: Install lime
+        run: |
+          haxelib install lime
+      - name: Install openfl
+        run: |
+          haxelib install openfl
+      - name: Install and Setup flixel 5.5.0
+        run: |
+          haxelib --never install flixel 5.5.0
+          haxelib run lime setup flixel
+          haxelib run lime setup
+      - name: Install flixel tools and others
+        run: |
+          haxelib install flixel-tools
+          haxelib install flixel-ui 2.6.3
+          haxelib set flixel-ui 2.6.3
+          haxelib install flixel-addons
+      - name: Install tjson
+        run: |
+          haxelib install tjson 1.0.4
+      - name: Install hscript-iris 1.0.2
+        run: |
+          haxelib install hscript-iris 1.0.2
+      - name: Install hxCodec 3.0.2
+        run: |
+          haxelib install hxCodec 3.0.2
+      - name: Install hxvlc 2.2.1
+        run: |
+          haxelib install hxvlc 2.2.1
+      - name: Install other vital libraries
+        run: |
+          haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
+          haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
+          haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
+      - name: List Installed Haxelibs
+        run: haxelib list
+
+      - name: Build Android APK
+        run: haxelib run lime build android -release --app-version="4.0.0-${{ github.run_id }}"
+
+      - name: Show APK Path
+        run: find export/release/android -type f -name "*.apk"
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: export/release/android/bin/app/build/outputs/apk/debug/app-debug.apk
