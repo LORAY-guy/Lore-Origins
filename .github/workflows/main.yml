@@ -2,9 +2,9 @@ name: Lore Origins - Auto-export Action
 
 on:
   push:
-    branches: [ main, wip ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, wip ]
+    branches: [ main ]
 
   workflow_dispatch:
 
