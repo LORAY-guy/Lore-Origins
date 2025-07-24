@@ -330,6 +330,10 @@ class PlayState extends MusicBeatState
 	var boomNoise:FlxSound;
 	var whisper:FlxSound;
 	var curWhisper:Int;
+
+	//Overanalyzed Achievement
+	public static var lastPlayedSong:String = "";
+	public static var replayCounter:Int = 0;
 	#end
 
 	override public function create()
@@ -3126,7 +3130,7 @@ class PlayState extends MusicBeatState
 		}
 			
 
-		if (!skippedSong) checkForAchievement(['frame_by_frame', 'lore_enjoyer', 'true_theorist']);
+		if (!skippedSong) checkForAchievement(['frame_by_frame', 'overanalyzed', 'lore_enjoyer']);
 		#end
 
 		if (SONG.song.toLowerCase() == 'lua') {
@@ -4704,10 +4708,15 @@ class PlayState extends MusicBeatState
 			{
 				case 'frame_by_frame':
 					unlock = (ClientPrefs.data.framerate < 30 && !usedPractice);
+				case 'overanalyzed':
+					if (lastPlayedSong == null || lastPlayedSong == '')
+						lastPlayedSong = SONG.song.toLowerCase();
+					if (lastPlayedSong == SONG.song.toLowerCase())
+						replayCounter++;
+					lastPlayedSong = SONG.song.toLowerCase();
+					unlock = (replayCounter >= 3 && !usedPractice);
 				case 'lore_enjoyer':
 					unlock = (ClientPrefs.data.songPlayed.get('Covers').length >= 10 && ClientPrefs.data.songPlayed.get('Originals').length >= 5);
-				case 'true_theorist':
-					unlock = Achievements.allUnlocked();
 			}
 
 			if(unlock) Achievements.unlock(name);

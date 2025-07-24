@@ -5,13 +5,25 @@ import flixel.util.FlxSort;
 
 import objects.Bar;
 
+typedef AchievementVariables = {
+	public var name:String;
+	public var displayName:String;
+	public var description:String;
+	public var curProgress:Float;
+	public var maxProgress:Float;
+	public var decProgress:Float;
+	public var unlocked:Bool;
+	public var ID:Int;
+	@:optional public var mod:String;
+};
+
 #if ACHIEVEMENTS_ALLOWED
 class AchievementsMenuState extends MusicBeatState
 {
 	public var curSelected:Int = 0;
 	public var unlockedAchievements:Int = 0;
 
-	public var options:Array<Dynamic> = [];
+	public var options:Array<AchievementVariables> = [];
 	public var grpOptions:FlxSpriteGroup;
 	public var nameText:FlxText;
 	public var descText:FlxText;
@@ -78,7 +90,7 @@ class AchievementsMenuState extends MusicBeatState
 			spr.ID = grpOptions.members.length;
 			spr.screenCenter(X);
 			spr.x += 180 * ((grpOptions.members.length % MAX_PER_ROW) - MAX_PER_ROW/2) + spr.width / 2 + 15;
-			if (spr.ID == 12) {
+			if (spr.ID == 16) {
 				spr.y -= 10;
 				if (option.unlocked)
 					spr.loadGraphic(Paths.image('achievements/goldenAchievement'));
@@ -94,8 +106,8 @@ class AchievementsMenuState extends MusicBeatState
 		box.screenCenter(X);
 		add(box);
 		// Special final achievement (basically unlocks when you got all the other achievements, cuz its cool)
-		if (grpOptions.members[12] != null) // Let's keep some good practice up in here.
-			grpOptions.members[12].x = (box.x + box.width / 2) - (grpOptions.members[12].width / 2);
+		if (grpOptions.members[grpOptions.length - 1] != null)
+			grpOptions.members[grpOptions.length - 1].x = (box.x + box.width / 2) - (grpOptions.members[grpOptions.length - 1].width / 2);
 		add(grpOptions);
 		
 
@@ -164,7 +176,7 @@ class AchievementsMenuState extends MusicBeatState
 		FlxG.camera.scroll.y = -FlxG.height;
 	}
 
-	function makeAchievement(achievement:String, data:Achievement, unlocked:Bool, mod:String = null)
+	function makeAchievement(achievement:String, data:Achievement, unlocked:Bool, mod:String = null):AchievementVariables
 	{
 		var unlocked:Bool = Achievements.isUnlocked(achievement);
 		if (unlocked) unlockedAchievements++; //For the big golden fella.
@@ -284,7 +296,7 @@ class AchievementsMenuState extends MusicBeatState
 		{
 			var val1:Float = options[curSelected].curProgress;
 			var val2:Float = options[curSelected].maxProgress;
-			progressTxt.text = CoolUtil.floorDecimal(val1, options[curSelected].decProgress) + ' / ' + CoolUtil.floorDecimal(val2, options[curSelected].decProgress);
+			progressTxt.text = CoolUtil.floorDecimal(val1, Std.int(options[curSelected].decProgress)) + ' / ' + CoolUtil.floorDecimal(val2, Std.int(options[curSelected].decProgress));
 
 			barTween = FlxTween.tween(progressBar, {percent: (val1 / val2) * 100}, 0.5, {ease: FlxEase.quadOut,
 				onComplete: function(twn:FlxTween) progressBar.updateBar(),
@@ -314,17 +326,51 @@ class AchievementsMenuState extends MusicBeatState
 		}
 	}
 
+	public function updateAchievement(id:Int)
+	{
+		if (id < 0 || id >= options.length) return;
+
+		var option:AchievementVariables = options[id];
+		var achievement:Achievement = Achievements.achievements.get(option.name);
+		if (achievement == null || option.unlocked) return;
+
+		option.unlocked = Achievements.isUnlocked(option.name);
+		option.displayName = (!achievement.hidden || option.unlocked) ? achievement.name : '???';
+		option.description = (!achievement.hiddenDesc || option.unlocked) ? achievement.description : '????????';
+
+		grpOptions.members[id].loadGraphic(Paths.image('achievements/' + (option.unlocked ? 'unlocked' : 'locked')));
+		if (id == grpOptions.members.length - 1 && option.unlocked)
+			grpOptions.members[id].loadGraphic(Paths.image('achievements/goldenAchievement'));
+
+		if (curSelected == id)
+		{
+			nameText.text = option.displayName;
+			descText.text = option.description;
+			if (option.maxProgress > 0) {
+				progressTxt.text = CoolUtil.floorDecimal(option.curProgress, Std.int(option.decProgress)) + ' / ' + CoolUtil.floorDecimal(option.maxProgress, Std.int(option.decProgress));
+				progressBar.percent = (option.curProgress / option.maxProgress) * 100;
+			} else {
+				progressTxt.visible = progressBar.visible = false;
+			}
+		}
+
+		if (unlockedAchievements == options.length)
+			showCutscene();
+	}
+
 	function createGoldenFella()
 	{
-		ourpleFella = new FlxSprite();
-		ourpleFella.frames = Paths.getSparrowAtlas('achievements/goldenFella');
-		ourpleFella.animation.addByPrefix('idle', 'idle', 20, true);
-		ourpleFella.animation.play('idle');
-		ourpleFella.scrollFactor.set();
-		ourpleFella.scale.set(1.5, 1.5);
-		ourpleFella.updateHitbox();
-		add(ourpleFella);
-		ourpleFella.y = (FlxG.height - ourpleFella.height) + 100;
+		if (ourpleFella == null) {
+			ourpleFella = new FlxSprite();
+			ourpleFella.frames = Paths.getSparrowAtlas('achievements/goldenFella');
+			ourpleFella.animation.addByPrefix('idle', 'idle', 20, true);
+			ourpleFella.animation.play('idle');
+			ourpleFella.scrollFactor.set();
+			ourpleFella.scale.set(1.5, 1.5);
+			ourpleFella.updateHitbox();
+			insert(members.indexOf(grpOptions) + 1, ourpleFella);
+			ourpleFella.y = (FlxG.height - ourpleFella.height) + 100;
+		}
 
 		if (!inCutscene) {
 			var resolution:Float = (FlxG.width / 1280);
@@ -389,6 +435,8 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 	var yesText:Alphabet;
 	var noText:Alphabet;
 
+	var state:AchievementsMenuState = cast FlxG.state;
+
 	public function new()
 	{
 		super();
@@ -449,9 +497,10 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 				if (ClientPrefs.data.unlockedEverything)
 				{
 					ClientPrefs.data.unlockedEverything = false;
-					var state:AchievementsMenuState = cast FlxG.state;
-					state.ourpleFella.destroy();
-					state.ourpleFella = null;
+					if (state.ourpleFella != null) { // very specific case here, thank god i'm making thorough tests
+						state.ourpleFella.destroy();
+						state.ourpleFella = null;
+					}
 					state.box.screenCenter(X);
 					state.grpOptions.x = 0;
 				}
@@ -480,20 +529,20 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 	}
 
 	function onConfirm(?resetOption:Null<Int> = null) {
-		var state:AchievementsMenuState = cast FlxG.state;
-		var option:Dynamic = null;
+		var option:AchievementVariables = null;
 		if (resetOption != null)
 			option = state.options[resetOption];
 		else
 			option = state.options[state.curSelected];
 
+		state.unlockedAchievements--;
 		Achievements.variables.remove(option.name);
 		Achievements.achievementsUnlocked.remove(option.name);
 		option.unlocked = false;
 		option.curProgress = 0;
 		if(option.maxProgress > 0) state.progressTxt.text = '0 / ' + option.maxProgress;
-		state.grpOptions.members[state.curSelected].loadGraphic(Paths.image('achievements/locked'));
-		state.grpOptions.members[state.curSelected].antialiasing = ClientPrefs.data.antialiasing;
+
+		state.updateAchievement(option.ID);
 
 		if(state.progressBar.visible)
 		{
@@ -504,6 +553,15 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 			});
 		}
 
+		if (Achievements.isUnlocked("true_theorist"))
+		{
+			state.unlockedAchievements--;
+			Achievements.achievementsUnlocked.remove("true_theorist");
+			Achievements.variables.remove("true_theorist");
+			state.options[state.options.length - 1].unlocked = false;
+			state.updateAchievement(state.options[state.options.length - 1].ID);
+		}
+
 		switch (option.name)
 		{
 			case 'lore_enjoyer':
@@ -511,7 +569,7 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 				ClientPrefs.data.songPlayed.set('Originals', []);
 
 			case 'true_theorist':
-				for (i in 0...11) {
+				for (i in 0...state.grpOptions.length - 1) {
 					onConfirm(i);
 				}
 		}

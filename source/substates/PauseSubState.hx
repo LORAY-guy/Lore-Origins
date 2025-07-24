@@ -31,6 +31,11 @@ class PauseSubState extends MusicBeatSubstate
 
 	public static var songName:String = null;
 
+	#if ACHIEVEMENTS_ALLOWED
+	private var pauseTimer:Float = 0;
+	public static var pauseAmount:Int = 0; 
+	#end
+
 	override function create()
 	{
 		/*if(PlayState.chartingMode)
@@ -142,6 +147,12 @@ class PauseSubState extends MusicBeatSubstate
 
 		FlxG.mouse.visible = true;
 		super.create();
+
+		#if ACHIEVEMENTS_ALLOWED
+		pauseAmount++;
+		if (!Achievements.isUnlocked('taking_notes') && pauseAmount >= 10)
+			Achievements.unlock('taking_notes');
+		#end
 	}
 
 	function getPauseSong()
@@ -154,7 +165,7 @@ class PauseSubState extends MusicBeatSubstate
 	}
 
 	var holdTime:Float = 0;
-	var cantUnpause:Float = 0.1;
+	var cantUnpause:Float = 0.25;
 	override function update(elapsed:Float)
 	{
 		cantUnpause -= elapsed;
@@ -162,6 +173,14 @@ class PauseSubState extends MusicBeatSubstate
 			pauseMusic.volume += 0.01 * elapsed;
 
 		super.update(elapsed);
+		
+		#if ACHIEVEMENTS_ALLOWED
+		if (!Achievements.isUnlocked('bathroom_break') && pauseTimer >= 180) {
+			Achievements.unlock('bathroom_break');
+		} else {
+			pauseTimer += elapsed;
+		}
+		#end
 
 		if(controls.BACK_P && cantUnpause <= 0.0)
 		{

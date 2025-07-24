@@ -282,4 +282,14 @@ class MusicBeatState extends FlxUIState
 			startDelay: 0.5
 		});
 	}
+
+	override public function onFocusLost():Void
+	{
+		super.onFocusLost();
+
+		#if ACHIEVEMENTS_ALLOWED
+		if (!Achievements.isUnlocked('tab_out'))
+			Achievements.unlock('tab_out');
+		#end
+	}
 }

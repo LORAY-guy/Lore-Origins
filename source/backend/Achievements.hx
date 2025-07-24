@@ -1,6 +1,7 @@
 package backend;
 
 #if ACHIEVEMENTS_ALLOWED
+import states.AchievementsMenuState;
 import objects.AchievementPopup;
 import haxe.Exception;
 
@@ -26,9 +27,13 @@ class Achievements {
 	public static function init()
 	{
 		createAchievement('frame_by_frame',			{name: "Frame By Frame", description: "Finish a song under 30 fps."});
+		createAchievement('overanalyzed',			{name: "Overanalyzed", description: "Replay a song 3 times in a row."});
 		createAchievement('u_scawy',				{name: "U scawy", description: "Scare Ourple Guy for more than 60 seconds in one attempt."});
 		createAchievement('wake_up',				{name: "Wake Up, Internet!", description: "Click on Matpat 50 times.", maxScore: 50});
 		createAchievement('loray_hater',			{name: "LORAY Hater", description: "Punch LORAY."});
+		createAchievement('tab_out',				{name: "Looking It Up", description: "Were you searching for the solution?", hiddenDesc: true});
+		createAchievement('bathroom_break',			{name: "Be Right Back...", description: "Pause a song for 3 minutes straight.", hiddenDesc: true});
+		createAchievement('taking_notes',			{name: "Taking Notes...", description: "Pause the game at least 10 times in one song.", hiddenDesc: true});
 		createAchievement('lolbit',					{name: "Please, Stand By!", description: "Encounter and Beat Lolbit.", hiddenDesc: true});
 		createAchievement('bonnet',					{name: "Well, hello again!", description: "Encounter and Beat Bonnet.", hiddenDesc: true});
 		createAchievement('trash_gang',				{name: "Psst! I have something to tell you...", description: "Encounter one of the members of Trash and the Gang.", hiddenDesc: true});
@@ -143,22 +148,38 @@ class Achievements {
 			_lastUnlock = time;
 		}
 
-		if (allUnlocked()) {
-			unlock('true_theorist');
-		}
-
 		Achievements.save();
 		FlxG.save.flush();
 
+		if (Std.isOfType(FlxG.state, AchievementsMenuState)) {
+			var state:AchievementsMenuState = cast FlxG.state;
+			state.unlockedAchievements++;
+			state.updateAchievement(achievements.get(name).ID);
+		}
+
 		if(autoStartPopup) startPopup(name);
+
+		if (allUnlocked()) unlock('true_theorist');
+
 		return name;
 	}
 
-	inline public static function isUnlocked(name:String)
+	inline public static function isUnlocked(name:String):Bool
 		return achievementsUnlocked.contains(name);
 
-	inline public static function allUnlocked()
-		return achievementsUnlocked.length >= 12;
+	inline public static function allUnlocked():Bool
+		return achievementsUnlocked.length >= 15; // can't get the length of the map :(
+
+	// Unlocks all achievements, used for testing purposes
+	inline public static function unlockAll():Void
+	{
+		for (key => value in achievements)
+		{
+			if(!achievementsUnlocked.contains(key)) {
+				unlock(key, false);
+			}
+		}
+	}
 
 	@:allow(objects.AchievementPopup)
 	private static var _popups:Array<AchievementPopup> = [];
