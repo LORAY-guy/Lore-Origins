@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="broken-heart.png">
-	<!-- Created with Adobe Animate version 21.0.5.40714 -->
-	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture name="heart0000" x="0" y="0" width="20" height="16"/>
-	<SubTexture name="heart0001" x="20" y="0" width="20" height="16"/>
-</TextureAtlas>
