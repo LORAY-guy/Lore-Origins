@@ -1,0 +1,91 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				38,
+				-119
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "shaggy_down"
+		},
+		{
+			"offsets": [
+				87,
+				2
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "shaggy_right"
+		},
+		{
+			"offsets": [
+				-92,
+				65
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "shaggy_up"
+		},
+		{
+			"offsets": [
+				-120,
+				-80
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "shaggy_left"
+		},
+		{
+			"offsets": [
+				-45,
+				40
+			],
+			"indices": [],
+			"fps": 30,
+			"anim": "danceLeft",
+			"loop": false,
+			"name": "shaggy_idle0"
+		},
+		{
+			"offsets": [
+				-70,
+				40
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "danceRight",
+			"loop": false,
+			"name": "shaggy_idle2"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/playguyshaggy",
+	"position": [
+		0,
+		0
+	],
+	"healthicon": "shaggy",
+	"flip_x": false,
+	"healthbar_colors": [
+		89,
+		73,
+		97
+	],
+	"camera_position": [
+		150,
+		20
+	],
+	"sing_duration": 6.1,
+	"scale": 1,
+	"_editor_isPlayer": true
+}

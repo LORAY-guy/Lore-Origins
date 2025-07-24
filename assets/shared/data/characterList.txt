@@ -9,6 +9,8 @@ playguy
 playguy-rtx
 playguy-mad
 playguy-staring
+playguy-shaggy
+playguy-loray
 phone
 phone-rtx
 goldenphone

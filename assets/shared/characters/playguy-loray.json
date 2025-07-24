@@ -1,0 +1,80 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-21,
+				9
+			],
+			"loop": false,
+			"fps": 30,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "down"
+		},
+		{
+			"offsets": [
+				49,
+				7
+			],
+			"loop": false,
+			"fps": 30,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "right"
+		},
+		{
+			"offsets": [
+				0,
+				34
+			],
+			"loop": false,
+			"fps": 30,
+			"anim": "singUP",
+			"indices": [],
+			"name": "up"
+		},
+		{
+			"offsets": [
+				-13,
+				28
+			],
+			"loop": false,
+			"fps": 30,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "left"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": false,
+			"fps": 30,
+			"anim": "idle",
+			"indices": [],
+			"name": "idle"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": true,
+	"image": "characters/playguy-loray",
+	"position": [
+		120,
+		370
+	],
+	"healthicon": "lorayguy",
+	"flip_x": false,
+	"healthbar_colors": [
+		153,
+		255,
+		0
+	],
+	"camera_position": [
+		310,
+		-220
+	],
+	"sing_duration": 6.1,
+	"scale": 3.4,
+	"_editor_isPlayer": true
+}

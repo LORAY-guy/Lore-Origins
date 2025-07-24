@@ -20,7 +20,9 @@ class SkinSelectorState extends MusicBeatState
                 {name: "RTX", scale: 2.5},
                 {name: "Mad", scale: 2.5},
                 {name: "Staring", scale: 2.4},
-                {name: "Afton", scale: 2.4}
+                {name: "Afton", scale: 2.4},
+                {name: "Shaggy", scale: 0.65},
+                {name: "Loray", scale: 2.5}
             ]
         },
         {
@@ -219,7 +221,7 @@ class SkinSelectorState extends MusicBeatState
     {
         if (skinName != null)
             skinName.destroy();
-        skinName = new Alphabet(0, FlxG.height - 200, curSkin, false);
+        skinName = new Alphabet(0, FlxG.height - 200, curSkin == 'Loray' ? curSkin.toUpperCase() : curSkin, false);
         skinName.screenCenter(X);
         add(skinName);
     }

@@ -273,6 +273,10 @@ class Presidency extends BaseStage
                 return -40;
             case 'playguy-afton':
                 return -30;
+            case 'playguy-shaggy':
+                return -100;
+            case 'playguy-loray':
+                return -150;
             default:
                 return -160;
         }

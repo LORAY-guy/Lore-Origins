@@ -181,7 +181,7 @@ class StrumNote extends FlxSprite
 	public function postAddedToGroup()
 	{
 		playAnim('static');
-		if (ClientPrefs.data.middleScroll || PlayState.instance.songName == 'lore-ar')
+		if (ClientPrefs.data.middleScroll || PlayState.SONG.song.toLowerCase() == 'lore-ar')
 		{
 			var notesWidth:Float = Note.swagWidth * 4;
 			var centerX:Float = (FlxG.width - notesWidth) / 2;

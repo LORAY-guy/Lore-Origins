@@ -892,7 +892,7 @@ class PlayState extends MusicBeatState
 		if (SONG.song.toLowerCase().contains('sad'))
 			iconP2.animation.curAnim.curFrame = 1;
 
-		if (gf != null) 
+		if (gf != null && iconP3 != null) 
 		{
 			iconP3.scale.set(1.2, 1.2);
 			iconP3.updateHitbox();
@@ -2241,7 +2241,7 @@ class PlayState extends MusicBeatState
 		}
 
 		//You ain't getting the editors, lol
-		#if (!html5 && debug)
+		#if (!html5)
 		if(!endingSong && !inCutscene && allowDebugKeys && startedCountdown)
 		{
 			if (controls.justPressed('debug_1'))

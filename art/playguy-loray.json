@@ -1,0 +1,535 @@
+{ "frames": {
+   "playguy-loray0.ase": {
+    "frame": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray1.ase": {
+    "frame": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray2.ase": {
+    "frame": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray3.ase": {
+    "frame": { "x": 154, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray4.ase": {
+    "frame": { "x": 154, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray5.ase": {
+    "frame": { "x": 154, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray6.ase": {
+    "frame": { "x": 308, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray7.ase": {
+    "frame": { "x": 308, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray8.ase": {
+    "frame": { "x": 308, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray9.ase": {
+    "frame": { "x": 462, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray10.ase": {
+    "frame": { "x": 462, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray11.ase": {
+    "frame": { "x": 462, "y": 0, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray12.ase": {
+    "frame": { "x": 0, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray13.ase": {
+    "frame": { "x": 0, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray14.ase": {
+    "frame": { "x": 0, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray15.ase": {
+    "frame": { "x": 154, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray16.ase": {
+    "frame": { "x": 154, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray17.ase": {
+    "frame": { "x": 154, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray18.ase": {
+    "frame": { "x": 154, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray19.ase": {
+    "frame": { "x": 154, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray20.ase": {
+    "frame": { "x": 154, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray21.ase": {
+    "frame": { "x": 154, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray22.ase": {
+    "frame": { "x": 154, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray23.ase": {
+    "frame": { "x": 154, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray24.ase": {
+    "frame": { "x": 154, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray25.ase": {
+    "frame": { "x": 308, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray26.ase": {
+    "frame": { "x": 308, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray27.ase": {
+    "frame": { "x": 308, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray28.ase": {
+    "frame": { "x": 462, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray29.ase": {
+    "frame": { "x": 462, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray30.ase": {
+    "frame": { "x": 462, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray31.ase": {
+    "frame": { "x": 462, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray32.ase": {
+    "frame": { "x": 462, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray33.ase": {
+    "frame": { "x": 462, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray34.ase": {
+    "frame": { "x": 462, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray35.ase": {
+    "frame": { "x": 462, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray36.ase": {
+    "frame": { "x": 462, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray37.ase": {
+    "frame": { "x": 462, "y": 188, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray38.ase": {
+    "frame": { "x": 0, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray39.ase": {
+    "frame": { "x": 0, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray40.ase": {
+    "frame": { "x": 0, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray41.ase": {
+    "frame": { "x": 154, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray42.ase": {
+    "frame": { "x": 154, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray43.ase": {
+    "frame": { "x": 154, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray44.ase": {
+    "frame": { "x": 154, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray45.ase": {
+    "frame": { "x": 154, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray46.ase": {
+    "frame": { "x": 154, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray47.ase": {
+    "frame": { "x": 154, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray48.ase": {
+    "frame": { "x": 154, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray49.ase": {
+    "frame": { "x": 154, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray50.ase": {
+    "frame": { "x": 154, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray51.ase": {
+    "frame": { "x": 308, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray52.ase": {
+    "frame": { "x": 308, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray53.ase": {
+    "frame": { "x": 308, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray54.ase": {
+    "frame": { "x": 462, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray55.ase": {
+    "frame": { "x": 462, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray56.ase": {
+    "frame": { "x": 462, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray57.ase": {
+    "frame": { "x": 462, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray58.ase": {
+    "frame": { "x": 462, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray59.ase": {
+    "frame": { "x": 462, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray60.ase": {
+    "frame": { "x": 462, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray61.ase": {
+    "frame": { "x": 462, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray62.ase": {
+    "frame": { "x": 462, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   },
+   "playguy-loray63.ase": {
+    "frame": { "x": 462, "y": 376, "w": 154, "h": 188 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 154, "h": 188 },
+    "sourceSize": { "w": 154, "h": 188 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3-rc6-dev",
+  "image": "playguy-loray.png",
+  "format": "I8",
+  "size": { "w": 616, "h": 564 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Loop", "from": 0, "to": 63, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "Layer", "opacity": 255, "blendMode": "normal" },
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" },
+   { "name": "Layer 2", "opacity": 255, "blendMode": "normal" },
+   { "name": "Layer 3", "opacity": 255, "blendMode": "normal" },
+   { "name": "Layer 4", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

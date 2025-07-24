@@ -263,7 +263,7 @@ class CreditsState extends MusicBeatState
 					['Crafted',				'crafted',			'Icons in my credits menu',																		'https://youtube.com/@Crafted_37',									'D0C6D5'],
 					[''],
 					['Special Thanks'],
-					['Harxurt', 			'harxurt',			'Emotional support, thanks for being such a nice friend',										'https://youtube.com/@Harxurt',										'CCCCCC'],
+					['Harxurt', 			'harxurt',			'Emotional support, thanks for being such a nice friend (and for making the Ourple LORAY sprites :p)','https://youtube.com/@Harxurt',										'CCCCCC'],
 					['Brightness',			'brightness', 		'Emotional support, thanks for making me stand back up when I needed it the most',				'https://youtube.com/channel/UCnipvhQVfXvHAPVZ3huON0w',				'224422'],
 					['Out',					'out',				'Odd one but, thanks for making me rethink my life\'s style and decisions...', 					'',																	'AAAAAA'],
 					['Lua',					'lua',				'Thank you for everything... hope I\'ll see you out there one day...',							'https://www.youtube.com/@LORAY_', 									'FF1F4A']
