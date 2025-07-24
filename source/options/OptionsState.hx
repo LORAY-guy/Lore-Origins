@@ -116,25 +116,30 @@ class OptionsState extends MusicBeatState
 		ClientPrefs.saveSettings();
 	}
 
+	public var selectedSomethin:Bool = false;
 	override function update(elapsed:Float)
 	{
-		if (controls.UI_UP_P) {
-			changeSelection(-1);
-		}
-		if (controls.UI_DOWN_P) {
-			changeSelection(1);
-		}
-	
-		if (controls.BACK_P) {
-			if(onPlayState)
-			{
-				StageData.loadDirectory(PlayState.SONG);
-				exitState(new PlayState(), true, true);
-				FlxG.sound.music.volume = 0;
+		if (!selectedSomethin)
+		{
+			if (controls.UI_UP_P) {
+				changeSelection(-1);
 			}
-			else exitState(new MainMenuState(true));
+			if (controls.UI_DOWN_P) {
+				changeSelection(1);
+			}
+
+			if (controls.BACK_P) {
+				selectedSomethin = true;
+				if(onPlayState)
+				{
+					StageData.loadDirectory(PlayState.SONG);
+					exitState(new PlayState(), true, true);
+					FlxG.sound.music.volume = 0;
+				}
+				else exitState(new MainMenuState(true));
+			}
+			else if (controls.ACCEPT_P) openSelectedSubstate(options[curSelected]);
 		}
-		else if (controls.ACCEPT_P) openSelectedSubstate(options[curSelected]);
 
 		super.update(elapsed);
 	}

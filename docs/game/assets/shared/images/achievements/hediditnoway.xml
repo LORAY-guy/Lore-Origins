@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="hediditnoway.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="idle0000" x="5" y="5" width="379" height="76"/>
+	<SubTexture name="idle0001" x="389" y="5" width="379" height="76"/>
+	<SubTexture name="idle0002" x="5" y="86" width="379" height="76"/>
+	<SubTexture name="idle0003" x="389" y="86" width="379" height="76"/>
+	<SubTexture name="idle0004" x="5" y="167" width="379" height="76"/>
+	<SubTexture name="idle0005" x="5" y="248" width="379" height="76"/>
+	<SubTexture name="idle0006" x="389" y="167" width="379" height="76"/>
+	<SubTexture name="idle0007" x="389" y="248" width="379" height="76"/>
+</TextureAtlas>

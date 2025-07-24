@@ -213,7 +213,6 @@ class StoryMenuState extends MusicBeatState //Keeping it in case I do something 
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 				changeWeek(-FlxG.mouse.wheel);
-				changeDifficulty();
 			}
 
 			if (controls.UI_RIGHT)
@@ -225,13 +224,6 @@ class StoryMenuState extends MusicBeatState //Keeping it in case I do something 
 				leftArrow.animation.play('press');
 			else
 				leftArrow.animation.play('idle');
-
-			if (controls.UI_RIGHT_P)
-				changeDifficulty(1);
-			else if (controls.UI_LEFT_P)
-				changeDifficulty(-1);
-			else if (upP || downP)
-				changeDifficulty();
 
 			if(FlxG.keys.justPressed.CONTROL)
 			{

@@ -1,0 +1,166 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-4,
+				0
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "Idle"
+		},
+		{
+			"offsets": [
+				194,
+				-25
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "Left"
+		},
+		{
+			"offsets": [
+				202,
+				-148
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "Down"
+		},
+		{
+			"offsets": [
+				7,
+				-1
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "Right"
+		},
+		{
+			"offsets": [
+				101,
+				70
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "Up"
+		},
+		{
+			"offsets": [
+				-52,
+				-1
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle-alt",
+			"indices": [],
+			"name": "Look-Up-Idle"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				162,
+				-132
+			],
+			"anim": "singDOWN-alt",
+			"fps": 24,
+			"name": "Alt-Down",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-71,
+				41
+			],
+			"anim": "singUP-alt",
+			"fps": 24,
+			"name": "Alt-Up",
+			"indices": []
+		},
+		{
+			"offsets": [
+				131,
+				-41
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT-alt",
+			"indices": [],
+			"name": "Alt-Right"
+		},
+		{
+			"offsets": [
+				76,
+				17
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT-alt",
+			"indices": [],
+			"name": "Alt-Left"
+		},
+		{
+			"offsets": [
+				270,
+				70
+			],
+			"loop": true,
+			"fps": 24,
+			"anim": "scared",
+			"indices": [],
+			"name": "Scared"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-62,
+				-26
+			],
+			"anim": "scared-alt",
+			"fps": 24,
+			"name": "Look-Up-Scared",
+			"indices": []
+		},
+		{
+			"loop": true,
+			"offsets": [
+				94,
+				-246
+			],
+			"anim": "dab",
+			"fps": 3,
+			"name": "Dab",
+			"indices": []
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/lixian",
+	"position": [
+		230,
+		-140
+	],
+	"healthicon": "lix",
+	"flip_x": true,
+	"healthbar_colors": [
+		203,
+		204,
+		203
+	],
+	"camera_position": [
+		100,
+		140
+	],
+	"sing_duration": 4,
+	"scale": 0.8
+}

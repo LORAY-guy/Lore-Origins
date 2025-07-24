@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="loray_ko-fi.png">
+	<!-- Created with Adobe Animate version 22.0.3.179 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="ko-fi0000" x="5" y="5" width="523" height="340"/>
+	<SubTexture name="ko-fi0001" x="5" y="5" width="523" height="340"/>
+	<SubTexture name="ko-fi0002" x="538" y="5" width="521" height="340" frameX="-2" frameY="0" frameWidth="523" frameHeight="340"/>
+	<SubTexture name="ko-fi0003" x="538" y="5" width="521" height="340" frameX="-2" frameY="0" frameWidth="523" frameHeight="340"/>
+	<SubTexture name="ko-fi0004" x="1069" y="5" width="523" height="339" frameX="0" frameY="0" frameWidth="523" frameHeight="340"/>
+	<SubTexture name="ko-fi0005" x="1069" y="5" width="523" height="339" frameX="0" frameY="0" frameWidth="523" frameHeight="340"/>
+</TextureAtlas>

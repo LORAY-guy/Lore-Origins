@@ -1,5 +1,6 @@
 package backend;
 
+import states.MainMenuState;
 import options.NoteOffsetState;
 
 class ExitButton extends FlxSprite
@@ -7,7 +8,7 @@ class ExitButton extends FlxSprite
     public var prevState:Dynamic;
     public var prevStateString:String;
 
-    var clicked:Bool = false;
+    public var clicked:Bool = false;
     var elapsedSinceMouseLeft:Float = 0.0;
     var delayDuration:Float = 2.0;
 
@@ -74,7 +75,14 @@ class ExitButton extends FlxSprite
     
     function handleButtonClick():Void
     {
+        var state:Dynamic = cast FlxG.state;
+
+        if (state != null && state.selectedSomethin != null && state.selectedSomethin)
+            return;
+
         clicked = true;
+        if (state != null && state.selectedSomethin != null && !state.selectedSomethin)
+            state.selectedSomethin = true;
         animation.play('pop');
         new FlxTimer().start(0.3, function(tmr:FlxTimer) {
             this.visible = false;

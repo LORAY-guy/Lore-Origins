@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="loray_github.png">
+	<!-- Created with Adobe Animate version 22.0.3.179 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="github0000" x="5" y="5" width="433" height="431" frameX="-1" frameY="-1" frameWidth="435" frameHeight="432"/>
+	<SubTexture name="github0001" x="5" y="5" width="433" height="431" frameX="-1" frameY="-1" frameWidth="435" frameHeight="432"/>
+	<SubTexture name="github0002" x="448" y="5" width="435" height="430" frameX="0" frameY="-1" frameWidth="435" frameHeight="432"/>
+	<SubTexture name="github0003" x="448" y="5" width="435" height="430" frameX="0" frameY="-1" frameWidth="435" frameHeight="432"/>
+	<SubTexture name="github0004" x="5" y="446" width="434" height="431" frameX="-1" frameY="0" frameWidth="435" frameHeight="432"/>
+	<SubTexture name="github0005" x="5" y="446" width="434" height="431" frameX="-1" frameY="0" frameWidth="435" frameHeight="432"/>
+</TextureAtlas>

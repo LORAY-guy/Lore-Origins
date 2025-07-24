@@ -3198,6 +3198,7 @@ class PlayState extends MusicBeatState
 			{
 				trace('WENT BACK TO FREEPLAY??');
 				#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
+				Conductor.bpm = 130;
 
 				switch (PlayState.SONG.song.toLowerCase()) {
 					case 'distractible', 'lua':

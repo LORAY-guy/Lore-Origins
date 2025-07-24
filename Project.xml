@@ -10,9 +10,6 @@
 	<!-- NOTE TO SELF: DISABLE THIS IF ISSUES ARE FOUND -->
 	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/> <!-- stable luas PUT AFTER FIRST LINE WITH APP NAME AND ETC -->
 
-	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
-		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
-	<!-- <app preloader="Preloader" resizable="true" /> -->
 	<app preloader="flixel.system.FlxPreloader" />
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
@@ -21,10 +18,11 @@
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
 	<define name="HSCRIPT_ALLOWED" if="desktop" />
-	<define name="LUA_ALLOWED" if="desktop"/>
-	<!--hxdiscord_rpc is fucked for me, i don't really care enough to fix it-->
-	<define name="CHECK_FOR_UPDATES"/>
+	<define name="LUA_ALLOWED" if="desktop" />
+	<define name="DISCORD_ALLOWED" if="desktop" />
+	<define name="CHECK_FOR_UPDATES" unless="html5"/>
 	<define name="ACHIEVEMENTS_ALLOWED" />
+	<define name="CRASH_HANDLER" if="desktop release" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -52,24 +50,22 @@
 	<classpath name="source" />
 
 	<!-- __________________________ Game Assets & Etc. __________________________ -->
-	
-	<!-- Turn on Crash Handler -->
-	<define name="CRASH_HANDLER" if="desktop release" />
 
-	<!-- Assets -->
 	<assets path="assets/fonts" />
-	<assets path="assets/shared"        exclude="*.ogg" if="web" />
-	<assets path="assets/shared"        exclude="*.mp3" unless="web" />
+
+	<assets path="assets/shared"        exclude="*.ogg" 		if="web" />
+	<assets path="assets/shared"        exclude="*.mp3" 		unless="web" />
+
 	<assets path="assets/videos"        library="videos"        if="VIDEOS_ALLOWED" />
+	<library name="videos"        		preload="true" 			if="VIDEOS_ALLOWED" />
+
 	<assets path="assets/songs"         library="songs"         exclude="*.ogg" if="web" />
 	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web" />
+	<library name="songs"         		preload="true" />
 
-	<assets path="assets/minigame/linux" if="linux" unless="windows || html5" rename="assets/minigame" />
-	<assets path="assets/minigame/windows" if="windows" unless="linux || html5" rename="assets/minigame" />
-
-	<library name="videos"        preload="true" if="VIDEOS_ALLOWED" />
-	<library name="songs"         preload="true" />
-
+	<assets path="assets/minigame/linux" if="linux || mac" rename="assets/minigame" />
+	<assets path="assets/minigame/windows" if="windows" rename="assets/minigame" />
+	
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<assets path='Patch Note.txt' />
 
@@ -84,7 +80,7 @@
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
 	<haxelib name="hscript-iris" if="HSCRIPT_ALLOWED" version="1.0.2"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
-	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
+	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED" version="1.2.4"/>
 	<haxelib name="flxanimate" unless="html5"/>
 
 	<!-- Disable Discord IO Thread -->

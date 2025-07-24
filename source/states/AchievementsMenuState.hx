@@ -28,6 +28,8 @@ class AchievementsMenuState extends MusicBeatState
 	var inCutscene:Bool = false;
 	var showingCode:Bool = false;
 
+	public var exitButton:ExitButton;
+
 	override function create()
 	{
 		Paths.clearUnusedMemory();
@@ -155,7 +157,8 @@ class AchievementsMenuState extends MusicBeatState
 
 		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
 
-        add(new ExitButton());
+		exitButton = new ExitButton();
+		add(exitButton);
 		
 		FlxG.camera.follow(camFollow, null, 9);
 		FlxG.camera.scroll.y = -FlxG.height;
@@ -181,15 +184,15 @@ class AchievementsMenuState extends MusicBeatState
 	public static function sortByID(Obj1:Dynamic, Obj2:Dynamic):Int
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.ID, Obj2.ID);
 
-	var goingBack:Bool = false;
+	public var selectedSomethin:Bool = false;
 	override function update(elapsed:Float)
 	{
-		if (!goingBack && controls.BACK) {
+		if (!selectedSomethin && controls.BACK) {
 			exitState(new MainMenuState(true));
-			goingBack = true;
+			selectedSomethin = true;
 		}
 
-		if(!goingBack && !inCutscene && options.length > 1)
+		if(!selectedSomethin && !inCutscene && options.length > 1)
 		{
 			var add:Int = 0;
 			if (controls.UI_LEFT_P) add = -1;

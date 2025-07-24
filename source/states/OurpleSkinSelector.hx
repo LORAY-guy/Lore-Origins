@@ -42,6 +42,8 @@ class OurpleSkinSelector extends MusicBeatState
 		DiscordClient.changePresence("Ourple Skin Selector (WIP)", null);
 		#end
 
+        Paths.clearUnusedMemory();
+
 		bg = new FlxSprite(-10).loadGraphic(Paths.image('mainmenu/bg'));
 		var scaleMultiplier:Float = FlxG.width / 1280;
 		var finalScale:Float = 1.7 * scaleMultiplier;

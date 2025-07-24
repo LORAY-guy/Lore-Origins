@@ -1,0 +1,70 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-4,
+				0
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "Idle"
+		},
+		{
+			"offsets": [
+				34,
+				8
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "firstDeath",
+			"loop": false,
+			"name": "Jumpscared"
+		},
+		{
+			"offsets": [
+				34,
+				8
+			],
+			"indices": [
+				3,
+				4
+			],
+			"fps": 24,
+			"anim": "deathLoop",
+			"loop": false,
+			"name": "Jumpscared"
+		},
+		{
+			"offsets": [
+				94,
+				-246
+			],
+			"indices": [],
+			"fps": 3,
+			"anim": "deathConfirm",
+			"loop": true,
+			"name": "Dab"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/lixian",
+	"position": [
+		230,
+		-140
+	],
+	"healthicon": "lix",
+	"flip_x": true,
+	"healthbar_colors": [
+		203,
+		204,
+		203
+	],
+	"camera_position": [
+		100,
+		140
+	],
+	"sing_duration": 4,
+	"scale": 0.8
+}

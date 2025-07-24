@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="loray_twitter.png">
+	<!-- Created with Adobe Animate version 22.0.3.179 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="twitter0000" x="5" y="5" width="353" height="381"/>
+	<SubTexture name="twitter0001" x="5" y="5" width="353" height="381"/>
+	<SubTexture name="twitter0002" x="368" y="5" width="353" height="381"/>
+	<SubTexture name="twitter0003" x="368" y="5" width="353" height="381"/>
+	<SubTexture name="twitter0004" x="5" y="396" width="353" height="381"/>
+	<SubTexture name="twitter0005" x="5" y="396" width="353" height="381"/>
+</TextureAtlas>

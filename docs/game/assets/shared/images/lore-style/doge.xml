@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="doge.png">
+<SubTexture name="doge idle0000" x="1203" y="0" width="403" height="671" frameX="-3" frameY="-15" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0001" x="1203" y="0" width="403" height="671" frameX="-3" frameY="-15" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0002" x="0" y="676" width="403" height="670" frameX="-5" frameY="-18" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0003" x="0" y="676" width="403" height="670" frameX="-5" frameY="-18" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0004" x="401" y="0" width="401" height="675" frameX="-10" frameY="-8" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0005" x="401" y="0" width="401" height="675" frameX="-10" frameY="-8" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0006" x="802" y="0" width="401" height="675" frameX="-11" frameY="-5" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0007" x="802" y="0" width="401" height="675" frameX="-11" frameY="-5" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0008" x="0" y="0" width="401" height="676" frameX="-12" frameY="-3" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0009" x="0" y="0" width="401" height="676" frameX="-12" frameY="-3" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0010" x="0" y="0" width="401" height="676" frameX="-12" frameY="-3" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0011" x="0" y="0" width="401" height="676" frameX="-12" frameY="-3" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0012" x="0" y="0" width="401" height="676" frameX="-12" frameY="-3" frameWidth="421" frameHeight="694" />
+<SubTexture name="doge idle0013" x="0" y="0" width="401" height="676" frameX="-12" frameY="-3" frameWidth="421" frameHeight="694" />
+</TextureAtlas>

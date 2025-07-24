@@ -239,6 +239,12 @@ class MobileButton extends FlxSprite
         updateHitbox();
 
         this.name = name;
+
+        if (originalAlpha <= 0.8)
+            originalAlpha *= 0.5;
+        else if (originalAlpha >= 0.2)
+            originalAlpha *= 1.2;
+    
         alpha = originalAlpha;
     }
     

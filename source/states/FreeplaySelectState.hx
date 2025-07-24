@@ -36,8 +36,7 @@ class FreeplaySelectState extends MusicBeatState
 		bg.color = 0xFF00c2ff;
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
-	
-		Conductor.bpm = 130;
+
 		persistentUpdate = persistentDraw = true;
 
 		var grid:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/grid'));
@@ -135,6 +134,7 @@ class FreeplaySelectState extends MusicBeatState
 			}
 		}
         curCategory = curSelected;
+
 		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
 		matpat.scale.x = FlxMath.lerp(0.65, matpat.scale.x, Math.exp(-elapsed * 7.5));
 		matpat.scale.y = FlxMath.lerp(0.65, matpat.scale.y, Math.exp(-elapsed * 7.5));

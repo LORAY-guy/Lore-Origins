@@ -56,7 +56,7 @@ class FlxSplash extends FlxState
         _gtlogo.y -= 40;
         add(_gtlogo);
 
-		_text = new FlxText(0, 0, 550, "LORE ORIGINS");
+		_text = new FlxText(0, 0, 0, "LORE ORIGINS", 72);
         _text.setFormat(Paths.font('matpat.ttf'), 72, 0x00e41f, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
         _text.borderSize = 2.5;
 		_text.bold = true;

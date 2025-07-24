@@ -1,4 +1,4 @@
-# AFTER 7 MONTHS OF WORK, I AM HAPPY TO FINALLY RELEASE THE 2.0 UPDATE!
+# AFTER BEING GONE FOR A WHILE, LORE ORIGINS IS BACK WITH A 2.5 UPDATE!!
 
 ## WHAT IS LORE ORIGINS?
 
@@ -8,10 +8,16 @@ This collection of lore remixes are repurposed for its original cast of singers,
 
 ---
 
-NEW OURPLES ADDED TO THE LORE ROASTER -> Hrey Guy, Nuu Guy, Bloxxy Guy, Wink Woman, Blink Dude and Cool Buddy.
+## THIS UPDATE INTRODUCES...
 
-Soon, the mod is going to welcome multiple Ourple Guy Variants as skins and will change the gameplay for even more content.
-If you are the director of any Ourple related mod and want your ourple to be part of the next update, contact me on Discord (loray_man) or on Twitter (https://x.com/LORAY_man).
-(That is if I ever consider making another update...)
+ - A NEW SKIN SELECTOR SYSTEM!
+   --> Gone are the Ourple variants, now, the skins affects ALL the cast. (Phone Guy only has 2 skins but whatever, i don't have the budget to make one myself)
+ - ANDROID / IOS BUILD! (very shitty, but hey, it works!) (I'll fix it later, i promise, I made it in 5 days, okay?)
+ - NEW ORIGINAL MIX : Presidency (Matpat President Mix)
+ - NEW SECRET SONG! (You'll have to dig down to find that one, I'm not gonna give you any clues this time)
+ - WIDESCREEN RESOLUTION SUPPORT (well, not really available when I think about it, but I might publish a version for every widescreen resolution available)
+ - And much, much more...
 
-ADDITIONAL NOTE: If you are having performance issues, I recommand disabling the miscellanous events in the Lore Origins settings.
+## WHAT ARE YOU WAITING FOR?
+
+DOWNLOAD LORE ORIGINS NOW ON GAMEBANANA (https://gamebanana.com/mods/476070) or on this Github page by checking out the release page of the most recent pushed version

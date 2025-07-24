@@ -18,45 +18,45 @@ jobs:
           haxe-version: 4.3.4
       - run: |
           haxe -version
-          haxelib install hxnodejs
+          haxelib install --quiet hxnodejs
           haxelib setup ~/haxelib
       - name: Install hxcpp 4.3.2
         run: |
-          haxelib install hxcpp 4.3.2
+          haxelib install --quiet hxcpp 4.3.2
       - name: Install lime
         run: |
-          haxelib install lime
+          haxelib install --quiet lime
       - name: Install openfl
         run: |
-          haxelib install openfl
+          haxelib install --quiet openfl
       - name: Install and Setup flixel 5.5.0
         run: |
-          haxelib --never install flixel 5.5.0
+          haxelib --quiet install flixel 5.5.0
           haxelib run lime setup flixel
           haxelib run lime setup
       - name: Install flixel tools and others
         run: |
-          haxelib install flixel-tools
-          haxelib install flixel-ui 2.6.3
+          haxelib install --quiet flixel-tools
+          haxelib install --quiet flixel-ui 2.6.3
           haxelib set flixel-ui 2.6.3
-          haxelib install flixel-addons
+          haxelib install --quiet flixel-addons
       - name: Install tjson
         run: |
-          haxelib install tjson 1.0.4
+          haxelib install --quiet tjson 1.0.4
       - name: Install hscript-iris 1.0.2
         run: |
-          haxelib install hscript-iris 1.0.2
+          haxelib install --quiet hscript-iris 1.0.2
       - name: Install hxCodec 3.0.2
         run: |
-          haxelib install hxCodec 3.0.2
+          haxelib install --quiet hxCodec 3.0.2
       - name: Install hxvlc 2.2.1
         run: |
-          haxelib install hxvlc 2.2.1
+          haxelib install --quiet hxvlc 2.2.1
       - name: Install other vital libraries
         run: |
           haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
-          haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
+          haxelib install --quiet hxdiscord_rpc 1.2.4
       - name: List Installed Haxelibs
         run: haxelib list
       - name: Create Version Tag
@@ -82,50 +82,50 @@ jobs:
         shell: cmd
       - name: Install hxcpp
         run: |
-          haxelib install hxcpp 4.3.2
+          haxelib install --quiet hxcpp 4.3.2
         shell: cmd
       - name: Install lime
         run: |
-          haxelib install lime
+          haxelib install --quiet lime
         shell: cmd
       - name: Install openfl
         run: |
-          haxelib install openfl
+          haxelib install --quiet openfl
         shell: cmd
       - name: Install and Setup flixel 5.5.0
         run: |
-          haxelib --never install flixel 5.5.0
+          haxelib --quiet install flixel 5.5.0
           haxelib run lime setup flixel
           haxelib run lime setup
         shell: cmd
       - name: Install flixel tools and others
         run: |
-          haxelib install flixel-tools
-          haxelib install flixel-ui 2.6.3
+          haxelib install --quiet flixel-tools
+          haxelib install --quiet flixel-ui 2.6.3
           haxelib set flixel-ui 2.6.3
-          haxelib install flixel-addons
+          haxelib install --quiet flixel-addons
         shell: cmd
       - name: Install tjson
         run: |
-          haxelib install tjson 1.0.4
+          haxelib install --quiet tjson 1.0.4
         shell: cmd
       - name: Install hscript-iris 1.0.2
         run: |
-          haxelib install hscript-iris 1.0.2
+          haxelib install --quiet hscript-iris 1.0.2
         shell: cmd
       - name: Install hxCodec 3.0.2
         run: |
-          haxelib install hxCodec 3.0.2
+          haxelib install --quiet hxCodec 3.0.2
         shell: cmd
       - name: Install hxvlc 2.2.1
         run: |
-          haxelib install hxvlc 2.2.1
+          haxelib install --quiet hxvlc 2.2.1
         shell: cmd
       - name: Install other vital libraries
         run: |
           haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
-          haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
+          haxelib install --quiet hxdiscord_rpc 1.2.4
         shell: cmd
       - name: List Installed Haxelibs
         run: haxelib list
@@ -152,41 +152,41 @@ jobs:
           haxelib setup ~/haxelib
       - name: Install hxcpp
         run: |
-          haxelib install hxcpp 4.3.2
+          haxelib install --quiet hxcpp 4.3.2
       - name: Install lime
         run: |
-          haxelib install lime
+          haxelib install --quiet lime
       - name: Install openfl
         run: |
-          haxelib install openfl
+          haxelib install --quiet openfl
       - name: Install and Setup flixel 5.5.0
         run: |
-          haxelib --never install flixel 5.5.0
+          haxelib --quiet install flixel 5.5.0
           haxelib run lime setup flixel
           haxelib run lime setup
       - name: Install flixel tools and others
         run: |
-          haxelib install flixel-tools
-          haxelib install flixel-ui 2.6.3
+          haxelib install --quiet flixel-tools
+          haxelib install --quiet flixel-ui 2.6.3
           haxelib set flixel-ui 2.6.3
-          haxelib install flixel-addons
+          haxelib install --quiet flixel-addons
       - name: Install tjson
         run: |
-          haxelib install tjson 1.0.4
+          haxelib install --quiet tjson 1.0.4
       - name: Install hscript-iris 1.0.2
         run: |
-          haxelib install hscript-iris 1.0.2
+          haxelib install --quiet hscript-iris 1.0.2
       - name: Install hxCodec 3.0.2
         run: |
-          haxelib install hxCodec 3.0.2
+          haxelib install --quiet hxCodec 3.0.2
       - name: Install hxvlc 2.2.1
         run: |
-          haxelib install hxvlc 2.2.1
+          haxelib install --quiet hxvlc 2.2.1
       - name: Install other vital libraries
         run: |
           haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
-          haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
+          haxelib install --quiet hxdiscord_rpc 1.2.4
       - name: List Installed Haxelibs
         run: haxelib list
       - name: Create Version Tag
@@ -221,45 +221,45 @@ jobs:
 
       - run: |
           haxe -version
-          haxelib install hxnodejs
+          haxelib install --quiet hxnodejs
           haxelib setup ~/haxelib
       - name: Install hxcpp 4.3.2
         run: |
-          haxelib install hxcpp 4.3.2
+          haxelib install --quiet hxcpp 4.3.2
       - name: Install lime
         run: |
-          haxelib install lime
+          haxelib install --quiet lime
       - name: Install openfl
         run: |
-          haxelib install openfl
+          haxelib install --quiet openfl
       - name: Install and Setup flixel 5.5.0
         run: |
-          haxelib --never install flixel 5.5.0
+          haxelib --quiet install flixel 5.5.0
           haxelib run lime setup flixel
           haxelib run lime setup
       - name: Install flixel tools and others
         run: |
-          haxelib install flixel-tools
-          haxelib install flixel-ui 2.6.3
+          haxelib install --quiet flixel-tools
+          haxelib install --quiet flixel-ui 2.6.3
           haxelib set flixel-ui 2.6.3
-          haxelib install flixel-addons
+          haxelib install --quiet flixel-addons
       - name: Install tjson
         run: |
-          haxelib install tjson 1.0.4
+          haxelib install --quiet tjson 1.0.4
       - name: Install hscript-iris 1.0.2
         run: |
-          haxelib install hscript-iris 1.0.2
+          haxelib install --quiet hscript-iris 1.0.2
       - name: Install hxCodec 3.0.2
         run: |
-          haxelib install hxCodec 3.0.2
+          haxelib install --quiet hxCodec 3.0.2
       - name: Install hxvlc 2.2.1
         run: |
-          haxelib install hxvlc 2.2.1
+          haxelib install --quiet hxvlc 2.2.1
       - name: Install other vital libraries
         run: |
           haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
-          haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
+          haxelib install --quiet hxdiscord_rpc 1.2.4
       - name: List Installed Haxelibs
         run: haxelib list
 
@@ -304,41 +304,41 @@ jobs:
           haxelib setup ~/haxelib
       - name: Install hxcpp
         run: |
-          haxelib install hxcpp 4.3.2
+          haxelib install --quiet hxcpp 4.3.2
       - name: Install lime
         run: |
-          haxelib install lime
+          haxelib install --quiet lime
       - name: Install openfl
         run: |
-          haxelib install openfl
+          haxelib install --quiet openfl
       - name: Install and Setup flixel 5.5.0
         run: |
-          haxelib --never install flixel 5.5.0
+          haxelib --quiet install flixel 5.5.0
           haxelib run lime setup flixel
           haxelib run lime setup
       - name: Install flixel tools and others
         run: |
-          haxelib install flixel-tools
-          haxelib install flixel-ui 2.6.3
+          haxelib install --quiet flixel-tools
+          haxelib install --quiet flixel-ui 2.6.3
           haxelib set flixel-ui 2.6.3
-          haxelib install flixel-addons
+          haxelib install --quiet flixel-addons
       - name: Install tjson
         run: |
-          haxelib install tjson 1.0.4
+          haxelib install --quiet tjson 1.0.4
       - name: Install hscript-iris 1.0.2
         run: |
-          haxelib install hscript-iris 1.0.2
+          haxelib install --quiet hscript-iris 1.0.2
       - name: Install hxCodec 3.0.2
         run: |
-          haxelib install hxCodec 3.0.2
+          haxelib install --quiet hxCodec 3.0.2
       - name: Install hxvlc 2.2.1
         run: |
-          haxelib install hxvlc 2.2.1
+          haxelib install --quiet hxvlc 2.2.1
       - name: Install other vital libraries
         run: |
           haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
-          haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
+          haxelib install --quiet hxdiscord_rpc 1.2.4
       - name: List Installed Haxelibs
         run: haxelib list
       - name: Create Version Tag
@@ -346,6 +346,7 @@ jobs:
       - name: Build iOS project (unsigned)
         run: |
           haxelib run lime build ios --app-version="4.0.0-${{ github.run_id}}" -simulator
+          haxelib run lime create ios --app-version="4.0.0-${{ github.run_id}}"
       - name: Upload iOS Project Artifact
         uses: actions/upload-artifact@v4
         with:

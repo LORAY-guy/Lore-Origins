@@ -13,7 +13,7 @@ import states.TitleState;
 	public var downScroll:Bool = false;
 	public var middleScroll:Bool = false;
 	public var opponentStrums:Bool = true;
-	public var showFPS:Bool = true;
+	public var showFPS:Bool = #if html5 false #else true #end;
 	public var flashing:Bool = true;
 	public var autoPause:Bool = true;
 	public var antialiasing:Bool = true;
@@ -23,9 +23,9 @@ import states.TitleState;
 	#if mobile
 	public var mobileUIAlpha:Float = 0.6;
 	#end
-	public var lowQuality:Bool = false;
-	public var shaders:Bool = true;
-	public var cacheOnGPU:Bool = #if !switch false #else true #end; //From Stilic
+	public var lowQuality:Bool = #if html5 true #else false #end;
+	public var shaders:Bool = #if html5 false #else true #end;
+	public var cacheOnGPU:Bool = #if !desktop false #else true #end; //From Stilic
 	public var framerate:Int = 60;
 	public var camZooms:Bool = true;
 	public var hideHud:Bool = false;
@@ -96,8 +96,8 @@ import states.TitleState;
 	public var matpatSkin:String = 'Normal';
 	public var phoneGuySkin:String = 'Normal';
 	public var lorayWatermark:Bool = true;
-	public var characterGhost:Bool = true;
-	public var miscEvents:Float = 1;
+	public var characterGhost:Bool = #if html5 false #else true #end;
+	public var miscEvents:Float = 1.0;
 	public var exitButtonX:String = 'Left';
 	public var hideOldCovers:Bool = true;
 

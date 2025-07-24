@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="category-originals.png">
+	<!-- Created with Adobe Animate version 22.0.8.217 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="originals0000" x="10" y="10" width="631" height="105" frameX="-3" frameY="0" frameWidth="634" frameHeight="108"/>
+	<SubTexture name="originals0001" x="10" y="125" width="628" height="103" frameX="-3" frameY="-2" frameWidth="634" frameHeight="108"/>
+	<SubTexture name="originals0002" x="10" y="238" width="633" height="107" frameX="0" frameY="-1" frameWidth="634" frameHeight="108"/>
+</TextureAtlas>

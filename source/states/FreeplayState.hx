@@ -256,7 +256,7 @@ class FreeplayState extends MusicBeatState
 	var holdTime:Float = 0;
 	public var usingMouse:Bool = false;
 	public var canClick:Bool = true;
-	var exiting:Bool = false;
+	public var selectedSomethin:Bool = false;
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.7)
@@ -283,7 +283,7 @@ class FreeplayState extends MusicBeatState
 		var shiftMult:Int = 1;
 		if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
 
-		if (!inSubstate && !exiting)
+		if (!inSubstate && !selectedSomethin)
 		{
 			#if !mobile
 			if (!player.playingMusic)
@@ -365,7 +365,7 @@ class FreeplayState extends MusicBeatState
 					if(colorTween != null) {
 						colorTween.cancel();
 					}
-					exiting = true;
+					selectedSomethin = true;
 					exitState(new states.FreeplaySelectState(true));
 				#if !mobile
 				}
@@ -439,7 +439,7 @@ class FreeplayState extends MusicBeatState
 			{
 				canClick = false;
 				persistentUpdate = false;
-				exiting = true;
+				selectedSomethin = true;
 				FlxG.mouse.visible = false;
 				var brub:Int = FlxG.random.int(0, songs.length-1);
 				var songLowercase:String = Paths.formatToSongPath(songs[brub].songName);
@@ -449,7 +449,7 @@ class FreeplayState extends MusicBeatState
 				PlayState.SONG = Song.loadFromJson(poop, songLowercase, (freeplayCategory == 'Covers'));
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = 1;
-				if (songLowercase == 'sunk') PlayState.sunkMark = FlxG.random.getObject(['Mark', 'Captain']);
+				if (songLowercase == 'sunk') PlayState.sunkMark = FlxG.random.getObject(['Mark', 'Captain']); // Select a random difficulty for Sunk if selected by the randomizer
 	
 				FlxG.camera.zoom += 0.06;
 				FlxG.sound.music.fadeOut(1.2, 0, function(twn:FlxTween) {FlxG.sound.music.stop();});
@@ -542,8 +542,7 @@ class FreeplayState extends MusicBeatState
 			if (item.targetY == curSelected)
 				item.alpha = 1;
 		}
-		
-		Mods.currentModDirectory = songs[curSelected].folder;
+
 		PlayState.storyWeek = songs[curSelected].week;
 		Difficulty.list = ['Lore'];
 	}
@@ -653,6 +652,7 @@ class FreeplayState extends MusicBeatState
 	public function processSong(songLowercase:String) {
 		canClick = false;
 		persistentUpdate = false;
+		selectedSomethin = true;
 		FlxG.mouse.visible = false;
 		var poop:String = Highscore.formatSong(songLowercase, 0);
 

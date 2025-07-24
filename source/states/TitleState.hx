@@ -80,59 +80,8 @@ class TitleState extends MusicBeatState
 		CoolUtil.reloadOurpleCursor();
 		FlxG.mouse.visible = true;
 
-		#if CHECK_FOR_UPDATES
-		if(ClientPrefs.data.checkForUpdates && !closedState) {
-			trace('checking for update');
-			
-			#if mobile
-			var loader = new flash.net.URLLoader();
-			var request = new flash.net.URLRequest("https://raw.githubusercontent.com/LORAY-guy/Lore-Origins/main/gitVersion.txt");
-			
-			loader.addEventListener(flash.events.Event.COMPLETE, function(e) {
-				var data:String = loader.data;
-				if(data != null && data.length > 0) {
-					updateVersion = data.split('\n')[0].trim();
-					var curVersion:String = MainMenuState.loreVersion.trim();
-					trace('version online: ' + updateVersion + ', your version: ' + curVersion);
-					if(updateVersion != curVersion) {
-						trace('versions arent matching!');
-						mustUpdate = true;
-					}
-				}
-			});
-			
-			loader.addEventListener(flash.events.IOErrorEvent.IO_ERROR, function(e) {
-				trace('IO Error: ' + e.text);
-			});
-			
-			try {
-				loader.load(request);
-			} catch(e:Dynamic) {
-				trace('Exception: $e');
-			}
-			#else
-			var http = new haxe.Http("https://raw.githubusercontent.com/LORAY-guy/Lore-Origins/main/gitVersion.txt");
-
-			http.onData = function (data:String)
-			{
-				updateVersion = data.split('\n')[0].trim();
-				var curVersion:String = MainMenuState.loreVersion.trim();
-				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
-				if(updateVersion != curVersion) {
-					trace('versions arent matching!');
-					mustUpdate = true;
-				}
-			}
-
-			http.onError = function (error) {
-				trace('error: $error');
-			}
-
-			http.request();
-			#end
-		}
-		#end
-
+		checkForUpdates();
+		
 		Highscore.load();
 
 		if(!initialized)
@@ -272,6 +221,62 @@ class TitleState extends MusicBeatState
 
 		Paths.clearUnusedMemory();
 		// credGroup.add(credTextShit);
+	}
+
+	private function checkForUpdates():Void
+	{
+		#if CHECK_FOR_UPDATES
+		if(ClientPrefs.data.checkForUpdates && !closedState) {
+			trace('checking for update');
+			
+			#if mobile
+			var loader = new flash.net.URLLoader();
+			var request = new flash.net.URLRequest("https://raw.githubusercontent.com/LORAY-guy/Lore-Origins/main/gitVersion.txt");
+			
+			loader.addEventListener(flash.events.Event.COMPLETE, function(e) {
+				var data:String = loader.data;
+				if(data != null && data.length > 0) {
+					updateVersion = data.split('\n')[0].trim();
+					var curVersion:String = MainMenuState.loreVersion.trim();
+					trace('version online: ' + updateVersion + ', your version: ' + curVersion);
+					if(updateVersion != curVersion) {
+						trace('versions arent matching!');
+						mustUpdate = true;
+					}
+				}
+			});
+			
+			loader.addEventListener(flash.events.IOErrorEvent.IO_ERROR, function(e) {
+				trace('IO Error: ' + e.text);
+			});
+			
+			try {
+				loader.load(request);
+			} catch(e:Dynamic) {
+				trace('Exception: $e');
+			}
+			#else
+			var http = new haxe.Http("https://raw.githubusercontent.com/LORAY-guy/Lore-Origins/main/gitVersion.txt");
+
+			http.onData = function (data:String)
+			{
+				updateVersion = data.split('\n')[0].trim();
+				var curVersion:String = MainMenuState.loreVersion.trim();
+				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
+				if(updateVersion != curVersion) {
+					trace('versions arent matching!');
+					mustUpdate = true;
+				}
+			}
+
+			http.onError = function (error) {
+				trace('error: $error');
+			}
+
+			http.request();
+			#end
+		}
+		#end
 	}
 
 	function getIntroTextShit():Array<Array<String>>

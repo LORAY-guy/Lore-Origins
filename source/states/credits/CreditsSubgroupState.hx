@@ -132,19 +132,19 @@ class CreditsSubgroupState extends MusicBeatState
                     } 
                 });
 			}
+
+            if (FlxG.mouse.deltaScreenX > 0 || FlxG.mouse.deltaScreenY > 0)
+                cameraId.alpha += 0.05;
+
+            if ((FlxG.keys.justPressed.TAB || (FlxG.mouse.deltaScreenY > 2 && FlxG.mouse.overlaps(cameraId))) && !keypad.playingAnimation) {
+                if (keypad.opened) keypad.closeHandUnit();
+                else keypad.openHandUnit();
+            }
 		}
         curSubGroup = curSelected;
-		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
-
+        
+        FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
         cameraId.alpha = FlxMath.lerp(0, cameraId.alpha, Math.exp(-elapsed * 2));
-		if (FlxG.mouse.deltaScreenX > 0 || FlxG.mouse.deltaScreenY > 0) {
-			cameraId.alpha += 0.05;
-		}
-
-		if ((FlxG.keys.justPressed.TAB || (FlxG.mouse.deltaScreenY > 2 && FlxG.mouse.overlaps(cameraId))) && !keypad.playingAnimation) {
-			if (keypad.opened) keypad.closeHandUnit();
-			else keypad.openHandUnit();
-		}
 
         super.update(elapsed);
     }

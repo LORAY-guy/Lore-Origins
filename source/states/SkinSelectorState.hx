@@ -60,7 +60,7 @@ class SkinSelectorState extends MusicBeatState
     private static var curCharIndex:Int = 0;
     private static var curSkinIndex:Int = 0;
 
-    private var exitButton:ExitButton;
+    public var exitButton:ExitButton;
 
     #if mobile
     private var mobileControls:MobileUIControls;
@@ -68,6 +68,8 @@ class SkinSelectorState extends MusicBeatState
 
     override public function create():Void
     {
+        Paths.clearUnusedMemory();
+
 		var bg:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.image('mainmenu/bg'));
 		var scaleMultiplier:Float = FlxG.width / 1280;
 		var finalScale:Float = 1.7 * scaleMultiplier;
@@ -111,42 +113,50 @@ class SkinSelectorState extends MusicBeatState
         #end
     }
 
+    public var selectedSomethin:Bool = false;
     override public function update(elapsed:Float):Void
 	{
+        if (!selectedSomethin)
+        {
+            if (controls.UI_UP_P)
+                changeCharacter(-1);
+            if (controls.UI_DOWN_P)
+                changeCharacter(1);
+
+            if (controls.UI_LEFT_P || (FlxG.mouse.overlaps(arrows.members[0]) && !FlxG.mouse.overlaps(exitButton) && FlxG.mouse.justPressed)) {
+                if (characterData[curCharIndex].skins.length > 1) {
+                    changeSkin(-1);
+                } else {
+                    FlxG.sound.play(Paths.sound('cancelMenu'));
+                }
+                arrows.members[0].animation.play('s');
+            }
+            if (controls.UI_RIGHT_P || (FlxG.mouse.overlaps(arrows.members[1]) && !FlxG.mouse.overlaps(exitButton) && FlxG.mouse.justPressed)) {
+                if (characterData[curCharIndex].skins.length > 1) {
+                    changeSkin(1);
+                } else {
+                    FlxG.sound.play(Paths.sound('cancelMenu'));
+                }
+                arrows.members[1].animation.play('s');
+            }
+            if (controls.UI_LEFT_R || (FlxG.mouse.overlaps(arrows.members[0]) && !FlxG.mouse.overlaps(exitButton) && FlxG.mouse.released))
+                arrows.members[0].animation.play('i');
+            if (controls.UI_RIGHT_R || (FlxG.mouse.overlaps(arrows.members[1]) && !FlxG.mouse.overlaps(exitButton) && FlxG.mouse.released))
+                arrows.members[1].animation.play('i');
+
+            if (controls.ACCEPT_P)
+                saveOurple();
+
+            if (controls.BACK_P) {
+                selectedSomethin = true;
+                FlxG.camera.zoom += 0.06;
+                exitState(new MainMenuState(true));
+            }
+        }
+        
         FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
-		super.update(elapsed);
-
-        if (controls.UI_UP_P)
-            changeCharacter(-1);
-        if (controls.UI_DOWN_P)
-            changeCharacter(1);
-
-        if (controls.UI_LEFT_P || (FlxG.mouse.overlaps(arrows.members[0]) && !FlxG.mouse.overlaps(exitButton) && FlxG.mouse.justPressed)) {
-            if (characterData[curCharIndex].skins.length > 1) {
-                changeSkin(-1);
-            } else {
-                FlxG.sound.play(Paths.sound('cancelMenu'));
-            }
-            arrows.members[0].animation.play('s');
-        }
-        if (controls.UI_RIGHT_P || (FlxG.mouse.overlaps(arrows.members[1]) && !FlxG.mouse.overlaps(exitButton) && FlxG.mouse.justPressed)) {
-            if (characterData[curCharIndex].skins.length > 1) {
-                changeSkin(1);
-            } else {
-                FlxG.sound.play(Paths.sound('cancelMenu'));
-            }
-            arrows.members[1].animation.play('s');
-        }
-        if (controls.UI_LEFT_R || (FlxG.mouse.overlaps(arrows.members[0]) && !FlxG.mouse.overlaps(exitButton) && FlxG.mouse.released))
-            arrows.members[0].animation.play('i');
-        if (controls.UI_RIGHT_R || (FlxG.mouse.overlaps(arrows.members[1]) && !FlxG.mouse.overlaps(exitButton) && FlxG.mouse.released))
-            arrows.members[1].animation.play('i');
-
-        if (controls.ACCEPT_P)
-            saveOurple();
-
-        if (controls.BACK_P)
-            exitState(new MainMenuState(true));
+		
+        super.update(elapsed);
 	}
 
     private function changeCharacter(change:Int = 0):Void
