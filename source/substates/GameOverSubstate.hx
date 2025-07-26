@@ -55,7 +55,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			case 'lua':
 				characterName = 'LORAY';
 			default:
-				characterName = PlayState.instance.boyfriend.curCharacter;
+				characterName = 'playguy';
 		}
 
 		boyfriend = new Character(PlayState.instance.boyfriend.getScreenPosition().x, PlayState.instance.boyfriend.getScreenPosition().y, characterName, true);

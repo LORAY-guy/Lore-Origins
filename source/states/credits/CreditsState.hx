@@ -263,10 +263,13 @@ class CreditsState extends MusicBeatState
 					['Crafted',				'crafted',			'Icons in my credits menu',																		'https://youtube.com/@Crafted_37',									'D0C6D5'],
 					[''],
 					['Special Thanks'],
-					['Harxurt', 			'harxurt',			'Emotional support, thanks for being such a nice friend (and for making the Ourple LORAY sprites :p)','https://youtube.com/@Harxurt',										'CCCCCC'],
+					['Harxurt', 			'harxurt',			'Emotional support, thanks for being such a nice friend (and for making the Ourple LORAY sprites :p)','https://youtube.com/@Harxurt',								'CCCCCC'],
 					['Brightness',			'brightness', 		'Emotional support, thanks for making me stand back up when I needed it the most',				'https://youtube.com/channel/UCnipvhQVfXvHAPVZ3huON0w',				'224422'],
+					['Matpat', 				'matpat',			'For being the best youtuber ever, and for making me want to make this mod in the first place',	'https://www.youtube.com/@GameTheory',								'FF0000'],
+					['Scott Cawthon', 		'scott', 			'For creating one of the most life-changing franchises there ever was in this world.', 			'https://www.youtube.com/channel/UC2Xp5JeeO9sP6bhc-9yD1xA', 		'328BA8'],
 					['Out',					'out',				'Odd one but, thanks for making me rethink my life\'s style and decisions...', 					'',																	'AAAAAA'],
-					['Lua',					'lua',				'Thank you for everything... hope I\'ll see you out there one day...',							'https://www.youtube.com/@LORAY_', 									'FF1F4A']
+					['Lua',					'lua',				'Thank you for everything... hope I\'ll see you out there one day...',							'https://www.youtube.com/@LORAY_', 									'FF1F4A'],
+					['You', 				'',					'For playing this mod!',																		'',																	'AAAAAA'],
 				];
 			case 'Composers':
 				defaultList = [
@@ -275,7 +278,7 @@ class CreditsState extends MusicBeatState
 					[''],
 					['Lore Remixes by'],
 					['RandoHorn',			'rando',			'Made Lore Ryan Mix',								 											'https://x.com/RandoHorn',											'AAAAAA'],
-					['PinkyMichael',		'pinky',			'Made Lore Apology Mix / Helped with Distractible mixing',								    									'https://x.com/PinkyMichael76',										'FF63FF'],
+					['PinkyMichael',		'pinky',			'Made Lore Apology Mix / Helped with Distractible mixing',								    	'https://x.com/PinkyMichael76',										'FF63FF'],
 					['RixFX',				'rix',				'Made Lore Awesomix Mix',								    									'https://x.com/rixfx_',												'AAAAAA'],
 					['KOSE',				'kose',				'Made Chronology, Detective',																	'https://www.youtube.com/@kosejumpscare',							'CC31C9'],
 					['smily',				'smily',			'Made Chronology',								 		 										'https://x.com/boi_smily',											'AAAAAA'],
@@ -299,6 +302,7 @@ class CreditsState extends MusicBeatState
 					['Nestoku',				'nestoku',			'Made the Lua Sprites (Brightness commisionned them)', 											'https://x.com/TheFeloxselUwU',										'222222'],
 					[''],
 					['Additional Assets come from'],
+					['Funkin\' at Freddys', 'faf', 				'Matpat and Purple Guy (old versions) skins in the skin selector',								'https://x.com/JcJack777', 								            'AAAAAA'],
 					['Scott Cawthon', 		'scott', 			'God himself at this point', 																	'https://www.youtube.com/channel/UC2Xp5JeeO9sP6bhc-9yD1xA', 		'328BA8'],
 					['The Internet',		'internet',			'obvisouly...',																					'https://google.com',												'AAAAAA']
 				];

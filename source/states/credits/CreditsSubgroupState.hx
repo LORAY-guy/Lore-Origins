@@ -61,6 +61,7 @@ class CreditsSubgroupState extends MusicBeatState
             var subGroup:FlxText = new FlxText(0, offset + 112, 0, subGroups[i].toUpperCase(), 72);
             subGroup.setFormat(Paths.font("matpat.ttf"), 72, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
             subGroup.borderSize = 4;
+            subGroup.bold = true;
             subGroup.scrollFactor.set(0, 1);
             subGroup.updateHitbox();
             subGroup.x = FlxG.width - subGroup.width - (60 * (FlxG.width / 1280));

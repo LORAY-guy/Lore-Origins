@@ -3,45 +3,12 @@
 		{
 			"loop": false,
 			"offsets": [
-				-21,
-				4
-			],
-			"anim": "singDOWN",
-			"fps": 30,
-			"name": "down",
-			"indices": []
-		},
-		{
-			"loop": false,
-			"offsets": [
-				49,
-				7
-			],
-			"anim": "singLEFT",
-			"fps": 30,
-			"name": "right",
-			"indices": []
-		},
-		{
-			"loop": false,
-			"offsets": [
 				0,
-				37
+				0
 			],
-			"anim": "singUP",
-			"fps": 30,
-			"name": "up",
-			"indices": []
-		},
-		{
-			"loop": false,
-			"offsets": [
-				-23,
-				28
-			],
-			"anim": "singRIGHT",
-			"fps": 30,
-			"name": "left",
+			"anim": "idle",
+			"fps": 24,
+			"name": "Idle",
 			"indices": []
 		},
 		{
@@ -50,31 +17,64 @@
 				0,
 				0
 			],
-			"anim": "idle",
-			"fps": 30,
-			"name": "idle",
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "Down",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "Up",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "Right",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "Left",
 			"indices": []
 		}
 	],
 	"vocals_file": "",
-	"no_antialiasing": true,
-	"image": "characters/playguy-loray",
+	"no_antialiasing": false,
+	"image": "characters/Lua",
 	"position": [
-		120,
-		370
+		50,
+		-80
 	],
-	"healthicon": "lorayguy",
+	"healthicon": "lua",
 	"flip_x": false,
 	"healthbar_colors": [
-		58,
-		249,
-		0
+		255,
+		31,
+		74
 	],
 	"camera_position": [
-		310,
-		-220
+		100,
+		-30
 	],
-	"sing_duration": 6.1,
-	"scale": 3.4,
+	"sing_duration": 4,
+	"scale": 1,
 	"_editor_isPlayer": true
 }

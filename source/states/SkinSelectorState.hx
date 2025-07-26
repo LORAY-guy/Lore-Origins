@@ -1,50 +1,19 @@
 package states;
 
-typedef CharacterData = {
-    name: String,
-    skins: Array<SkinData>
-}
-
 typedef SkinData = {
     name: String,
+    skins: Array<SkinSubData>
+}
+
+typedef SkinSubData = {
+    name: String,
     scale: Float
+    //author: String
 }
 
 class SkinSelectorState extends MusicBeatState
 {
-    public var characterData:Array<CharacterData> = [
-        {
-            name: "Ourple",
-            skins: [
-                {name: "Normal", scale: 2.5},
-                {name: "RTX", scale: 2.5},
-                {name: "Mad", scale: 2.5},
-                {name: "Staring", scale: 2.4},
-                {name: "Afton", scale: 2.4},
-                {name: "Shaggy", scale: 0.65},
-                {name: "Loray", scale: 2.5}
-            ]
-        },
-        {
-            name: "Matpat",
-            skins: [
-                {name: "Normal", scale: 0.75},
-                {name: "RTX", scale: 0.75},
-                {name: "Sad", scale: 0.75},
-                {name: "PNG", scale: 1.2},
-                {name: "FAF", scale: 0.6},
-                {name: "Sunk", scale: 0.325},
-                {name: "Sunk Mad", scale: 0.325}
-            ]
-        },
-        {
-            name: "Phone",
-            skins: [
-                {name: "Normal", scale: 0.8},
-                {name: "RTX", scale: 0.8}
-            ]
-        }
-    ];
+    public static var skinData:Array<SkinData>;
 
     private var bg:FlxSprite;
     private var arrows:FlxSpriteGroup;
@@ -71,6 +40,8 @@ class SkinSelectorState extends MusicBeatState
     override public function create():Void
     {
         Paths.clearUnusedMemory();
+
+        retrieveSkinData();
 
 		var bg:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.image('mainmenu/bg'));
 		var scaleMultiplier:Float = FlxG.width / 1280;
@@ -126,7 +97,7 @@ class SkinSelectorState extends MusicBeatState
                 changeCharacter(1);
 
             if (controls.UI_LEFT_P || (FlxG.mouse.overlaps(arrows.members[0]) && !FlxG.mouse.overlaps(exitButton) && FlxG.mouse.justPressed)) {
-                if (characterData[curCharIndex].skins.length > 1) {
+                if (skinData[curCharIndex].skins.length > 1) {
                     changeSkin(-1);
                 } else {
                     FlxG.sound.play(Paths.sound('cancelMenu'));
@@ -134,7 +105,7 @@ class SkinSelectorState extends MusicBeatState
                 arrows.members[0].animation.play('s');
             }
             if (controls.UI_RIGHT_P || (FlxG.mouse.overlaps(arrows.members[1]) && !FlxG.mouse.overlaps(exitButton) && FlxG.mouse.justPressed)) {
-                if (characterData[curCharIndex].skins.length > 1) {
+                if (skinData[curCharIndex].skins.length > 1) {
                     changeSkin(1);
                 } else {
                     FlxG.sound.play(Paths.sound('cancelMenu'));
@@ -170,14 +141,14 @@ class SkinSelectorState extends MusicBeatState
 
         curCharIndex += change;
 
-        if (curCharIndex >= characterData.length)
+        if (curCharIndex >= skinData.length)
             curCharIndex = 0;
         if (curCharIndex < 0)
-            curCharIndex = characterData.length - 1;
+            curCharIndex = skinData.length - 1;
 
-        curChar = characterData[curCharIndex].name;
+        curChar = skinData[curCharIndex].name;
         curSkinIndex = 0;
-        curSkin = characterData[curCharIndex].skins[0].name;
+        curSkin = skinData[curCharIndex].skins[0].name;
 
         reloadCharacter(change, true);
 
@@ -196,12 +167,12 @@ class SkinSelectorState extends MusicBeatState
 
         curSkinIndex += change;
 
-        if (curSkinIndex >= characterData[curCharIndex].skins.length)
+        if (curSkinIndex >= skinData[curCharIndex].skins.length)
             curSkinIndex = 0;
         if (curSkinIndex < 0)
-            curSkinIndex = characterData[curCharIndex].skins.length - 1;
+            curSkinIndex = skinData[curCharIndex].skins.length - 1;
     
-        curSkin = characterData[curCharIndex].skins[curSkinIndex].name;
+        curSkin = skinData[curCharIndex].skins[curSkinIndex].name;
 
         reloadCharacter(change);
         updateSkinDisplay();
@@ -211,6 +182,7 @@ class SkinSelectorState extends MusicBeatState
     {
         if (characterList != null)
             characterList.destroy();
+        checkForSkinExistence();
         characterList = new FlxText(FlxG.width - 360, FlxG.height - 200, 0, 'Ourple Guy: ${ClientPrefs.data.ourpleSkin}\nMatpat: ${ClientPrefs.data.matpatSkin}\nPhone Guy: ${ClientPrefs.data.phoneGuySkin}', 26);
         characterList.setFormat(Paths.font('ourple.ttf'), 26, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
         characterList.antialiasing = false;
@@ -237,6 +209,7 @@ class SkinSelectorState extends MusicBeatState
             curSkinIndex = 0;
             curSkin = 'Normal';
             path = 'skins/' + ((curChar == 'Ourple' ? 'playguy' : curChar) + (curSkin == 'Normal' ? '' : curSkin)).toLowerCase();
+            FlxG.sound.play(Paths.sound('cancelMenu'));
         }
 
         if (characterSprite != null) {
@@ -259,7 +232,7 @@ class SkinSelectorState extends MusicBeatState
     {
         if (characterSprite != null) characterSprite.destroy();
 
-        var characterScale:Float = characterData[curCharIndex].skins[curSkinIndex].scale;
+        var characterScale:Float = skinData[curCharIndex].skins[curSkinIndex].scale;
         if (characterScale < 0)
             characterScale = 0.75;
         characterSprite = new FlxSprite().loadGraphic(Paths.image(path));
@@ -337,6 +310,81 @@ class SkinSelectorState extends MusicBeatState
                 return 'Phone Guy';
             default:
                 return 'Ourple Guy';
+        }
+    }
+
+    public static function retrieveSkinData():Void
+    {
+        try {
+            var jsonPath = Paths.json("skinData");
+            #if MODS_ALLOWED
+            if (FileSystem.exists("skins/skinData.json"))
+                jsonPath = "skins/skinData.json";
+            var rawJson:String = sys.io.File.getContent(jsonPath);
+            #else
+            var rawJson:String = openfl.utils.Assets.getText(jsonPath);
+            #end
+            skinData = haxe.Json.parse(rawJson);
+
+            if (skinData == null || skinData.length == 0)
+                throw 'No skin data found.';
+
+            var totalSkins:Int = 0;
+            for (char in skinData)
+                totalSkins += char.skins.length;
+            trace('Loaded successfully skin data: ${totalSkins} skins found.');
+        } catch (e:Dynamic) {
+            trace('Failed to load skin data, using default data instead. Error: ${e}');
+            skinData = [
+                {
+                    name: "Ourple",
+                    skins: [
+                        {name: "Normal", scale: 2.5},
+                        {name: "RTX", scale: 2.5},
+                        {name: "Mad", scale: 2.5},
+                        {name: "Staring", scale: 2.4},
+                        {name: "Afton", scale: 2.4},
+                        {name: "Shaggy", scale: 0.65},
+                        {name: "Loray", scale: 2.5}
+                    ]
+                },
+                {
+                    name: "Matpat",
+                    skins: [
+                        {name: "Normal", scale: 0.75},
+                        {name: "RTX", scale: 0.75},
+                        {name: "Sad", scale: 0.75},
+                        {name: "PNG", scale: 1.2},
+                        {name: "FAF", scale: 0.6},
+                        {name: "Sunk", scale: 0.325},
+                        {name: "Sunk Mad", scale: 0.325}
+                    ]
+                },
+                {
+                    name: "Phone",
+                    skins: [
+                        {name: "Normal", scale: 0.8},
+                        {name: "RTX", scale: 0.8}
+                    ]
+                }
+            ];
+        }
+    }
+
+    public static function checkForSkinExistence():Void
+    {
+        // Check if the skin stored in the ClientPrefs exists in the skinData, if not, set it to 'Normal'
+        if (ClientPrefs.data.ourpleSkin == null || ClientPrefs.data.ourpleSkin == '' || skinData[0].skins.filter(function(s:SkinSubData) {return s.name == ClientPrefs.data.ourpleSkin;}).length == 0) {
+            ClientPrefs.data.ourpleSkin = 'Normal';
+            ClientPrefs.saveSettings(false);
+        }
+        if (ClientPrefs.data.matpatSkin == null || ClientPrefs.data.matpatSkin == '' || skinData[1].skins.filter(function(s:SkinSubData) {return s.name == ClientPrefs.data.matpatSkin;}).length == 0) {
+            ClientPrefs.data.matpatSkin = 'Normal';
+            ClientPrefs.saveSettings(false);
+        }
+        if (ClientPrefs.data.phoneGuySkin == null || ClientPrefs.data.phoneGuySkin == '' || skinData[2].skins.filter(function(s:SkinSubData) {return s.name == ClientPrefs.data.phoneGuySkin;}).length == 0) {
+            ClientPrefs.data.phoneGuySkin = 'Normal';
+            ClientPrefs.saveSettings(false);
         }
     }
 

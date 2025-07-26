@@ -22,6 +22,7 @@
 	<define name="DISCORD_ALLOWED" if="desktop" />
 	<define name="CHECK_FOR_UPDATES" unless="html5"/>
 	<define name="ACHIEVEMENTS_ALLOWED" />
+	<define name="MODS_ALLOWED" if="desktop" />
 	<define name="CRASH_HANDLER" if="desktop release" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
@@ -65,6 +66,8 @@
 
 	<assets path="assets/minigame/linux" if="linux || mac" rename="assets/minigame" />
 	<assets path="assets/minigame/windows" if="windows" rename="assets/minigame" />
+
+	<assets path="skins" if="MODS_ALLOWED" embed="false"/>
 	
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<assets path='Patch Note.txt' />

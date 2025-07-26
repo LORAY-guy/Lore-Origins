@@ -92,6 +92,8 @@ class Paths
 	public static function getPath(file:String, ?type:AssetType = TEXT, ?library:Null<String> = null, ?modsAllowed:Bool = false):String
 	{
 		#if MODS_ALLOWED
+		if (FileSystem.exists('skins/$file')) return 'skins/$file';
+
 		if(modsAllowed)
 		{
 			var customFile:String = file;
@@ -223,6 +225,8 @@ class Paths
 		}
 		else if (FileSystem.exists(file))
 			bitmap = BitmapData.fromFile(file);
+		else if (FileSystem.exists('skins/images/$key.png'))
+			bitmap = BitmapData.fromFile('skins/images/$key.png');
 		else
 		#end
 		{
@@ -382,6 +386,10 @@ class Paths
 
 		var xml:String = modsXml(key);
 		if(FileSystem.exists(xml)) xmlExists = true;
+		else if (FileSystem.exists('skins/images/$key.xml')) {
+			xml = 'skins/images/$key.xml';
+			xmlExists = true;	
+		}
 
 		return FlxAtlasFrames.fromSparrow(imageLoaded, (xmlExists ? File.getContent(xml) : getPath('images/$key.xml', library)));
 		#else

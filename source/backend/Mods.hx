@@ -144,27 +144,8 @@ class Mods
 
 	public static var updatedOnState:Bool = false;
 	inline public static function parseList():ModsList {
-		if(!updatedOnState) updateModList();
 		var list:ModsList = {enabled: [], disabled: [], all: []};
 
-		#if MODS_ALLOWED
-		try {
-			for (mod in CoolUtil.coolTextFile('modsList.txt'))
-			{
-				//trace('Mod: $mod');
-				if(mod.trim().length < 1) continue;
-
-				var dat = mod.split("|");
-				list.all.push(dat[0]);
-				if (dat[1] == "1")
-					list.enabled.push(dat[0]);
-				else
-					list.disabled.push(dat[0]);
-			}
-		} catch(e) {
-			trace(e);
-		}
-		#end
 		return list;
 	}
 	
@@ -209,9 +190,7 @@ class Mods
 			fileStr += values[0] + '|' + (values[1] ? '1' : '0');
 		}
 
-		File.saveContent('modsList.txt', fileStr);
 		updatedOnState = true;
-		//trace('Saved modsList.txt');
 		#end
 	}
 

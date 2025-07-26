@@ -70,7 +70,6 @@ jobs:
           path: 'export/release/linux/bin'
   windows-release:
     runs-on: windows-latest
-
     steps:
       - uses: actions/checkout@v4
       - uses: krdlab/setup-haxe@v2
@@ -141,7 +140,6 @@ jobs:
           path: export/release/windows/bin
   mac-release:
     runs-on: macos-15
-
     steps:
       - uses: actions/checkout@v4
       - uses: krdlab/setup-haxe@v2

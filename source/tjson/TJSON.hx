@@ -2,6 +2,9 @@ package tjson;
 
 using StringTools;
 
+/**
+ * just because they didn't specify two varibles classes that it doesn't compile...
+ */
 class TJSON {    
 	public static var OBJECT_REFERENCE_PREFIX = "@~obRef#";
 	/**

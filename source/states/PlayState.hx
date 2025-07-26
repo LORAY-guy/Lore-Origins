@@ -26,6 +26,7 @@ import states.StoryMenuState;
 import states.FreeplayState;
 import states.editors.ChartingState;
 import states.editors.CharacterEditorState;
+import states.SkinSelectorState;
 
 import substates.PauseSubState;
 import substates.GameOverSubstate;
@@ -534,10 +535,13 @@ class PlayState extends MusicBeatState
 		startHScriptsNamed('stages/' + curStage + '.hx');
 		#end
 
+		SkinSelectorState.retrieveSkinData();
+		SkinSelectorState.checkForSkinExistence();
+
 		if (!stageData.hide_girlfriend)
 		{
 			if(SONG.gfVersion == null || SONG.gfVersion.length < 1) SONG.gfVersion = 'gf'; //Fix for the Chart Editor
-			if (ClientPrefs.data.phoneGuySkin != 'Normal' && SONG.gfVersion.toLowerCase() == 'phone' && PlayState.isCover && (SONG.song != 'Fever' || SONG.song != 'Live' || SONG.song != 'horse-lore' || SONG.song != 'chronology')) {
+			if (ClientPrefs.data.phoneGuySkin != 'Normal' && SONG.gfVersion.toLowerCase() == 'phone' && PlayState.isCover && (SONG.song != 'Live' || SONG.song != 'horse-lore' || SONG.song != 'chronology')) {
 				var subSpriteName:String = (ClientPrefs.data.phoneGuySkin == 'Normal' ? '' : '-' + ClientPrefs.data.phoneGuySkin).toLowerCase();
 				gf = new Character(0, 0, 'phone' + subSpriteName);
 			} else

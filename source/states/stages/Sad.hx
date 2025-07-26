@@ -46,8 +46,10 @@ class Sad extends BaseStage
         floor.updateHitbox();
         add(floor);
 
-        darkStuff = new FlxSprite().makeGraphic(2500, 2500, FlxColor.BLACK);
+        darkStuff = new FlxSprite().makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
         darkStuff.alpha = 0.9;
+        darkStuff.scrollFactor.set();
+        darkStuff.screenCenter(XY);
         add(darkStuff);
 
         spotlightMatpat = new BGSprite('spotlight', 640, 240, 1, 1);

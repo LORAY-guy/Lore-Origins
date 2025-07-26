@@ -1,0 +1,34 @@
+[
+    {
+        "name": "Ourple",
+        "skins": [
+            {"name": "Normal", "scale": 2.5},
+            {"name": "RTX", "scale": 2.5},
+            {"name": "Mad", "scale": 2.5},
+            {"name": "Staring", "scale": 2.4},
+            {"name": "Afton", "scale": 2.4},
+            {"name": "Shaggy", "scale": 0.65},
+            {"name": "Loray", "scale": 2.5},
+            {"name": "Lua", "scale": 0.7}
+        ]
+    },
+    {
+        "name": "Matpat",
+        "skins": [
+            {"name": "Normal", "scale": 0.75},
+            {"name": "RTX", "scale": 0.75},
+            {"name": "Sad", "scale": 0.75},
+            {"name": "PNG", "scale": 1.2},
+            {"name": "FAF", "scale": 0.6},
+            {"name": "Sunk", "scale": 0.325},
+            {"name": "Sunk Mad", "scale": 0.325}
+        ]
+    },
+    {
+        "name": "Phone",
+        "skins": [
+            {"name": "Normal", "scale": 0.8},
+            {"name": "RTX", "scale": 0.8}
+        ]
+    }
+]

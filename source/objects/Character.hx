@@ -114,6 +114,22 @@ class Character extends FlxSprite
 			default:
 				var characterPath:String = 'characters/$curCharacter.json';
 
+				#if MODS_ALLOWED
+				if (FileSystem.exists('skins/characters/$curCharacter.json'))
+				{
+					characterPath = 'skins/characters/$curCharacter.json';
+					try {
+						loadCharacterFile(Json.parse(File.getContent(characterPath)));
+					} catch (e:Dynamic) {
+						trace('Error loading character file of "$curCharacter": $e');
+					}
+					if(animOffsets.exists('singLEFTmiss') || animOffsets.exists('singDOWNmiss') || animOffsets.exists('singUPmiss') || animOffsets.exists('singRIGHTmiss')) hasMissAnimations = true;
+					recalculateDanceIdle();
+					dance();
+					return;
+				}
+				#end
+
 				var path:String = Paths.getPath(characterPath, TEXT, null, true);
 				#if MODS_ALLOWED
 				if (!FileSystem.exists(path))
