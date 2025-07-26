@@ -42,6 +42,7 @@ class SkinSelectorState extends MusicBeatState
         Paths.clearUnusedMemory();
 
         retrieveSkinData();
+        checkForSkinExistence();
 
 		var bg:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.image('mainmenu/bg'));
 		var scaleMultiplier:Float = FlxG.width / 1280;
@@ -182,7 +183,6 @@ class SkinSelectorState extends MusicBeatState
     {
         if (characterList != null)
             characterList.destroy();
-        checkForSkinExistence();
         characterList = new FlxText(FlxG.width - 360, FlxG.height - 200, 0, 'Ourple Guy: ${ClientPrefs.data.ourpleSkin}\nMatpat: ${ClientPrefs.data.matpatSkin}\nPhone Guy: ${ClientPrefs.data.phoneGuySkin}', 26);
         characterList.setFormat(Paths.font('ourple.ttf'), 26, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
         characterList.antialiasing = false;

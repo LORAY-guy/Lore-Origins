@@ -168,11 +168,15 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.seenCutscene = false;
 			PlayState.chartingMode = false;
 
-			Mods.loadTopMod();
-			MusicBeatState.switchState(new FreeplayState(true));
+			switch (PlayState.SONG.song.toLowerCase()) {
+				case 'distractible', 'lua':
+					MusicBeatState.switchState(new states.credits.CreditsSubgroupState(true));
+				default:
+					Mods.loadTopMod();
+					MusicBeatState.switchState(new FreeplayState(true));	
+			}
 
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			PlayState.instance.callOnScripts('onGameOverConfirm', [false]);
 		}
 		
 		if (boyfriend.animation.curAnim != null)
