@@ -39,6 +39,10 @@ class SkinSelectorState extends MusicBeatState
 
     override public function create():Void
     {
+        #if DISCORD_ALLOWED
+		DiscordClient.changePresence("Choosing a skin...", null);
+		#end
+
         Paths.clearUnusedMemory();
 
         retrieveSkinData();

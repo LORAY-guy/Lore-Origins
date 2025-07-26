@@ -329,6 +329,8 @@ class Paths
 	public static function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String = null)
 	{
 		#if MODS_ALLOWED
+		if (FileSystem.exists('skins/$key.png')) return true;
+
 		if(!ignoreMods)
 		{
 			for(mod in Mods.getGlobalMods())

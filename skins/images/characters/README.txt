@@ -1,0 +1,1 @@
+Here, you need to insert the sprite sheets of the desired character you want to add.

@@ -10,5 +10,7 @@ and DON'T FORGET TO ADD THE CHARACTER IN THE "skinData.json" FILE.
 
 NOTE: The "skinData.json" that you will create will override the default skinData in "assets/data/skinData.json"
 
+NOTE: The "scale" argument in the "skinData.json" is the size of the display image of the added skin in the Skin Selector Menu only, it will no affect gameplay.
+
 Enjoy!!!
 - LORAY
