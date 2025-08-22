@@ -6,17 +6,17 @@ class FlashingState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
 
-	var guy:FlxSprite;
-	var arm:FlxSprite;
+	private var guy:FlxSprite;
+	private var arm:FlxSprite;
 
 	#if mobile
-	var cancelButton:FlxSprite;
-	var acceptButton:FlxSprite;
+	private var cancelButton:FlxSprite;
+	private var acceptButton:FlxSprite;
 	#end
 
-	var delay:Float = 0;
+	private var delay:Float = 0;
 
-	override function create()
+	override public function create():Void
 	{
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
@@ -80,7 +80,7 @@ class FlashingState extends MusicBeatState
 		super.create();
 	}
 
-	private function handleAccept(back:Bool)
+	private function handleAccept(back:Bool):Void
 	{
 		leftState = true;
 		FlxTransitionableState.skipNextTransIn = true;
@@ -120,7 +120,7 @@ class FlashingState extends MusicBeatState
 		FlxTween.tween(arm, {y: FlxG.height + 200}, 0.8, {ease: FlxEase.bounceOut, startDelay: delay});
 	}
 
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		if(!leftState) {
 			#if mobile

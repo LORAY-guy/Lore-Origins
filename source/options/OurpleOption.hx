@@ -88,7 +88,7 @@ class OurpleOption
 		catch(e) {}
 	}
 
-	public function change()
+	public function change():Void
 	{
 		//nothing lol
 		if(onChange != null)
@@ -114,22 +114,24 @@ class OurpleOption
 		return Reflect.setProperty(ClientPrefs.data, variable, value);
 	}
 
-	private function get_text()
+	private function get_text():String
 	{
 		if(child != null) {
 			return child.text;
 		}
 		return null;
 	}
-	private function set_text(newValue:String = '')
+
+	private function set_text(newValue:String = ''):String
 	{
 		if(child != null) {
 			child.text = newValue;
+			return newValue;
 		}
 		return null;
 	}
 
-	private function get_type()
+	private function get_type():String
 	{
 		var newValue:String = 'bool';
 		switch(type.toLowerCase().trim())
@@ -144,7 +146,7 @@ class OurpleOption
 		return type;
 	}
 
-	public function setChild(child:AttachedFlxText)
+	public function setChild(child:AttachedFlxText):Void
 	{
 		this.child = child;
 	}

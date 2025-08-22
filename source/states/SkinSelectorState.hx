@@ -377,19 +377,23 @@ class SkinSelectorState extends MusicBeatState
 
     public static function checkForSkinExistence():Void
     {
+        var saveSkins:Bool = false;
+
         // Check if the skin stored in the ClientPrefs exists in the skinData, if not, set it to 'Normal'
         if (ClientPrefs.data.ourpleSkin == null || ClientPrefs.data.ourpleSkin == '' || skinData[0].skins.filter(function(s:SkinSubData) {return s.name == ClientPrefs.data.ourpleSkin;}).length == 0) {
             ClientPrefs.data.ourpleSkin = 'Normal';
-            ClientPrefs.saveSettings(false);
+            saveSkins = true;
         }
         if (ClientPrefs.data.matpatSkin == null || ClientPrefs.data.matpatSkin == '' || skinData[1].skins.filter(function(s:SkinSubData) {return s.name == ClientPrefs.data.matpatSkin;}).length == 0) {
             ClientPrefs.data.matpatSkin = 'Normal';
-            ClientPrefs.saveSettings(false);
+            saveSkins = true;
         }
         if (ClientPrefs.data.phoneGuySkin == null || ClientPrefs.data.phoneGuySkin == '' || skinData[2].skins.filter(function(s:SkinSubData) {return s.name == ClientPrefs.data.phoneGuySkin;}).length == 0) {
             ClientPrefs.data.phoneGuySkin = 'Normal';
-            ClientPrefs.saveSettings(false);
+            saveSkins = true;
         }
+        if (saveSkins)
+            ClientPrefs.saveSettings(false);
     }
 
     override public function destroy():Void

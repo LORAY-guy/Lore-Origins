@@ -113,8 +113,8 @@ class ControlsSubState extends MusicBeatSubstate
 		add(new ExitButton('options'));
 	}
 
-	var lastID:Int = 0;
-	function createTexts()
+	private var lastID:Int = 0;
+	private function createTexts():Void
 	{
 		curOptions = [];
 		curOptionsValid = [];
@@ -166,13 +166,14 @@ class ControlsSubState extends MusicBeatSubstate
 		updateText();
 	}
 
-	function addCenteredText(text:Alphabet, option:Array<Dynamic>, id:Int)
+	private function addCenteredText(text:Alphabet, option:Array<Dynamic>, id:Int):Void
 	{
 		text.screenCenter(X);
 		text.y -= 55;
 		text.startPosition.y -= 55;
 	}
-	function addKeyText(text:Alphabet, option:Array<Dynamic>, id:Int)
+
+	private function addKeyText(text:Alphabet, option:Array<Dynamic>, id:Int):Void
 	{
 		for (n in 0...2)
 		{
@@ -215,7 +216,7 @@ class ControlsSubState extends MusicBeatSubstate
 		}
 	}
 
-	function playstationCheck(alpha:Alphabet)
+	private function playstationCheck(alpha:Alphabet):Void
 	{
 		if(onKeyboardMode) return;
 
@@ -236,7 +237,7 @@ class ControlsSubState extends MusicBeatSubstate
 		}
 	}
 
-	function updateBind(num:Int, text:String)
+	private function updateBind(num:Int, text:String):Void
 	{
 		var bind:Alphabet = grpBinds.members[num];
 		var attach:Alphabet = new Alphabet(350 + (num % 2) * 300, 248, text, false);
@@ -258,14 +259,14 @@ class ControlsSubState extends MusicBeatSubstate
 		bind.destroy();
 	}
 
-	var binding:Bool = false;
-	var holdingEsc:Float = 0;
-	var bindingBlack:FlxSprite;
-	var bindingText:Alphabet;
-	var bindingText2:Alphabet;
+	private var binding:Bool = false;
+	private var holdingEsc:Float = 0;
+	private var bindingBlack:FlxSprite;
+	private var bindingText:Alphabet;
+	private var bindingText2:Alphabet;
 
-	var timeForMoving:Float = 0.1;
-	override function update(elapsed:Float)
+	private var timeForMoving:Float = 0.1;
+	override public function update(elapsed:Float):Void
 	{
 		if(timeForMoving > 0) //Fix controller bug
 		{
@@ -449,7 +450,7 @@ class ControlsSubState extends MusicBeatSubstate
 		super.update(elapsed);
 	}
 
-	function closeBinding()
+	private function closeBinding():Void
 	{
 		binding = false;
 		bindingBlack.destroy();
@@ -463,7 +464,7 @@ class ControlsSubState extends MusicBeatSubstate
 		ClientPrefs.reloadVolumeKeys();
 	}
 
-	function updateText(?move:Int = 0)
+	private function updateText(?move:Int = 0):Void
 	{
 		if(move != 0)
 		{
@@ -499,8 +500,8 @@ class ControlsSubState extends MusicBeatSubstate
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 
-	var colorTween:FlxTween;
-	function swapMode()
+	private var colorTween:FlxTween;
+	private function swapMode():Void
 	{
 		if(colorTween != null) colorTween.destroy();
 		colorTween = FlxTween.color(bg, 0.5, bg.color, onKeyboardMode ? gamepadColor : keyboardColor, {ease: FlxEase.linear});
@@ -512,7 +513,7 @@ class ControlsSubState extends MusicBeatSubstate
 		createTexts();
 	}
 
-	function updateAlt(?doSwap:Bool = false)
+	private function updateAlt(?doSwap:Bool = false):Void
 	{
 		if(doSwap)
 		{

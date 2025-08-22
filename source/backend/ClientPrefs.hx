@@ -1,7 +1,5 @@
 package backend;
 
-import lime.app.Application;
-import lime.system.DisplayMode;
 import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepadInputID;

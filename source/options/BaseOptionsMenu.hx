@@ -140,22 +140,23 @@ class BaseOptionsMenu extends MusicBeatSubstate
         #end
 	}
 
-	public function addOption(option:OurpleOption) {
+	public function addOption(option:OurpleOption):OurpleOption
+	{
 		if(optionsArray == null || optionsArray.length < 1) optionsArray = [];
 		optionsArray.push(option);
 		return option;
 	}
 
-	var nextAccept:Int = 5;
-	var holdTime:Float = 0;
-	var holdValue:Float = 0;
+	private var nextAccept:Int = 5;
+	private var holdTime:Float = 0;
+	private var holdValue:Float = 0;
 
-	var bindingKey:Bool = false;
-	var holdingEsc:Float = 0;
-	var bindingBlack:FlxSprite;
-	var bindingText:Alphabet;
-	var bindingText2:Alphabet;
-	override function update(elapsed:Float)
+	private var bindingKey:Bool = false;
+	private var holdingEsc:Float = 0;
+	private var bindingBlack:FlxSprite;
+	private var bindingText:Alphabet;
+	private var bindingText2:Alphabet;
+	override public function update(elapsed:Float):Void
 	{
 		if(bindingKey)
 		{
@@ -322,7 +323,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		super.update(elapsed);
 	}
 
-	function bindingKeyUpdate(elapsed:Float)
+	private function bindingKeyUpdate(elapsed:Float):Void
 	{
 		if(FlxG.keys.pressed.ESCAPE || FlxG.gamepads.anyPressed(B))
 		{
@@ -424,8 +425,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		}
 	}
 
-	final MAX_KEYBIND_WIDTH = 320;
-	function updateBind(?text:String = null, ?option:OurpleOption = null)
+	private final MAX_KEYBIND_WIDTH = 320;
+	private function updateBind(?text:String = null, ?option:OurpleOption = null):Void
 	{
 		if(option == null) option = curOption;
 		if(text == null)
@@ -454,7 +455,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		bind.destroy();
 	}
 
-	function closeBinding()
+	private function closeBinding():Void
 	{
 		bindingKey = false;
 		bindingBlack.destroy();
@@ -468,7 +469,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		ClientPrefs.toggleVolumeKeys(true);
 	}
 
-	function updateTextFrom(option:OurpleOption) {
+	private function updateTextFrom(option:OurpleOption):Void
+	{
 		if(option.type == 'keybind')
 		{
 			updateBind(option);
@@ -481,8 +483,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		var def:Dynamic = option.defaultValue;
 		option.text = text.replace('%v', val).replace('%d', def);
 	}
-	
-	function changeSelection(change:Int = 0)
+
+	private function changeSelection(change:Int = 0):Void
 	{
 		curSelected += change;
 		if (curSelected < 0)
@@ -529,8 +531,19 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 
-	function reloadCheckboxes() {
+	private function reloadCheckboxes():Void
+	{
 		for (checkbox in checkboxGroup) checkbox.daValue = (optionsArray[checkbox.ID].getValue() == true);
+	}
+
+	override public function close():Void
+	{
+		super.close();
+
+		#if mobile
+		if(mobileControls != null) mobileControls.destroy();
+		Controls.mobileControls = OptionsState.mobileControls;
+		#end
 	}
 }
 
@@ -551,7 +564,8 @@ class AttachedFlxText extends FlxText
 		this.offsetY = offsetY;
 	}
 
-	override function update(elapsed:Float) {
+	override public function update(elapsed:Float):Void
+	{
 		if (sprTracker != null) {
 			setPosition(sprTracker.x + offsetX, sprTracker.y + offsetY);
 			if (copyVisible) visible = sprTracker.visible;
@@ -562,7 +576,8 @@ class AttachedFlxText extends FlxText
 	}
 }
 
-class OptionFlxText extends FlxText { //im honestly so fucking lost as to why i never did this before
+class OptionFlxText extends FlxText
+{ //im honestly so fucking lost as to why i never did this before
 	public var targetY:Int = 0;
 	public var changeX:Bool = true;
 	public var changeY:Bool = true;
@@ -583,7 +598,7 @@ class OptionFlxText extends FlxText { //im honestly so fucking lost as to why i 
 		this.size = size;
 	}
 
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		if (isMenuItem)
 		{
@@ -600,7 +615,7 @@ class OptionFlxText extends FlxText { //im honestly so fucking lost as to why i 
 		super.update(elapsed);
 	}
 
-	public function snapToPosition()
+	public function snapToPosition():Void
 	{
 		if (isMenuItem)
 		{

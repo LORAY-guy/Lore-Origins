@@ -1,6 +1,5 @@
 package substates;
 
-import lime.system.BackgroundWorker;
 import objects.Character;
 import flixel.FlxObject;
 
@@ -9,11 +8,11 @@ import states.FreeplayState;
 class GameOverSubstate extends MusicBeatSubstate
 {
 	public var boyfriend:Character;
-	var camFollow:FlxObject;
-	var moveCamera:Bool = false;
-	var playingDeathSound:Bool = false;
+	private var camFollow:FlxObject;
+	private var moveCamera:Bool = false;
+	private var playingDeathSound:Bool = false;
 
-	var stageSuffix:String = "";
+	private var stageSuffix:String = "";
 
 	public static var characterName:String = 'playguy';
 	public static var deathSoundName:String = 'ourple_death';
@@ -22,7 +21,8 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	public static var instance:GameOverSubstate;
 
-	public static function resetVariables() {
+	public static function resetVariables():Void
+	{
 		characterName = 'playguy';
 		deathSoundName = 'ourple_death';
 		loopSoundName = 'wind';
@@ -38,10 +38,10 @@ class GameOverSubstate extends MusicBeatSubstate
 		}
 	}
 
-	var charX:Float = 0;
-	var charY:Float = 0;
-	var brokenHeart:FlxSprite;
-	override function create()
+	private var charX:Float = 0;
+	private var charY:Float = 0;
+	private var brokenHeart:FlxSprite;
+	override public function create():Void
 	{
 		instance = this;
 
@@ -151,7 +151,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	}
 
 	public var startedDeath:Bool = false;
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 
@@ -207,15 +207,15 @@ class GameOverSubstate extends MusicBeatSubstate
 		PlayState.instance.callOnScripts('onUpdatePost', [elapsed]);
 	}
 
-	var isEnding:Bool = false;
+	private var isEnding:Bool = false;
 
-	function coolStartDeath(?volume:Float = 1):Void
+	private function coolStartDeath(?volume:Float = 1):Void
 	{
 		if (loopSoundName.length > 1)
 			FlxG.sound.playMusic(Paths.music(loopSoundName), volume);
 	}
 
-	function endBullshit():Void
+	private function endBullshit():Void
 	{
 		if (!isEnding)
 		{
@@ -234,7 +234,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		}
 	}
 
-	override function destroy()
+	override public function destroy():Void
 	{
 		instance = null;
 		super.destroy();

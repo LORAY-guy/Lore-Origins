@@ -1,7 +1,5 @@
 package options;
 
-import backend.StageData;
-
 import objects.Character;
 import objects.Bar;
 
@@ -9,40 +7,40 @@ import flixel.addons.display.shapes.FlxShapeCircle;
 
 class NoteOffsetState extends MusicBeatState
 {
-	var boyfriend:Character;
-	var gf:Character;
+	private var boyfriend:Character;
+	private var gf:Character;
 
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var camOther:FlxCamera;
 
-	var coolText:FlxText;
-	var rating:FlxSprite;
-	var comboNums:FlxSpriteGroup;
-	var dumbTexts:FlxTypedGroup<FlxText>;
+	private var coolText:FlxText;
+	private var rating:FlxSprite;
+	private var comboNums:FlxSpriteGroup;
+	private var dumbTexts:FlxTypedGroup<FlxText>;
 
-	var barPercent:Float = 0;
-	var delayMin:Int = -500;
-	var delayMax:Int = 500;
-	var timeBar:Bar;
-	var timeTxt:FlxText;
-	var beatText:Alphabet;
-	var beatTween:FlxTween;
+	private var barPercent:Float = 0;
+	private var delayMin:Int = -500;
+	private var delayMax:Int = 500;
+	private var timeBar:Bar;
+	private var timeTxt:FlxText;
+	private var beatText:Alphabet;
+	private var beatTween:FlxTween;
 
-	var originY:Float = 0;
+	private var originY:Float = 0;
 
-	var changeModeText:FlxText;
+	private var changeModeText:FlxText;
 
-	var controllerPointer:FlxSprite;
-	var _lastControllerMode:Bool = false;
+	private var controllerPointer:FlxSprite;
+	private var _lastControllerMode:Bool = false;
 
-	var exitButton:ExitButton;
+	private var exitButton:ExitButton;
 
 	#if mobile
 	private var mobileControls:MobileUIControls;
 	#end
 
-	override public function create()
+	override public function create():Void
 	{
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Delay/Combo Offset Menu", null);
@@ -170,13 +168,13 @@ class NoteOffsetState extends MusicBeatState
 		#end
 	}
 
-	var holdTime:Float = 0;
-	var holdingObjectType:Null<Bool> = null;
+	private var holdTime:Float = 0;
+	private var holdingObjectType:Null<Bool> = null;
 
-	var startMousePos:FlxPoint = new FlxPoint();
-	var startComboOffset:FlxPoint = new FlxPoint();
+	private var startMousePos:FlxPoint = new FlxPoint();
+	private var startComboOffset:FlxPoint = new FlxPoint();
 
-	override public function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		var addNum:Int = 1;
 		if(FlxG.keys.pressed.SHIFT || FlxG.gamepads.anyPressed(LEFT_SHOULDER))
@@ -257,10 +255,10 @@ class NoteOffsetState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	var zoomTween:FlxTween;
-	var lastBeatHit:Int = -1;
-	var flippedIdle:Bool = false;
-	override public function beatHit()
+	private var zoomTween:FlxTween;
+	private var lastBeatHit:Int = -1;
+	private var flippedIdle:Bool = false;
+	override public function beatHit():Void
 	{
 		super.beatHit();
 
@@ -302,7 +300,7 @@ class NoteOffsetState extends MusicBeatState
 		lastBeatHit = curBeat;
 	}
 
-	function createTexts()
+	private function createTexts():Void
 	{
 		for (i in 0...4)
 		{
@@ -318,7 +316,7 @@ class NoteOffsetState extends MusicBeatState
 		}
 	}
 
-	function updateNoteDelay()
+	private function updateNoteDelay():Void
 	{
 		ClientPrefs.data.noteOffset = Math.round(barPercent);
 		timeTxt.text = 'Current offset: ' + Math.floor(barPercent) + ' ms';

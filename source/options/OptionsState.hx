@@ -8,7 +8,7 @@ import flixel.addons.transition.FlxTransitionableState;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = [#if !mobile 'Controls', #end 'Adjust Delay', 'Graphics', 'Visuals and UI', 'Gameplay', 'Lore Origins Options'];
+	private var options:Array<String> = [#if !mobile 'Controls', #end 'Adjust Delay', 'Graphics', 'Visuals and UI', 'Gameplay', 'Lore Origins Options'];
 	private var grpOptions:FlxTypedGroup<FlxText>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -20,30 +20,12 @@ class OptionsState extends MusicBeatState
 	#if mobile
 	public static var mobileControls:MobileUIControls;
 	#end
-	
-	function openSelectedSubstate(label:String) {
-		switch(label) {
-			case 'Controls':
-				openSubState(new options.ControlsSubState());
-			case 'Graphics':
-				openSubState(new options.GraphicsSettingsSubState());
-			case 'Visuals and UI':
-				openSubState(new options.VisualsUISubState());
-			case 'Gameplay':
-				openSubState(new options.GameplaySettingsSubState());
-			case 'Adjust Delay':
-				FlxG.sound.music.fadeOut(1.2, 0);
-				FlxTransitionableState.skipNextTransOut = false;
-				exitState(new options.NoteOffsetState());
-			case 'Lore Origins Options':
-				openSubState(new options.LoreOriginsSubstate());
-		}
-	}
 
-	var selectorLeft:Alphabet;
-	var selectorRight:Alphabet;
+	private var selectorLeft:Alphabet;
+	private var selectorRight:Alphabet;
 
-	override function create() {
+	override public function create():Void
+	{
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Options Menu", null);
 		#end
@@ -110,14 +92,32 @@ class OptionsState extends MusicBeatState
 	override public function closeSubState():Void
 	{
 		super.closeSubState();
-		#if mobile
-        Controls.mobileControls = mobileControls;
-        #end
+		selectedSomethin = false;
 		ClientPrefs.saveSettings();
 	}
 
+	private function openSelectedSubstate(label:String):Void
+	{
+		switch(label) {
+			case 'Controls':
+				openSubState(new options.ControlsSubState());
+			case 'Graphics':
+				openSubState(new options.GraphicsSettingsSubState());
+			case 'Visuals and UI':
+				openSubState(new options.VisualsUISubState());
+			case 'Gameplay':
+				openSubState(new options.GameplaySettingsSubState());
+			case 'Adjust Delay':
+				FlxG.sound.music.fadeOut(1.2, 0);
+				FlxTransitionableState.skipNextTransOut = false;
+				exitState(new options.NoteOffsetState());
+			case 'Lore Origins Options':
+				openSubState(new options.LoreOriginsSubstate());
+		}
+	}
+
 	public var selectedSomethin:Bool = false;
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		if (!selectedSomethin)
 		{
@@ -143,8 +143,9 @@ class OptionsState extends MusicBeatState
 
 		super.update(elapsed);
 	}
-	
-	function changeSelection(change:Int = 0) {
+
+	private function changeSelection(change:Int = 0):Void
+	{
 		grpOptions.members[curSelected].alpha = 0.8;
 		grpOptions.members[curSelected].color = FlxColor.WHITE;
 		grpOptions.members[curSelected].borderColor = FlxColor.BLACK;
@@ -162,10 +163,11 @@ class OptionsState extends MusicBeatState
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 
-	override function destroy()
+	override public function destroy():Void
 	{
 		ClientPrefs.loadPrefs();
 		#if mobile
+		mobileControls.destroy();
         Controls.mobileControls = null;
         #end
 		super.destroy();

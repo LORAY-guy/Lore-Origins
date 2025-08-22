@@ -13,10 +13,10 @@ class CreditsSubgroupState extends MusicBeatState
 
 	public var subGroupsNames:FlxTypedGroup<FlxText>;
 
-	var keypad:Keypad;
-	var cameraId:FlxSprite;
+	private var keypad:Keypad;
+	private var cameraId:FlxSprite;
 
-    var exitButton:ExitButton;
+    private var exitButton:ExitButton;
 
     override public function create():Void
 	{
@@ -383,7 +383,7 @@ class Keypad extends FlxTypedGroup<FlxSprite>
         if (playSound) FlxG.sound.play(Paths.sound('keypad/denied'));
     }
 
-    override function update(elapsed:Float):Void
+    override public function update(elapsed:Float):Void
     {
         super.update(elapsed);
 

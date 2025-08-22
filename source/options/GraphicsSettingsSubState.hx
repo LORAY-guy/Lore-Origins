@@ -4,9 +4,9 @@ import objects.Character;
 
 class GraphicsSettingsSubState extends BaseOptionsMenu
 {
-	var antialiasingOption:Int;
-	var boyfriend:Character = null;
-	public var originY:Float = 0;
+	private var antialiasingOption:Int;
+	private var boyfriend:Character = null;
+	private var originY:Float = 0;
 
 	public function new()
 	{
@@ -68,7 +68,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		insert(1, boyfriend);
 	}
 
-	function onChangeAntiAliasing()
+	private function onChangeAntiAliasing():Void
 	{
 		for (sprite in members)
 		{
@@ -80,7 +80,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		boyfriend.antialiasing = false; //Lol
 	}
 
-	function onChangeFramerate()
+	private function onChangeFramerate():Void
 	{
 		if(ClientPrefs.data.framerate > FlxG.drawFramerate)
 		{
@@ -94,14 +94,14 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		}
 	}
 
-	override function changeSelection(change:Int = 0)
+	override private function changeSelection(change:Int = 0):Void
 	{
 		super.changeSelection(change);
 		boyfriend.visible = (antialiasingOption == curSelected);
 	}
 
-	var flippedIdle:Bool = false;
-	override function update(elapsed:Float)
+	private var flippedIdle:Bool = false;
+	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 

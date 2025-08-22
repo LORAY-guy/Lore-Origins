@@ -81,7 +81,7 @@ class MusicPlayer extends FlxGroup
 		switchPlayMusic();
 	}
 
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 
@@ -208,7 +208,7 @@ class MusicPlayer extends FlxGroup
 		}
 	}
 
-	public function pauseOrResume(?resume:Bool = false, ?updateText:Bool = true) 
+	public function pauseOrResume(?resume:Bool = false, ?updateText:Bool = true):Void
 	{
 		if (resume)
 		{
@@ -233,7 +233,7 @@ class MusicPlayer extends FlxGroup
 		positionSong();
 	}
 
-	public function switchPlayMusic()
+	public function switchPlayMusic():Void
 	{
 		FlxG.autoPause = (!playingMusic && ClientPrefs.data.autoPause);
 		active = visible = playingMusic;
@@ -275,14 +275,15 @@ class MusicPlayer extends FlxGroup
 		progressBar.updateBar();
 	}
 
-	function updatePlaybackTxt()
+	private function updatePlaybackTxt():Void
 	{
-		var text = "";
+		var text:String = "";
+
 		if (playbackRate is Int)
 			text = playbackRate + '.00';
 		else
 		{
-			var playbackRate = Std.string(playbackRate);
+			var playbackRate:String = Std.string(playbackRate);
 			if (playbackRate.split('.')[1].length < 2) // Playback rates for like 1.1, 1.2 etc
 				playbackRate += '0';
 
@@ -291,10 +292,11 @@ class MusicPlayer extends FlxGroup
 		playbackTxt.text = text + 'x';
 	}
 
-	function positionSong() 
+	private function positionSong():Void
 	{
 		var length:Int = instance.songs[FreeplayState.curSelected].songName.length;
 		var shortName:Bool = length < 5; // Fix for song names like Ugh, Guns
+
 		songTxt.x = FlxG.width - songTxt.width - 6;
 		if (shortName)
 			songTxt.x -= 10 * length - length;
@@ -336,32 +338,32 @@ class MusicPlayer extends FlxGroup
 		}
 	}
 
-	function updateTimeTxt()
+	private function updateTimeTxt():Void
 	{
-		var text = FlxStringUtil.formatTime(FlxG.sound.music.time / 1000, false) + ' / ' + FlxStringUtil.formatTime(FlxG.sound.music.length / 1000, false);
+		var text:String = FlxStringUtil.formatTime(FlxG.sound.music.time / 1000, false) + ' / ' + FlxStringUtil.formatTime(FlxG.sound.music.length / 1000, false);
 		timeTxt.text = '< ' + text + ' >';
 	}
 
-	function setPlaybackRate() 
+	private function setPlaybackRate():Void
 	{
 		FlxG.sound.music.pitch = playbackRate;
 		if (FreeplayState.vocals != null)
 			FreeplayState.vocals.pitch = playbackRate;
 	}
 
-	function get_playing():Bool 
+	private function get_playing():Bool 
 	{
 		return FlxG.sound.music.playing;
 	}
 
-	function get_paused():Bool 
+	private function get_paused():Bool 
 	{
 		@:privateAccess return FlxG.sound.music._paused;
 	}
 
-	function set_playbackRate(value:Float):Float 
+	private function set_playbackRate(value:Float):Float 
 	{
-		var value = FlxMath.roundDecimal(value, 2);
+		var value:Float = FlxMath.roundDecimal(value, 2);
 
 		if (value > 3)
 			value = 3;

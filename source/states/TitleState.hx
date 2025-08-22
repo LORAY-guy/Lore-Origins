@@ -33,20 +33,20 @@ class TitleState extends MusicBeatState
 
 	public static var initialized:Bool = false;
 
-	var blackScreen:FlxSprite;
-	var credGroup:FlxGroup;
-	var credTextShit:Alphabet;
-	var textGroup:FlxGroup;
-	var ngSpr:FlxSprite;
-	
-	var titleTextColors:Array<FlxColor> = [0xFF33FFFF, 0xFF3333CC];
-	var titleTextAlphas:Array<Float> = [1, .64];
+	private var blackScreen:FlxSprite;
+	private var credGroup:FlxGroup;
+	private var credTextShit:Alphabet;
+	private var textGroup:FlxGroup;
+	private var ngSpr:FlxSprite;
 
-	var curWacky:Array<String> = [];
+	private var titleTextColors:Array<FlxColor> = [0xFF33FFFF, 0xFF3333CC];
+	private var titleTextAlphas:Array<Float> = [1, .64];
 
-	var wackyImage:FlxSprite;
+	private var curWacky:Array<String> = [];
 
-	var mustUpdate:Bool = false;
+	private var wackyImage:FlxSprite;
+
+	private var mustUpdate:Null<Bool> = null; // Avoids double checking when entering Flashing State
 
 	public static var updateVersion:String = '';
 
@@ -75,8 +75,10 @@ class TitleState extends MusicBeatState
 		CoolUtil.reloadOurpleCursor();
 		FlxG.mouse.visible = true;
 
+		#if CHECK_FOR_UPDATES
 		checkForUpdates();
-		
+		#end
+
 		Highscore.load();
 
 		if(!initialized)
@@ -120,10 +122,10 @@ class TitleState extends MusicBeatState
 		#end
 	}
 
-	var vhs:FlxSprite;
-	var gameTheoryLogo:FlxSprite;
-	var titleText:FlxSprite;
-	var swagShader:ColorSwap = null;
+	private var vhs:FlxSprite;
+	private var gameTheoryLogo:FlxSprite;
+	private var titleText:FlxSprite;
+	private var swagShader:ColorSwap = null;
 
 	function startIntro()
 	{
@@ -218,63 +220,70 @@ class TitleState extends MusicBeatState
 		// credGroup.add(credTextShit);
 	}
 
+	#if CHECK_FOR_UPDATES
 	private function checkForUpdates():Void
 	{
-		#if CHECK_FOR_UPDATES
-		if(ClientPrefs.data.checkForUpdates && !closedState) {
-			trace('checking for update');
-			
-			#if mobile
-			var loader = new flash.net.URLLoader();
-			var request = new flash.net.URLRequest("https://raw.githubusercontent.com/LORAY-guy/Lore-Origins/main/gitVersion.txt");
-			
-			loader.addEventListener(flash.events.Event.COMPLETE, function(e) {
-				var data:String = loader.data;
-				if(data != null && data.length > 0) {
-					updateVersion = data.split('\n')[0].trim();
-					var curVersion:String = MainMenuState.loreVersion.trim();
-					trace('version online: ' + updateVersion + ', your version: ' + curVersion);
-					if(updateVersion != curVersion) {
-						trace('versions arent matching!');
-						mustUpdate = true;
-					}
-				}
-			});
-			
-			loader.addEventListener(flash.events.IOErrorEvent.IO_ERROR, function(e) {
-				trace('IO Error: ' + e.text);
-			});
-			
-			try {
-				loader.load(request);
-			} catch(e:Dynamic) {
-				trace('Exception: $e');
-			}
-			#else
-			var http = new haxe.Http("https://raw.githubusercontent.com/LORAY-guy/Lore-Origins/main/gitVersion.txt");
+		if (mustUpdate != null) return;
 
-			http.onData = function (data:String)
-			{
+		if (!ClientPrefs.data.checkForUpdates || closedState) return;
+
+		trace('checking for update');
+
+		#if mobile
+		var loader = new flash.net.URLLoader();
+		var request = new flash.net.URLRequest("https://raw.githubusercontent.com/LORAY-guy/Lore-Origins/main/gitVersion.txt");
+		
+		loader.addEventListener(flash.events.Event.COMPLETE, function(e) {
+			var data:String = loader.data;
+			if(data != null && data.length > 0) {
 				updateVersion = data.split('\n')[0].trim();
 				var curVersion:String = MainMenuState.loreVersion.trim();
 				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
-				if(updateVersion != curVersion) {
-					trace('versions arent matching!');
+				if (isVersionHigher(updateVersion, curVersion)) {
+					trace('newer version available!');
 					mustUpdate = true;
 				}
 			}
-
-			http.onError = function (error) {
-				trace('error: $error');
-			}
-
-			http.request();
-			#end
+		});
+		
+		loader.addEventListener(flash.events.IOErrorEvent.IO_ERROR, function(e) {
+			trace('IO Error: ' + e.text);
+		});
+		
+		try {
+			loader.load(request);
+		} catch(e:Dynamic) {
+			trace('Exception: $e');
 		}
+		#else
+		var http = new haxe.Http("https://raw.githubusercontent.com/LORAY-guy/Lore-Origins/main/gitVersion.txt");
+
+		http.onData = function (data:String)
+		{
+			updateVersion = data.split('\n')[0].trim();
+			var curVersion:String = MainMenuState.loreVersion.trim();
+			trace('version online: ' + updateVersion + ', your version: ' + curVersion);
+			if(isVersionHigher(updateVersion, curVersion)) {
+				trace('newer version available!');
+				mustUpdate = true;
+			}
+		}
+
+		http.onError = function (error) {
+			trace('error: $error');
+		}
+
+		http.request();
 		#end
 	}
 
-	function getIntroTextShit():Array<Array<String>>
+	private function isVersionHigher(updateVersion:String, curVersion:String):Bool
+	{
+		return Std.parseInt(updateVersion.split('.').join('')) > Std.parseInt(curVersion.split('.').join(''));
+	}
+	#end
+
+	private function getIntroTextShit():Array<Array<String>>
 	{
 		#if MODS_ALLOWED
 		var firstArray:Array<String> = Mods.mergeAllTextsNamed('data/introText.txt', Paths.getSharedPath());
@@ -292,12 +301,12 @@ class TitleState extends MusicBeatState
 		return swagGoodArray;
 	}
 
-	var transitioning:Bool = false;
-	var newTitle:Bool = false;
-	var titleTimer:Float = 0;
-	var pressedEnter:Bool = false;
+	private var transitioning:Bool = false;
+	private var newTitle:Bool = false;
+	private var titleTimer:Float = 0;
+	private var pressedEnter:Bool = false;
 
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
@@ -392,7 +401,7 @@ class TitleState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	function createCoolText(textArray:Array<String>, ?offset:Float = 0)
+	private function createCoolText(textArray:Array<String>, ?offset:Float = 0):Void
 	{
 		for (i in 0...textArray.length)
 		{
@@ -406,7 +415,7 @@ class TitleState extends MusicBeatState
 		}
 	}
 
-	function addMoreText(text:String, ?offset:Float = 0)
+	private function addMoreText(text:String, ?offset:Float = 0):Void
 	{
 		if(textGroup != null && credGroup != null) {
 			var coolText:Alphabet = new Alphabet(0, 0, text, true);
@@ -417,7 +426,7 @@ class TitleState extends MusicBeatState
 		}
 	}
 
-	function deleteCoolText()
+	private function deleteCoolText():Void
 	{
 		while (textGroup.members.length > 0)
 		{
@@ -428,7 +437,7 @@ class TitleState extends MusicBeatState
 
 	private var sickBeats:Int = 0;
 	public static var closedState:Bool = false;
-	override function beatHit()
+	override public function beatHit():Void
 	{
 		super.beatHit();
 
@@ -491,9 +500,9 @@ class TitleState extends MusicBeatState
 		}
 	}
 
-	var skippedIntro:Bool = false;
-	var increaseVolume:Bool = false;
-	function skipIntro():Void
+	private var skippedIntro:Bool = false;
+	private var increaseVolume:Bool = false;
+	private function skipIntro():Void
 	{
 		if (!skippedIntro)
 		{

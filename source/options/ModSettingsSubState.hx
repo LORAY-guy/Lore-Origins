@@ -5,8 +5,8 @@ import flixel.input.gamepad.FlxGamepadInputID;
 
 class ModSettingsSubState extends BaseOptionsMenu
 {
-	var save:Map<String, Dynamic> = new Map<String, Dynamic>();
-	var folder:String;
+	private var save:Map<String, Dynamic> = new Map<String, Dynamic>();
+	private var folder:String;
 	private var _crashed:Bool = false;
 	public function new(options:Array<Dynamic>, folder:String, name:String)
 	{
@@ -144,7 +144,7 @@ class ModSettingsSubState extends BaseOptionsMenu
 		reloadCheckboxes();
 	}
 
-	override public function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		if(_crashed)
 		{
@@ -154,7 +154,7 @@ class ModSettingsSubState extends BaseOptionsMenu
 		super.update(elapsed);
 	}
 
-	override public function close()
+	override public function close():Void
 	{
 		FlxG.save.data.modSettings.set(folder, save);
 		FlxG.save.flush();

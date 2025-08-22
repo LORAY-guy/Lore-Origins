@@ -46,7 +46,7 @@ class LoreOriginsSubstate extends BaseOptionsMenu
 		super();
 	}
 
-    function onChangeExitButton()
+    private function onChangeExitButton():Void
     {
 		if (exitButton.visible) {
 			FlxTween.tween(exitButton, {x: (ClientPrefs.data.exitButtonX == 'Right' ? FlxG.width - exitButton.width : 0)}, 1, {ease: FlxEase.bounceOut});

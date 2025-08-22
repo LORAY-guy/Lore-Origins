@@ -33,16 +33,16 @@ class AchievementsMenuState extends MusicBeatState
 	public var ourpleFella:FlxSprite;
 	private var distractibleCode:FlxText;
 
-	var camFollow:FlxObject;
+	private var camFollow:FlxObject;
 
-	var MAX_PER_ROW:Int = 4;
+	private var MAX_PER_ROW:Int = 4;
 
-	var inCutscene:Bool = false;
-	var showingCode:Bool = false;
+	private var inCutscene:Bool = false;
+	private var showingCode:Bool = false;
 
 	public var exitButton:ExitButton;
 
-	override function create()
+	override public function create():Void
 	{
 		Paths.clearUnusedMemory();
 
@@ -176,7 +176,7 @@ class AchievementsMenuState extends MusicBeatState
 		FlxG.camera.scroll.y = -FlxG.height;
 	}
 
-	function makeAchievement(achievement:String, data:Achievement, unlocked:Bool, mod:String = null):AchievementVariables
+	private function makeAchievement(achievement:String, data:Achievement, unlocked:Bool, mod:String = null):AchievementVariables
 	{
 		var unlocked:Bool = Achievements.isUnlocked(achievement);
 		if (unlocked) unlockedAchievements++; //For the big golden fella.
@@ -197,7 +197,7 @@ class AchievementsMenuState extends MusicBeatState
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.ID, Obj2.ID);
 
 	public var selectedSomethin:Bool = false;
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		if (!selectedSomethin && controls.BACK) {
 			exitState(new MainMenuState(true));
@@ -280,7 +280,7 @@ class AchievementsMenuState extends MusicBeatState
 	}
 
 	public var barTween:FlxTween = null;
-	function _changeSelection()
+	private function _changeSelection():Void
 	{
 		FlxG.camera.zoom += 0.03;
 
@@ -326,7 +326,7 @@ class AchievementsMenuState extends MusicBeatState
 		}
 	}
 
-	public function updateAchievement(id:Int)
+	public function updateAchievement(id:Int):Void
 	{
 		if (id < 0 || id >= options.length) return;
 
@@ -358,7 +358,7 @@ class AchievementsMenuState extends MusicBeatState
 			showCutscene();
 	}
 
-	function createGoldenFella()
+	private function createGoldenFella():Void
 	{
 		if (ourpleFella == null) {
 			ourpleFella = new FlxSprite();
@@ -383,7 +383,7 @@ class AchievementsMenuState extends MusicBeatState
 		}
 	}
 
-	function showCutscene()
+	private function showCutscene():Void
 	{
 		inCutscene = true;
 		createGoldenFella();
@@ -431,11 +431,11 @@ class AchievementsMenuState extends MusicBeatState
 
 class ResetAchievementSubstate extends MusicBeatSubstate
 {
-	var onYes:Bool = false;
-	var yesText:Alphabet;
-	var noText:Alphabet;
+	private var onYes:Bool = false;
+	private var yesText:Alphabet;
+	private var noText:Alphabet;
 
-	var state:AchievementsMenuState = cast FlxG.state;
+	private var state:AchievementsMenuState = cast FlxG.state;
 
 	public function new()
 	{
@@ -473,7 +473,7 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 		updateOptions();
 	}
 
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 
@@ -516,7 +516,8 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 		}
 	}
 
-	function updateOptions() {
+	private function updateOptions():Void
+	{
 		var scales:Array<Float> = [0.75, 1];
 		var alphas:Array<Float> = [0.6, 1.25];
 		var confirmInt:Int = onYes ? 1 : 0;
@@ -528,7 +529,8 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 
-	function onConfirm(?resetOption:Null<Int> = null) {
+	private function onConfirm(?resetOption:Null<Int> = null):Void
+	{
 		var option:AchievementVariables = null;
 		if (resetOption != null)
 			option = state.options[resetOption];

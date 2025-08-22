@@ -36,9 +36,11 @@ class BaseStage extends FlxBasic
 	public var boyfriend(get, never):Character;
 	public var dad(get, never):Character;
 	public var gf(get, never):Character;
+	public var mark:Character;
 	public var boyfriendGroup(get, never):FlxSpriteGroup;
 	public var dadGroup(get, never):FlxSpriteGroup;
 	public var gfGroup(get, never):FlxSpriteGroup;
+	public var markGroup:FlxSpriteGroup;
 
 	public var iconP1(get, never):HealthIcon;
 	public var iconP2(get, never):HealthIcon;
@@ -115,6 +117,8 @@ class BaseStage extends FlxBasic
 	public function addBehindGF(obj:FlxBasic) insert(members.indexOf(game.gfGroup), obj);
 	public function addBehindBF(obj:FlxBasic) insert(members.indexOf(game.boyfriendGroup), obj);
 	public function addBehindDad(obj:FlxBasic) insert(members.indexOf(game.dadGroup), obj);
+	public function addBehindMark(obj:FlxBasic) insert(members.indexOf(markGroup), obj);
+
 	public function setDefaultGF(name:String) //Fix for the Chart Editor on Base Game stages
 	{
 		var gfVersion:String = PlayState.SONG.gfVersion;
@@ -169,10 +173,12 @@ class BaseStage extends FlxBasic
 	inline private function get_boyfriend():Character return game.boyfriend;
 	inline private function get_dad():Character return game.dad;
 	inline private function get_gf():Character return game.gf;
+	inline private function get_mark():Character return game.mark;
 
 	inline private function get_boyfriendGroup():FlxSpriteGroup return game.boyfriendGroup;
 	inline private function get_dadGroup():FlxSpriteGroup return game.dadGroup;
 	inline private function get_gfGroup():FlxSpriteGroup return game.gfGroup;
+	inline private function get_markGroup():FlxSpriteGroup return game.markGroup;
 	
 	inline private function get_iconP1():HealthIcon return game.iconP1;
 	inline private function get_iconP2():HealthIcon return game.iconP2;

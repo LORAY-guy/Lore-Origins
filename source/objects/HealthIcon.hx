@@ -6,19 +6,23 @@ class HealthIcon extends FlxSprite
 	private var isOldIcon:Bool = false;
 	private var isPlayer:Bool = false;
 	private var char:String = '';
+
+	// This means that icons of the character has 3 states instead of 2
 	public var isCool:Bool = true;
 
 	public function new(char:String = 'guy', isPlayer:Bool = false, ?allowGPU:Bool = true, ?isCool:Bool = true)
 	{
 		super();
+
 		isOldIcon = (char == 'bf-old');
 		this.isPlayer = isPlayer;
 		this.isCool = isCool;
+
 		changeIcon(char, allowGPU);
 		scrollFactor.set();
 	}
 
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 
@@ -27,7 +31,8 @@ class HealthIcon extends FlxSprite
 	}
 
 	private var iconOffsets:Array<Float> = [0, 0];
-	public function changeIcon(char:String, ?allowGPU:Bool = true) {
+	public function changeIcon(char:String, ?allowGPU:Bool = true):Void
+	{
 		if(this.char != char) {
 			var name:String = 'icons/' + char;
 			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-' + char; //Older versions of psych engine's support
@@ -62,14 +67,13 @@ class HealthIcon extends FlxSprite
 		}
 	}
 
-	override function updateHitbox()
+	override public function updateHitbox():Void
 	{
 		super.updateHitbox();
+
 		offset.x = iconOffsets[0];
 		offset.y = iconOffsets[1];
 	}
 
-	public function getCharacter():String {
-		return char;
-	}
+	public function getCharacter():String return char;
 }

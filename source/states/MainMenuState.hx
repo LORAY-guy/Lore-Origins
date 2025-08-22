@@ -10,9 +10,9 @@ class MainMenuState extends MusicBeatState
 	public static var curSelected:Int = 0;
 	public static var playedIntro:Bool = false;
 
-	var menuItems:FlxTypedGroup<FlxSprite>;
+	private var menuItems:FlxTypedGroup<FlxSprite>;
 
-	var optionShit:Array<String> = [
+	private var optionShit:Array<String> = [
 		'lore',
 		'skins',
 		'achievements',
@@ -20,10 +20,10 @@ class MainMenuState extends MusicBeatState
 		'credits'
 	];
 
-	var magenta:FlxSprite;
-	var camFollow:FlxObject;
+	private var magenta:FlxSprite;
+	private var camFollow:FlxObject;
 
-	override function create()
+	override public function create():Void
 	{
 		#if MODS_ALLOWED
 		Mods.pushGlobalMods();
@@ -121,7 +121,7 @@ class MainMenuState extends MusicBeatState
 	public var usingMouse:Bool = false;
 	public var canClick:Bool = true;
 
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		if (FlxG.sound.music.volume < 0.8)
 		{
@@ -199,7 +199,7 @@ class MainMenuState extends MusicBeatState
 		}
 	}
 
-	function changeItem(huh:Int = 0, ?goTo:Bool = false)
+	private function changeItem(huh:Int = 0, ?goTo:Bool = false):Void
 	{
 		FlxG.camera.zoom += 0.03;
 
@@ -265,7 +265,7 @@ class MainMenuState extends MusicBeatState
 		});
 	}
 
-	function playIntro() 
+	private function playIntro():Void
 	{
 		selectedSomethin = true;
 		canClick = false;
@@ -281,9 +281,11 @@ class MainMenuState extends MusicBeatState
 		playedIntro = true;
 	}
 
-	private function getPosOffsetMenuItems():Float {
+	private function getPosOffsetMenuItems():Float
+	{
 		var midIndex = menuItems.length / 2;
 		var offsetFactor = 120;
+
 		return (curSelected - midIndex) * offsetFactor;
 	}
 }

@@ -20,16 +20,16 @@ class LorayState extends MusicBeatState
         ['Paypal',  0.4,   -180,    'https://paypal.me/LORAYman']
     ];
 
-    var menuItems:FlxTypedGroup<FlxSprite>;
-    var lorays:FlxTypedGroup<Loray>;
-    var camFollow:FlxObject;
+    private var menuItems:FlxTypedGroup<FlxSprite>;
+    private var lorays:FlxTypedGroup<Loray>;
+    private var camFollow:FlxObject;
 
     public var appName:Alphabet;
-    var bg:FlxSprite;
+    private var bg:FlxSprite;
 
 	public static var curSelected:Int = 0;
     
-    override function create()
+    override public function create():Void
     {
         #if DISCORD_ALLOWED
         // Updating Discord Rich Presence
@@ -113,11 +113,11 @@ class LorayState extends MusicBeatState
         if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
     }
 
-    var canClick:Bool = true;
-    var usingMouse:Bool = false;
-    var quitting:Bool = false;
-    var cameraTargetX:Float = 0;
-    override public function update(elapsed:Float)
+    private var canClick:Bool = true;
+    private var usingMouse:Bool = false;
+    private var quitting:Bool = false;
+    private var cameraTargetX:Float = 0;
+    override public function update(elapsed:Float):Void
     {
         super.update(elapsed);
 
@@ -162,7 +162,7 @@ class LorayState extends MusicBeatState
         FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));
     }
 
-    function changeSelection(change:Int = 0, ?goTo:Bool = false, ?playSound:Bool = true)
+    private function changeSelection(change:Int = 0, ?goTo:Bool = false, ?playSound:Bool = true):Void
     {
         FlxG.camera.zoom += 0.03;
         if (!goTo) curSelected += change; else curSelected = change;
@@ -190,7 +190,7 @@ class LorayState extends MusicBeatState
         appName.softReloadLetters();
     }
 
-    override public function beatHit()
+    override public function beatHit():Void
     {
         lorays.forEachAlive(function(spr:Loray) {
             spr.dance();
@@ -233,7 +233,7 @@ class Loray extends FlxSprite
         lorays.push(this);
     }
 
-    public function beHappy(?unlockAchievement:Bool = false) 
+    public function beHappy(?unlockAchievement:Bool = false):Void
     {
         happy = true;
         FlxG.camera.zoom += 0.06;
@@ -254,7 +254,7 @@ class Loray extends FlxSprite
         if (unlockAchievement) Achievements.unlock('loray_hater');
     }
 
-    public function dance()
+    public function dance():Void
     {
         if (!happy)
         {

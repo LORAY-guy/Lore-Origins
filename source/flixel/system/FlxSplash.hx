@@ -11,16 +11,16 @@ class FlxSplash extends FlxState
 	 */
 	public static var muted:Bool = #if html5 true #else false #end;
 
-	var _text:FlxText;
-    var _bg:FlxSprite;
-    var _gtlogo:FlxSprite;
-    var _graphic:FlxSprite;
+	private var _text:FlxText;
+    private var _bg:FlxSprite;
+    private var _gtlogo:FlxSprite;
+    private var _graphic:FlxSprite;
 
-	var _times:Array<Float>;
-	var _colors:Array<Int>;
-	var _curPart:Int = 0;
-	var _cachedTimestep:Bool;
-	var _cachedAutoPause:Bool;
+	private var _times:Array<Float>;
+	private var _colors:Array<Int>;
+	private var _curPart:Int = 0;
+	private var _cachedTimestep:Bool;
+	private var _cachedAutoPause:Bool;
 
 	override public function create():Void
 	{
@@ -84,7 +84,7 @@ class FlxSplash extends FlxState
 		super.destroy();
 	}
 
-	function timerCallback(Timer:FlxTimer):Void
+	private function timerCallback(Timer:FlxTimer):Void
 	{
 		_text.color = _colors[_curPart];
 		_curPart++;

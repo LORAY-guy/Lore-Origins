@@ -13,7 +13,61 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 	private var checkboxGroup:FlxTypedGroup<CheckboxThingie>;
 	private var grpTexts:FlxTypedGroup<AttachedText>;
 
-	function getOptions()
+	public function new():Void
+	{
+		super();
+		
+		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		bg.alpha = 0.6;
+		add(bg);
+
+		// avoids lagspikes while scrolling through menus!
+		grpOptions = new FlxTypedGroup<Alphabet>();
+		add(grpOptions);
+
+		grpTexts = new FlxTypedGroup<AttachedText>();
+		add(grpTexts);
+
+		checkboxGroup = new FlxTypedGroup<CheckboxThingie>();
+		add(checkboxGroup);
+		
+		getOptions();
+
+		for (i in 0...optionsArray.length)
+		{
+			var optionText:Alphabet = new Alphabet(200, 360, optionsArray[i].name, true);
+			optionText.isMenuItem = true;
+			optionText.setScale(0.8);
+			optionText.targetY = i;
+			grpOptions.add(optionText);
+
+			if(optionsArray[i].type == 'bool') {
+				optionText.x += 90;
+				optionText.startPosition.x += 90;
+				optionText.snapToPosition();
+				var checkbox:CheckboxThingie = new CheckboxThingie(optionText.x - 105, optionText.y, optionsArray[i].getValue() == true);
+				checkbox.sprTracker = optionText;
+				checkbox.offsetX -= 20;
+				checkbox.offsetY = -52;
+				checkbox.ID = i;
+				checkboxGroup.add(checkbox);
+			} else {
+				optionText.snapToPosition();
+				var valueText:AttachedText = new AttachedText(Std.string(optionsArray[i].getValue()), optionText.width + 40, 0, true, 0.8);
+				valueText.sprTracker = optionText;
+				valueText.copyAlpha = true;
+				valueText.ID = i;
+				grpTexts.add(valueText);
+				optionsArray[i].setChild(valueText);
+			}
+			updateTextFrom(optionsArray[i]);
+		}
+
+		changeSelection();
+		reloadCheckboxes();
+	}
+
+	private function getOptions():Void
 	{
 		var goption:GameplayOption = new GameplayOption('Scroll Type', 'scrolltype', 'string', 'multiplicative', ["multiplicative", "constant"]);
 		optionsArray.push(goption);
@@ -78,64 +132,10 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		return null;
 	}
 
-	public function new()
-	{
-		super();
-		
-		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		bg.alpha = 0.6;
-		add(bg);
-
-		// avoids lagspikes while scrolling through menus!
-		grpOptions = new FlxTypedGroup<Alphabet>();
-		add(grpOptions);
-
-		grpTexts = new FlxTypedGroup<AttachedText>();
-		add(grpTexts);
-
-		checkboxGroup = new FlxTypedGroup<CheckboxThingie>();
-		add(checkboxGroup);
-		
-		getOptions();
-
-		for (i in 0...optionsArray.length)
-		{
-			var optionText:Alphabet = new Alphabet(200, 360, optionsArray[i].name, true);
-			optionText.isMenuItem = true;
-			optionText.setScale(0.8);
-			optionText.targetY = i;
-			grpOptions.add(optionText);
-
-			if(optionsArray[i].type == 'bool') {
-				optionText.x += 90;
-				optionText.startPosition.x += 90;
-				optionText.snapToPosition();
-				var checkbox:CheckboxThingie = new CheckboxThingie(optionText.x - 105, optionText.y, optionsArray[i].getValue() == true);
-				checkbox.sprTracker = optionText;
-				checkbox.offsetX -= 20;
-				checkbox.offsetY = -52;
-				checkbox.ID = i;
-				checkboxGroup.add(checkbox);
-			} else {
-				optionText.snapToPosition();
-				var valueText:AttachedText = new AttachedText(Std.string(optionsArray[i].getValue()), optionText.width + 40, 0, true, 0.8);
-				valueText.sprTracker = optionText;
-				valueText.copyAlpha = true;
-				valueText.ID = i;
-				grpTexts.add(valueText);
-				optionsArray[i].setChild(valueText);
-			}
-			updateTextFrom(optionsArray[i]);
-		}
-
-		changeSelection();
-		reloadCheckboxes();
-	}
-
-	var nextAccept:Int = 5;
-	var holdTime:Float = 0;
-	var holdValue:Float = 0;
-	override function update(elapsed:Float)
+	private var nextAccept:Int = 5;
+	private var holdTime:Float = 0;
+	private var holdValue:Float = 0;
+	override public function update(elapsed:Float):Void
 	{
 		if (controls.UI_UP_P)
 		{
@@ -299,7 +299,8 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		super.update(elapsed);
 	}
 
-	function updateTextFrom(option:GameplayOption) {
+	private function updateTextFrom(option:GameplayOption):Void
+	{
 		var text:String = option.displayFormat;
 		var val:Dynamic = option.getValue();
 		if(option.type == 'percent') val *= 100;
@@ -307,15 +308,15 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		option.text = text.replace('%v', val).replace('%d', def);
 	}
 
-	function clearHold()
+	private function clearHold():Void
 	{
 		if(holdTime > 0.5) {
 			FlxG.sound.play(Paths.sound('scrollMenu'));
 		}
 		holdTime = 0;
 	}
-	
-	function changeSelection(change:Int = 0)
+
+	private function changeSelection(change:Int = 0):Void
 	{
 		curSelected += change;
 		if (curSelected < 0)
@@ -344,7 +345,8 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 
-	function reloadCheckboxes() {
+	private function reloadCheckboxes():Void
+	{
 		for (checkbox in checkboxGroup) {
 			checkbox.daValue = (optionsArray[checkbox.ID].getValue() == true);
 		}
@@ -425,7 +427,7 @@ class GameplayOption
 		}
 	}
 
-	public function change()
+	public function change():Void
 	{
 		//nothing lol
 		if(onChange != null) {
@@ -437,32 +439,35 @@ class GameplayOption
 	{
 		return ClientPrefs.data.gameplaySettings.get(variable);
 	}
-	public function setValue(value:Dynamic)
+
+	public function setValue(value:Dynamic):Void
 	{
 		ClientPrefs.data.gameplaySettings.set(variable, value);
 	}
 
-	public function setChild(child:Alphabet)
+	public function setChild(child:Alphabet):Void
 	{
 		this.child = child;
 	}
 
-	private function get_text()
+	private function get_text():String
 	{
 		if(child != null) {
 			return child.text;
 		}
 		return null;
 	}
-	private function set_text(newValue:String = '')
+
+	private function set_text(newValue:String = ''):String
 	{
 		if(child != null) {
 			child.text = newValue;
+			return newValue;
 		}
 		return null;
 	}
 
-	private function get_type()
+	private function get_type():String
 	{
 		var newValue:String = 'bool';
 		switch(type.toLowerCase().trim())

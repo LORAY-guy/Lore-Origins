@@ -8,16 +8,16 @@ import objects.HealthIcon;
 
 class ResetScoreSubState extends MusicBeatSubstate
 {
-	var bg:FlxSprite;
-	var alphabetArray:Array<Alphabet> = [];
-	var icon:HealthIcon;
-	var onYes:Bool = false;
-	var yesText:Alphabet;
-	var noText:Alphabet;
+	private var bg:FlxSprite;
+	private var alphabetArray:Array<Alphabet> = [];
+	private var icon:HealthIcon;
+	private var onYes:Bool = false;
+	private var yesText:Alphabet;
+	private var noText:Alphabet;
 
-	var song:String;
-	var difficulty:Int;
-	var week:Int;
+	private var song:String;
+	private var difficulty:Int;
+	private var week:Int;
 
 	// Week -1 = Freeplay
 	public function new(song:String, difficulty:Int, character:String, week:Int = -1)
@@ -72,7 +72,7 @@ class ResetScoreSubState extends MusicBeatSubstate
 		updateOptions();
 	}
 
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		bg.alpha += elapsed * 1.5;
 		if(bg.alpha > 0.6) bg.alpha = 0.6;
@@ -107,7 +107,8 @@ class ResetScoreSubState extends MusicBeatSubstate
 		super.update(elapsed);
 	}
 
-	function updateOptions() {
+	private function updateOptions():Void
+	{
 		var scales:Array<Float> = [0.75, 1];
 		var alphas:Array<Float> = [0.6, 1.25];
 		var confirmInt:Int = onYes ? 1 : 0;

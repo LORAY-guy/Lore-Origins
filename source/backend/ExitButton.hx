@@ -9,8 +9,8 @@ class ExitButton extends FlxSprite
     public var prevStateString:String;
 
     public var clicked:Bool = false;
-    var elapsedSinceMouseLeft:Float = 0.0;
-    var delayDuration:Float = 2.0;
+    private var elapsedSinceMouseLeft:Float = 0.0;
+    private var delayDuration:Float = 2.0;
 
     public function new(prevState:String = ''):Void
     {
@@ -31,7 +31,7 @@ class ExitButton extends FlxSprite
         this.prevStateString = prevState.toLowerCase(); //Just in case I need it.
     }
 
-    override function update(elapsed:Float):Void
+    override public function update(elapsed:Float):Void
     {
         #if mobile
         if (!visible && animation.curAnim.name != 'in')
@@ -72,8 +72,8 @@ class ExitButton extends FlxSprite
 
         super.update(elapsed);
     }
-    
-    function handleButtonClick():Void
+
+    private function handleButtonClick():Void
     {
         var state:Dynamic = cast FlxG.state;
 
@@ -128,7 +128,7 @@ class ExitButton extends FlxSprite
         }
     }
     
-    function handleAnimationEnd():Void 
+    private function handleAnimationEnd():Void
     {
         if (animation.curAnim.finished) {
             switch (animation.curAnim.name) 
@@ -146,7 +146,8 @@ class ExitButton extends FlxSprite
         }
     }
 
-    private function getStateFromString(type:String = ''):Dynamic {
+    private function getStateFromString(type:String = ''):Dynamic
+    {
 		switch(type.toLowerCase().trim())
 		{
 			case 'freeplay': return new states.FreeplayState(true);

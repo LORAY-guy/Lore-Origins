@@ -6,23 +6,23 @@ import flixel.addons.transition.FlxTransitionableState;
 
 class CreditsState extends MusicBeatState
 {
-	var curSelected:Int = -1;
+	private var curSelected:Int = -1;
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private var iconArray:FlxTypedGroup<AttachedSprite>;
 	private var creditsStuff:Array<Array<String>> = [];
 
-	var bg:FlxSprite;
-	var descText:FlxText;
-	var intendedColor:FlxColor;
-	var colorTween:FlxTween;
-	var descBox:AttachedSprite;
+	private var bg:FlxSprite;
+	private var descText:FlxText;
+	private var intendedColor:FlxColor;
+	private var colorTween:FlxTween;
+	private var descBox:AttachedSprite;
 
-	var offsetThing:Float = -75;
+	private var offsetThing:Float = -75;
 
-	var subGroup:String;
+	private var subGroup:String;
 
-	var exitButton:ExitButton;
+	private var exitButton:ExitButton;
 
 	override function create()
 	{
@@ -94,8 +94,8 @@ class CreditsState extends MusicBeatState
 		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
 	}
 
-	var quitting:Bool = false;
-	var holdTime:Float = 0;
+	private var quitting:Bool = false;
+	private var holdTime:Float = 0;
 	public var usingMouse:Bool = false;
 	public var canClick:Bool = true;
 	override function update(elapsed:Float)
@@ -189,7 +189,7 @@ class CreditsState extends MusicBeatState
 		Conductor.songPosition = FlxG.sound.music.time;
 	}
 
-	var moveTween:FlxTween = null;
+	private var moveTween:FlxTween = null;
 	function changeSelection(change:Int = 0)
 	{
 		if (FlxG.camera.zoom <= 1.125) FlxG.camera.zoom += 0.03;
@@ -241,11 +241,12 @@ class CreditsState extends MusicBeatState
 		descBox.updateHitbox();
 	}
 
-	private function unselectableCheck(num:Int):Bool {
+	private function unselectableCheck(num:Int):Bool
+	{
 		return creditsStuff[num].length <= 1;
 	}
 
-	function initCredits()
+	private function initCredits():Void
 	{
 		var defaultList:Array<Array<String>>;
 		switch (subGroup)
@@ -383,8 +384,8 @@ class CreditsState extends MusicBeatState
 		}
 	}
 
-	var flippedIcon:Bool = false;
-	override function stepHit()
+	private var flippedIcon:Bool = false;
+	override public function stepHit():Void
 	{
 		super.stepHit();
 

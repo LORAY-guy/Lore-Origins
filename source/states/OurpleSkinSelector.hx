@@ -86,8 +86,8 @@ class OurpleSkinSelector extends MusicBeatState
         add(new ExitButton());
     }
 
-    var flippedIdle:Bool = false;
-    var inSelectOurple:Bool = false;
+    private var flippedIdle:Bool = false;
+    private var inSelectOurple:Bool = false;
 	override public function update(elapsed:Float):Void
 	{
         FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, Math.exp(-elapsed * 7.5));

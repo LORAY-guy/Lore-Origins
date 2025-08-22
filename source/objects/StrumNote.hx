@@ -16,7 +16,8 @@ class StrumNote extends FlxSprite
 	public var animOffsets:Map<String, Array<Float>>;
 	
 	public var texture(default, set):String = null;
-	private function set_texture(value:String):String {
+	private function set_texture(value:String):String
+	{
 		if(texture != value) {
 			texture = value;
 			reloadNote();
@@ -24,14 +25,15 @@ class StrumNote extends FlxSprite
 		return value;
 	}
 
-	public var useRGBShader:Bool = true;
-	public function new(x:Float, y:Float, leData:Int, player:Int) {
+	public var useRGBShader:Bool = false; // Don't need it by default for Lore Origins, but it can be enabled if needed
+	public function new(x:Float, y:Float, leData:Int, player:Int)
+	{
 		animation = new PsychAnimationController(this);
 
 		rgbShader = new RGBShaderReference(this, Note.initializeGlobalRGBShader(leData));
 		rgbShader.enabled = false;
-		if(PlayState.SONG != null && PlayState.SONG.disableNoteRGB) useRGBShader = false;
-		
+		if(PlayState.SONG != null && !PlayState.SONG.disableNoteRGB) useRGBShader = true;
+
 		var arr:Array<FlxColor> = ClientPrefs.data.arrowRGB[leData];
 		if(PlayState.isPixelStage) arr = ClientPrefs.data.arrowRGBPixel[leData];
 		
@@ -67,7 +69,7 @@ class StrumNote extends FlxSprite
 		scrollFactor.set();
 	}
 
-	public function reloadNote()
+	public function reloadNote():Void
 	{
 		var lastAnim:String = null;
 		if(animation.curAnim != null) lastAnim = animation.curAnim.name;
@@ -137,9 +139,8 @@ class StrumNote extends FlxSprite
 					animation.addByPrefix('confirm', 'left confirm', 30, false);
 					if (PlayState.isOurpleNote)
 					{
-					addOffset('confirm', 2, 0,-1);
-					addOffset('pressed', 9, -3,-1); 
-
+						addOffset('confirm', 2, 0,-1);
+						addOffset('pressed', 9, -3,-1); 
 					}
 				case 1:
 					animation.addByPrefix('static', 'arrowDOWN');
@@ -147,8 +148,8 @@ class StrumNote extends FlxSprite
 					animation.addByPrefix('confirm', 'down confirm', 24, false);
 					if (PlayState.isOurpleNote)
 					{
-					addOffset('confirm', -3, -10);
-					addOffset('pressed', 3, -10);
+						addOffset('confirm', -3, -10);
+						addOffset('pressed', 3, -10);
 					}
 				case 2:
 					animation.addByPrefix('static', 'arrowUP');
@@ -156,8 +157,8 @@ class StrumNote extends FlxSprite
 					animation.addByPrefix('confirm', 'up confirm', 30, false);
 					if (PlayState.isOurpleNote)
 					{
-					addOffset('confirm', 2, 6);
-					addOffset('pressed', 1.5, 12.5);
+						addOffset('confirm', 2, 6);
+						addOffset('pressed', 1.5, 12.5);
 					}
 				case 3:
 					animation.addByPrefix('static', 'arrowRIGHT');
@@ -165,8 +166,8 @@ class StrumNote extends FlxSprite
 					animation.addByPrefix('confirm', 'right confirm', 30, false);
 					if (PlayState.isOurpleNote)
 					{
-					addOffset('confirm',-2, 0,1);
-					addOffset('pressed', -7, 0,1);
+						addOffset('confirm',-2, 0,1);
+						addOffset('pressed', -7, 0,1);
 					}
 			}
 		}
@@ -178,7 +179,7 @@ class StrumNote extends FlxSprite
 		}
 	}
 
-	public function postAddedToGroup()
+	public function postAddedToGroup():Void
 	{
 		playAnim('static');
 		if (ClientPrefs.data.middleScroll || PlayState.SONG.song.toLowerCase() == 'lore-ar')
@@ -208,7 +209,8 @@ class StrumNote extends FlxSprite
 		ID = noteData;
 	}
 
-	override function update(elapsed:Float) {
+	override public function update(elapsed:Float):Void
+	{
 		if(resetAnim > 0) {
 			resetAnim -= elapsed;
 			if(resetAnim <= 0) {
@@ -216,10 +218,12 @@ class StrumNote extends FlxSprite
 				resetAnim = 0;
 			}
 		}
+
 		super.update(elapsed);
 	}
 
-	public function playAnim(anim:String, ?force:Bool = false) {
+	public function playAnim(anim:String, ?force:Bool = false):Void
+	{
 		animation.play(anim, force);
 		if(animation.curAnim != null)
 		{
@@ -238,10 +242,11 @@ class StrumNote extends FlxSprite
 		else
 			centerOffsets();
 
-		if(useRGBShader) rgbShader.enabled = (animation.curAnim != null && animation.curAnim.name != 'static');
+		if(useRGBShader)
+			rgbShader.enabled = (animation.curAnim != null && animation.curAnim.name != 'static');
 	}
 
-	public function addOffset(name:String, x:Float = 0, y:Float = 0, angle:Float = 0)
+	public function addOffset(name:String, x:Float = 0, y:Float = 0, angle:Float = 0):Void
 	{
 		animOffsets[name] = [x, y, angle];
 	}

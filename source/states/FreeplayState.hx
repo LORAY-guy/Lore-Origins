@@ -62,7 +62,7 @@ class FreeplayState extends MusicBeatState
 	public var mobileControls:MobileUIControls;
 	#end
 
-	override function create()
+	override public function create():Void
 	{
 		Paths.clearUnusedMemory();
 
@@ -225,7 +225,7 @@ class FreeplayState extends MusicBeatState
 		#end
 	}
 
-	override public function closeSubState()
+	override public function closeSubState():Void
 	{
 		changeSelection(0, false);
 		persistentUpdate = true;
@@ -241,23 +241,24 @@ class FreeplayState extends MusicBeatState
 		super.openSubState(SubState);
 	}
 
-	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
+	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int):Void
 	{
 		songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 	}
 
-	function weekIsLocked(name:String):Bool {
+	private function weekIsLocked(name:String):Bool
+	{
 		var leWeek:WeekData = WeekData.weeksLoaded.get(name);
 		return (!leWeek.startUnlocked && leWeek.weekBefore.length > 0 && (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
 	}
 
-	var instPlaying:Int = -1;
+	private var instPlaying:Int = -1;
 	public static var vocals:FlxSound = null;
-	var holdTime:Float = 0;
+	private var holdTime:Float = 0;
 	public var usingMouse:Bool = false;
 	public var canClick:Bool = true;
 	public var selectedSomethin:Bool = false;
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		if (FlxG.sound.music.volume < 0.7)
 		{
@@ -485,7 +486,7 @@ class FreeplayState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	public static function destroyFreeplayVocals()
+	public static function destroyFreeplayVocals():Void
 	{
 		if(vocals != null) {
 			FlxG.sound.list.remove(vocals, true);
@@ -495,7 +496,7 @@ class FreeplayState extends MusicBeatState
 		vocals = null;
 	}
 
-	function changeSelection(change:Int = 0, playSound:Bool = true)
+	private function changeSelection(change:Int = 0, playSound:Bool = true):Void
 	{
 		#if !mobile
 		if (player.playingMusic)
@@ -547,7 +548,8 @@ class FreeplayState extends MusicBeatState
 		Difficulty.list = ['Lore'];
 	}
 
-	private function positionHighscore() {
+	private function positionHighscore():Void
+	{
 		scoreText.x = FlxG.width - scoreText.width - 6;
 		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
 		scoreBG.x = FlxG.width - (scoreBG.scale.x / 2);
@@ -557,7 +559,7 @@ class FreeplayState extends MusicBeatState
 
 	var _drawDistance:Int = 4;
 	var _lastVisibles:Array<Int> = [];
-	public function updateTexts(elapsed:Float = 0.0)
+	public function updateTexts(elapsed:Float = 0.0):Void
 	{
 		lerpSelected = FlxMath.lerp(curSelected, lerpSelected, Math.exp(-elapsed * 9.6));
 		for (i in _lastVisibles)
@@ -582,7 +584,7 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-	public function addWeek(songs:Array<String>, weekNum:Int, weekColor:Int, ?songCharacters:Array<String>)
+	public function addWeek(songs:Array<String>, weekNum:Int, weekColor:Int, ?songCharacters:Array<String>):Void
 	{
 		if (songCharacters == null)
 			songCharacters = ['mat2'];
@@ -649,7 +651,8 @@ class FreeplayState extends MusicBeatState
 		};
 	}
 
-	public function processSong(songLowercase:String) {
+	public function processSong(songLowercase:String):Void
+	{
 		canClick = false;
 		persistentUpdate = false;
 		selectedSomethin = true;
@@ -674,7 +677,7 @@ class FreeplayState extends MusicBeatState
 		destroyFreeplayVocals();
 	}
 
-	override function destroy():Void
+	override public function destroy():Void
 	{
 		#if mobile
 		Controls.mobileControls = null;

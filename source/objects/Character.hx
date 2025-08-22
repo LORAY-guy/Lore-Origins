@@ -5,12 +5,8 @@ import backend.animation.PsychAnimationController;
 import flixel.util.FlxSort;
 import flixel.util.FlxDestroyUtil;
 
-import openfl.utils.AssetType;
 import openfl.utils.Assets;
 import haxe.Json;
-
-import backend.Song;
-import backend.Section;
 
 typedef CharacterFile = {
 	var animations:Array<AnimArray>;
@@ -161,7 +157,7 @@ class Character extends FlxSprite
 		dance();
 	}
 
-	public function loadCharacterFile(json:Dynamic)
+	public function loadCharacterFile(json:Dynamic):Void
 	{
 		isAnimateAtlas = false;
 
@@ -253,7 +249,7 @@ class Character extends FlxSprite
 		//trace('Loaded file to character ' + curCharacter);
 	}
 
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		#if (flxanimate && !html5)
 		if(isAnimateAtlas) atlas.update(elapsed);
@@ -308,15 +304,18 @@ class Character extends FlxSprite
 	}
 
 	inline public function isAnimationNull():Bool
+	{
 		#if (flxanimate && !html5)
 		return !isAnimateAtlas ? (animation.curAnim == null) : (atlas.anim.curSymbol == null);
 		#else
 		return animation.curAnim == null;
 		#end
+	}
 
 	inline public function getAnimationName():String
 	{
 		var name:String = '';
+
 		@:privateAccess
 		#if (flxanimate && !html5)
 		if(!isAnimationNull()) name = !isAnimateAtlas ? animation.curAnim.name : atlas.anim.lastPlayedAnim;
@@ -361,6 +360,7 @@ class Character extends FlxSprite
 		return animation.curAnim.paused;
 		#end
 	}
+
 	private function set_animPaused(value:Bool):Bool
 	{
 		if(isAnimationNull()) return value;
@@ -384,7 +384,7 @@ class Character extends FlxSprite
 	/**
 	 * FOR GF DANCING SHIT
 	 */
-	public function dance()
+	public function dance():Void
 	{
 		if (!debugMode && !skipDance && !specialAnim)
 		{
@@ -434,14 +434,15 @@ class Character extends FlxSprite
 		}
 	}
 
-	function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
+	private function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
 	{
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
 	}
 
 	public var danceEveryNumBeats:Int = 2;
 	private var settingCharacterUp:Bool = true;
-	public function recalculateDanceIdle() {
+	public function recalculateDanceIdle():Void
+	{
 		defaultX = x;
 		defaultY = y;
 		var lastDanceIdle:Bool = danceIdle;
@@ -464,14 +465,9 @@ class Character extends FlxSprite
 		settingCharacterUp = false;
 	}
 
-	public function addOffset(name:String, x:Float = 0, y:Float = 0)
+	public function addOffset(name:String, x:Float = 0, y:Float = 0):Void
 	{
 		animOffsets[name] = [x, y];
-	}
-
-	public function quickAnimAdd(name:String, anim:String)
-	{
-		animation.addByPrefix(name, anim, 24, false);
 	}
 
 	// Atlas support
@@ -479,7 +475,7 @@ class Character extends FlxSprite
 	public var isAnimateAtlas:Bool = false;
 	#if (flxanimate && !html5)
 	public var atlas:FlxAnimate;
-	public override function draw()
+	public override function draw():Void
 	{
 		if(isAnimateAtlas)
 		{
@@ -490,7 +486,7 @@ class Character extends FlxSprite
 		super.draw();
 	}
 
-	public function copyAtlasValues()
+	public function copyAtlasValues():Void
 	{
 		@:privateAccess
 		{
@@ -513,13 +509,13 @@ class Character extends FlxSprite
 		}
 	}
 
-	public override function destroy()
+	override public function destroy():Void
 	{
 		super.destroy();
 		destroyAtlas();
 	}
 
-	public function destroyAtlas()
+	public function destroyAtlas():Void
 	{
 		if (atlas != null)
 			atlas = FlxDestroyUtil.destroy(atlas);

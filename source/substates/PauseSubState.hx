@@ -9,21 +9,21 @@ import options.OptionsState;
 
 class PauseSubState extends MusicBeatSubstate
 {
-	var grpMenuShit:FlxTypedGroup<FlxSprite>;
+	private var grpMenuShit:FlxTypedGroup<FlxSprite>;
 
-	var menuItems:Array<String> = [];
-	var menuItemsOG:Array<String> = ['resume', 'options', 'restart', 'exit'];
-	var curSelected:Int = 0;
+	private var menuItems:Array<String> = [];
+	private var menuItemsOG:Array<String> = ['resume', 'options', 'restart', 'exit'];
+	private var curSelected:Int = 0;
 
-	var pauseMusic:FlxSound;
-	var practiceText:FlxText;
-	var skipTimeText:FlxText;
-	var skipTimeTracker:Alphabet;
-	var curTime:Float = Math.max(0, Conductor.songPosition);
+	private var pauseMusic:FlxSound;
+	private var practiceText:FlxText;
+	private var skipTimeText:FlxText;
+	private var skipTimeTracker:Alphabet;
+	private var curTime:Float = Math.max(0, Conductor.songPosition);
 
-	var pauseChars:Array<String> = ['dismantle', 'dismantle1', 'guy1', 'lore'];
+	private var pauseChars:Array<String> = ['dismantle', 'dismantle1', 'guy1', 'lore'];
 
-	var mouseWasVisible:Bool = FlxG.mouse.visible;
+	private var mouseWasVisible:Bool = FlxG.mouse.visible;
 
 	#if mobile
 	private var mobileControls:MobileUIControls;
@@ -36,7 +36,7 @@ class PauseSubState extends MusicBeatSubstate
 	public static var pauseAmount:Int = 0; 
 	#end
 
-	override function create()
+	override public function create():Void
 	{
 		/*if(PlayState.chartingMode)
 		{
@@ -155,7 +155,7 @@ class PauseSubState extends MusicBeatSubstate
 		#end
 	}
 
-	function getPauseSong()
+	private function getPauseSong():String
 	{
 		var formattedSongName:String = (songName != null ? Paths.formatToSongPath(songName) : '');
 		var formattedPauseMusic:String = Paths.formatToSongPath(ClientPrefs.data.pauseMusic);
@@ -164,9 +164,9 @@ class PauseSubState extends MusicBeatSubstate
 		return (formattedSongName != '') ? formattedSongName : formattedPauseMusic;
 	}
 
-	var holdTime:Float = 0;
-	var cantUnpause:Float = 0.25;
-	override function update(elapsed:Float)
+	private var holdTime:Float = 0;
+	private var cantUnpause:Float = 0.25;
+	override public function update(elapsed:Float):Void
 	{
 		cantUnpause -= elapsed;
 		if (pauseMusic.volume < 0.5)
@@ -236,7 +236,7 @@ class PauseSubState extends MusicBeatSubstate
 		}
 	}
 
-	function selectItem():Void
+	private function selectItem():Void
 	{
 		var daSelected:String = menuItems[curSelected];
 		switch (daSelected)
@@ -312,7 +312,7 @@ class PauseSubState extends MusicBeatSubstate
 		}
 	}
 
-	function deleteSkipTimeText()
+	private function deleteSkipTimeText():Void
 	{
 		if(skipTimeText != null)
 		{
@@ -324,7 +324,7 @@ class PauseSubState extends MusicBeatSubstate
 		skipTimeTracker = null;
 	}
 
-	public static function restartSong(noTrans:Bool = false)
+	public static function restartSong(noTrans:Bool = false):Void
 	{
 		PlayState.instance.paused = true; // For lua
 		FlxG.sound.music.volume = 0;
@@ -339,7 +339,7 @@ class PauseSubState extends MusicBeatSubstate
 		MusicBeatState.resetState();
 	}
 
-	override function destroy()
+	override public function destroy():Void
 	{
 		pauseMusic.destroy();
 
@@ -350,7 +350,7 @@ class PauseSubState extends MusicBeatSubstate
 		super.destroy();
 	}
 
-	function changeSelection(change:Int = 0):Void
+	private function changeSelection(change:Int = 0):Void
 	{
 		if (change != 0)
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
@@ -369,7 +369,8 @@ class PauseSubState extends MusicBeatSubstate
 		grpMenuShit.members[curSelected].centerOffsets();
 	}
 
-	function regenMenu():Void {
+	private function regenMenu():Void
+	{
 		for (spr in grpMenuShit.members) 
 		{
 			spr.kill();
@@ -413,8 +414,8 @@ class PauseSubState extends MusicBeatSubstate
 		curSelected = 0;
 		changeSelection();
 	}
-	
-	function updateSkipTextStuff()
+
+	private function updateSkipTextStuff():Void
 	{
 		if(skipTimeText == null || skipTimeTracker == null) return;
 
@@ -423,6 +424,6 @@ class PauseSubState extends MusicBeatSubstate
 		skipTimeText.visible = (skipTimeTracker.alpha >= 1);
 	}
 
-	function updateSkipTimeText()
+	private function updateSkipTimeText():Void
 		skipTimeText.text = FlxStringUtil.formatTime(Math.max(0, Math.floor(curTime / 1000)), false) + ' / ' + FlxStringUtil.formatTime(Math.max(0, Math.floor(FlxG.sound.music.length / 1000)), false);
 }

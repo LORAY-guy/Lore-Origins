@@ -86,8 +86,11 @@ body {
 }
 
 .main-box {
-    width: 1330px;
-    height: 860px;
+    max-width: 1350px;
+    min-width: 1000px;
+    min-height: 350px;
+    width: fit-content;
+    height: fit-content;
     background: rgba(204, 0, 255, 0.7);
     border-radius: 16px;
     border: 4px solid #a357ab;
@@ -98,8 +101,11 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
     margin-top: 170px;
+    padding: 30px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .credits {
@@ -117,6 +123,61 @@ body {
     background-color: rgba(204, 0, 255, 0.7);
     text-decoration: underline;
     border-radius: 8px;
+    border: 2px solid #a357ab;
+    padding: 10px 20px;
+    cursor: url("img/cursors/golden-ourple-cursor.png"), pointer;
+    transition: all 0.3s ease;
+}
+
+#fullscreen-button:hover {
+    background-color: rgba(204, 0, 255, 0.9);
+    transform: scale(1.05);
+}
+
+#play-button {
+    font-family: 'ourple';
+    font-size: 48px;
+    color: #fff;
+    background-color: rgba(204, 0, 255, 0.8);
+    border: 4px solid #a357ab;
+    border-radius: 16px;
+    padding: 20px 60px;
+    cursor: url("img/cursors/golden-ourple-cursor.png"), pointer;
+    text-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+#play-button:hover {
+    background-color: rgba(204, 0, 255, 1);
+    transform: scale(1.1);
+    box-shadow: 0 8px 32px rgba(204, 0, 255, 0.5);
+}
+
+#download-button {
+    font-family: 'ourple';
+    font-size: 20px;
+    color: #fff;
+    background-color: rgba(255, 0, 119, 0.7);
+    border: 2px solid #cc003d;
+    border-radius: 8px;
+    padding: 12px 24px;
+    cursor: url("img/cursors/golden-ourple-cursor.png"), pointer;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 1);
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+#download-button:hover {
+    background-color: rgba(255, 0, 106, 0.9);
+    transform: scale(1.05);
+}
+
+#start-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 @keyframes rainbow-text {

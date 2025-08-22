@@ -44,9 +44,9 @@ class Sunk extends BaseStage
 			markBgOverlay.scale.x = 0.55;
 			markBgOverlay.scale.y = 0.45;
 			markBgOverlay.updateHitbox();
-			markBgOverlay.x = FlxG.width - markBgOverlay.width;
 			markBgOverlay.cameras = [camHUD];
-			insert(PlayState.instance.members.indexOf(PlayState.instance.scoreTxt) - 1 ,markBgOverlay);
+			markBgOverlay.x = FlxG.width - markBgOverlay.width;
+			add(markBgOverlay);
 		}
 
 		cameraSpeed = 100;

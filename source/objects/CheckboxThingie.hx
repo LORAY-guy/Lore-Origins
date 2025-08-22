@@ -7,7 +7,9 @@ class CheckboxThingie extends FlxSprite
 	public var copyAlpha:Bool = true;
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
-	public function new(x:Float = 0, y:Float = 0, ?checked = false) {
+
+	public function new(x:Float = 0, y:Float = 0, ?checked = false)
+	{
 		super(x, y);
 
 		loadGraphic(Paths.image('check2'),true,54,51);
@@ -21,17 +23,20 @@ class CheckboxThingie extends FlxSprite
 		daValue = checked;
 	}
 
-	override function update(elapsed:Float) {
+	override public function update(elapsed:Float):Void
+	{
 		if (sprTracker != null) {
 			setPosition(sprTracker.x - 130 + offsetX, sprTracker.y + 30 + offsetY);
 			if(copyAlpha) {
 				alpha = sprTracker.alpha;
 			}
 		}
+
 		super.update(elapsed);
 	}
 
-	private function set_daValue(check:Bool):Bool {
+	private function set_daValue(check:Bool):Bool
+	{
 		if(check) {
 			if(animation.curAnim.name != 'checked' && animation.curAnim.name != 'checking') {
 				animation.play('checked', true);
@@ -42,7 +47,7 @@ class CheckboxThingie extends FlxSprite
 		return check;
 	}
 
-	private function animationFinished(name:String)
+	private function animationFinished(name:String):Void
 	{
 		switch(name)
 		{

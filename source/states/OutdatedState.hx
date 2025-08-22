@@ -2,15 +2,15 @@ package states;
 
 class OutdatedState extends MusicBeatState
 {
-	var leftState:Bool = false;
-	var warnText:FlxText;
+	private var leftState:Bool = false;
+	private var warnText:FlxText;
 
 	#if mobile
-	var cancelButton:FlxSprite;
-	var acceptButton:FlxSprite;
+	private var cancelButton:FlxSprite;
+	private var acceptButton:FlxSprite;
 	#end
 
-	override function create():Void
+	override public function create():Void
 	{
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Bro's fucked, he didn't update", null);
@@ -79,7 +79,7 @@ class OutdatedState extends MusicBeatState
 		super.create();
 	}
 
-	override function update(elapsed:Float):Void
+	override public function update(elapsed:Float):Void
 	{
 		if(!leftState) {
 			#if mobile

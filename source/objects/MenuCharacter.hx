@@ -26,7 +26,8 @@ class MenuCharacter extends FlxSprite
 		changeCharacter(character);
 	}
 
-	public function changeCharacter(?character:String = 'bf') {
+	public function changeCharacter(?character:String = 'bf'):Void
+	{
 		if(character == null) character = '';
 		if(character == this.character) return;
 

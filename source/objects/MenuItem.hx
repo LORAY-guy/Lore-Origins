@@ -25,7 +25,7 @@ class MenuItem extends FlxSprite
 		return isFlashing;
 	}
 
-	override function update(elapsed:Float)
+	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 

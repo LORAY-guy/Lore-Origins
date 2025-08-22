@@ -14,39 +14,40 @@ import shaders.RGBPalette.RGBShaderReference;
 
 class NotesSubState extends MusicBeatSubstate
 {
-	var onModeColumn:Bool = true;
-	var curSelectedMode:Int = 0;
-	var curSelectedNote:Int = 0;
-	var onPixel:Bool = false;
-	var dataArray:Array<Array<FlxColor>>;
+	private var onModeColumn:Bool = true;
+	private var curSelectedMode:Int = 0;
+	private var curSelectedNote:Int = 0;
+	private var onPixel:Bool = false;
+	private var dataArray:Array<Array<FlxColor>>;
 
-	var hexTypeLine:FlxSprite;
-	var hexTypeNum:Int = -1;
-	var hexTypeVisibleTimer:Float = 0;
+	private var hexTypeLine:FlxSprite;
+	private var hexTypeNum:Int = -1;
+	private var hexTypeVisibleTimer:Float = 0;
 
-	var copyButton:FlxSprite;
-	var pasteButton:FlxSprite;
+	private var copyButton:FlxSprite;
+	private var pasteButton:FlxSprite;
 
-	var colorGradient:FlxSprite;
-	var colorGradientSelector:FlxSprite;
-	var colorPalette:FlxSprite;
-	var colorWheel:FlxSprite;
-	var colorWheelSelector:FlxSprite;
+	private var colorGradient:FlxSprite;
+	private var colorGradientSelector:FlxSprite;
+	private var colorPalette:FlxSprite;
+	private var colorWheel:FlxSprite;
+	private var colorWheelSelector:FlxSprite;
 
-	var alphabetR:Alphabet;
-	var alphabetG:Alphabet;
-	var alphabetB:Alphabet;
-	var alphabetHex:Alphabet;
+	private var alphabetR:Alphabet;
+	private var alphabetG:Alphabet;
+	private var alphabetB:Alphabet;
+	private var alphabetHex:Alphabet;
 
-	var modeBG:FlxSprite;
-	var notesBG:FlxSprite;
+	private var modeBG:FlxSprite;
+	private var notesBG:FlxSprite;
 
 	// controller support
-	var controllerPointer:FlxSprite;
-	var _lastControllerMode:Bool = false;
-	var tipTxt:FlxText;
+	private var controllerPointer:FlxSprite;
+	private var _lastControllerMode:Bool = false;
+	private var tipTxt:FlxText;
 
-	public function new() {
+	public function new()
+	{
 		super();
 		
 		#if DISCORD_ALLOWED
@@ -169,20 +170,22 @@ class NotesSubState extends MusicBeatSubstate
 		add(new ExitButton('options'));
 	}
 
-	function updateTip()
+	private function updateTip():Void
 	{
 		tipTxt.text = 'Hold ' + (!controls.controllerMode ? 'Shift' : 'Left Shoulder Button') + ' + Press RESET key to fully reset the selected Note.';
 	}
 
-	var _storedColor:FlxColor;
-	var changingNote:Bool = false;
-	var holdingOnObj:FlxSprite;
-	var allowedTypeKeys:Map<FlxKey, String> = [
+	private var _storedColor:FlxColor;
+	private var changingNote:Bool = false;
+	private var holdingOnObj:FlxSprite;
+	private var allowedTypeKeys:Map<FlxKey, String> = [
 		ZERO => '0', ONE => '1', TWO => '2', THREE => '3', FOUR => '4', FIVE => '5', SIX => '6', SEVEN => '7', EIGHT => '8', NINE => '9',
 		NUMPADZERO => '0', NUMPADONE => '1', NUMPADTWO => '2', NUMPADTHREE => '3', NUMPADFOUR => '4', NUMPADFIVE => '5', NUMPADSIX => '6',
-		NUMPADSEVEN => '7', NUMPADEIGHT => '8', NUMPADNINE => '9', A => 'A', B => 'B', C => 'C', D => 'D', E => 'E', F => 'F'];
+		NUMPADSEVEN => '7', NUMPADEIGHT => '8', NUMPADNINE => '9', A => 'A', B => 'B', C => 'C', D => 'D', E => 'E', F => 'F'
+	];
 
-	override function update(elapsed:Float) {
+	override public function update(elapsed:Float) :Void
+	{
 		if (controls.BACK_P) {
 			FlxG.mouse.visible = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
@@ -493,29 +496,31 @@ class NotesSubState extends MusicBeatSubstate
 		}
 	}
 
-	function pointerOverlaps(obj:Dynamic)
+	private function pointerOverlaps(obj:Dynamic):Bool
 	{
 		if (!controls.controllerMode) return FlxG.mouse.overlaps(obj);
 		return FlxG.overlap(controllerPointer, obj);
 	}
 
-	function pointerX():Float
+	private function pointerX():Float
 	{
 		if (!controls.controllerMode) return FlxG.mouse.x;
 		return controllerPointer.x;
 	}
-	function pointerY():Float
+
+	private function pointerY():Float
 	{
 		if (!controls.controllerMode) return FlxG.mouse.y;
 		return controllerPointer.y;
 	}
-	function pointerFlxPoint():FlxPoint
+
+	private function pointerFlxPoint():FlxPoint
 	{
 		if (!controls.controllerMode) return FlxG.mouse.getScreenPosition();
 		return controllerPointer.getScreenPosition();
 	}
 
-	function centerHexTypeLine()
+	private function centerHexTypeLine():Void
 	{
 		//trace(hexTypeNum);
 		if(hexTypeNum > 0)
@@ -532,7 +537,8 @@ class NotesSubState extends MusicBeatSubstate
 		hexTypeVisibleTimer = 0;
 	}
 
-	function changeSelectionMode(change:Int = 0) {
+	private function changeSelectionMode(change:Int = 0):Void
+	{
 		curSelectedMode += change;
 		if (curSelectedMode < 0)
 			curSelectedMode = 2;
@@ -544,7 +550,9 @@ class NotesSubState extends MusicBeatSubstate
 		updateNotes();
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
-	function changeSelectionNote(change:Int = 0) {
+
+	private function changeSelectionNote(change:Int = 0):Void
+	{
 		curSelectedNote += change;
 		if (curSelectedNote < 0)
 			curSelectedNote = dataArray.length-1;
@@ -560,7 +568,7 @@ class NotesSubState extends MusicBeatSubstate
 	}
 
 	// alphabets
-	function makeColorAlphabet(x:Float = 0, y:Float = 0):Alphabet
+	private function makeColorAlphabet(x:Float = 0, y:Float = 0):Alphabet
 	{
 		var text:Alphabet = new Alphabet(x, y, '', true);
 		text.alignment = CENTERED;
@@ -570,11 +578,11 @@ class NotesSubState extends MusicBeatSubstate
 	}
 
 	// notes sprites functions
-	var skinNote:FlxSprite;
-	var modeNotes:FlxTypedGroup<FlxSprite>;
-	var myNotes:FlxTypedGroup<StrumNote>;
-	var bigNote:Note;
-	public function spawnNotes()
+	private var skinNote:FlxSprite;
+	private var modeNotes:FlxTypedGroup<FlxSprite>;
+	private var myNotes:FlxTypedGroup<StrumNote>;
+	private var bigNote:Note;
+	public function spawnNotes():Void
 	{
 		dataArray = !onPixel ? ClientPrefs.data.arrowRGB : ClientPrefs.data.arrowRGBPixel;
 		if (onPixel) PlayState.stageUI = "pixel";
@@ -654,7 +662,7 @@ class NotesSubState extends MusicBeatSubstate
 		PlayState.stageUI = "normal";
 	}
 
-	function updateNotes(?instant:Bool = false)
+	private function updateNotes(?instant:Bool = false):Void
 	{
 		for (note in modeNotes)
 			note.alpha = (curSelectedMode == note.ID) ? 1 : 0.6;
@@ -670,7 +678,7 @@ class NotesSubState extends MusicBeatSubstate
 		updateColors();
 	}
 
-	function updateColors(specific:Null<FlxColor> = null)
+	private function updateColors(specific:Null<FlxColor> = null):Void
 	{
 		var color:FlxColor = getShaderColor();
 		var wheelColor:FlxColor = specific == null ? getShaderColor() : specific;
@@ -702,7 +710,7 @@ class NotesSubState extends MusicBeatSubstate
 		}
 	}
 
-	function setShaderColor(value:FlxColor) dataArray[curSelectedNote][curSelectedMode] = value;
-	function getShaderColor() return dataArray[curSelectedNote][curSelectedMode];
-	function getShader() return Note.globalRgbShaders[curSelectedNote];
+	private function setShaderColor(value:FlxColor) dataArray[curSelectedNote][curSelectedMode] = value;
+	private function getShaderColor() return dataArray[curSelectedNote][curSelectedMode];
+	private function getShader() return Note.globalRgbShaders[curSelectedNote];
 }

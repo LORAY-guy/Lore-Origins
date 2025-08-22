@@ -10,16 +10,16 @@ class FreeplaySelectState extends MusicBeatState
 
 	public var catName:Alphabet;
 	
-	var bg:FlxSprite;
-    var categoryIcon:FlxSprite;
+	private var bg:FlxSprite;
+    private var categoryIcon:FlxSprite;
 
-	var matpat:FlxSprite;
+	private var matpat:FlxSprite;
 
 	#if mobile
 	private var mobileControls:MobileUIControls;
 	#end
     
-    override function create()
+    override public function create():Void
 	{
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
@@ -93,7 +93,7 @@ class FreeplaySelectState extends MusicBeatState
 
 	public var selectedSomethin:Bool = false;
 	public var canClick:Bool = true;
-    override public function update(elapsed:Float)
+    override public function update(elapsed:Float):Void
 	{
 		if (!selectedSomethin)
 		{
@@ -142,7 +142,7 @@ class FreeplaySelectState extends MusicBeatState
 		Conductor.songPosition = FlxG.sound.music.time;
     }
 
-    function changeSelection(change:Int = 0) 
+    private function changeSelection(change:Int = 0):Void
 	{
 		FlxG.camera.zoom += 0.03;
 		curSelected += change;

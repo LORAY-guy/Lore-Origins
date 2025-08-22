@@ -27,12 +27,12 @@ class LoadingState extends MusicBeatState
 
 	//LORAY here... WHAT DOES THIS DO EXACTLY??
 	
-	var target:FlxState;
-	var stopMusic = false;
-	var directory:String;
-	var callbacks:MultiCallback;
+	private var target:FlxState;
+	private var stopMusic = false;
+	private var directory:String;
+	private var callbacks:MultiCallback;
 
-	function new(target:FlxState, stopMusic:Bool, directory:String)
+	public function new(target:FlxState, stopMusic:Bool, directory:String)
 	{
 		super();
 		this.target = target;
@@ -40,10 +40,10 @@ class LoadingState extends MusicBeatState
 		this.directory = directory;
 	}
 
-	var loadingText:FlxText;
-    var dots:String = ".";
+	private var loadingText:FlxText;
+    private var dots:String = ".";
 
-	var uselessTipsList:Array<String> = [
+	private var uselessTipsList:Array<String> = [
 		"If you don\'t hit a note, you will miss!",
 		"There are multiple songs named \'Lore\'!",
 		"If you click the \'X\' in windowed mode, you close the mod!",
@@ -74,7 +74,7 @@ class LoadingState extends MusicBeatState
 		"According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little.  Barry! Breakfast is ready! Ooming! Hang on a second. Hello? - Barry? - Adam? - Oan you believe this is happening? - I can't. I'll pick you up. Looking sharp. Use the stairs. Your father paid good money for those. Sorry. I'm excited." // Bee movie script
 	];
 
-	override function create()
+	override public function create():Void
 	{
 		if (PlayState.SONG.song.toLowerCase() != 'distractible') {
 			var funkay:FlxSprite;
@@ -187,8 +187,9 @@ class LoadingState extends MusicBeatState
 			}
 		);
 	}
-	
-	function checkLibrary(library:String) {
+
+	private function checkLibrary(library:String):Void
+	{
 		if (Assets.getLibrary(library) == null)
 		{
 			@:privateAccess
@@ -200,7 +201,7 @@ class LoadingState extends MusicBeatState
 		}
 	}
 	
-	function onLoad()
+	private function onLoad():Void
 	{
 		if (stopMusic && FlxG.sound.music != null) FlxG.sound.music.stop();
 		
@@ -210,12 +211,12 @@ class LoadingState extends MusicBeatState
 		});
 	}
 	
-	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false)
+	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false):Void
 	{
 		MusicBeatState.switchState(getNextState(target, stopMusic));
 	}
 	
-	static function getNextState(target:FlxState, stopMusic = false):FlxState
+	private static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
 		var directory:String = 'shared';
 		var weekDir:String = StageData.forceNextDirectory;
@@ -236,14 +237,14 @@ class LoadingState extends MusicBeatState
 		return target;
 	}
 
-	override function destroy()
+	override public function destroy()
 	{
 		super.destroy();
 		
 		callbacks = null;
 	}
-	
-	static function initSongsManifest()
+
+	private static function initSongsManifest()
 	{
 		var id = "songs";
 		var promise = new Promise<AssetLibrary>();
@@ -309,7 +310,8 @@ class LoadingState extends MusicBeatState
 		return promise.future;
 	}
 
-	private function onTimerTick(timer:FlxTimer):Void {
+	private function onTimerTick(timer:FlxTimer):Void
+	{
         dots += ".";
         if (dots.length > 3) {
             dots = ".";
@@ -325,16 +327,16 @@ class MultiCallback
 	public var length(default, null) = 0;
 	public var numRemaining(default, null) = 0;
 	
-	var unfired = new Map<String, Void->Void>();
-	var fired = new Array<String>();
-	
+	private var unfired = new Map<String, Void->Void>();
+	private var fired = new Array<String>();
+
 	public function new (callback:Void->Void, logId:String = null)
 	{
 		this.callback = callback;
 		this.logId = logId;
 	}
 	
-	public function add(id = "untitled")
+	public function add(id = "untitled"):Void->Void
 	{
 		id = '$length:$id';
 		length++;
@@ -365,12 +367,12 @@ class MultiCallback
 		return func;
 	}
 	
-	inline function log(msg):Void
+	private inline function log(msg):Void
 	{
 		if (logId != null)
 			trace('$logId: $msg');
 	}
-	
-	public function getFired() return fired.copy();
-	public function getUnfired() return [for (id in unfired.keys()) id];
+
+	public function getFired():Array<String> return fired.copy();
+	public function getUnfired():Array<String> return [for (id in unfired.keys()) id];
 }

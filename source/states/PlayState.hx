@@ -227,8 +227,9 @@ class PlayState extends MusicBeatState
 	public var songMisses:Int = 0;
 	public var scoreTxt:FlxText;
 	public var missesTxt:FlxText;
+	public var timeTxt:FlxText;
+	
 	var missText:String;
-	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
 	var missesTxtTween:FlxTween;
 
@@ -389,8 +390,7 @@ class PlayState extends MusicBeatState
 		eventTweensManager = new Map<String, FlxTween>();
 		eventTimers = new FlxTimerManager();
 
-		persistentUpdate = true;
-		persistentDraw = true;
+		persistentUpdate = persistentDraw = true;
 
 		if (SONG == null)
 			SONG = Song.loadFromJson('tutorial');
@@ -4328,6 +4328,7 @@ class PlayState extends MusicBeatState
 			if (gfIsSinging && !SONG.notes[curSection].gfIsSinging)
 			{
 				iconP1.visible = true;
+				if (iconP3.visible) iconP3.visible = false;
 				gfIsSinging = false;
 			}
 
