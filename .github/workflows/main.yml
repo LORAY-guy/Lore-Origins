@@ -320,12 +320,16 @@ jobs:
           path: export/release/android/bin/app/build/outputs/apk/debug/Lore Origins-debug.apk
 
   ios-release:
-    runs-on: macos-15
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
       - uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.4
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.2'
       - name: Cache Haxelib Dependencies
         uses: actions/cache@v3
         with:
