@@ -23,6 +23,16 @@ jobs:
           key: ${{ runner.os }}-haxelib-${{ hashFiles('.github/workflows/main.yml') }}
           restore-keys: |
             ${{ runner.os }}-haxelib-
+      - name: Cache Build Artifacts
+        uses: actions/cache@v3
+        with:
+          path: |
+            .haxelib
+            export/release/linux/obj
+            ~/.lime
+          key: ${{ runner.os }}-build-${{ hashFiles('source/**/*.hx', 'Project.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
       - run: |
           haxe -version
           haxelib install --quiet hxnodejs
@@ -89,6 +99,16 @@ jobs:
           key: ${{ runner.os }}-haxelib-${{ hashFiles('.github/workflows/main.yml') }}
           restore-keys: |
             ${{ runner.os }}-haxelib-
+      - name: Cache Build Artifacts
+        uses: actions/cache@v3
+        with:
+          path: |
+            .haxelib
+            export/release/windows/obj
+            ~/.lime
+          key: ${{ runner.os }}-build-${{ hashFiles('source/**/*.hx', 'Project.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
       - name: Install and Setup Haxelib
         run: |
           haxelib setup ~/haxelib
@@ -166,6 +186,16 @@ jobs:
           key: ${{ runner.os }}-haxelib-${{ hashFiles('.github/workflows/main.yml') }}
           restore-keys: |
             ${{ runner.os }}-haxelib-
+      - name: Cache Build Artifacts
+        uses: actions/cache@v3
+        with:
+          path: |
+            .haxelib
+            export/release/macos/obj
+            ~/.lime
+          key: ${{ runner.os }}-build-${{ hashFiles('source/**/*.hx', 'Project.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
       - name: Install and Setup Haxelib
         run: |
           haxelib setup ~/haxelib
@@ -236,6 +266,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-android-haxelib-
             ${{ runner.os }}-haxelib-
+      - name: Cache Build Artifacts
+        uses: actions/cache@v3
+        with:
+          path: |
+            .haxelib
+            export/release/android/obj
+            ~/.lime
+          key: ${{ runner.os }}-android-build-${{ hashFiles('source/**/*.hx', 'Project.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-android-build-
+            ${{ runner.os }}-build-
       - name: Install specific NDK version
         run: |
           echo "y" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "ndk;21.4.7075529"
@@ -338,6 +379,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-ios-haxelib-
             ${{ runner.os }}-haxelib-
+      - name: Cache Build Artifacts
+        uses: actions/cache@v3
+        with:
+          path: |
+            .haxelib
+            export/release/ios/obj
+            ~/.lime
+          key: ${{ runner.os }}-ios-build-${{ hashFiles('source/**/*.hx', 'Project.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-ios-build-
+            ${{ runner.os }}-build-
       - name: Install and Setup Haxelib
         run: |
           haxelib setup ~/haxelib
