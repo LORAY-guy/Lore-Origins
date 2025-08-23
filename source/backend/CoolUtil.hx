@@ -137,7 +137,7 @@ class CoolUtil
 
 			Sys.setCwd(minigameDir);
 
-			#if (linux || mac)
+			#if linux
 			Sys.command('chmod +x ./I\\ can,\\ tho');
 			Sys.command('(./I\\ can,\\ tho -skipmenu &) && pkill -f Lore\\ Origins');
 			#elseif windows

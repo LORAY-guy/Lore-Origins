@@ -326,7 +326,7 @@ class Keypad extends FlxTypedGroup<FlxSprite>
 
         switch (enteredCode)
         {
-            #if desktop
+            #if (windows || linux)
             case '395248':
                 CoolUtil.openMinigame();
             #end

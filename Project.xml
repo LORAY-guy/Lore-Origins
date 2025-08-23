@@ -64,8 +64,9 @@
 	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web" />
 	<library name="songs"         		preload="true" />
 
-	<assets path="assets/minigame/linux" if="linux || mac" rename="assets/minigame" />
+	<assets path="assets/minigame/linux" if="linux" rename="assets/minigame" />
 	<assets path="assets/minigame/windows" if="windows" rename="assets/minigame" />
+	<assets path="assets/minigame/mac" if="mac" rename="assets/minigame" />
 
 	<assets path="skins" if="MODS_ALLOWED" embed="false"/>
 	
