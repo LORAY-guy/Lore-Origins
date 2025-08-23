@@ -16,6 +16,13 @@ jobs:
       - uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.4
+      - name: Cache Haxelib Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/haxelib
+          key: ${{ runner.os }}-haxelib-${{ hashFiles('.github/workflows/main.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-haxelib-
       - run: |
           haxe -version
           haxelib install --quiet hxnodejs
@@ -75,6 +82,13 @@ jobs:
       - uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.4
+      - name: Cache Haxelib Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/haxelib
+          key: ${{ runner.os }}-haxelib-${{ hashFiles('.github/workflows/main.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-haxelib-
       - name: Install and Setup Haxelib
         run: |
           haxelib setup ~/haxelib
@@ -145,6 +159,13 @@ jobs:
       - uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.4
+      - name: Cache Haxelib Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/haxelib
+          key: ${{ runner.os }}-haxelib-${{ hashFiles('.github/workflows/main.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-haxelib-
       - name: Install and Setup Haxelib
         run: |
           haxelib setup ~/haxelib
@@ -207,6 +228,14 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+      - name: Cache Haxelib Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/haxelib
+          key: ${{ runner.os }}-android-haxelib-${{ hashFiles('.github/workflows/main.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-android-haxelib-
+            ${{ runner.os }}-haxelib-
       - name: Install specific NDK version
         run: |
           echo "y" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "ndk;21.4.7075529"
@@ -297,6 +326,14 @@ jobs:
       - uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.4
+      - name: Cache Haxelib Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/haxelib
+          key: ${{ runner.os }}-ios-haxelib-${{ hashFiles('.github/workflows/main.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-ios-haxelib-
+            ${{ runner.os }}-haxelib-
       - name: Install and Setup Haxelib
         run: |
           haxelib setup ~/haxelib

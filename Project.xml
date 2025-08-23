@@ -66,7 +66,6 @@
 
 	<assets path="assets/minigame/linux" if="linux" rename="assets/minigame" />
 	<assets path="assets/minigame/windows" if="windows" rename="assets/minigame" />
-	<assets path="assets/minigame/mac" if="mac" rename="assets/minigame" />
 
 	<assets path="skins" if="MODS_ALLOWED" embed="false"/>
 	
