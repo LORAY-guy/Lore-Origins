@@ -14,7 +14,7 @@ class AR extends BaseStage
     var warningDensity:Int = 0;
     var warningSound:FlxSound;
 
-    var resolution:Float = (FlxG.width / 1280);
+    private var resolution:Float = (FlxG.width / 1280);
 
     override function create():Void
     {

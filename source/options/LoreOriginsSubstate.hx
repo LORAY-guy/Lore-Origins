@@ -6,15 +6,15 @@ class LoreOriginsSubstate extends BaseOptionsMenu
 	{
 		title = 'Lore Origins Settings';
 
-		var option:OurpleOption = new OurpleOption('LORAY Watermark', //Name
-		'If unchecked, the LORAY credit at the beginning of every song will be disabled.', //Description
-		'lorayWatermark', //Save data variable name
-		'bool'); //Variable type
-		addOption(option);
-
 		var option:OurpleOption = new OurpleOption('Character Ghost', //Name
 		'If checked, every character will create a ghost if multiple animations are played at the same time.', //Description
 		'characterGhost', //Save data variable name
+		'bool'); //Variable type
+		addOption(option);
+
+		var option:OurpleOption = new OurpleOption('Enable Ourple Dance', //Name
+		'If unchecked, Ourple guy won\'t do his cool dance.', //Description
+		'enableOurpleDance', //Save data variable name
 		'bool'); //Variable type
 		addOption(option);
 
@@ -28,6 +28,12 @@ class LoreOriginsSubstate extends BaseOptionsMenu
 		option.maxValue = 3.0;
 		option.changeValue = 0.5;
 		option.displayFormat = '%vx';
+
+		var option:OurpleOption = new OurpleOption('LORAY Watermark', //Name
+		'If unchecked, the LORAY credit at the beginning of every song will be disabled.', //Description
+		'lorayWatermark', //Save data variable name
+		'bool'); //Variable type
+		addOption(option);
 
 		var option:OurpleOption = new OurpleOption('Hide Old Covers', //Name
 		'If checked, the covers considered old will be hidden from the freeplay menu.', //Description

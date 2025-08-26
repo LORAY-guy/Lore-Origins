@@ -254,6 +254,7 @@ class MainMenuState extends MusicBeatState
 							options.OptionsState.onPlayState = false;
 							MusicBeatState.switchState(new options.OptionsState(true));
 						case 'skins':
+							states.SkinSelectorState.onPlayState = false;
 							MusicBeatState.switchState(new states.SkinSelectorState(true));
 						case 'achievements':
 							MusicBeatState.switchState(new states.AchievementsMenuState(true));

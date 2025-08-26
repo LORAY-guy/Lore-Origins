@@ -108,6 +108,7 @@ import states.TitleState;
 	public var goldenMouse:Bool = false;
 	public var unlockedEverything:Bool = false;
 	public var luaPlayed:Bool = false;
+	public var enableOurpleDance:Bool = true;
 }
 
 class ClientPrefs {
@@ -137,7 +138,9 @@ class ClientPrefs {
 		'volume_down'	=> [NUMPADMINUS, MINUS],
 
 		'debug_1'		=> [SEVEN],
-		'debug_2'		=> [EIGHT]
+		'debug_2'		=> [EIGHT],
+
+		'skins'			=> [HOME]
 	];
 	public static var gamepadBinds:Map<String, Array<FlxGamepadInputID>> = [
 		'note_up'		=> [DPAD_UP, Y],

@@ -17,7 +17,7 @@ class MarioTennis extends BaseStage {
     {
         if (!ClientPrefs.data.lowQuality)
         {
-            crowd = new BGSprite('fever/crowd', -645, 475, 1, 1);
+            crowd = new BGSprite('crowd', -645, 475, 1, 1);
             crowd.setGraphicSize(Std.int(crowd.width * 1.2));
             crowd.updateHitbox();
             add(crowd);

@@ -88,6 +88,8 @@ class InputFormatter {
 				return "'";
 			case PRINTSCREEN:
 				return "PrtScrn";
+			case HOME:
+				return "HOME";
 			case NONE:
 				return '---';
 			default:

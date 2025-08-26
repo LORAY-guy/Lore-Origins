@@ -102,6 +102,14 @@ class Apology extends BaseStage
         super.createPost();
     }
 
+    override public function songStart():Void
+    {
+        super.songStart();
+
+        gtRoom.alpha = 1;
+        matpatIntro.alpha = 1;
+    }
+
     override function update(elapsed:Float)
     {
         super.update(elapsed);
@@ -128,11 +136,6 @@ class Apology extends BaseStage
     override function stepHit() 
     {
         super.stepHit();
-
-        if (curStep >= 1 && curStep <= 6) { //Adding a delay to the cutscene lets the game load the sprites. Would cause lag on transition if inserted in createPost
-            gtRoom.alpha = 1;
-            matpatIntro.alpha = 1;
-        }
 
         if (curStep == 12) {
             matpatIntro.flipX = true;

@@ -30,6 +30,8 @@ class OptionsState extends MusicBeatState
 		DiscordClient.changePresence("Options Menu", null);
 		#end
 
+		FlxTransitionableState.skipNextTransOut = false;
+
 		var bg = new FlxSprite().loadGraphic(Paths.image('options/bg'));
 		bg.setGraphicSize(FlxG.width);
 		bg.updateHitbox();

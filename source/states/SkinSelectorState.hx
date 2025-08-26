@@ -1,5 +1,8 @@
 package states;
 
+import substates.PauseSubState;
+import backend.StageData;
+
 typedef SkinData = {
     name: String,
     skins: Array<SkinSubData>
@@ -33,6 +36,9 @@ class SkinSelectorState extends MusicBeatState
 
     public var exitButton:ExitButton;
 
+    public static var onPlayState:Bool = false;
+    private var pauseMusic:FlxSound = null;
+
     #if mobile
     private var mobileControls:MobileUIControls;
     #end
@@ -44,6 +50,22 @@ class SkinSelectorState extends MusicBeatState
 		#end
 
         Paths.clearUnusedMemory();
+
+        if (onPlayState && PauseSubState.pauseMusic == null && FlxG.sound.music == null)
+        {
+		    pauseMusic = new FlxSound();
+
+            try
+            {
+                var pauseSong:String = CoolUtil.getPauseSong();
+                if(pauseSong != null) pauseMusic.loadEmbedded(Paths.music(pauseSong), true, true);
+            }
+            catch(e:Dynamic) {}
+            pauseMusic.volume = 0;
+            pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
+
+            FlxG.sound.list.add(pauseMusic);
+        }
 
         retrieveSkinData();
         checkForSkinExistence();
@@ -80,8 +102,8 @@ class SkinSelectorState extends MusicBeatState
 
         super.create();
 
-        exitButton = new ExitButton();
-        add(exitButton);
+        exitButton = (onPlayState ? new ExitButton('playstate') : new ExitButton());
+		add(exitButton);
 
         #if mobile
         mobileControls = new MobileUIControls();
@@ -94,6 +116,9 @@ class SkinSelectorState extends MusicBeatState
     public var selectedSomethin:Bool = false;
     override public function update(elapsed:Float):Void
 	{
+        if (pauseMusic != null && pauseMusic.volume < 0.5)
+			pauseMusic.volume += 0.01 * elapsed;
+
         if (!selectedSomethin)
         {
             if (controls.UI_UP_P)
@@ -128,7 +153,14 @@ class SkinSelectorState extends MusicBeatState
             if (controls.BACK_P) {
                 selectedSomethin = true;
                 FlxG.camera.zoom += 0.06;
-                exitState(new MainMenuState(true));
+
+                if(onPlayState)
+				{
+					StageData.loadDirectory(PlayState.SONG);
+					exitState(new PlayState(), true, true);
+					FlxG.sound.music.volume = 0;
+				}
+				else exitState(new MainMenuState(true));
             }
         }
         
@@ -399,9 +431,14 @@ class SkinSelectorState extends MusicBeatState
     override public function destroy():Void
     {
         ClientPrefs.loadPrefs();
+
         #if mobile
         Controls.mobileControls = null;
         #end
+
+        if (pauseMusic != null)
+            pauseMusic.destroy();
+
         super.destroy();
     }
 }

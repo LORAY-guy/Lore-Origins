@@ -38,7 +38,7 @@ class Fever extends BaseStage
             curtains.antialiasing = false;
             add(curtains);
 
-            crowd = new BGSprite('fever/crowd', -645, 475, 1, 1);
+            crowd = new BGSprite('crowd', -645, 475, 1, 1);
             crowd.setGraphicSize(Std.int(crowd.width * 1.1));
             crowd.updateHitbox();
             add(crowd);
@@ -156,9 +156,9 @@ class Fever extends BaseStage
 
         if (!ClientPrefs.data.lowQuality) {
             if (curStep == 768 || curStep == 2432)
-                crowd.loadGraphic(Paths.image('fever/crowdrtx'));
+                crowd.loadGraphic(Paths.image('crowdrtx'));
             else if (curStep == 1280 || curStep == 2560)
-                crowd.loadGraphic(Paths.image('fever/crowd'));
+                crowd.loadGraphic(Paths.image('crowd'));
         }
         
         super.stepHit();

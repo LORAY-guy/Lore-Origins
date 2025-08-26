@@ -12,6 +12,7 @@ import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 
 import backend.StageData;
+import backend.InputFormatter;
 
 import haxe.io.Path;
 
@@ -70,6 +71,7 @@ class LoadingState extends MusicBeatState
 		"WAS THAT THE LOADING OF 87?!!",
 		"Oh, Hi! welcome to my schooooooool house...",
 		"https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+		'You can select another skin at anytime by pressing \'${InputFormatter.getKeyName(ClientPrefs.keyBinds.get('skins')[0])}\' while playing or in the pause menu.',
 		"Hi, I'm Baldi! Nice to meet ya. Fuck me in the ass and call me Patricia. Book's your game? Just shout my name. When you let me use my whip... So that's one book right? But you're all wrong! You haven't even let me use my thong. While I sing you this song, It goes \"Ding dong\". Like the door I open on you. Here\'s a tip, abandon ship. Or you're gonna see me campfire willy. Oh, oh Oh hi there! Welcome to my hooker palace. Oh, oh, oh hi there! Please don't leave, I have no friends. Oh, oh, oh hi there! Let's go camping, Let me touch ya. Oh, oh, oh hi there! Haha, I tied you up!",
 		"According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little.  Barry! Breakfast is ready! Ooming! Hang on a second. Hello? - Barry? - Adam? - Oan you believe this is happening? - I can't. I'll pick you up. Looking sharp. Use the stairs. Your father paid good money for those. Sorry. I'm excited." // Bee movie script
 	];

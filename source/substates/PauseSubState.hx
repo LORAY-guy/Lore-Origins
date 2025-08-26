@@ -15,7 +15,7 @@ class PauseSubState extends MusicBeatSubstate
 	private var menuItemsOG:Array<String> = ['resume', 'options', 'restart', 'exit'];
 	private var curSelected:Int = 0;
 
-	private var pauseMusic:FlxSound;
+	public static var pauseMusic:FlxSound = null;
 	private var practiceText:FlxText;
 	private var skipTimeText:FlxText;
 	private var skipTimeTracker:Alphabet;
@@ -28,8 +28,6 @@ class PauseSubState extends MusicBeatSubstate
 	#if mobile
 	private var mobileControls:MobileUIControls;
 	#end
-
-	public static var songName:String = null;
 
 	#if ACHIEVEMENTS_ALLOWED
 	private var pauseTimer:Float = 0;
@@ -59,7 +57,7 @@ class PauseSubState extends MusicBeatSubstate
 		pauseMusic = new FlxSound();
 		try
 		{
-			var pauseSong:String = getPauseSong();
+			var pauseSong:String = CoolUtil.getPauseSong();
 			if(pauseSong != null) pauseMusic.loadEmbedded(Paths.music(pauseSong), true, true);
 		}
 		catch(e:Dynamic) {}
@@ -155,15 +153,6 @@ class PauseSubState extends MusicBeatSubstate
 		#end
 	}
 
-	private function getPauseSong():String
-	{
-		var formattedSongName:String = (songName != null ? Paths.formatToSongPath(songName) : '');
-		var formattedPauseMusic:String = Paths.formatToSongPath(ClientPrefs.data.pauseMusic);
-		if(formattedSongName == 'none' || (formattedSongName != 'none' && formattedPauseMusic == 'none')) return null;
-
-		return (formattedSongName != '') ? formattedSongName : formattedPauseMusic;
-	}
-
 	private var holdTime:Float = 0;
 	private var cantUnpause:Float = 0.25;
 	override public function update(elapsed:Float):Void
@@ -234,6 +223,21 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			selectItem();
 		}
+
+		if (controls.justPressed('skins'))
+		{
+			PlayState.instance.paused = true;
+			PlayState.instance.vocals.volume = 0;
+			FlxG.mouse.visible = true;
+			MusicBeatState.switchState(new states.SkinSelectorState());
+			if(ClientPrefs.data.pauseMusic != 'None')
+			{
+				FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic)), pauseMusic.volume);
+				FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.8);
+				FlxG.sound.music.time = pauseMusic.time;
+			}
+			states.SkinSelectorState.onPlayState = true;
+		}
 	}
 
 	private function selectItem():Void
@@ -274,6 +278,7 @@ class PauseSubState extends MusicBeatSubstate
 				PlayState.instance.notes.clear();
 				PlayState.instance.unspawnNotes = [];
 				PlayState.instance.finishSong(true);
+				FlxTransitionableState.skipNextTransOut = false;
 			case 'Toggle Botplay':
 				PlayState.instance.cpuControlled = !PlayState.instance.cpuControlled;
 				PlayState.changedDifficulty = true;
@@ -304,7 +309,7 @@ class PauseSubState extends MusicBeatSubstate
 						Mods.loadTopMod();
 						MusicBeatState.switchState(new FreeplayState(true));		
 				}
-
+				FlxTransitionableState.skipNextTransOut = false;
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				PlayState.changedDifficulty = false;
 				PlayState.chartingMode = false;

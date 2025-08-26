@@ -71,7 +71,7 @@ class FreeplaySelectState extends MusicBeatState
 		categoryIcon.x -= 240;
 		add(categoryIcon);
 
-		catName = new Alphabet(0, (FlxG.height / 2) - 282, freeplayCats[curSelected], true);
+		catName = new Alphabet(0, (FlxG.height / 2) - 282, '< ' + freeplayCats[curSelected] + ' >', true);
 		catName.screenCenter(X);
 		catName.x -= 240;
 		add(catName);
@@ -132,6 +132,10 @@ class FreeplaySelectState extends MusicBeatState
 				Achievements.addScore("wake_up");
 				#end
 			}
+
+			if (FlxG.mouse.overlaps(catName) && FlxG.mouse.justPressed) {
+				changeSelection(1);
+			}
 		}
         curCategory = curSelected;
 
@@ -152,7 +156,7 @@ class FreeplaySelectState extends MusicBeatState
 		if (curSelected < 0)
 			curSelected = freeplayCats.length - 1;
 
-		catName.text = freeplayCats[curSelected];
+		catName.text = '< ' + freeplayCats[curSelected] + ' >';
 		catName.screenCenter(X);
 		catName.x -= 240;
 		add(catName);

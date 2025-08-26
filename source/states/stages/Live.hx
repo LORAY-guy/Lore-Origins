@@ -1,15 +1,15 @@
 package states.stages;
 
-class Live extends BaseStage {
-    var stageback:FlxSprite;
-    var boxes:FlxSprite;
-    var boxes2:FlxSprite;
-    public static var drone:FlxSprite;
-    var dronecall:FlxSprite;
+class Live extends BaseStage
+{
+    private var stageback:FlxSprite;
+    private var boxes:FlxSprite;
+    private var boxes2:FlxSprite;
+    private var drone:FlxSprite;
+    private var dronecall:FlxSprite;
+    private var explosion:FlxSprite;
 
-    public static var explosion:FlxSprite;
-
-    public static var boom:Bool = false;
+    private var boom:Bool = false;
 
     override function create()
     {
@@ -38,7 +38,6 @@ class Live extends BaseStage {
         explosion.visible = false;
         add(explosion);
 
-        resetVars();
         super.create();
     }
 
@@ -195,7 +194,8 @@ class Live extends BaseStage {
         if (curStep == 2576) droneIntro();
     }
 
-    override function beatHit() {
+    override function beatHit()
+    {
         super.beatHit();
 
         if (((curBeat >= 1 && curBeat < 64) || (curBeat >= 320 && curBeat < 448) || (curBeat >= 448 && curBeat < 512) || (curBeat >= 832 && curBeat < 896)) && (curBeat % 2 == 0)) {
@@ -229,7 +229,7 @@ class Live extends BaseStage {
         });
     }
 
-    public static function droneCrash()
+    private function droneCrash()
     {
         explosion.visible = true;
         explosion.animation.play('boom', false);
@@ -239,10 +239,5 @@ class Live extends BaseStage {
         new FlxTimer().start(0.4, function(tmr:FlxTimer) {
             explosion.destroy();
         });
-    }
-
-    function resetVars()
-    {
-        boom = false;
     }
 }

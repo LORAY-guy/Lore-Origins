@@ -95,7 +95,7 @@ class ExitButton extends FlxSprite
             case 'options':
                 if (Std.isOfType(FlxG.state, NoteOffsetState)) {
                     MusicBeatState.switchState(new options.OptionsState(true));
-                    if(options.OptionsState.onPlayState)
+                    if(options.OptionsState.onPlayState || states.SkinSelectorState.onPlayState)
                     {
                         if(ClientPrefs.data.pauseMusic != 'None')
                             FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic)));

@@ -346,7 +346,7 @@ class PlayState extends MusicBeatState
 		// for lua
 		instance = this;
 
-		PauseSubState.songName = null; //Reset to default
+		CoolUtil.previousSongName = null; //Reset to default
 		playbackRate = ClientPrefs.getGameplaySetting('songspeed');
 
 		keysArray = [
@@ -876,8 +876,8 @@ class PlayState extends MusicBeatState
 		for (i in 1...4) Paths.sound('missnote$i');
 		Paths.image('alphabet');
 
-		if (PauseSubState.songName != null)
-			Paths.music(PauseSubState.songName);
+		if (CoolUtil.previousSongName != null)
+			Paths.music(CoolUtil.previousSongName);
 		else if(Paths.formatToSongPath(ClientPrefs.data.pauseMusic) != 'none')
 			Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic));
 
@@ -2245,15 +2245,20 @@ class PlayState extends MusicBeatState
 		}
 
 		//You ain't getting the editors, lol
-		#if (!html5)
-		if(!endingSong && !inCutscene && allowDebugKeys && startedCountdown)
+		// #if (!html5)
+		// if(!endingSong && !inCutscene && allowDebugKeys && startedCountdown)
+		// {
+		// 	if (controls.justPressed('debug_1'))
+		// 		openChartEditor();
+		// 	else if (controls.justPressed('debug_2'))
+		// 		openCharacterEditor();
+		// }
+		// #end
+
+		if (controls.justPressed('skins'))
 		{
-			if (controls.justPressed('debug_1'))
-				openChartEditor();
-			else if (controls.justPressed('debug_2'))
-				openCharacterEditor();
+			openSkinsMenu();
 		}
-		#end
 
 		if (healthBar.bounds.max != null && health > healthBar.bounds.max)
 			health = healthBar.bounds.max;
@@ -2630,11 +2635,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.stop();
 
 		chartingMode = true;
-		#if DISCORD_ALLOWED
-		DiscordClient.changePresence("Charting the LOOOOOOOOOOORE", null, null, true);
-		DiscordClient.resetClientID();
-		#end
-
+		#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
 		MusicBeatState.switchState(new ChartingState());
 	}
 
@@ -2648,6 +2649,19 @@ class PlayState extends MusicBeatState
 
 		#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
 		MusicBeatState.switchState(new CharacterEditorState(SONG.player2));
+	}
+
+	private function openSkinsMenu():Void
+	{
+		FlxG.camera.followLerp = 0;
+		persistentUpdate = false;
+		paused = true;
+		if(FlxG.sound.music != null)
+			FlxG.sound.music.stop();
+
+		SkinSelectorState.onPlayState = true;
+		#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
+		MusicBeatState.switchState(new SkinSelectorState());
 	}
 
 	public var isDead:Bool = false; //Don't mess with this on Lua!!!
@@ -2996,12 +3010,16 @@ class PlayState extends MusicBeatState
 				FlxG.sound.play(Paths.sound(value1), flValue2);
 		}
 
-		if (boyfriend.curCharacter.startsWith('playguy') && (!boyfriend.curCharacter.toLowerCase().contains('rtx') || !boyfriend.curCharacter.toLowerCase().contains('afton'))) {
-			if (eventName == 'Play Animation' && (value2 == 'bf' || flValue2 == 0)) {
-				if (eventTweensManager.exists('raise')) eventTweensManager.get('raise').cancel();
-				boyfriend.y = boyfriend.defaultY;
-				if (boyfriend.curCharacter.contains('staring')) boyfriend.x = boyfriend.defaultX;
-				boyfriend.flipX = true;
+		if (ClientPrefs.data.enableOurpleDance) {
+			if (boyfriend.curCharacter.startsWith('playguy') && (!boyfriend.curCharacter.toLowerCase().contains('rtx') || !boyfriend.curCharacter.toLowerCase().contains('afton'))) {
+				if (eventName == 'Play Animation' && (value2 == 'bf' || flValue2 == 0)) {
+					if (eventTweensManager.exists('raise'))
+						eventTweensManager.get('raise').cancel();
+					boyfriend.y = boyfriend.defaultY;
+					if (boyfriend.curCharacter.contains('staring'))
+						boyfriend.x = boyfriend.defaultX;
+					boyfriend.flipX = true;
+				}
 			}
 		}
 
@@ -3205,6 +3223,7 @@ class PlayState extends MusicBeatState
 			else
 			{
 				trace('WENT BACK TO FREEPLAY??');
+				FlxTransitionableState.skipNextTransOut = false;
 				#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
 				Conductor.bpm = 130;
 
@@ -3645,12 +3664,14 @@ class PlayState extends MusicBeatState
 
 		noteMissCommon(daNote.noteData, daNote);
 
-		if (boyfriend.curCharacter.startsWith('playguy'))
+		if (ClientPrefs.data.enableOurpleDance && boyfriend.curCharacter.startsWith('playguy'))
 		{
 			if (!daNote.gfNote) {
-				if (eventTweensManager.exists('raise')) eventTweensManager.get('raise').cancel();
+				if (eventTweensManager.exists('raise'))
+					eventTweensManager.get('raise').cancel();
 				boyfriend.y = boyfriend.defaultY;
-				if (boyfriend.curCharacter.contains('staring')) boyfriend.x = boyfriend.defaultX;
+				if (boyfriend.curCharacter.contains('staring'))
+					boyfriend.x = boyfriend.defaultX;
 				boyfriend.flipX = true;
 			}
 		}
@@ -3919,12 +3940,14 @@ class PlayState extends MusicBeatState
 		if (guitarHeroSustains && note.isSustainNote) gainHealth = false;
 		if (gainHealth) health += note.hitHealth * healthGain;
 
-		if (boyfriend.curCharacter.startsWith('playguy'))
+		if (ClientPrefs.data.enableOurpleDance && boyfriend.curCharacter.startsWith('playguy'))
 		{
 			if (!note.gfNote) {
-				if (eventTweensManager.exists('raise')) eventTweensManager.get('raise').cancel();
+				if (eventTweensManager.exists('raise'))
+					eventTweensManager.get('raise').cancel();
 				boyfriend.y = boyfriend.defaultY;
-				if (boyfriend.curCharacter.contains('staring')) boyfriend.x = boyfriend.defaultX;
+				if (boyfriend.curCharacter.contains('staring'))
+					boyfriend.x = boyfriend.defaultX;
 				boyfriend.flipX = true;
 			}
 		}
@@ -3969,34 +3992,36 @@ class PlayState extends MusicBeatState
 		char.ghostData.offsetY = char.offset.y;
 	}
 
-	public function createGhost(char:Character)
+	public function createGhost(char:Character):Void
 	{
-		if (char.visible) 
-		{
-			var ghost:FlxSprite = new FlxSprite(char.x, char.y);
-			ghost.frames = Paths.getSparrowAtlas(char.imageFile);
-			ghost.cameras = char.cameras;
-			ghost.scale.set(char.scale.x, char.scale.y);
-			ghost.scrollFactor.set(ghost.scrollFactor.x, ghost.scrollFactor.y);
-			ghost.antialiasing = !char.noAntialiasing;
-			ghost.flipX = char.flipX;
-			ghost.color = char.color; // For Detective
-			ghost.alpha = char.alpha;
-			FlxTween.tween(ghost, {alpha: 0}, 0.4, {ease: FlxEase.linear, onComplete: function(twn:FlxTween) {
-				ghost.destroy();
-			}});
-			ghost.animation.frameName = char.ghostData.frameName;
-			ghost.offset.x = char.ghostData.offsetX;
-			ghost.offset.y = char.ghostData.offsetY;
-	
-			if (!char.isPlayer) {
-				if (char.curCharacter.toLowerCase().contains('phone') || char.curCharacter.toLowerCase().contains('gf'))
-					addBehindGF(ghost);
-				else
-					addBehindDad(ghost);
-			} else {
-				addBehindBF(ghost);
-			}
+		if (!char.visible)
+			return;
+
+		var ghost:FlxSprite = new FlxSprite(char.x, char.y);
+		ghost.frames = Paths.getSparrowAtlas(char.imageFile);
+		ghost.cameras = char.cameras;
+		ghost.scale.set(char.scale.x, char.scale.y);
+		ghost.updateHitbox();
+		ghost.scrollFactor.set(ghost.scrollFactor.x, ghost.scrollFactor.y);
+		ghost.antialiasing = !char.noAntialiasing;
+		ghost.flipX = char.flipX;
+		ghost.color = char.color; // For Detective
+		ghost.alpha = char.alpha;
+		FlxTween.tween(ghost, {alpha: 0}, 0.4, {ease: FlxEase.linear, onComplete: function(twn:FlxTween) {
+			ghost.destroy();
+			ghost = null;
+		}});
+		ghost.animation.frameName = char.ghostData.frameName;
+		ghost.offset.x = char.ghostData.offsetX;
+		ghost.offset.y = char.ghostData.offsetY;
+
+		if (!char.isPlayer) {
+			if (char.curCharacter.toLowerCase().contains('phone') || char.curCharacter.toLowerCase().contains('gf'))
+				addBehindGF(ghost);
+			else
+				addBehindDad(ghost);
+		} else {
+			addBehindBF(ghost);
 		}
 	}
 
@@ -4092,7 +4117,7 @@ class PlayState extends MusicBeatState
 		setOnScripts('curStep', curStep);
 		callOnScripts('onStepHit');
 
-		if (boyfriend.curCharacter.startsWith('playguy') && !boyfriend.curCharacter.contains('mad') && !boyfriend.curCharacter.contains('afton'))
+		if (ClientPrefs.data.enableOurpleDance && boyfriend.curCharacter.startsWith('playguy') && !boyfriend.curCharacter.contains('mad') && !boyfriend.curCharacter.contains('afton'))
 		{
 			if (healthBar.percent < 20 && curStep % 2 == 0)
 			{
@@ -4213,7 +4238,7 @@ class PlayState extends MusicBeatState
 		super.beatHit();
 		lastBeatHit = curBeat;
 
-		if (boyfriend.curCharacter.startsWith('playguy') && !boyfriend.curCharacter.contains('afton')) {
+		if (ClientPrefs.data.enableOurpleDance && (boyfriend.curCharacter.startsWith('playguy') && (!boyfriend.curCharacter.contains('afton') || !boyfriend.curCharacter.contains('shaggy')))) {
 			if (healthBar.percent > 20) {
 				boyfriend.flipped = !boyfriend.flipped;
 				iconP1.flipX = boyfriend.flipped;

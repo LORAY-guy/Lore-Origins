@@ -57,19 +57,47 @@ function createGameIframe()
     iframe.mozallowfullscreen = true;
     iframe.msallowfullscreen = true;
     iframe.webkitallowfullscreen = true;
-    iframe.src = "https://html-classic.itch.zone/html/14742211/index.html";
-    iframe.style.width = "1280px";
-    iframe.style.height = "720px";
+    iframe.src = "https://html-classic.itch.zone/html/14770002/index.html";
+
+    if (window.innerWidth <= 768) {
+        iframe.style.width = "100%";
+        iframe.style.height = Math.min(window.innerWidth * 0.5625, 400) + "px";
+    } else {
+        iframe.style.width = "1280px";
+        iframe.style.height = "720px";
+    }
+    
     iframe.style.borderRadius = "16px";
     iframe.style.border = "none";
     iframe.style.marginTop = "10px";
     iframe.style.marginBottom = "5px";
 
     gameContainer.appendChild(iframe);
+    
+    // Add window resize listener to adjust iframe size
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 768) {
+            iframe.style.width = "100%";
+            iframe.style.height = Math.min(window.innerWidth * 0.5625, 400) + "px";
+        } else {
+            iframe.style.width = "1280px";
+            iframe.style.height = "720px";
+        }
+    });
 }
 
 function isDesktopPlatform()
 {
+    // Check for mobile devices first
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) return Promise.resolve(false);
+    
+    // Check for touch capability (tablets and touch laptops)
+    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isSmallScreen = window.innerWidth < 1024; // Consider tablets as mobile for this game
+    
+    if (hasTouch && isSmallScreen) return Promise.resolve(false);
+    
     if (navigator.userAgentData) {
         return navigator.userAgentData.getHighEntropyValues(["platform"]).then(ua => {
             const platform = ua.platform.toLowerCase();

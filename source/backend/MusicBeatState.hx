@@ -164,8 +164,8 @@ class MusicBeatState extends FlxUIState
 			resetState();
 			return;
 		}
-		
-		if (PlayState.SONG != null && PlayState.SONG.song.toLowerCase() == 'lua' && Type.getClassName(Type.getClass(nextState)).toLowerCase().contains("playstate")) {
+
+		if (PlayState.SONG != null && (PlayState.SONG.song.toLowerCase() == 'lua' || PlayState.SONG.song.toLowerCase() == 'lore-apology') && Type.getClassName(Type.getClass(nextState)).toLowerCase().contains("playstate")) {
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
 		}

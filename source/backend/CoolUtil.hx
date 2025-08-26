@@ -4,6 +4,8 @@ import openfl.utils.Assets;
 
 class CoolUtil
 {
+	public static var previousSongName:String = null;
+
 	inline public static function quantize(f:Float, snap:Float){
 		// changed so this actually works lol
 		var m:Float = Math.fround(f * snap);
@@ -197,5 +199,14 @@ class CoolUtil
 			ClientPrefs.data.goldenMouse = golden;
 	   	var curGuy:String = (ClientPrefs.data.goldenMouse ? 'golden-' : '') + ClientPrefs.data.guy.toLowerCase();
     	FlxG.mouse.load('assets/shared/images/cursors/$curGuy-cursor.png', #if mobile 2 #else 1 #end, -5, -5);
+	}
+
+	inline public static function getPauseSong():String
+	{
+		var formattedSongName:String = (previousSongName != null ? Paths.formatToSongPath(previousSongName) : '');
+		var formattedPauseMusic:String = Paths.formatToSongPath(ClientPrefs.data.pauseMusic);
+		if(formattedSongName == 'none' || (formattedSongName != 'none' && formattedPauseMusic == 'none')) return null;
+
+		return (formattedSongName != '') ? formattedSongName : formattedPauseMusic;
 	}
 }

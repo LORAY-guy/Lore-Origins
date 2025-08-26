@@ -1,3 +1,13 @@
+v2.5.2
+======================================================================================================================================================================================
+
+- Added a "Skins" input, which opens the Skins Selector menu (only whilst in-game or in the pause menu) (input can be modified in the Controls Settings menu).
+- Added the option to prevent Ourple Guy characters from doing the funny dance.
+- Added arrows between the categories' name in the Freeplay Selection menu.
+- Fixed missing crowd in 'Measure Up' cover level.
+- Fixed Lore Apology intro cutscene not showing sometimes.
+- Fixed weird transition when accessing to Options menu whilst playing the Lua song.
+
 v2.5.0
 ======================================================================================================================================================================================
 

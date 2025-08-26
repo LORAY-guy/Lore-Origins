@@ -4,17 +4,17 @@ import objects.HealthIcon;
 import objects.Character;
 import objects.StrumNote;
 
-/**
- * Don't worry about the VERY specific values for the Tweens and such
- * Lua's interpretation of (stepCrochet / 1000) is very different from Haxe's cuz float's precision in Lua is more advanced, thus giving a much better result and feels more in the rythm of the song.
- * So i'm using Lua's value since they are more fitting with what I want to make
- */
 class Distractible extends BaseStage
 {
     private var bg:BGSprite;
     private var whiteStuff:FlxSprite;
     private var awesomeText:FlxText;
 
+    /**
+    * Don't worry about the VERY specific values for the Tweens and such
+    * Lua's interpretation of (stepCrochet / 1000) is very different from Haxe's cuz float's precision in Lua is more advanced, thus giving a much better result and feels more in the rythm of the song.
+    * So i'm using the old Lua script's value since they are more fitting with what I want to make
+    */
     override public function create():Void
     {
         super.create();
