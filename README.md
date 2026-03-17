@@ -1,4 +1,4 @@
-# AFTER BEING GONE FOR A WHILE, LORE ORIGINS IS BACK WITH A 2.5 UPDATE!!
+# LORE ORIGINS DOES IT AGAIN WITH A v2.7 UPDATE !!!
 
 VISIT THE OFFICIAL WEBSITE (https://loreorigins.neocities.org) OR DOWNLOAD LORE ORIGINS NOW ON GAMEBANANA (https://gamebanana.com/mods/476070) or on this Github page by checking out the release page of the most recent pushed version
 
@@ -8,24 +8,21 @@ Lore Origins is an FNF mod that regroups the entire lore multiverse. The origina
 
 This collection of lore remixes are repurposed for its original cast of singers, Ourple Guy, Matpat and Phone Guy, as an hope to fix the multiple parallel universes that those songs created...
 
-![thumbnail](https://files.catbox.moe/xi3lwo.jpg)
+![thumbnail](art/crafted_the_goat.png)
 
-## THIS V2.5 UPDATE INTRODUCES...
+## THIS V2.7 UPDATE INTRODUCES...
 
- - A NEW SKIN SELECTOR SYSTEM!
+ - WIDESCREEN SUPPORT!!
    --> Gone are the Ourple variants, now, the skins affects ALL the cast. (Phone Guy only has 2 skins but whatever, i don't have the budget to make one myself)
- - ANDROID BUILD! (very shitty, but hey, it works!) (I'll fix it later, i promise, I made it in 5 days, okay?)
- - NEW ORIGINAL MIX : Presidency (Matpat President Mix)
- - NEW SECRET SONG! (You'll have to dig down to find that one, I'm not gonna give you any clues this time)
- - WIDESCREEN RESOLUTION SUPPORT.
- - And much, much more...
+ - NEW ORIGINAL MIX : Youtube
+ - And more bugfixes and such.
 
 ## COMPILATION GUIDE
 
 ![intro-image](https://files.catbox.moe/99s4jw.jpg)
 
 ### Prerequisites
-- [Haxe 4.2.4](https://haxe.org/download/)
+- [Haxe 4.3.6](https://haxe.org/download/)
 - [Git](https://git-scm.com/downloads)
 
 ### The compiled executables will be available in the `export` directory.

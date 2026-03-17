@@ -1,5 +1,7 @@
 package states.stages;
 
+import flixel.addons.display.FlxRuntimeShader;
+
 class ErectStage extends BaseStage
 {
     private var solid:FlxSprite;
@@ -89,10 +91,39 @@ class ErectStage extends BaseStage
         }
 
         gf.idleSuffix = "-alt";
-		gf.recalculateDanceIdle();
+        gf.recalculateDanceIdle();
+
+        #if (!flash && sys)
+        applyAdjustColorShaders();
+        #end
 
         super.createPost();
     }
+
+    #if (!flash && sys)
+    private function applyAdjustColorShaders():Void
+    {
+        if (!ClientPrefs.data.shaders) return;
+
+        applyErectShaderToChar(boyfriend, 12, 0, 7, -23);
+        applyErectShaderToChar(dad, -32, 0, -23, -33);
+        //applyErectShaderToChar(gf, -9, 0, -4, -30); Does not look good on Phone Guy
+    }
+    
+    private function applyErectShaderToChar(char:FlxSprite, hue:Float, saturation:Float, contrast:Float, brightness:Float):Void
+    {
+        if (char == null) return;
+
+        var shader = new FlxRuntimeShader(Paths.getTextFromFile('shaders/adjustColor.frag'));
+        
+        shader.setFloat('hue', hue);
+        shader.setFloat('saturation', saturation);
+        shader.setFloat('contrast', contrast);
+        shader.setFloat('brightness', brightness);
+
+        char.shader = shader;
+    }
+    #end
 
     override public function stepHit()
     {

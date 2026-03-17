@@ -1,6 +1,21 @@
 {
   "patches": [
     {
+      "version": "2.7.2",
+      "date": "2026-03-18",
+      "title": "Widescreen Hotfix",
+      "changes": [
+        {
+          "type": "improvement",
+          "description": "Compiled Widescreen version next to original executable."
+        },
+        {
+          "type": "improvement",
+          "description": "Added the erect shader effect to the Youtube remix stage (I got a DM about that not even an hour after release)."
+        }
+      ]
+    },
+    {
       "version": "2.7",
       "date": "2026-03-17",
       "title": "WIDESCREEN UPDATE",
@@ -8,6 +23,10 @@
         {
           "type": "new",
           "description": "WIDESCREEN BUILD"
+        },
+        {
+          "type": "new",
+          "description": "Lore Youtube Mix"
         },
         {
           "type": "improvement",

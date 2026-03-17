@@ -78,13 +78,22 @@ jobs:
         run: haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
-      - name: Compile
-        run: haxelib run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}"
+      - name: Compile normal and widescreen builds
+        run: |
+          haxelib run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}"
+
+          mkdir -p export/release/linux/artifacts/final
+          cp -r export/release/linux/bin/. export/release/linux/artifacts/final/
+
+          haxelib run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}" -Dwidescreen
+
+          cp "export/release/linux/bin/Lore Origins" "export/release/linux/artifacts/final/Lore Origins (Widescreen)"
+          chmod +x "export/release/linux/artifacts/final/Lore Origins (Widescreen)"
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
           name: linux-release
-          path: 'export/release/linux/bin'
+          path: export/release/linux/artifacts/final
   windows-release:
     runs-on: windows-latest
     steps:
@@ -165,13 +174,23 @@ jobs:
         shell: cmd
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
-      - name: Compile
-        run: haxelib run lime build windows --app-version="4.0.0-${{ github.run_id}}"
+      - name: Compile normal and widescreen builds
+        run: |
+          $finalDir = "export/release/windows/artifacts/final"
+
+          haxelib run lime build windows --app-version="4.0.0-${{ github.run_id}}"
+
+          New-Item -ItemType Directory -Force -Path $finalDir | Out-Null
+          Copy-Item -Path "export/release/windows/bin/*" -Destination $finalDir -Recurse -Force
+
+          haxelib run lime build windows --app-version="4.0.0-${{ github.run_id}}" -Dwidescreen
+
+          Copy-Item -Path "export/release/windows/bin/Lore Origins.exe" -Destination "$finalDir/Lore Origins (Widescreen).exe" -Force
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows-release
-          path: export/release/windows/bin
+          path: export/release/windows/artifacts/final
   mac-release:
     runs-on: macos-15
     steps:
@@ -240,13 +259,22 @@ jobs:
         run: haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
-      - name: Compile
-        run: haxelib run lime build mac --app-version="4.0.0-${{ github.run_id}}"
+      - name: Compile normal and widescreen builds
+        run: |
+          haxelib run lime build mac --app-version="4.0.0-${{ github.run_id}}"
+
+          mkdir -p export/release/macos/artifacts/final
+          cp -r export/release/macos/bin/. export/release/macos/artifacts/final/
+
+          haxelib run lime build mac --app-version="4.0.0-${{ github.run_id}}" -Dwidescreen
+
+          rm -rf "export/release/macos/artifacts/final/Lore Origins (Widescreen).app"
+          cp -R "export/release/macos/bin/Lore Origins.app" "export/release/macos/artifacts/final/Lore Origins (Widescreen).app"
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
           name: mac-release
-          path: export/release/macos/bin
+          path: export/release/macos/artifacts/final
 
   android-release:
     runs-on: ubuntu-latest

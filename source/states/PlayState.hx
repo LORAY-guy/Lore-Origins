@@ -4007,6 +4007,41 @@ class PlayState extends MusicBeatState
 		ghost.offset.x = char.ghostData.offsetX;
 		ghost.offset.y = char.ghostData.offsetY;
 
+		#if (!flash && sys)
+		if (SONG.song.toLowerCase() == "youtube")
+		{
+			var shader = new FlxRuntimeShader(Paths.getTextFromFile('shaders/adjustColor.frag'));
+
+			// Defaults to boyfriend's shader values, but changes based on character
+			var hue:Float = 12;
+			var saturation:Float = 0;
+			var contrast:Float = 7;
+			var brightness:Float = -23;
+			
+			if (char == dad)
+			{
+				hue = -32;
+				saturation = 0;
+				contrast = -23;
+				brightness = -33;
+			}
+			else if (char == gf)
+			{
+				hue = -9;
+				saturation = 0;
+				contrast = -4;
+				brightness = -30;
+			}
+						
+			shader.setFloat('hue', hue);
+			shader.setFloat('saturation', saturation);
+			shader.setFloat('contrast', contrast);
+			shader.setFloat('brightness', brightness);
+
+			ghost.shader = shader;
+		}
+		#end
+
 		if (!char.isPlayer) {
 			if (char.curCharacter.toLowerCase().contains('phone') || char.curCharacter.toLowerCase().contains('gf'))
 				addBehindGF(ghost);

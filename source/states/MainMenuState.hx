@@ -7,7 +7,7 @@ import flixel.effects.FlxFlicker;
 class MainMenuState extends MusicBeatState
 {
 	public static final psychEngineVersion:String = '0.7.3'; // This is used for Discord RPC
-	public static final loreVersion:String = '2.7'; //This is also used for Discord RPC
+	public static final loreVersion:String = '2.7.2'; //This is also used for Discord RPC
 
 	private static var curSelected:Int = 0;
 	private static var playedIntro:Bool = false;
