@@ -52,10 +52,11 @@ class CreditsState extends MusicBeatState
 		verttabox1.velocity.set(0, 40);
 		add(verttabox1);
 
-		var verttabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/verttabox2'), Y, 0, 0);
+		var verttabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/verttabox'), Y, 0, 0);
 		verttabox2.scrollFactor.set(0, 0);
 		verttabox2.velocity.set(0, -40);
 		verttabox2.x = FlxG.width - verttabox2.width;
+		verttabox2.flipX = true;
 		add(verttabox2);
 		
 		grpOptions = new FlxTypedGroup<Alphabet>();
@@ -261,7 +262,7 @@ class CreditsState extends MusicBeatState
 					['Whitey',				'whitey',			'Various arts',								 													'https://x.com/Whitemungus',										'BBBBBB'],
 					['Who',					'who',				'Lore Sad Mix art cover',					 													'https://x.com/agustheartist',										'919191'],
 					['Loopy',				'loopy',			'Skins banner art',						 														'https://x.com/ExeWiglett',											'EB7A34'],
-					['Crafted',				'crafted',			'Icons in my credits menu',																		'https://youtube.com/@Crafted_37',									'D0C6D5'],
+					['Crafted',				'crafted',			'v2.7 thumbnail & icons in my credits menu',																		'https://youtube.com/@Crafted_37',									'D0C6D5'],
 					[''],
 					['Special Thanks'],
 					['Harxurt', 			'harxurt',			'Emotional support, thanks for being such a nice friend (and for making the Ourple LORAY sprites :p)','https://youtube.com/@Harxurt',								'CCCCCC'],
@@ -269,7 +270,6 @@ class CreditsState extends MusicBeatState
 					['Matpat', 				'matpat',			'For being the best youtuber ever, and for making me want to make this mod in the first place',	'https://www.youtube.com/@GameTheory',								'FF0000'],
 					['Scott Cawthon', 		'scott', 			'For creating one of the most life-changing franchises there ever was in this world.', 			'https://www.youtube.com/channel/UC2Xp5JeeO9sP6bhc-9yD1xA', 		'328BA8'],
 					['Out',					'out',				'Odd one but, thanks for making me rethink my life\'s style and decisions...', 					'',																	'AAAAAA'],
-					['Lua',					'lua',				'Thank you for everything... hope I\'ll see you out there one day...',							'https://www.youtube.com/@LORAY_', 									'FF1F4A'],
 					['You', 				'',					'For playing this mod!',																		'',																	'AAAAAA'],
 				];
 			case 'Composers':

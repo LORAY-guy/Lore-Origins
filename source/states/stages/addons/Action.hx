@@ -26,6 +26,8 @@ class Action extends BaseStage
     var eventTweens:FlxTweenManager = new FlxTweenManager();
 	var eventTweensManager:Map<String, FlxTween> = new Map<String, FlxTween>();
 
+    var resolution:Float = FlxG.width / 1920;
+
     override function create() 
     {
         screen = new FlxSprite(325, 400).loadGraphic(Paths.image('action/screen'));
@@ -63,7 +65,7 @@ class Action extends BaseStage
 
         coolfilter = new FlxSprite().loadGraphic(Paths.image('coolfilter'));
         coolfilter.cameras = [camHUD];
-        coolfilter.scale.set(1.8, 1.8);
+        coolfilter.setGraphicSize(FlxG.width, FlxG.height);
         coolfilter.updateHitbox();
         coolfilter.screenCenter(XY);
         coolfilter.visible = false;
@@ -80,17 +82,18 @@ class Action extends BaseStage
         subtitles.visible = false;
         add(subtitles);
 
-        if (!ClientPrefs.data.lowQuality) //This takes 500MB of RAM, which is a no-no for some computers
+        if (!ClientPrefs.data.lowQuality)
         {
-            vcrshit = new FlxSprite().loadGraphic(Paths.image('vcrshit'));
+            var vcrshitImage = "vcrshit" + (resolution != 1 ? "-wide" : "");
+            vcrshit = new FlxSprite().loadGraphic(Paths.image(vcrshitImage));
             vcrshit.cameras = [camHUD];
-            vcrshit.scale.set(1.075, 1.075);
+            vcrshit.setGraphicSize(FlxG.width, FlxG.height);
             vcrshit.updateHitbox();
             vcrshit.screenCenter(XY);
             vcrshit.visible = false;
             add(vcrshit);
 
-            redboob = new FlxSprite(150, 40).loadGraphic(Paths.image('red'));
+            redboob = new FlxSprite(180, 57).loadGraphic(Paths.image('red'));
             redboob.cameras = [camHUD];
             redboob.scale.set(0.925, 0.925);
             redboob.updateHitbox();
@@ -239,8 +242,13 @@ class Action extends BaseStage
                     eventTweensManager.get('stuffIdk').cancel();
                     eventTweensManager.remove('stuffIdk');
                 } 
-                defaultCamZoom = 0.65;
-                camGame.zoom = 0.65;
+                if (resolution != 1) {
+                    defaultCamZoom = 0.8;
+                    camGame.zoom = 0.8;
+                } else {
+                    defaultCamZoom = 0.65;
+                    camGame.zoom = 0.65;
+                }
                 cameraSpeed = 2.5;
                 
             case 1788:

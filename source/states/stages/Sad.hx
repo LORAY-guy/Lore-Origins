@@ -34,6 +34,8 @@ class Sad extends BaseStage
 
     var tutorialTxt:FlxText;
 
+    private var resolution:Float = (FlxG.width / 1280);
+
     override function create() 
     {
         wall = new BGSprite('lore/wall', -320, 0, 1, 1);
@@ -95,7 +97,7 @@ class Sad extends BaseStage
         super.createPost();
 
         if (!ClientPrefs.data.lowQuality) {
-            curtains = new BGSprite("lore/curtain", -75, 135, 1.2, 1.2);
+            curtains = new BGSprite("lore/curtain", -105, 135, 1.2, 1.2);
             curtains.setGraphicSize(Std.int(curtains.width * 1.2));
             curtains.updateHitbox();
             FlxTween.color(curtains, 0.01, curtains.color, FlxColor.fromRGB(44, 44, 44));
@@ -125,8 +127,10 @@ class Sad extends BaseStage
         couchBg = new BGSprite('couch');
         couchBg.color = 0xFF555555;
         couchBg.cameras = [camHUD];
+        couchBg.scale.set(resolution, resolution); // What the fuck was I doing with setting the scrollFactor???
+        couchBg.updateHitbox();
         couchBg.screenCenter();
-        couchBg.scrollFactor.set(0.75 * (FlxG.width / 1280), 0.75 * (FlxG.width / 1280));
+        couchBg.y -= resolution != 1 ? 100 * resolution : 0;
         couchBg.visible = false;
         add(couchBg);
 

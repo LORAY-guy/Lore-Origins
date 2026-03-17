@@ -186,14 +186,10 @@ class Main extends Sprite
 
 	public static function exitGame():Void
 	{
-		#if windows
-		Sys.exit(0);
+		#if (windows || linux || mac)
+		Application.current.window.close();
 		#elseif html5
 		js.Browser.window.close();
-		#elseif linux
-		Sys.command('pkill "Lore Origins"');
-		#elseif mac
-		Sys.command('pkill -f "Lore Origins"');
 		#end
 	}
 }

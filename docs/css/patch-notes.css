@@ -1,0 +1,207 @@
+.navigation {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+#back-button {
+    font-family: 'ourple';
+    font-size: clamp(14px, 3vw, 18px);
+    color: #fff;
+    background-color: rgba(255, 165, 0, 0.7);
+    border: 2px solid #cc8800;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: url("../img/cursors/ourple-finger.png"), pointer;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 1);
+    transition: all 0.3s ease;
+}
+
+#back-button:hover {
+    background-color: rgba(255, 165, 0, 0.9);
+    transform: scale(1.05);
+}
+
+#patch-notes-container {
+    width: 100%;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+
+#patch-notes-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#patch-notes-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+#patch-notes-container::-webkit-scrollbar-thumb {
+    background: rgba(204, 0, 255, 0.7);
+    border-radius: 4px;
+}
+
+#patch-notes-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(204, 0, 255, 0.9);
+}
+
+.patch-entry {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.patch-entry:hover {
+    border-color: rgba(204, 0, 255, 0.5);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.patch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.patch-version {
+    font-family: 'ourple';
+    font-size: clamp(20px, 4vw, 28px);
+    color: #fff;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 1);
+    margin: 0;
+}
+
+.patch-date {
+    font-family: 'ourple';
+    font-size: clamp(14px, 3vw, 16px);
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 1);
+}
+
+.patch-title {
+    font-family: 'ourple';
+    font-size: clamp(16px, 3.5vw, 20px);
+    color: rgba(204, 0, 255, 1);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 1);
+    margin: 0 0 15px 0;
+}
+
+.changes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.change-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    gap: 10px;
+}
+
+.change-type {
+    font-family: 'ourple';
+    font-size: clamp(12px, 2.5vw, 14px);
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 1);
+    min-width: 60px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.change-type.new {
+    background-color: rgba(0, 255, 0, 0.7);
+    color: #fff;
+}
+
+.change-type.fix {
+    background-color: rgba(255, 165, 0, 0.7);
+    color: #fff;
+}
+
+.change-type.improvement {
+    background-color: rgba(0, 150, 255, 0.7);
+    color: #fff;
+}
+
+.change-type.removal {
+    background-color: rgba(255, 0, 0, 0.7);
+    color: #fff;
+}
+
+.change-description {
+    font-family: 'ourple';
+    font-size: clamp(14px, 3vw, 16px);
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 1);
+    line-height: 1.4;
+    flex: 1;
+}
+
+#loading {
+    font-family: 'ourple';
+    font-size: clamp(18px, 4vw, 24px);
+    color: #fff;
+    text-align: center;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 1);
+    padding: 40px;
+}
+
+.error-message {
+    font-family: 'ourple';
+    font-size: clamp(16px, 3.5vw, 20px);
+    color: #ff4444;
+    text-align: center;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 1);
+    padding: 40px;
+    background: rgba(255, 0, 0, 0.1);
+    border: 2px solid #ff4444;
+    border-radius: 8px;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+    .patch-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .change-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .change-type {
+        align-self: flex-start;
+        min-width: auto;
+    }
+    
+    #patch-notes-container {
+        max-height: 500px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .patch-entry {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    #patch-notes-container {
+        max-height: 400px;
+        padding-right: 5px;
+    }
+}

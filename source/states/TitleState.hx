@@ -10,7 +10,7 @@ import flixel.input.gamepad.FlxGamepad;
 
 import openfl.Assets;
 
-import shaders.ColorSwap;
+import shaders.PixelateShader;
 
 import states.StoryMenuState;
 import states.OutdatedState;
@@ -125,7 +125,7 @@ class TitleState extends MusicBeatState
 	private var vhs:FlxSprite;
 	private var gameTheoryLogo:FlxSprite;
 	private var titleText:FlxSprite;
-	private var swagShader:ColorSwap = null;
+	private var swagShader:PixelateShader = null;
 
 	function startIntro()
 	{
@@ -139,6 +139,8 @@ class TitleState extends MusicBeatState
 		Conductor.bpm = 130;
 		persistentUpdate = true;
 
+		swagShader = new PixelateShader();
+
 		var bg:FlxSprite = new FlxSprite();
 		bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
@@ -151,13 +153,12 @@ class TitleState extends MusicBeatState
 		vhs.antialiasing = ClientPrefs.data.antialiasing;
 		vhs.updateHitbox();
 		vhs.screenCenter();
+		vhs.shader = swagShader.shader;
 		add(vhs);
 
 		gameTheoryLogo = new FlxSprite().loadGraphic(Paths.image('gtLogo'));
 		gameTheoryLogo.screenCenter();
 		gameTheoryLogo.setGraphicSize(Std.int(gameTheoryLogo.width * 0.35));
-
-		swagShader = new ColorSwap();
 
 		add(gameTheoryLogo);
 		gameTheoryLogo.shader = swagShader.shader;
@@ -187,6 +188,7 @@ class TitleState extends MusicBeatState
 		
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
+		titleText.shader = swagShader.shader;
 		add(titleText);
 
 		credGroup = new FlxGroup();
@@ -217,7 +219,6 @@ class TitleState extends MusicBeatState
 			initialized = true;
 
 		Paths.clearUnusedMemory();
-		// credGroup.add(credTextShit);
 	}
 
 	#if CHECK_FOR_UPDATES
@@ -394,8 +395,8 @@ class TitleState extends MusicBeatState
 
 		if(swagShader != null)
 		{
-			if(controls.UI_LEFT) swagShader.hue -= elapsed * 0.1;
-			if(controls.UI_RIGHT) swagShader.hue += elapsed * 0.1;
+			if(controls.UI_LEFT) swagShader.cycleValue -= elapsed * 2;
+			if(controls.UI_RIGHT) swagShader.cycleValue += elapsed * 2;
 		}
 
 		super.update(elapsed);

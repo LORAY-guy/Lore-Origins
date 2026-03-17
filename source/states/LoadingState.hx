@@ -26,7 +26,7 @@ class LoadingState extends MusicBeatState
 	
 	// TO DO: Make this easier
 
-	//LORAY here... WHAT DOES THIS DO EXACTLY??
+	// LORAY here... WHAT DOES THIS DO EXACTLY??
 	
 	private var target:FlxState;
 	private var stopMusic = false;
@@ -78,10 +78,10 @@ class LoadingState extends MusicBeatState
 
 	override public function create():Void
 	{
-		if (PlayState.SONG.song.toLowerCase() != 'distractible') {
+		if (PlayState.SONG != null && PlayState.SONG.song.toLowerCase() != 'distractible') {
 			var funkay:FlxSprite;
 			if (FlxG.random.bool(1)) {
-				funkay = new FlxSprite().loadGraphic(Paths.image('loading/cinema'));
+				funkay = new FlxSprite().loadGraphic(Paths.image('loading/' + FlxG.random.getObject(['cinema', 'loreupdate']))); // thx Crafted
 				funkay.setGraphicSize(FlxG.width, FlxG.height);
 				funkay.updateHitbox();
 			} else {
@@ -136,7 +136,7 @@ class LoadingState extends MusicBeatState
 		}
 
 		loadingText = new FlxText(0, FlxG.height - 90, 0, "Loading...", 76);
-		if (PlayState.SONG.song.toLowerCase() == 'distractible') {
+		if (PlayState.SONG != null && PlayState.SONG.song.toLowerCase() == 'distractible') {
 			loadingText.setFormat(Paths.font('mark.ttf'), 76, 0xFFFFFF, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			loadingText.borderSize = 3;
 		} else {
@@ -149,7 +149,7 @@ class LoadingState extends MusicBeatState
         add(loadingText);
 
 		var uselessTip:FlxText = new FlxText(0, 0, FlxG.width - (FlxG.width * (1/4)), '', 48);
-		if (PlayState.SONG.song.toLowerCase() == 'distractible') {
+		if (PlayState.SONG != null && PlayState.SONG.song.toLowerCase() == 'distractible') {
 			uselessTip.setFormat(Paths.font('mark.ttf'), 48, 0xFFFFFF, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			uselessTip.borderSize = 3;
 		} else {

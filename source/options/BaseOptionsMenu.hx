@@ -58,9 +58,10 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		lettabox1.y = FlxG.height - lettabox1.height;
 		spikes.add(lettabox1);
 
-		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox2'), X, 0, 0);
+		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox2.scrollFactor.set(0, 0);
 		lettabox2.velocity.set(-40, 0);
+		lettabox2.flipY = true;
 		spikes.add(lettabox2);
 
 		var guy = new FlxSprite();

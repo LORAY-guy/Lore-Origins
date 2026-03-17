@@ -1,12 +1,12 @@
 # AFTER BEING GONE FOR A WHILE, LORE ORIGINS IS BACK WITH A 2.5 UPDATE!!
 
-DOWNLOAD LORE ORIGINS NOW ON GAMEBANANA (https://gamebanana.com/mods/476070) or on this Github page by checking out the release page of the most recent pushed version
+VISIT THE OFFICIAL WEBSITE (https://loreorigins.neocities.org) OR DOWNLOAD LORE ORIGINS NOW ON GAMEBANANA (https://gamebanana.com/mods/476070) or on this Github page by checking out the release page of the most recent pushed version
 
 ## WHAT IS LORE ORIGINS?
 
 Lore Origins is an FNF mod that regroups the entire lore multiverse. The original track, made by LEX3X (aka kiwiquest), got so much praized for its authenticity and has become one of the most remixed song ever composed. This mod is an honor to this wonderful track that, basically, changed my life (for the better... or worse...).
 
-This collection of lore remixes are repurposed for its original cast of singers, Ourple Guy, Matpat and Phone Guy, as an hope to fix the multiple parallel universes that each of those songs created...
+This collection of lore remixes are repurposed for its original cast of singers, Ourple Guy, Matpat and Phone Guy, as an hope to fix the multiple parallel universes that those songs created...
 
 ![thumbnail](https://files.catbox.moe/xi3lwo.jpg)
 
@@ -17,7 +17,7 @@ This collection of lore remixes are repurposed for its original cast of singers,
  - ANDROID BUILD! (very shitty, but hey, it works!) (I'll fix it later, i promise, I made it in 5 days, okay?)
  - NEW ORIGINAL MIX : Presidency (Matpat President Mix)
  - NEW SECRET SONG! (You'll have to dig down to find that one, I'm not gonna give you any clues this time)
- - WIDESCREEN RESOLUTION SUPPORT (well, not really available when I think about it, but I might publish a version for every widescreen resolution available)
+ - WIDESCREEN RESOLUTION SUPPORT.
  - And much, much more...
 
 ## COMPILATION GUIDE
@@ -39,9 +39,9 @@ This collection of lore remixes are repurposed for its original cast of singers,
 2. Run `setup/setup-windows.bat` to install required libraries
 3. To compile, run one of:
    ```bat
-   art/build_x64.bat       # 64-bit Release
-   art/build_x64-debug.bat # 64-bit Debug
-   art/build_x32.bat       # 32-bit Release
+   art/build_x64.bat          # 64-bit Release
+   art/build_x64-debug.bat    # 64-bit Debug
+   art/build_x32.bat          # 32-bit Release
    ```
 
 ### Linux/Mac
@@ -67,8 +67,8 @@ This collection of lore remixes are repurposed for its original cast of singers,
 ### HTML5/Browser
 Run one of:
 ```bat
-art/build_html.bat       # Release build
-art/build_html-debug.bat # Debug build
+art/build_html.bat         # Release build
+art/build_html-debug.bat   # Debug build
 ```
 
 ### Troubleshooting

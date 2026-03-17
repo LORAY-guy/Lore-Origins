@@ -1,3 +1,18 @@
+v2.7
+======================================================================================================================================================================================
+
+- ACTUAL WIDESCREEN RELEASE.
+- Ourplized the Freeplay Menu.
+- Ourplized the Controls Options Menu.
+- Replaced the shader effect in the Title Screen.
+- Replaced Lore Tropical Mix background with a non-AI generated image (apologies).
+- Updated LORAY Credits Menu.
+- Fixed Category graphics in Freeplay Category Select Menu not updating it's antialiasing setting.
+- Fixed the score not updating on the first selection of the Freeplay Menu.
+- Fixed Phone RTX skin's camera position.
+- Fixed "Taking Notes" achievement keeping track of pause counter between different songs.
+- Fixed version number in Main Menu not being updated.
+
 v2.5.2
 ======================================================================================================================================================================================
 
@@ -78,4 +93,95 @@ If you are the director of any Ourple related mod and want your ourple to be par
 
 IMPORTANT NOTE : If Chronology crashes, it's actually normal, the thing is I added so many events to it that the game literally crashes because of how many there are (that's my theory anyway, cuz everything should be working fine).
 
-ADDITIONAL NOTE: If you are having performance issues, I recommand disabling the miscellanous events in the Lore Origins settings.
+AL NOTE: If you are having performance issues, I recommand disabling the miscellanous events in the Lore Origins settings.
+
+v1.6.0
+======================================================================================================================================================================================
+
+- Added Action cover
+- Revamped Main Menu (Lore art by @whitemungus)
+- Revamped Options Menu
+- Remade old Lore covers (> 1 year old) (I couldn't find a good Lore D-sides FLP tho :( )
+- Moved Psych Engine version (0.6.3 -> 0.7.3)
+- Added back the time left on the time bar
+- Ourplized the flashing lights warning screen
+- Added lore related intro texts
+- Fixed mouse graphic offset
+- Fixed main menu items going idle when hovering one with the mouse and moving the mouse away
+- Fixed a couple of bugs
+
+v1.5.0
+======================================================================================================================================================================================
+
+- Added Measure Up Cover
+- Added an outdated mechanic
+- Made some menus accessible using the mouse
+
+v1.4.5
+======================================================================================================================================================================================
+
+- Added Detective cover
+- Added new cursor image
+- Made some menus accessible using the mouse
+- Fixed some oopsies 
+
+v1.4.2
+======================================================================================================================================================================================
+
+- Re-added the Gameplay Changer Menu in Freeplay
+- Fixed instrumental for Lore Sad Mix
+- Fixed a bug where you could spam enter to glitch the Freeplay Select Menu
+- Fixed Discord RPC not showing the logo of the exe
+- Removed more usused code for better performance
+
+v1.4
+======================================================================================================================================================================================
+
+- Added Lore Sad Mix
+- New credits + Icon fix 1.3.5.2
+- New credits look (originally from Iron Lung v2 (https://gamebanana.com/mods/451111))
+- Fixed icon placement at the beginning of the song
+
+v1.3.5
+======================================================================================================================================================================================
+
+- Updated the New Ourple Guy HUD to be 100% accurate (thanks for publishing the source code :p)
+
+v1.3
+======================================================================================================================================================================================
+
+- Added Lore Apology Mix P-CORE cover.
+- Improved the Freeplay Select Menu
+- Removed Shaggers
+
+v1.2
+======================================================================================================================================================================================
+
+- Added Lore Horse Mix cover
+- The LORAY menu element now has it's own menu !
+- Slight adjustement of the HUD again
+- Smallest update ever (yep, totally nothing) 1.1
+- Added Freeplay Categories : Covers and Originals.
+- Added Live cover
+- Added Lore Tropical Mix in Originals.
+- Added Options in the Pause Menu.
+- Slightly updated the HUD
+- Updated Title Screen.
+- Updated Menus.
+- Added Custom Discord Rich Presence.
+- Added Custom App Icon.
+- Credits now open both my YouTube and Twitter page (because i can :p).
+- Remade the Note Offset Menu to be Lore Themed.
+- Added Ourple Guy as Boyfriend in the Graphics Settings Menu.
+
+v1.02
+======================================================================================================================================================================================
+
+- Fixed HUD on Downscroll (sorry guys)
+- Brute-forced the position of the rating sprites (like in the original ig)
+- Added a ZIP version (for non-WinRAR owners)
+
+v1.0
+======================================================================================================================================================================================
+
+- Initial mod release.

@@ -274,6 +274,11 @@ class PauseSubState extends MusicBeatSubstate
 				}
 			case 'End Song':
 				close();
+
+				#if ACHIEVEMENTS_ALLOWED
+				pauseAmount = 0;
+				#end
+				
 				FlxG.mouse.visible = false;
 				PlayState.instance.notes.clear();
 				PlayState.instance.unspawnNotes = [];

@@ -5,7 +5,7 @@ class Difficulty
 	public static var defaultList(default, never):Array<String> = [
 		'Lore'
 	];
-	public static var list:Array<String> = [];
+	public static var list:Array<String> = defaultList;
 	private static var defaultDifficulty(default, never):String = 'Lore';
 
 	inline public static function getFilePath(num:Null<Int> = null)

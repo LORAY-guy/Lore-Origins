@@ -32,6 +32,17 @@ class MarioTennis extends BaseStage {
 
         camGame.flash(FlxColor.WHITE, 0.9);
     }
+
+    override public function update(elapsed:Float):Void
+    {
+        super.update(elapsed);
+    
+        if ((FlxG.width / 1920) != 1)
+        {
+            if (defaultCamZoom < 0.8)
+                defaultCamZoom = 0.8;
+        }
+    }
     
     override function beatHit() {
         super.beatHit();

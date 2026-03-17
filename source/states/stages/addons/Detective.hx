@@ -3,7 +3,7 @@ package states.stages.addons;
 class Detective extends BaseStage 
 {
     var coolfilter:FlxSprite;
-    var rain:FlxSprite;
+    var rain:FlxBackdrop;
 
     var thingsToBW:Array<Dynamic>;
 
@@ -11,6 +11,7 @@ class Detective extends BaseStage
     {
         coolfilter = new FlxSprite().loadGraphic(Paths.image('coolfilter'));
         coolfilter.cameras = [camHUD];
+        coolfilter.scrollFactor.set();
         coolfilter.setGraphicSize(FlxG.width, FlxG.height);
         coolfilter.updateHitbox();
         coolfilter.screenCenter(XY);
@@ -23,7 +24,8 @@ class Detective extends BaseStage
     {
         if (!ClientPrefs.data.lowQuality) 
         {
-            rain = new FlxSprite(200, 300);
+            rain = new FlxBackdrop(null, XY, 0, 0);
+            rain.y += 205;
             rain.frames = Paths.getSparrowAtlas('rain');
             rain.animation.addByPrefix('rain', 'rain', 40, true);
             rain.animation.play('rain');
@@ -32,7 +34,7 @@ class Detective extends BaseStage
             rain.antialiasing = false;
             rain.blend = ADD;
             rain.alpha = 0.1;
-            rain.scrollFactor.set(1.3, 1.3);
+            rain.scrollFactor.set(1, 1);
             add(rain);
         }
 

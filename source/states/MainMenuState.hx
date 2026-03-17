@@ -1,21 +1,25 @@
 package states;
 
+import states.editors.MasterEditorMenu;
 import flixel.FlxObject;
 import flixel.effects.FlxFlicker;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '0.7.3'; // This is used for Discord RPC
-	public static var loreVersion:String = '2.5.0'; //This is also used for Discord RPC
-	public static var curSelected:Int = 0;
-	public static var playedIntro:Bool = false;
+	public static final psychEngineVersion:String = '0.7.3'; // This is used for Discord RPC
+	public static final loreVersion:String = '2.7'; //This is also used for Discord RPC
+
+	private static var curSelected:Int = 0;
+	private static var playedIntro:Bool = false;
 
 	private var menuItems:FlxTypedGroup<FlxSprite>;
 
 	private var optionShit:Array<String> = [
 		'lore',
 		'skins',
+		#if ACHIEVEMENTS_ALLOWED
 		'achievements',
+		#end
 		'options',
 		'credits'
 	];
@@ -67,9 +71,10 @@ class MainMenuState extends MusicBeatState
 		lettabox1.y = FlxG.height - lettabox1.height;
 		add(lettabox1);
 
-		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox2'), X, 0, 0);
+		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox2.scrollFactor.set(0, 0);
 		lettabox2.velocity.set(-40, 0);
+		lettabox2.flipY = true;
 		add(lettabox2);
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
@@ -256,8 +261,10 @@ class MainMenuState extends MusicBeatState
 						case 'skins':
 							states.SkinSelectorState.onPlayState = false;
 							MusicBeatState.switchState(new states.SkinSelectorState(true));
+						#if ACHIEVEMENTS_ALLOWED
 						case 'achievements':
 							MusicBeatState.switchState(new states.AchievementsMenuState(true));
+						#end
 						case 'credits':
 							MusicBeatState.switchState(new states.credits.CreditsSubgroupState(true));
 					}

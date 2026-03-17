@@ -48,7 +48,7 @@ class BaseStage extends FlxBasic
 	
 	public var camGame(get, never):FlxCamera;
 	public var camHUD(get, never):FlxCamera;
-	public var phoneCam(get, never):FlxCamera;
+	public var camPostGame(get, never):FlxCamera;
 	public var camOther(get, never):FlxCamera;
 
 	public var cameraSpeed(get, set):Float;
@@ -186,7 +186,7 @@ class BaseStage extends FlxBasic
 
 	inline private function get_camGame():FlxCamera return game.camGame;
 	inline private function get_camHUD():FlxCamera return game.camHUD;
-	inline private function get_phoneCam():FlxCamera return game.phoneCam;
+	inline private function get_camPostGame():FlxCamera return game.camPostGame;
 	inline private function get_camOther():FlxCamera return game.camOther;
 
 	inline private function get_defaultCamZoom():Float return game.defaultCamZoom;

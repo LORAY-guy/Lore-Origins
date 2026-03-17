@@ -20,6 +20,8 @@ class Lua extends BaseStage
     private var luaRTX:ModchartSprite;
     private var lorayRTX:ModchartSprite;
 
+    private var resolution:Float;
+
     override public function create():Void
     {
         super.create();
@@ -56,7 +58,7 @@ class Lua extends BaseStage
         cloudsMid.scale.set(4, 4);
         add(cloudsMid);
 
-        cloudsFront = new BGSprite("lua/cloudsfront", -1250, 433, 0.33, 0.5);
+        cloudsFront = new BGSprite("lua/cloudsfront", -750, 433, 0.33, 0.5);
         cloudsFront.scale.set(4, 4);
         add(cloudsFront);
 
@@ -118,7 +120,10 @@ class Lua extends BaseStage
 
         camHUD.alpha = 0;
         cameraSpeed = 1000;
-        camFollow.y -= 4250;
+        if (resolution != 1)
+            camFollow.y -= 3900;
+        else
+            camFollow.y -= 4250;
         defaultCamZoom = 0.3;
         camGame.zoom = 0.3;
 
@@ -262,7 +267,7 @@ class Lua extends BaseStage
         }
 
         if (curStep == 2344)
-            FlxTween.tween(camFollow, {y: camFollow.y - 4250}, 1.5, {ease: FlxEase.sineInOut});
+            FlxTween.tween(camFollow, {y: camFollow.y - 3900}, 1.5, {ease: FlxEase.sineInOut});
 
         if (curStep == 2368) {
             camGame.visible = false;

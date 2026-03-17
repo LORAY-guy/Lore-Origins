@@ -6,30 +6,87 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Lore Origins - Play</title>
         <link rel="icon" type="image/svg+xml" href="img/icon.png">
-        <link rel="stylesheet" href="style.css">
-        <script src="script.js" defer></script>
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/main.js"></script>
+        <script src="js/credits.js"></script>
     </head>
     <body>
-        <h1 class="title-shadow">Lore Origins - Web Edition</h1>
-        <h1 class="title">Lore Origins - Web Edition</h1>
-
-        <div class="lettabox-down-strip" draggable="false" ></div>
+        <div class="lettabox-down-strip" draggable="false"></div>
         <div class="lettabox-up-strip" draggable="false"></div>
 
-        <div class="main-box" id="main-box">
-            <div id="unsupported-message" style="display: none;">
-                <h2 style="text-align: center;">⚠️ This experience is only available on Windows, macOS, or Linux computers. Please visit this page from a computer to play.</h2>
-            </div>
+        <div class="title-container">
+            <h1 class="title-shadow">Lore Origins - Web Edition</h1>
+            <h1 class="title">Lore Origins - Web Edition</h1>
+        </div>
 
-            <div id="start-screen">
-                <button id="play-button" onclick="startGame()" style="margin-top: 40px;">PLAY</button>
-            </div>
+        <div id="main-box">
+            <script>
+                if (window.isMobile()) {
+                    document.write(`
+                        <div id="start-screen">
+                            <button id="play-button" onclick="startGame()">PLAY</button>
+                        </div>
+                    `);
+                } else {
+                    document.write(`
+                        <div id="start-screen">
+                            <div style="display: flex; gap: 60px; justify-content: center;">
+                                <button id="play-button" onclick="startGame()">PLAY</button>
+                                <button id="play-button" onclick="startGame(true)">PLAY (Widescreen)</button>
+                            </div>
+                        </div>
+                    `);
+                }
+            </script>
 
             <div id="game-container" style="display: none;"></div>
 
             <button id="fullscreen-button" onclick="toggleFullscreen()" style="display: none;">Fullscreen</button>
             <button id="download-button" onclick="downloadGame()">Download</button>
+            <button id="patch-notes-button" onclick="viewPatchNotes()">Patch Notes</button>
             <h3 class="credits">Lore Origins : Web Edition ~ by LORAY - Copyright 2025</h3>
         </div>
+
+        <div class="credits-box" id="credits-box" style="display: none;">
+            <h2 class="credits-title">Credits & Links</h2>
+            
+            <div class="credits-content">
+                <div class="social-links">
+                    <a href="https://twitter.com/LORAY_man" target="_blank" class="social-link">
+                        <img src="img/credits/twitter.gif" alt="Twitter" class="social-icon">
+                        <span>Twitter</span>
+                    </a>
+                    
+                    <a href="https://github.com/LORAY-guy" target="_blank" class="social-link">
+                        <img src="img/credits/github.gif" alt="GitHub" class="social-icon">
+                        <span>GitHub</span>
+                    </a>
+
+                    <a href="https://youtube.com/@LORAY_" target="_blank" class="social-link">
+                        <img src="img/credits/youtube.gif" alt="YouTube" class="social-icon">
+                        <span>YouTube</span>
+                    </a>
+                    
+                    <a href="https://ko-fi.com/loray" target="_blank" class="social-link">
+                        <img src="img/credits/kofi.gif" alt="Ko-fi" class="social-icon">
+                        <span>Ko-fi</span>
+                    </a>
+
+                    <a href="https://paypal.me/LORAYman" target="_blank" class="social-link">
+                        <img src="img/credits/paypal.gif" alt="PayPal" class="social-icon">
+                        <span>PayPal</span>
+                    </a>
+                </div>
+                
+                <div class="credits-text">
+                    <p>Thank you for playing Lore Origins!</p>
+                    <p>Follow me on social media for updates and more content.</p>
+                </div>
+            </div>
+            
+            <button id="back-button" onclick="hideCredits()">Back to Game</button>
+        </div>
+
+        <img src="img/credits/LORAY-idle.gif" alt="LORAY" id="loray-man" draggable="false"/>
     </body>
 </html>

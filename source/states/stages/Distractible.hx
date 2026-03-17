@@ -10,6 +10,8 @@ class Distractible extends BaseStage
     private var whiteStuff:FlxSprite;
     private var awesomeText:FlxText;
 
+    private var resolution:Float = FlxG.width / 1280;
+
     /**
     * Don't worry about the VERY specific values for the Tweens and such
     * Lua's interpretation of (stepCrochet / 1000) is very different from Haxe's cuz float's precision in Lua is more advanced, thus giving a much better result and feels more in the rythm of the song.
@@ -17,7 +19,9 @@ class Distractible extends BaseStage
     */
     override public function create():Void
     {
-        super.create();
+        camPostGame.width = 1280;
+        camPostGame.height = 720;
+        camPostGame.x = FlxG.width / 2 - camPostGame.width / 2;
 
         bg = new BGSprite("distractible", -965, -540);
 
@@ -37,6 +41,8 @@ class Distractible extends BaseStage
         awesomeText.visible = false;
         awesomeText.scrollFactor.set();
         add(awesomeText);
+
+        super.create();
     }
 
     override public function createPost():Void
@@ -80,6 +86,15 @@ class Distractible extends BaseStage
 
         camGame.alpha = 1;
         camGame.flash(FlxColor.WHITE, 1.2, null, true);
+    }
+
+    override public function update(elapsed:Float):Void
+    {
+        super.update(elapsed);
+
+        if (camZooming && camPostGame.visible) {
+            camPostGame.setScale(camHUD.zoom, camHUD.zoom);
+        }
     }
 
     override public function stepHit():Void
@@ -160,13 +175,15 @@ class Distractible extends BaseStage
             }});
 
         if (curStep == 2056) {
-            camGame.visible = true;
+            camGame.visible = false;
+            camPostGame.visible = true;
             camHUD.visible = true;
             whiteStuff.alpha = 0;
         }
         
         if (curStep == 2104) {
             camGame.visible = false;
+            camPostGame.visible = false;
             camHUD.visible = false;
         }
 
@@ -179,7 +196,6 @@ class Distractible extends BaseStage
         if (curStep == 2112) {
             FlxTween.cancelTweensOf(whiteStuff);
             whiteStuff.alpha = 0;
-            camGame.visible = true;
             camHUD.visible = true;
             resetCharacters();
             setDistractibleArrow(0);
@@ -197,6 +213,7 @@ class Distractible extends BaseStage
 
         if (curStep == 2896) {
             camGame.visible = false;
+            camPostGame.visible = false;
             camHUD.visible = false;
             camOther.flash(FlxColor.WHITE, 1.6, null, true);
         }
@@ -263,9 +280,12 @@ class Distractible extends BaseStage
     private function focusOnMark():Void
     {
         resetCharacters();
+        camPostGame.visible = true;
+        camGame.visible = false;
+
         boyfriendGroup.scale.set(0.7, 0.7);
         boyfriendGroup.updateHitbox();
-        boyfriend.cameras = [camHUD];
+        boyfriend.cameras = [camPostGame];
         boyfriend.x = boyfriend.y = 0;
         boyfriend.dance();
     }
@@ -273,9 +293,12 @@ class Distractible extends BaseStage
     private function focusOnBob():Void
     {
         resetCharacters();
+        camPostGame.visible = true;
+        camGame.visible = false;
+
         gfGroup.scale.set(0.885, 0.885);
         gfGroup.updateHitbox();
-        gf.cameras = [camHUD];
+        gf.cameras = [camPostGame];
         gf.x = -208;
         gf.y = -210;
         gf.dance();
@@ -284,9 +307,12 @@ class Distractible extends BaseStage
     private function focusOnWade():Void
     {
         resetCharacters();
+        camPostGame.visible = true;
+        camGame.visible = false;
+
         dadGroup.scale.set(0.75, 0.75);
         dadGroup.updateHitbox();
-        dad.cameras = [camHUD];
+        dad.cameras = [camPostGame];
         dad.x = -48;
         dad.y = -200;
         dad.dance();
@@ -294,6 +320,9 @@ class Distractible extends BaseStage
 
     private function resetCharacters():Void
     {
+        camPostGame.visible = false;
+        camGame.visible = true;
+
         boyfriend.cameras = [camGame];
         dadGroup.cameras = [camGame];
         gfGroup.cameras = [camGame];
@@ -327,13 +356,24 @@ class Distractible extends BaseStage
             camGame.flash(FlxColor.WHITE, 0.7);
     }
 
-    private function getPosFromNoteID(id:Int, ?defState:Bool = false):Float // I mean, it works...
+    private function getPosFromNoteID(id:Int, ?defState:Bool = false):Float // I mean, disgusting, but it works...
     {
+        var wideOffset:Int = resolution != 1 ? 1 : 0;
+
+        if (defState) {
+            switch (id) {
+                case 0: return defaultPlayerStrumX[0];
+                case 1: return defaultPlayerStrumX[1];
+                case 2: return defaultPlayerStrumX[2];
+                case 3: return defaultPlayerStrumX[3];
+            }
+            return 0;
+        }
         switch (id) {
-            case 0: return (defState) ? defaultPlayerStrumX[0] : 50;
-            case 1: return (defState) ? defaultPlayerStrumX[1] : 220;
-            case 2: return (defState) ? defaultPlayerStrumX[2] : 940;
-            case 3: return (defState) ? defaultPlayerStrumX[3] : 1110;
+            case 0: return defaultOpponentStrumX[0 + wideOffset];
+            case 1: return defaultOpponentStrumX[1 + wideOffset];
+            case 2: return defaultPlayerStrumX[2 - wideOffset];
+            case 3: return defaultPlayerStrumX[3 - wideOffset];
         }
         return 0;
     }

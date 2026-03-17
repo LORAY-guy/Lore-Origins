@@ -1,4 +1,4 @@
-name: Lore Origins - Auto-export Action
+name: Lore Origins - Auto-export
 
 on:
   push:

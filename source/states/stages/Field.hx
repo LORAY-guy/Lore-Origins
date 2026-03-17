@@ -74,6 +74,7 @@ class Field extends BaseStage
         horsePhone.animation.play('idle', false, false, 0);
         horsePhone.scale.set(2.4, 1.7);
         horsePhone.updateHitbox();
+        horsePhone.visible = false;
         add(horsePhone);
 
         stool = new BGSprite('stoolphone', 405, 24, 1, 1);
@@ -90,7 +91,8 @@ class Field extends BaseStage
     {
         gf.visible = false;
 
-        defaultCamZoom *= (FlxG.width / 1280);
+        if ((FlxG.width / 1920) != 1)
+            defaultCamZoom = 0.8;
         camGame.zoom = defaultCamZoom;
 
         super.createPost();
@@ -129,6 +131,7 @@ class Field extends BaseStage
     override function stepHit() {
         if (curStep == 1808)
         {
+            horsePhone.visible = true;
             FlxTween.tween(horsePhone, {x: 1500}, 4, {ease: FlxEase.linear, onComplete: function(twn:FlxTween) {
                 horsePhone.destroy();
             }});

@@ -1,5 +1,7 @@
 package states.credits;
 
+import openfl.utils.IAssetCache;
+import flixel.graphics.FlxGraphic;
 import flixel.FlxObject;
 import flixel.effects.FlxFlicker;
 import flixel.addons.transition.FlxTransitionableState;
@@ -14,18 +16,18 @@ class LorayState extends MusicBeatState
     **/
     public static var appCats:Array<Array<Dynamic>> = [
         ['Youtube', 0.5,   20,      'https://youtube.com/@LORAY_'],
-        ['Twitter', 0.5,   0,       'https://twitter.com/LORAY_man'],
+        ['Twitter', 0.5,   -20,     'https://twitter.com/LORAY_man'],
         ['GitHub',  0.5,   -120,    'https://github.com/LORAY-guy'],
         ['Ko-fi',   0.525, -80,     'https://ko-fi.com/loray'],
         ['Paypal',  0.4,   -180,    'https://paypal.me/LORAYman']
     ];
 
     private var menuItems:FlxTypedGroup<FlxSprite>;
-    private var lorays:FlxTypedGroup<Loray>;
+    public static var lorays:FlxTypedGroup<Loray>;
     private var camFollow:FlxObject;
 
+    private var animatedBackdrop:AnimatedBackdrop;
     public var appName:Alphabet;
-    private var bg:FlxSprite;
 
 	public static var curSelected:Int = 0;
     
@@ -43,27 +45,22 @@ class LorayState extends MusicBeatState
 
         camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
-
-        bg = new FlxSprite().loadGraphic(Paths.image('menuBGMagenta'));
-        var scaleMultiplier:Float = FlxG.width / 1280;
-		bg.setGraphicSize(Std.int(bg.width * scaleMultiplier));
-		bg.updateHitbox();
-        bg.screenCenter();
-        bg.scrollFactor.set();
-        add(bg);
-
+        
         var grid:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/grid'));
-		grid.scrollFactor.set(0, 0);
-		grid.velocity.set(40, 40);
+		grid.scrollFactor.set(0.025, 0);
+		grid.velocity.set(20, 20);
 		grid.alpha = 0.5;
 		add(grid);
+
+        animatedBackdrop = new AnimatedBackdrop(FlxG.width, FlxG.height);
+        add(animatedBackdrop);
         
         menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
         lorays = new FlxTypedGroup<Loray>();
 		add(lorays);
-
+ 
 		for (i in 0...appCats.length)
         {
             var offset:Float = (Math.max(appCats.length, 4) - 4) * 75;
@@ -85,15 +82,18 @@ class LorayState extends MusicBeatState
         lorays.add(new Loray(false));
         lorays.add(new Loray(true));
 
-		var lettabox1:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
+		var lettabox1:FlxBackdrop = new FlxBackdrop(Paths.image('loray/lettabox'), X, 0, 0);
 		lettabox1.scrollFactor.set(0, 0);
 		lettabox1.velocity.set(40, 0);
-		lettabox1.y = 635;
+		lettabox1.y = FlxG.height - lettabox1.height;
+        lettabox1.flipY = true;
+        lettabox1.antialiasing = ClientPrefs.data.antialiasing;
 		add(lettabox1);
 
-		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox2'), X, 0, 0);
+		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('loray/lettabox'), X, 0, 0);
 		lettabox2.scrollFactor.set(0, 0);
 		lettabox2.velocity.set(-40, 0);
+        lettabox2.antialiasing = ClientPrefs.data.antialiasing;
 		add(lettabox2);
 
         appName = new Alphabet(20, (FlxG.height / 2) + 220, appCats[curSelected][0].toLowerCase(), true);
@@ -196,19 +196,32 @@ class LorayState extends MusicBeatState
             spr.dance();
         });
     }
+
+    override public function destroy():Void
+    {
+        animatedBackdrop.destroy();
+        animatedBackdrop = null;
+        menuItems.destroy();
+        menuItems = null;
+        lorays.destroy();
+        lorays = null;
+        appName.destroy();
+        appName = null;
+
+        super.destroy();
+    }
 }
 
 class Loray extends FlxSprite
 {
-    public static var lorays:Array<Loray> = [];
-
-    public var happy:Bool = false;
-    public var originX:Float = 0;
-    public var originY:Float = 0;
+    private var happy:Bool = false;
+    private var originX:Float = 0;
+    private var originY:Float = 0;
+    private var happyTimer:FlxTimer = new FlxTimer();
 
     public function new(rightSide:Bool = false)
     {
-        super(0, 0);
+        super();
         
         frames = Paths.getSparrowAtlas('loray/OURPLE_LORAAAAAAAAAAY');
         animation.addByPrefix('idle', 'Idle', 24, false, false, false);
@@ -217,7 +230,7 @@ class Loray extends FlxSprite
         scale.x = 3;
         scale.y = 3;
         scrollFactor.set();
-        ID = lorays.length;
+        ID = cast LorayState.lorays.length;
         flipX = (ID % 2 == 0) ? true : false;
         updateHitbox();
 
@@ -229,8 +242,6 @@ class Loray extends FlxSprite
             this.originX = x = offsetFromEdge;
 
         this.originY = y = FlxG.height - height + (height / 4);
-        
-        lorays.push(this);
     }
 
     public function beHappy(?unlockAchievement:Bool = false):Void
@@ -241,14 +252,15 @@ class Loray extends FlxSprite
         FlxTween.cancelTweensOf(this, ['y']);
         animation.play('happy', true, false, 0);
         x = originX - 45;
-        y = originY - 80; // Use originY as reference instead of subtracting from current y
+        y = originY - 80;
         flipX = (ID % 2 == 0) ? false : true;
-        new FlxTimer().start(0.7, function(tmr:FlxTimer)
+        if (happyTimer != null) happyTimer.cancel();
+        happyTimer.start(0.7, function(tmr:FlxTimer)
         {
             happy = false;
             x = originX;
             y = originY;
-            flipX = (ID % 2 == 0) ? true : false; // Fix: should match the original flipX logic
+            flipX = (ID % 2 == 0) ? true : false;
             dance();
         });
         if (unlockAchievement) Achievements.unlock('loray_hater');
@@ -259,9 +271,108 @@ class Loray extends FlxSprite
         if (!happy)
         {
             animation.play('idle', true, false, 0);
-            y = originY + 20; // Use originY as reference for consistent positioning
+            y = originY + 20;
             flipX = !flipX;
             FlxTween.tween(this, {y: originY}, 0.15, {ease: FlxEase.cubeOut});
         }
+    }
+}
+
+class AnimatedBackdrop extends FlxTypedGroup<FlxSprite>
+{
+    public static inline var TILE_WIDTH:Int = 96;
+    public static inline var TILE_HEIGHT:Int = 108;
+    
+    private var columns:Int;
+    private var rows:Int;
+
+    private var blueGraphics:Array<FlxGraphic> = [];
+    private var redGraphics:Array<FlxGraphic> = [];
+    
+    private var animTimer:FlxTimer;
+    private var currentFrame:Int = 0;
+    
+    private var tileColors:Array<Bool> = [];
+    
+    public function new(width:Float, height:Float)
+    {
+        super();
+        
+        columns = Math.ceil(width / TILE_WIDTH) + 2; // Extra column for extra added scroll factor effect
+        rows = Math.ceil(height / TILE_HEIGHT) + 1;
+        
+        for (i in 1...13) {
+            blueGraphics.push(Paths.image('loray/frames/b${i}'));
+            redGraphics.push(Paths.image('loray/frames/r${i}'));
+        }
+        
+        createTileGrid();
+        modifyTiles();
+        
+        animTimer = new FlxTimer().start(0.075, function(tmr:FlxTimer) {
+            currentFrame = (currentFrame + 1) % blueGraphics.length;
+            if (currentFrame == 0)
+                modifyTiles();
+            updateTileFrames();
+        }, 0);
+    }
+    
+    private function createTileGrid():Void
+    {
+        for (row in 0...rows) {
+            for (col in 0...columns) {
+                var x:Float = col * TILE_WIDTH;
+                var y:Float = row * TILE_HEIGHT;
+
+                var isBlue:Bool = FlxG.random.bool(50);
+                tileColors.push(isBlue);
+
+                var tile:FlxSprite = new FlxSprite(x, y);
+                tile.loadGraphic(isBlue ? blueGraphics[0] : redGraphics[0]);
+                tile.scrollFactor.set(0.05, 0);
+                tile.velocity.set(-20, 15);
+                add(tile);
+            }
+        }
+    }
+    
+    private function modifyTiles():Void
+    {
+        forEachAlive(function(tile:FlxSprite) {
+            tile.alpha = FlxG.random.float(0.2, 1);
+            tileColors[this.members.indexOf(tile)] = FlxG.random.bool(50);
+        });
+    }
+
+    private function updateTileFrames():Void
+    {
+        var i:Int = 0;
+
+        forEachAlive(function(tile:FlxSprite) {
+            tile.loadGraphic(tileColors[i] ? blueGraphics[currentFrame] : redGraphics[currentFrame]);
+            i++;
+        });
+    }
+    
+    override public function update(elapsed:Float):Void
+    {
+        super.update(elapsed);
+
+        forEachAlive(function(tile:FlxSprite) {
+            if (tile.x < -TILE_WIDTH - TILE_WIDTH * (1 + tile.scrollFactor.x))
+                tile.x += columns * TILE_WIDTH;
+            if (tile.y > (rows * TILE_HEIGHT) - tile.height)
+                tile.y -= rows * TILE_HEIGHT;
+        });
+    }
+    
+    override public function destroy():Void
+    {
+        if (animTimer != null) {
+            animTimer.cancel();
+            animTimer = null;
+        }
+        
+        super.destroy();
     }
 }

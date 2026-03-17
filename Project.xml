@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Lore Origins" file="Lore Origins" packageName="com.loray.loreorigins" package="com.loray.loreorigins" main="Main" version="2.5.0" company="LORAY" />
+	<app title="Lore Origins" file="Lore Origins" packageName="com.loray.loreorigins" package="com.loray.loreorigins" main="Main" version="2.7" company="LORAY" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -14,7 +14,7 @@
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
-	
+
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
 	<define name="HSCRIPT_ALLOWED" if="desktop" />
@@ -27,8 +27,13 @@
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
+	<!-- <define name="widescreen"/> -->
+
 	<!--These window settings apply to all targets-->
-	<window width="1280" height="720" background="#000000" hardware="true" vsync="false" />
+	<window background="#000000" hardware="true" vsync="false" />
+
+	<window unless="widescreen" width="1280" height="720" />
+	<window if="widescreen" width="1920" height="720"/>
 
 	<!--HTML5-specific-->
 	<window if="html5" resizable="true" />

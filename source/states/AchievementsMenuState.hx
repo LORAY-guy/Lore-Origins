@@ -159,9 +159,10 @@ class AchievementsMenuState extends MusicBeatState
 		lettabox1.y = FlxG.height - lettabox1.height;
 		add(lettabox1);
 
-		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox2'), X, 0, 0);
+		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox2.scrollFactor.set(0, 0);
 		lettabox2.velocity.set(-40, 0);
+		lettabox2.flipY = true;
 		add(lettabox2);
 		
 		_changeSelection();
@@ -362,7 +363,7 @@ class AchievementsMenuState extends MusicBeatState
 	{
 		if (ourpleFella == null) {
 			ourpleFella = new FlxSprite();
-			ourpleFella.frames = Paths.getSparrowAtlas('achievements/goldenFella');
+			ourpleFella.frames = Paths.getSparrowAtlas('freeplay/pfcdance');
 			ourpleFella.animation.addByPrefix('idle', 'idle', 20, true);
 			ourpleFella.animation.play('idle');
 			ourpleFella.scrollFactor.set();
@@ -402,7 +403,7 @@ class AchievementsMenuState extends MusicBeatState
 		add(happyText);
 
 		var confetti = new FlxSprite();
-		confetti.frames = Paths.getSparrowAtlas('achievements/happy');
+		confetti.frames = Paths.getSparrowAtlas('freeplay/happy');
 		confetti.animation.addByPrefix('idle', 'happy idle');
 		confetti.animation.play('idle');
 		confetti.setGraphicSize(FlxG.width);

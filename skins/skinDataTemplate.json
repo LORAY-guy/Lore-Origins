@@ -9,7 +9,7 @@
             {"name": "Afton", "scale": 2.4},
             {"name": "Shaggy", "scale": 0.65},
             {"name": "Loray", "scale": 2.5},
-            {"name": "Lua", "scale": 0.7}
+            {"name": "Lua", "scale": 0.7} // Here's a new Ourple template
         ]
     },
     {

@@ -20,9 +20,10 @@ class Beach extends BaseStage
 
     var botplaySine:Float = 0;
 
-    override function create() {
-        beach = new BGSprite('beach', 400, 125, 1, 1);
-        beach.setGraphicSize(Std.int(beach.width * (0.3 * (FlxG.width / 1280))));
+    override function create()
+    {
+        beach = new BGSprite('beach', 290, 10, 1, 1);
+        beach.setGraphicSize(Std.int(beach.width * 0.4));
         beach.updateHitbox();
         add(beach);
 

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="phone-discord.png">
+<SubTexture name="idle0000" x="0" y="0" width="605" height="752" />
+<SubTexture name="call0000" x="605" y="0" width="605" height="752" />
+<SubTexture name="sing0000" x="1210" y="0" width="605" height="752" />
+</TextureAtlas>

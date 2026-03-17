@@ -24,6 +24,8 @@ class OptionsState extends MusicBeatState
 	private var selectorLeft:Alphabet;
 	private var selectorRight:Alphabet;
 
+	private var label:String = '';
+
 	override public function create():Void
 	{
 		#if DISCORD_ALLOWED
@@ -52,9 +54,10 @@ class OptionsState extends MusicBeatState
 		lettabox1.y = FlxG.height - lettabox1.height;
 		spikes.add(lettabox1);
 
-		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox2'), X, 0, 0);
+		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox2.scrollFactor.set(0, 0);
 		lettabox2.velocity.set(-40, 0);
+		lettabox2.flipY = true;
 		spikes.add(lettabox2);
 
 		grpOptions = new FlxTypedGroup<FlxText>();
@@ -64,7 +67,7 @@ class OptionsState extends MusicBeatState
 
 		for (i in 0...options.length)
 		{
-			var optionstxt = new FlxText(650,0,0,options[i]);
+			var optionstxt = new FlxText(650, 0, 0, options[i]);
 			optionstxt.setFormat(#if html5 Paths.font("ourple.ttf") #else Paths.font("options.ttf") #end, 40, FlxColor.WHITE, CENTER,FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			optionstxt.screenCenter(Y);
 			optionstxt.y += (60 * (i - (options.length / 2))) + 50;
@@ -94,8 +97,24 @@ class OptionsState extends MusicBeatState
 	override public function closeSubState():Void
 	{
 		super.closeSubState();
+
+		persistentUpdate = false;
+		grpOptions.visible = true;
 		selectedSomethin = false;
 		ClientPrefs.saveSettings();
+	}
+
+	override public function openSubState(subState:flixel.FlxSubState):Void
+	{
+		super.openSubState(subState);
+
+		if (label == 'Controls')
+		{
+			selectedSomethin = true;
+			persistentUpdate = true;
+			grpOptions.visible = false;
+			label = '';
+		}
 	}
 
 	private function openSelectedSubstate(label:String):Void
@@ -140,7 +159,10 @@ class OptionsState extends MusicBeatState
 				}
 				else exitState(new MainMenuState(true));
 			}
-			else if (controls.ACCEPT_P) openSelectedSubstate(options[curSelected]);
+			else if (controls.ACCEPT_P) {
+				label = options[curSelected];
+				openSelectedSubstate(label);
+			}
 		}
 
 		super.update(elapsed);

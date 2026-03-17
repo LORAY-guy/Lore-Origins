@@ -241,7 +241,6 @@ class MusicPlayer extends FlxGroup
 		if (instance.songName != null)
 			songTxt.text = 'PLAYING: ${instance.freeplayCategory == 'originals' ? CoolUtil.removeSymbol(instance.songName, "lore-") : 'Lore'}';
 
-		instance.scoreBG.visible = instance.diffText.visible = instance.scoreText.visible = !playingMusic; //Hide Freeplay texts and boxes if playingMusic is true
 		songTxt.visible = timeTxt.visible = songBG.visible = playbackTxt.visible = playbackBG.visible = progressBar.visible = playingMusic; //Show Music Player texts and boxes if playingMusic is true
 
 		for (i in playbackSymbols)
@@ -270,7 +269,6 @@ class MusicPlayer extends FlxGroup
 			progressBar.numDivisions = 0;
 
 			instance.bottomText.text = instance.bottomString;
-			instance.positionHighscore();
 		}
 		progressBar.updateBar();
 	}

@@ -6,8 +6,6 @@ import objects.AttachedSprite;
 import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.input.gamepad.FlxGamepadInputID;
-import flixel.input.gamepad.FlxGamepadManager;
-import flixel.addons.display.FlxGridOverlay;
 
 class ControlsSubState extends MusicBeatSubstate
 {
@@ -49,11 +47,10 @@ class ControlsSubState extends MusicBeatSubstate
 	var curOptionsValid:Array<Int>;
 	static var defaultKey:String = 'Reset to Default Keys';
 
-	var bg:FlxSprite;
-	var grpDisplay:FlxTypedGroup<Alphabet>;
+	var grpDisplay:FlxTypedGroup<ControlText>;
 	var grpBlacks:FlxTypedGroup<AttachedSprite>;
-	var grpOptions:FlxTypedGroup<Alphabet>;
-	var grpBinds:FlxTypedGroup<Alphabet>;
+	var grpOptions:FlxTypedGroup<ControlText>;
+	var grpBinds:FlxTypedGroup<ControlText>;
 	var selectSpr:AttachedSprite;
 
 	var gamepadColor:FlxColor = 0xfffd7194;
@@ -74,21 +71,9 @@ class ControlsSubState extends MusicBeatSubstate
 		options.push([true]);
 		options.push([true, defaultKey]);
 
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.color = keyboardColor;
-		bg.antialiasing = ClientPrefs.data.antialiasing;
-		bg.screenCenter();
-		add(bg);
-
-		var grid:FlxBackdrop = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 160, 160, true, 0x33FFFFFF, 0x0));
-		grid.velocity.set(40, 40);
-		grid.alpha = 0;
-		FlxTween.tween(grid, {alpha: 1}, 0.5, {ease: FlxEase.quadOut});
-		add(grid);
-
-		grpDisplay = new FlxTypedGroup<Alphabet>();
+		grpDisplay = new FlxTypedGroup<ControlText>();
 		add(grpDisplay);
-		grpOptions = new FlxTypedGroup<Alphabet>();
+		grpOptions = new FlxTypedGroup<ControlText>();
 		add(grpOptions);
 		grpBlacks = new FlxTypedGroup<AttachedSprite>();
 		add(grpBlacks);
@@ -97,7 +82,7 @@ class ControlsSubState extends MusicBeatSubstate
 		selectSpr.copyAlpha = false;
 		selectSpr.alpha = 0.75;
 		add(selectSpr);
-		grpBinds = new FlxTypedGroup<Alphabet>();
+		grpBinds = new FlxTypedGroup<ControlText>();
 		add(grpBinds);
 
 		controllerSpr = new FlxSprite(50, 40).loadGraphic(Paths.image('controllertype'), true, 82, 60);
@@ -106,9 +91,8 @@ class ControlsSubState extends MusicBeatSubstate
 		controllerSpr.animation.add('gamepad', [1], 1, false);
 		add(controllerSpr);
 
-		var text:Alphabet = new Alphabet(60, 90, 'CTRL', false);
-		text.alignment = CENTERED;
-		text.setScale(0.4);
+		var text:ControlText = new ControlText(42, 100, 200, 'CTRL', 36, FlxColor.WHITE, FlxTextAlign.LEFT);
+		text.antialiasing = false;
 		add(text);
 
 		createTexts();
@@ -121,10 +105,10 @@ class ControlsSubState extends MusicBeatSubstate
 	{
 		curOptions = [];
 		curOptionsValid = [];
-		grpDisplay.forEachAlive(function(text:Alphabet) text.destroy());
+		grpDisplay.forEachAlive(function(text:ControlText) text.destroy());
 		grpBlacks.forEachAlive(function(black:AttachedSprite) black.destroy());
-		grpOptions.forEachAlive(function(text:Alphabet) text.destroy());
-		grpBinds.forEachAlive(function(text:Alphabet) text.destroy());
+		grpOptions.forEachAlive(function(text:ControlText) text.destroy());
+		grpBinds.forEachAlive(function(text:ControlText) text.destroy());
 		grpDisplay.clear();
 		grpBlacks.clear();
 		grpOptions.clear();
@@ -142,7 +126,8 @@ class ControlsSubState extends MusicBeatSubstate
 					var isDefaultKey:Bool = (option[1] == defaultKey);
 					var isDisplayKey:Bool = (isCentered && !isDefaultKey);
 
-					var text:Alphabet = new Alphabet(200, 300, option[1], !isDisplayKey);
+					var text:ControlText = new ControlText(200, 240, FlxG.width - 400, option[1], 32, FlxColor.WHITE, isCentered ? FlxTextAlign.CENTER : FlxTextAlign.LEFT);
+					text.bold = true;
 					text.isMenuItem = true;
 					text.changeX = false;
 					text.distancePerItem.y = 60;
@@ -169,14 +154,16 @@ class ControlsSubState extends MusicBeatSubstate
 		updateText();
 	}
 
-	private function addCenteredText(text:Alphabet, option:Array<Dynamic>, id:Int):Void
+	private function addCenteredText(text:ControlText, option:Array<Dynamic>, id:Int):Void
 	{
+		text.size += 4;
 		text.screenCenter(X);
-		text.y -= 55;
-		text.startPosition.y -= 55;
+		text.y -= (text.text == defaultKey) ? 60 : 20;
+		text.startPosition.y -= (text.text == defaultKey) ? 60 : 20;
+		text.borderSize = 2;
 	}
 
-	private function addKeyText(text:Alphabet, option:Array<Dynamic>, id:Int):Void
+	private function addKeyText(text:ControlText, option:Array<Dynamic>, id:Int):Void
 	{
 		for (n in 0...2)
 		{
@@ -194,7 +181,7 @@ class ControlsSubState extends MusicBeatSubstate
 				key = InputFormatter.getGamepadName((savKey[n] != null) ? savKey[n] : NONE);
 			}
 
-			var attach:Alphabet = new Alphabet(textX + 210, 248, key, false);
+			var attach:ControlText = new ControlText(textX + 210, 248, 230, key, 32, FlxColor.WHITE, FlxTextAlign.CENTER);
 			attach.isMenuItem = true;
 			attach.changeX = false;
 			attach.distancePerItem.y = 60;
@@ -203,9 +190,6 @@ class ControlsSubState extends MusicBeatSubstate
 			attach.snapToPosition();
 			attach.y += FlxG.height * 2;
 			grpBinds.add(attach);
-
-			playstationCheck(attach);
-			attach.scaleX = Math.min(1, 230 / attach.width);
 			//attach.text = key;
 
 			// spawn black bars at the right of the key name
@@ -219,31 +203,10 @@ class ControlsSubState extends MusicBeatSubstate
 		}
 	}
 
-	private function playstationCheck(alpha:Alphabet):Void
-	{
-		if(onKeyboardMode) return;
-
-		var gamepad:FlxGamepad = FlxG.gamepads.firstActive;
-		var model:FlxGamepadModel = gamepad != null ? gamepad.detectedModel : UNKNOWN;
-		var letter = alpha.letters[0];
-		if(model == PS4)
-		{
-			switch(alpha.text)
-			{
-				case '[', ']': //Square and Triangle respectively
-					letter.image = 'alphabet_playstation';
-					letter.updateHitbox();
-					
-					letter.offset.x += 4;
-					letter.offset.y -= 5;
-			}
-		}
-	}
-
 	private function updateBind(num:Int, text:String):Void
 	{
-		var bind:Alphabet = grpBinds.members[num];
-		var attach:Alphabet = new Alphabet(350 + (num % 2) * 300, 248, text, false);
+		var bind:ControlText = grpBinds.members[num];
+		var attach:ControlText = new ControlText(350 + (num % 2) * 300, 248, 230, text, 32, FlxColor.WHITE, FlxTextAlign.CENTER);
 		attach.isMenuItem = true;
 		attach.changeX = false;
 		attach.distancePerItem.y = 60;
@@ -251,10 +214,6 @@ class ControlsSubState extends MusicBeatSubstate
 		attach.ID = bind.ID;
 		attach.x = bind.x;
 		attach.y = bind.y;
-		
-		playstationCheck(attach);
-		attach.scaleX = Math.min(1, 230 / attach.width);
-		//attach.text = text;
 
 		bind.kill();
 		grpBinds.remove(bind);
@@ -265,8 +224,8 @@ class ControlsSubState extends MusicBeatSubstate
 	private var binding:Bool = false;
 	private var holdingEsc:Float = 0;
 	private var bindingBlack:FlxSprite;
-	private var bindingText:Alphabet;
-	private var bindingText2:Alphabet;
+	private var bindingText:ControlText;
+	private var bindingText2:ControlText;
 
 	private var timeForMoving:Float = 0.1;
 	override public function update(elapsed:Float):Void
@@ -304,12 +263,9 @@ class ControlsSubState extends MusicBeatSubstate
 					FlxTween.tween(bindingBlack, {alpha: 0.6}, 0.35, {ease: FlxEase.linear});
 					add(bindingBlack);
 
-					bindingText = new Alphabet(FlxG.width / 2, 160, "Rebinding " + options[curOptions[curSelected]][3], false);
-					bindingText.alignment = CENTERED;
+					bindingText = new ControlText(0, 160, FlxG.width, "Rebinding " + options[curOptions[curSelected]][3], 48, FlxColor.WHITE, FlxTextAlign.CENTER);
 					add(bindingText);
-					
-					bindingText2 = new Alphabet(FlxG.width / 2, 340, "Hold ESC to Cancel\nHold Backspace to Delete", true);
-					bindingText2.alignment = CENTERED;
+					bindingText2 = new ControlText(0, 340, FlxG.width, "Hold ESC to Cancel\nHold Backspace to Delete", 32, FlxColor.WHITE, FlxTextAlign.CENTER);
 					add(bindingText2);
 
 					binding = true;
@@ -483,18 +439,18 @@ class ControlsSubState extends MusicBeatSubstate
 		if(num < 3) addNum = 3 - num;
 		else if(num > lastID - 4) addNum = (lastID - 4) - num;
 
-		grpDisplay.forEachAlive(function(item:Alphabet) {
+		grpDisplay.forEachAlive(function(item:ControlText) {
 			item.targetY = item.ID - num - addNum;
 		});
 
-		grpOptions.forEachAlive(function(item:Alphabet)
+		grpOptions.forEachAlive(function(item:ControlText)
 		{
 			item.targetY = item.ID - num - addNum;
-			item.alpha = (item.ID - num == 0) ? 1 : 0.6;
+			item.alpha = (item.ID == num) ? 1 : 0.6;
 		});
-		grpBinds.forEachAlive(function(item:Alphabet)
+		grpBinds.forEachAlive(function(item:ControlText)
 		{
-			var parent:Alphabet = grpOptions.members[item.ID];
+			var parent:ControlText = grpOptions.members[item.ID];
 			item.targetY = parent.targetY;
 			item.alpha = parent.alpha;
 		});
@@ -503,11 +459,8 @@ class ControlsSubState extends MusicBeatSubstate
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 
-	private var colorTween:FlxTween;
 	private function swapMode():Void
 	{
-		if(colorTween != null) colorTween.destroy();
-		colorTween = FlxTween.color(bg, 0.5, bg.color, onKeyboardMode ? gamepadColor : keyboardColor, {ease: FlxEase.linear});
 		onKeyboardMode = !onKeyboardMode;
 
 		curSelected = 0;
@@ -525,5 +478,47 @@ class ControlsSubState extends MusicBeatSubstate
 		}
 		selectSpr.sprTracker = grpBlacks.members[Math.floor(curSelected * 2) + (curAlt ? 1 : 0)];
 		selectSpr.visible = (selectSpr.sprTracker != null);
+	}
+}
+
+class ControlText extends FlxText
+{
+	public var isMenuItem:Bool = false;
+	public var targetY:Int = 0;
+	public var changeX:Bool = true;
+	public var changeY:Bool = true;
+	public var distancePerItem:FlxPoint = new FlxPoint(20, 120);
+	public var startPosition:FlxPoint = new FlxPoint(0, 0);
+
+	public function new(x:Float, y:Float, width:Float, text:String, size:Int = 32, color:Int = 0xFFFFFFFF, alignment:FlxTextAlign = LEFT)
+	{
+		super(x, y, width, text, size);
+
+		this.setFormat(#if html5 Paths.font("ourple.ttf") #else Paths.font("options.ttf") #end, size, color, alignment, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		this.startPosition.x = x;
+		this.startPosition.y = y;
+		this.borderSize = 1;
+	}
+
+	override public function update(elapsed:Float)
+	{
+		if (isMenuItem) {
+			var lerpVal:Float = Math.exp(-elapsed * 9.6);
+			if (changeX)
+				x = FlxMath.lerp((targetY * distancePerItem.x) + startPosition.x, x, lerpVal);
+			if (changeY)
+				y = FlxMath.lerp((targetY * 1.3 * distancePerItem.y + 90) + startPosition.y, y, lerpVal);
+		}
+		super.update(elapsed);
+	}
+
+	public function snapToPosition()
+	{
+		if (isMenuItem) {
+			if (changeX)
+				x = (targetY * distancePerItem.x) + startPosition.x;
+			if (changeY)
+				y = (targetY * 1.3 * distancePerItem.y + 90) + startPosition.y;
+		}
 	}
 }

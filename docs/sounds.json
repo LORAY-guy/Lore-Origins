@@ -1,0 +1,44 @@
+{
+  "sounds": [
+    {
+      "id": "ourple1",
+      "data": "https://files.catbox.moe/7a95ut.mp3"
+    },
+    {
+      "id": "ourple2", 
+      "data": "https://files.catbox.moe/2dc1u0.mp3"
+    },
+    {
+      "id": "ourple3",
+      "data": "https://files.catbox.moe/q0z3bc.mp3"
+    },
+    {
+      "id": "ourple4",
+      "data": "https://files.catbox.moe/kcxlqf.mp3"
+    },
+    {
+      "id": "ourple5",
+      "data": "https://files.catbox.moe/9r6pi4.mp3"
+    },
+    {
+      "id": "ourple6",
+      "data": "https://files.catbox.moe/y4g76u.mp3"
+    },
+    {
+      "id": "ourple7",
+      "data": "https://files.catbox.moe/0tqb6d.mp3"
+    },
+    {
+      "id": "ourple8",
+      "data": "https://files.catbox.moe/ex6hic.mp3"
+    },
+    {
+      "id": "ourple9",
+      "data": "https://files.catbox.moe/wusule.mp3"
+    },
+    {
+      "id": "ourple10",
+      "data": "https://files.catbox.moe/08h0w0.mp3"
+    }
+  ]
+}

@@ -52,9 +52,10 @@ class MasterEditorMenu extends MusicBeatState
 		lettabox1.y = FlxG.height - lettabox1.height;
 		add(lettabox1);
 
-		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox2'), X, 0, 0);
+		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox2.scrollFactor.set(0, 0);
 		lettabox2.velocity.set(-40, 0);
+		lettabox2.flipY = true;
 		add(lettabox2);
 
 		grpTexts = new FlxTypedGroup<Alphabet>();

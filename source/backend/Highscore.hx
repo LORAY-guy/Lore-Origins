@@ -5,6 +5,7 @@ class Highscore
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map<String, Int>();
 	public static var songRating:Map<String, Float> = new Map<String, Float>();
+	public static var songFC:Map<String, String> = new Map<String, String>();	
 
 	public static function resetSong(song:String, diff:Int = 0):Void
 	{
@@ -46,6 +47,22 @@ class Highscore
 		}
 		else
 			setWeekScore(daWeek, score);
+	}
+
+	static function setFC(week:String, score:String):Void
+	{
+		songFC.set(week, score);
+		FlxG.save.data.songFC = songFC;
+		FlxG.save.flush();
+	}
+
+	public static function getFC(song:String, diff:Int):String
+	{
+		var daSong:String = formatSong(song, diff);
+		if (!songFC.exists(daSong))
+			setFC(daSong, '');
+	
+		return songFC.get(daSong);
 	}
 
 	/**
@@ -108,6 +125,10 @@ class Highscore
 
 	public static function load():Void
 	{
+		if (FlxG.save.data.songFC != null)
+		{
+			songFC = FlxG.save.data.songFC;
+		}
 		if (FlxG.save.data.weekScores != null)
 		{
 			weekScores = FlxG.save.data.weekScores;

@@ -256,7 +256,7 @@ class MusicBeatState extends FlxUIState
 	public function initSaveDance()
 	{
 		dance = new FlxSprite();
-		dance.frames = Paths.getSparrowAtlas('loadingDance');
+		dance.frames = Paths.getSparrowAtlas('freeplay/fcdance');
 		dance.animation.addByPrefix('idle', 'idle', 24, true);
 		dance.animation.play('idle', false);
 		dance.scale.set(0.25, 0.25);
@@ -288,7 +288,14 @@ class MusicBeatState extends FlxUIState
 		super.onFocusLost();
 
 		#if ACHIEVEMENTS_ALLOWED
-		if (!Achievements.isUnlocked('tab_out'))
+		var isBrowserOpen:Bool = false;
+		var processesToCheck = ['chrome', 'firefox', 'edge', 'opera', 'safari', 'brave', 'vivaldi'];
+		for (processName in processesToCheck)
+		{
+			
+		}
+
+		if (isBrowserOpen && !Achievements.isUnlocked('tab_out'))
 			Achievements.unlock('tab_out');
 		#end
 	}

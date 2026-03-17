@@ -30,13 +30,13 @@ class AR extends BaseStage
         phone.cameras = [camHUD];
         add(phone);
 
-        phoneCam.width = Std.int(435 * 0.5);
-        phoneCam.height = Std.int(869 * 0.5);
+        camPostGame.width = Std.int(435 * 0.5);
+        camPostGame.height = Std.int(869 * 0.5);
 
         bg = new BGSprite('couchUnblurred', 0, 0, 1, 1);
         bg.scale.set(1.25 * resolution, 1.25 * resolution);
         bg.updateHitbox();
-        bg.cameras = [phoneCam];
+        bg.cameras = [camPostGame];
         bg.screenCenter();
         add(bg);
 
@@ -59,7 +59,7 @@ class AR extends BaseStage
 
         dad.visible = false;
 
-        boyfriend.cameras = [phoneCam];
+        boyfriend.cameras = [camPostGame];
         boyfriend.scrollFactor.set(1, 1);
         boyfriend.scale.set(2, 2);
         boyfriend.updateHitbox();
@@ -100,9 +100,9 @@ class AR extends BaseStage
     {
         var mouseScreenPos:FlxPoint = FlxG.mouse.getScreenPosition(camHUD);
         phone.setPosition(mouseScreenPos.x - phone.width / 2, mouseScreenPos.y - phone.height / 2);
-        phoneCam.setPosition(phone.x + 8, phone.y + 36);
+        camPostGame.setPosition(phone.x + 8, phone.y + 36);
         warning.setPosition(mouseScreenPos.x - warning.width / 2, mouseScreenPos.y - warning.height / 2);
-        phoneCam.focusOn(mouseScreenPos);
+        camPostGame.focusOn(mouseScreenPos);
 
         super.update(elapsed);
 
@@ -141,7 +141,7 @@ class AR extends BaseStage
     private function checkForOurple():Bool
     {
         var spriteRect:FlxRect = new FlxRect(boyfriend.x - boyfriend.offset.x - 75, boyfriend.y - boyfriend.offset.y, boyfriend.width / 2.25, boyfriend.height / 2);
-        var cameraRect:FlxRect = new FlxRect(phoneCam.scroll.x, phoneCam.scroll.y, phoneCam.width / 3.5, phoneCam.height);
+        var cameraRect:FlxRect = new FlxRect(camPostGame.scroll.x, camPostGame.scroll.y, camPostGame.width / 3.5, camPostGame.height);
         var boolThing:Bool = spriteRect.overlaps(cameraRect);
         spriteRect.destroy();
         spriteRect = null;

@@ -46,13 +46,6 @@ class Apology extends BaseStage
             stagelight_right.flipX = true;
             stagelight_right.antialiasing = ClientPrefs.data.antialiasing;
             add(stagelight_right);
-
-            stagecurtains = new FlxSprite(-525, -300).loadGraphic(Paths.image('apology/stagecurtains'));
-            stagecurtains.scrollFactor.set(1.3, 1.3);
-            stagecurtains.scale.set(0.9, 0.9);
-            stagecurtains.updateHitbox();
-            stagecurtains.antialiasing = ClientPrefs.data.antialiasing;
-            add(stagecurtains);
         }
 
         super.create();
@@ -60,6 +53,21 @@ class Apology extends BaseStage
 
     override function createPost() 
     {
+        if (!ClientPrefs.data.lowQuality)
+        {
+            stagecurtains = new FlxSprite(-525, -300).loadGraphic(Paths.image('apology/stagecurtains'));
+            stagecurtains.scrollFactor.set(1.3 * resolution, 1.3 * resolution);
+            stagecurtains.scale.set(resolution - 0.1, resolution - 0.1);
+            stagecurtains.updateHitbox();
+            stagecurtains.antialiasing = ClientPrefs.data.antialiasing;
+
+            if (resolution != 1) {
+                stagecurtains.x -= 550 * resolution;
+                stagecurtains.y -= 70 * resolution;
+            }
+            add(stagecurtains);
+        }
+
         redbg = new FlxSprite().loadGraphic(Paths.image('gtbg'));
         redbg.scrollFactor.set();
         redbg.setGraphicSize(FlxG.width, FlxG.height);

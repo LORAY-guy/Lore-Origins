@@ -62,7 +62,8 @@ class OurpleSkinSelector extends MusicBeatState
         lettabox1.y = FlxG.height - lettabox1.height;
 		add(lettabox1);
 
-		lettabox2 = createBackdrop('mainmenu/lettabox2', -40);
+		lettabox2 = createBackdrop('mainmenu/lettabox', -40);
+        lettabox2.flipY = true;
 		add(lettabox2);
 
         arrows = new FlxSpriteGroup();

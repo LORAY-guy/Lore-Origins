@@ -13,9 +13,9 @@ class Live extends BaseStage
 
     override function create()
     {
-        stageback = new FlxSprite(-630, -300).loadGraphic(Paths.image('live/live_bg_1'));
+        stageback = new FlxSprite(-670, -330).loadGraphic(Paths.image('live/live_bg_1'));
         stageback.scrollFactor.set(0.9, 0.9);
-        stageback.setGraphicSize(Std.int(stageback.width * 2));
+        stageback.setGraphicSize(Std.int(stageback.width * 2.1));
         stageback.updateHitbox();
         add(stageback);
 

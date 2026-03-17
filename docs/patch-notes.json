@@ -1,0 +1,592 @@
+{
+  "patches": [
+    {
+      "version": "2.7",
+      "date": "2026-03-17",
+      "title": "WIDESCREEN UPDATE",
+      "changes": [
+        {
+          "type": "new",
+          "description": "WIDESCREEN BUILD"
+        },
+        {
+          "type": "improvement",
+          "description": "Ourplized the Freeplay Menu"
+        },
+        {
+          "type": "improvement",
+          "description": "Ourplized the Controls Options Menu"
+        },
+        {
+          "type": "improvement",
+          "description": "Replaced the shader effect in the Title Screen"
+        },
+        {
+          "type": "improvement",
+          "description": "Replaced Lore Tropical Mix background with a non-AI generated image"
+        },
+        {
+          "type": "improvement",
+          "description": "Updated LORAY Credits Menu"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed Category graphics in Freeplay Category Select Menu not updating it's antialiasing setting"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed the score not updating on the first selection of the Freeplay Menu"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed Phone RTX skin's camera position"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed \"Taking Notes\" achievement keeping track of pause counter between different songs"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed version number in Main Menu not being updated"
+        }
+      ]
+    },
+    {
+      "version": "2.5.2",
+      "date": "2025-08-26",
+      "title": "BugFixes & QOL",
+      "changes": [
+        {
+          "type": "new",
+          "description": "Added a \"Skins\" input, which opens the Skins Selector menu (only whilst in-game or in the pause menu)"
+        },
+        {
+          "type": "new",
+          "description": "Added the option to prevent Ourple Guy characters from doing the funny dance"
+        },
+        {
+          "type": "new",
+          "description": "Added arrows between the categories' name in the Freeplay Selection menu"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed missing crowd in 'Measure Up' cover level"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed Lore Apology intro cutscene not showing sometimes"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed weird transition when accessing to Options menu whilst playing the Lua song"
+        }
+      ]
+    },
+    {
+      "version": "2.5.0",
+      "date": "2025-08-23",
+      "title": "Presidency & L.U.A",
+      "changes": [
+        {
+          "type": "new",
+          "description": "NEW SKINS SELECTOR - Skins now affect all three characters, not just Ourple Guy"
+        },
+        {
+          "type": "new",
+          "description": "ANDROID BUILD (made in less than a week, iOS is possible if added to App Store)"
+        },
+        {
+          "type": "new",
+          "description": "NEW ORIGINAL MIX: Presidency"
+        },
+        {
+          "type": "new",
+          "description": "NEW SECRET SONG"
+        },
+        {
+          "type": "new",
+          "description": "REPORTED ALL THE SONGS TO SOURCE"
+        },
+        {
+          "type": "new",
+          "description": "SUPPORTS ANY SCREEN RESOLUTIONS (ultra-wide screen build coming soon)"
+        },
+        {
+          "type": "improvement",
+          "description": "GAMEPLAY OVERHAUL for 'I can, tho' minigame"
+        },
+        {
+          "type": "improvement",
+          "description": "Decreased default chances for distracting enemies to appear"
+        },
+        {
+          "type": "removal",
+          "description": "Removed Ourple Guy variants due to owners request"
+        },
+        {
+          "type": "removal",
+          "description": "Removed Lore Style Mix Cover (Owner's request)"
+        },
+        {
+          "type": "removal",
+          "description": "Removed Fever v2 (Owner's request)"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed weird game state bug when playing the game for too long"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed crash/glitchy music when using the music player in Freeplay"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed Loading Screen tip text's positioning"
+        },
+        {
+          "type": "fix",
+          "description": "Many more bug fixes"
+        }
+      ]
+    },
+    {
+      "version": "2.0",
+      "date": "2024-09-30",
+      "title": "Achievements & Skins & many, many more...",
+      "changes": [
+        {
+          "type": "new",
+          "description": "OURPLE SKIN SELECTOR (WIP)!"
+        },
+        {
+          "type": "new",
+          "description": "ACHIEVEMENTS!"
+        },
+        {
+          "type": "new",
+          "description": "Added Repugnant Cover"
+        },
+        {
+          "type": "new",
+          "description": "Added Lore AR Mix"
+        },
+        {
+          "type": "new",
+          "description": "Added Sunk (Lore Iron Lung Mix) to the Originals"
+        },
+        {
+          "type": "new",
+          "description": "Added proper credits (with new Credits subgroups)"
+        },
+        {
+          "type": "new",
+          "description": "Added a Loading Screen (by whitemungus) with tips"
+        },
+        {
+          "type": "new",
+          "description": "Added a Matpat art (by whitemungus) in the Freeplay Select Menu"
+        },
+        {
+          "type": "new",
+          "description": "Added an exit button on most of the menus for mouse cursor users"
+        },
+        {
+          "type": "new",
+          "description": "Added a saving icon at the bottom right corner of the screen"
+        },
+        {
+          "type": "new",
+          "description": "Added a time bar color changing mechanic"
+        },
+        {
+          "type": "new",
+          "description": "Readded miss counter"
+        },
+        {
+          "type": "new",
+          "description": "Added Ourple Game Over screen"
+        },
+        {
+          "type": "new",
+          "description": "Added Ourple Pause Menu"
+        },
+        {
+          "type": "new",
+          "description": "Added a Lore Origins options substate menu"
+        },
+        {
+          "type": "new",
+          "description": "Added the Ourple Countdown Animations"
+        },
+        {
+          "type": "new",
+          "description": "Added cool main menu intro animation"
+        },
+        {
+          "type": "new",
+          "description": "NEW OURPLES ADDED: Hrey Guy, Nuu Guy, Bloxxy Guy, Wink Woman, Blink Dude and Cool Buddy"
+        },
+        {
+          "type": "improvement",
+          "description": "Remixed Tropical Mix"
+        },
+        {
+          "type": "improvement",
+          "description": "Remixed Lore Sad Mix"
+        },
+        {
+          "type": "improvement",
+          "description": "Ported some of the Lua codes to Source (better performance)"
+        },
+        {
+          "type": "improvement",
+          "description": "Changed Menu Transitions"
+        },
+        {
+          "type": "improvement",
+          "description": "Detective now looks better"
+        },
+        {
+          "type": "improvement",
+          "description": "Clicking on LORAYs in the Loray Credits Menu will play a randomized sound"
+        },
+        {
+          "type": "improvement",
+          "description": "Recentered the Main Menu elements"
+        },
+        {
+          "type": "improvement",
+          "description": "Set Freeplay Menu to gray for songs considered old (more than a year old)"
+        },
+        {
+          "type": "improvement",
+          "description": "Brought back the HaxeFlixel intro (with a twist)"
+        },
+        {
+          "type": "improvement",
+          "description": "Changed the FPS counter font"
+        },
+        {
+          "type": "improvement",
+          "description": "Reduced size of the mouse cursor"
+        },
+        {
+          "type": "improvement",
+          "description": "Shuffled the images in the Chronology cutscene"
+        },
+        {
+          "type": "removal",
+          "description": "Removed the Note Colors option menu"
+        },
+        {
+          "type": "removal",
+          "description": "Removed the Rating offset menu to the Adjust Delay/Note option menu"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed scores in Freeplay not showing up"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed randomizer triggering when restarting the song in the Music Player of the Freeplay Menu"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed the Freeplay Select State not saving the last selected Freeplay Category"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed a bug where accessing the Options menu from the Main Menu would go back to PlayState"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed score text not appearing on Middlescroll"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed LORAY watermark hitbox being too large"
+        }
+      ]
+    },
+    {
+      "version": "1.6.0",
+      "date": "2024-02-26",
+      "title": "ACTION Update",
+      "changes": [
+        {
+          "type": "new",
+          "description": "Added Action cover"
+        },
+        {
+          "type": "improvement",
+          "description": "Revamped Main Menu (Lore art by @whitemungus)"
+        },
+        {
+          "type": "improvement",
+          "description": "Revamped Options Menu"
+        },
+        {
+          "type": "improvement",
+          "description": "Remade old Lore covers (> 1 year old)"
+        },
+        {
+          "type": "improvement",
+          "description": "Moved Psych Engine version (0.6.3 -> 0.7.3)"
+        },
+        {
+          "type": "improvement",
+          "description": "Added back the time left on the time bar"
+        },
+        {
+          "type": "improvement",
+          "description": "Ourplized the flashing lights warning screen"
+        },
+        {
+          "type": "new",
+          "description": "Added lore related intro texts"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed mouse graphic offset"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed main menu items going idle when hovering one with the mouse and moving the mouse away"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed a couple of bugs"
+        }
+      ]
+    },
+    {
+      "version": "1.5.0",
+      "date": "2024-02-08",
+      "title": "Measure Up Update",
+      "changes": [
+        {
+          "type": "new",
+          "description": "Added Measure Up Cover"
+        },
+        {
+          "type": "new",
+          "description": "Added an outdated mechanic"
+        },
+        {
+          "type": "new",
+          "description": "Made some menus accessible using the mouse"
+        }
+      ]
+    },
+    {
+      "version": "1.4.5",
+      "date": "2024-01-19",
+      "title": "Detective Update",
+      "changes": [
+        {
+          "type": "new",
+          "description": "Added Detective cover"
+        },
+        {
+          "type": "new",
+          "description": "Added new cursor image"
+        },
+        {
+          "type": "improvement",
+          "description": "Made some menus accessible using the mouse"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed some oopsies"
+        }
+      ]
+    },
+    {
+      "version": "1.4.2",
+      "date": "2024-01-11",
+      "title": "Fixed some oopsies...",
+      "changes": [
+        {
+          "type": "new",
+          "description": "Re-added the Gameplay Changer Menu in Freeplay"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed instrumental for Lore Sad Mix"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed a bug where you could spam enter to glitch the Freeplay Select Menu"
+        },
+        {
+          "type": "fix",
+          "description": "Fixed Discord RPC not showing the logo of the exe"
+        },
+        {
+          "type": "improvement",
+          "description": "Removed more unused code for better performance"
+        }
+      ]
+    },
+    {
+      "version": "1.4",
+      "date": "2024-01-11",
+      "title": "Sad Mix Update",
+      "changes": [
+        {
+          "type": "new",
+          "description": "Added Lore Sad Mix"
+        }
+      ]
+    },
+    {
+        "version": "1.3.5.2",
+        "date": "2023-12-19",
+        "title": "New credits + Icon fix",
+        "changes": [
+            {
+            "type": "improvement",
+            "description": "New credits look (originally from Iron Lung v2)"
+            },
+            {
+            "type": "fix",
+            "description": "Fixed icon placement at the beginning of the song"
+            }
+        ]
+    },
+    {
+      "version": "1.3.5",
+      "date": "2023-12-18",
+      "title": "HUD Update",
+      "changes": [
+        {
+          "type": "improvement",
+          "description": "Updated the New Ourple Guy HUD to be 100% accurate (thanks for publishing the source code :p)"
+        }
+      ]
+    },
+    {
+      "version": "1.3",
+      "date": "2023-12-17",
+      "title": "Apology Mix P-CORE Update",
+      "changes": [
+        {
+          "type": "new",
+          "description": "Added Lore Apology Mix P-CORE cover"
+        },
+        {
+          "type": "improvement",
+          "description": "Improved the Freeplay Select Menu"
+        },
+        {
+          "type": "removal",
+          "description": "Removed Shaggers"
+        }
+      ]
+    },
+    {
+      "version": "1.2",
+      "date": "2023-11-02",
+      "title": "HORSE Update",
+      "changes": [
+        {
+          "type": "new",
+          "description": "Added Lore Horse Mix cover"
+        },
+        {
+          "type": "new",
+          "description": "The LORAY menu element now has its own menu!"
+        },
+        {
+          "type": "improvement",
+          "description": "Slight adjustment of the HUD again"
+        }
+      ]
+    },
+    {
+      "version": "1.1",
+      "date": "2023-10-29",
+      "title": "Smallest update ever (yep, totally nothing)",
+      "changes": [
+        {
+          "type": "new",
+          "description": "Added Freeplay Categories: Covers and Originals"
+        },
+        {
+          "type": "new",
+          "description": "Added Live cover"
+        },
+        {
+          "type": "new",
+          "description": "Added Lore Tropical Mix in Originals"
+        },
+        {
+          "type": "new",
+          "description": "Added Options in the Pause Menu"
+        },
+        {
+          "type": "new",
+          "description": "Added Custom Discord Rich Presence"
+        },
+        {
+          "type": "new",
+          "description": "Added Custom App Icon"
+        },
+        {
+          "type": "improvement",
+          "description": "Slightly updated the HUD"
+        },
+        {
+          "type": "improvement",
+          "description": "Updated Title Screen"
+        },
+        {
+          "type": "improvement",
+          "description": "Updated Menus"
+        },
+        {
+          "type": "improvement",
+          "description": "Credits now open both YouTube and Twitter page"
+        },
+        {
+          "type": "improvement",
+          "description": "Remade the Note Offset Menu to be Lore Themed"
+        },
+        {
+          "type": "improvement",
+          "description": "Added Ourple Guy as Boyfriend in the Graphics Settings Menu"
+        }
+      ]
+    },
+    {
+      "version": "1.02",
+      "date": "2023-10-28",
+      "title": "DOWNSCROLL FIX",
+      "changes": [
+        {
+          "type": "fix",
+          "description": "Fixed HUD on Downscroll"
+        },
+        {
+          "type": "fix",
+          "description": "Brute-forced the position of the rating sprites"
+        },
+        {
+          "type": "new",
+          "description": "Added a ZIP version (for non-WinRAR owners)"
+        }
+      ]
+    },
+    {
+      "version": "1.0",
+      "date": "2023-10-27",
+      "title": "Initial Release",
+      "changes": [
+        {
+          "type": "new",
+          "description": "Initial mod release"
+        }
+      ]
+    }
+  ]
+}

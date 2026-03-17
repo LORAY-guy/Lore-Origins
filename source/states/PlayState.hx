@@ -1,5 +1,6 @@
 package states;
 
+import states.stages.Sunk;
 import backend.Highscore;
 import backend.StageData;
 import backend.WeekData;
@@ -218,7 +219,7 @@ class PlayState extends MusicBeatState
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var camVideo:FlxCamera;
-	public var phoneCam:FlxCamera;
+	public var camPostGame:FlxCamera;
 	public var camOther:FlxCamera;
 	public var cameraSpeed:Float = 1;
 
@@ -376,9 +377,9 @@ class PlayState extends MusicBeatState
 		camVideo.bgColor.alpha = 0;
 		camOther.bgColor.alpha = 0;
 
-		if (SONG.song == 'lore-ar') {
-			phoneCam = new FlxCamera();
-			FlxG.cameras.add(phoneCam, false);
+		if (SONG.song.toLowerCase() == 'lore-ar' || SONG.song.toLowerCase() == 'distractible') {
+			camPostGame = new FlxCamera();
+			FlxG.cameras.add(camPostGame, false);
 		}
 
 		FlxG.cameras.add(camHUD, false);
@@ -488,6 +489,7 @@ class PlayState extends MusicBeatState
 			case 'sunk': new states.stages.Sunk(); // Funny Iron Lung remix
 			case 'ar': new states.stages.AR(); // Why was this game taken down?
 			case 'presidency': new states.stages.Presidency(); // He would not only save America, but the entire world...
+			case 'erectStage': new states.stages.ErectStage(); // I ran out of ideas...
 
 			/*SECRETS*/
 			case 'distractible': new states.stages.Distractible(); // The podcast that will make your penis and/or vagina bigger (that's what people want, right?)
@@ -564,19 +566,10 @@ class PlayState extends MusicBeatState
 			if (SONG.song.toLowerCase() == 'sunk' && sunkMark == 'Mark')
 			{
 				mark.cameras = [camHUD];
-				mark.x = 154;
-				#if html5 //preload for html
-				mark.alpha = 0.00001;
-				mark.y = -400;
-				new FlxTimer().start(0.1, function(tmr:FlxTimer) {
-					mark.y = -1037;
-					mark.alpha = 1;
-				});
-				#else
 				mark.y = -1037;
-				#end
 				mark.setGraphicSize(Std.int(mark.width * 0.875));
 				mark.updateHitbox();
+				mark.x = FlxG.width - (mark.width * 2) - (Sunk.markBg.width / 2);
 			}
 		}
 
@@ -2244,16 +2237,15 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		//You ain't getting the editors, lol
-		// #if (!html5)
-		// if(!endingSong && !inCutscene && allowDebugKeys && startedCountdown)
-		// {
-		// 	if (controls.justPressed('debug_1'))
-		// 		openChartEditor();
-		// 	else if (controls.justPressed('debug_2'))
-		// 		openCharacterEditor();
-		// }
-		// #end
+		#if (!html5)
+		if(!endingSong && !inCutscene && allowDebugKeys && startedCountdown)
+		{
+			if (controls.justPressed('debug_1'))
+				openChartEditor();
+			else if (controls.justPressed('debug_2'))
+				openCharacterEditor();
+		}
+		#end
 
 		if (controls.justPressed('skins'))
 		{
@@ -2711,7 +2703,7 @@ class PlayState extends MusicBeatState
 				#end
 
 				if (SONG.song == 'lore-ar')
-					phoneCam.visible = false;
+					camPostGame.visible = false;
 
 				openSubState(new GameOverSubstate());
 
@@ -4885,6 +4877,8 @@ class PlayState extends MusicBeatState
 	}
 
 	// Too lazy to fix this shit
+	private var timeBarOriginalX:Float;
+	private var timeTxtOriginalX:Float;
 	function markTransitionStart()
 	{
 		for (i in 4...8) {
@@ -4895,8 +4889,10 @@ class PlayState extends MusicBeatState
 		FlxTween.tween(states.stages.Sunk.markBg, {y: 0}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(states.stages.Sunk.markBgOverlay, {y: 0}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(mark, {y: -429}, 0.75, {ease: FlxEase.bounceOut});
-		FlxTween.tween(timeBar, {x: timeBar.x - 326}, 0.75, {ease: FlxEase.bounceOut});
-		FlxTween.tween(timeTxt, {x: timeTxt.x - 326}, 0.75, {ease: FlxEase.bounceOut});
+		timeBarOriginalX = timeBar.x;
+		timeTxtOriginalX = timeTxt.x;
+		FlxTween.tween(timeBar, {x: timeBar.x - (timeBar.x - strumLineNotes.members[0].x - 12)}, 0.75, {ease: FlxEase.bounceOut});
+		FlxTween.tween(timeTxt, {x: timeTxt.x - (timeTxt.x - strumLineNotes.members[0].x - 12)}, 0.75, {ease: FlxEase.bounceOut});
 		boyfriend.playAnim('scared', true);
 		FlxTween.tween(boyfriend, {y: boyfriend.y + 950}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(boyfriend, {angle: -90}, 0.45, {ease: FlxEase.linear});
@@ -4915,8 +4911,8 @@ class PlayState extends MusicBeatState
 		FlxTween.tween(states.stages.Sunk.markBg, {y: -550}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(states.stages.Sunk.markBgOverlay, {y: -550}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(mark, {y: -1241}, 0.75, {ease: FlxEase.bounceOut});
-		FlxTween.tween(timeBar, {x: timeBar.x + 326}, 0.75, {ease: FlxEase.bounceOut});
-		FlxTween.tween(timeTxt, {x: timeTxt.x + 326}, 0.75, {ease: FlxEase.bounceOut});
+		FlxTween.tween(timeBar, {x: timeBarOriginalX}, 0.75, {ease: FlxEase.bounceOut});
+		FlxTween.tween(timeTxt, {x: timeTxtOriginalX}, 0.75, {ease: FlxEase.bounceOut});
 		boyfriend.animation.play('scared', false, false, 0);
 		FlxTween.tween(boyfriend, {y: boyfriend.y - 950}, 0.75, {ease: FlxEase.bounceOut});
 		boyfriend.angle = 0;
@@ -4929,8 +4925,8 @@ class PlayState extends MusicBeatState
 		FlxTween.tween(states.stages.Sunk.markBg, {y: 0}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(states.stages.Sunk.markBgOverlay, {y: 0}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(mark, {y: -429}, 0.75, {ease: FlxEase.bounceOut});
-		FlxTween.tween(timeBar, {x: timeBar.x + 322}, 0.75, {ease: FlxEase.bounceOut});
-		FlxTween.tween(timeTxt, {x: timeTxt.x + 322}, 0.75, {ease: FlxEase.bounceOut});
+		FlxTween.tween(timeBar, {x: timeBar.x - (timeBar.x - strumLineNotes.members[4].x - 7)}, 0.75, {ease: FlxEase.bounceOut});
+		FlxTween.tween(timeTxt, {x: timeTxt.x - (timeTxt.x - strumLineNotes.members[4].x - 7)}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(dad, {y: dad.y + 950}, 0.75, {ease: FlxEase.bounceOut});
 		FlxTween.tween(dad, {angle: -90}, 0.45, {ease: FlxEase.linear});
 	}

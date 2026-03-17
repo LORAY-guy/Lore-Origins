@@ -25,8 +25,6 @@ class Chronology extends BaseStage
 
     var puzzleNames:Array<String> = ['WilliamAftonLit', 'SaveThemLit', 'GiveCakeLit', 'BlinkingOn', 'CharlieDeathLit'];
 
-    var resolution:Float = (FlxG.width / 1280);
-
     override function create()
     {
         backstage = new BGSprite('epicOffice', -480, -200, 1, 1);
@@ -37,7 +35,7 @@ class Chronology extends BaseStage
 
         fnafLogo = new FlxSprite().loadGraphic(Paths.image('introStuff/fnaflogo'));
         fnafLogo.cameras = [camOther];
-        fnafLogo.scale.set(0.2 * resolution, 0.2 * resolution);
+        fnafLogo.scale.set(0.2, 0.2);
         fnafLogo.updateHitbox();
         fnafLogo.screenCenter(XY);
         add(fnafLogo);
@@ -103,7 +101,7 @@ class Chronology extends BaseStage
         PlayState.instance.vocals.volume = 0.85;
         PlayState.instance.opponentVocals.volume = 0.85;
         FlxG.sound.music.volume = 1;
-        FlxTween.tween(fnafLogo.scale, {x: 0.225 * resolution, y: 0.225 * resolution}, 3, {ease: FlxEase.linear});
+        FlxTween.tween(fnafLogo.scale, {x: 0.225, y: 0.225}, 3, {ease: FlxEase.linear});
     }
 
     override function stepHit()

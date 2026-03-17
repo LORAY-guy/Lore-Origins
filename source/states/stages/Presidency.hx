@@ -266,7 +266,7 @@ class Presidency extends BaseStage
         }
     }
 
-    private function getOurpleWhisperingPosOffset():Float // They bit the second child...
+    private function getOurpleWhisperingPosOffset():Float // They bit the frontal lobe...
     {
         switch (boyfriend.curCharacter) {
             case 'playguy-staring':

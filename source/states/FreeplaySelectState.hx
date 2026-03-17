@@ -58,9 +58,10 @@ class FreeplaySelectState extends MusicBeatState
 		lettabox1.y = FlxG.height - lettabox1.height;
 		add(lettabox1);
 
-		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox2'), X, 0, 0);
+		var lettabox2:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/lettabox'), X, 0, 0);
 		lettabox2.scrollFactor.set(0, 0);
 		lettabox2.velocity.set(-40, 0);
+		lettabox2.flipY = true;
 		add(lettabox2);
 
         categoryIcon = new FlxSprite();
@@ -69,9 +70,10 @@ class FreeplaySelectState extends MusicBeatState
         categoryIcon.animation.play('idle');
 		categoryIcon.screenCenter();
 		categoryIcon.x -= 240;
+		categoryIcon.antialiasing = ClientPrefs.data.antialiasing;
 		add(categoryIcon);
 
-		catName = new Alphabet(0, (FlxG.height / 2) - 282, '< ' + freeplayCats[curSelected] + ' >', true);
+		catName = new Alphabet(0, (FlxG.height / 2) - 282, '< ${freeplayCats[curSelected]} >', true);
 		catName.screenCenter(X);
 		catName.x -= 240;
 		add(catName);
@@ -156,7 +158,7 @@ class FreeplaySelectState extends MusicBeatState
 		if (curSelected < 0)
 			curSelected = freeplayCats.length - 1;
 
-		catName.text = '< ' + freeplayCats[curSelected] + ' >';
+		catName.text = '< ${freeplayCats[curSelected]} >';
 		catName.screenCenter(X);
 		catName.x -= 240;
 		add(catName);
